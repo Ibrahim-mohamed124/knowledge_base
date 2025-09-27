@@ -2,7 +2,7 @@
 title: installer binary
 description: 
 published: true
-date: 2025-09-27T09:57:17.411Z
+date: 2025-09-27T10:27:38.512Z
 tags: ocp, openshift, installation, implementation
 editor: ckeditor
 dateCreated: 2025-09-27T09:16:09.274Z
@@ -63,13 +63,18 @@ dateCreated: 2025-09-27T09:16:09.274Z
         <td>destroy cluster</td>
         <td>delete the cluster</td>
       </tr>
+      <tr>
+        <td>gather</td>
+        <td>get logs after kubernetes api is up and running</td>
+      </tr>
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
+<p># &nbsp;before the installation: <code><strong>ssh-keygen -t rsa -b 4096 -N '' -f ${HOME}/.ssh/ocp4-cluster</strong></code></p>
+<p># When using the pre-existing infrastructure installation method, you must specify the IP addresses of the bootstrap and control plane nodes when running the <code>openshift-install gather bootstrap</code> command.</p>
 <p>The workflow of cluster creation:</p>
 <ol>
-  <li>complete the general requirements</li>
+  <li>complete the general requirements: provide the ocp4-cluster.pub key</li>
   <li>create a directory for the instillation: The OpenShift installer will create the installation directory if it does not exist.</li>
   <li>generate the install-config.yaml</li>
   <li>generate the k8s manifests: which contains the <code>MachineConfigs</code> object that is used in ignition files</li>
@@ -119,10 +124,40 @@ dateCreated: 2025-09-27T09:16:09.274Z
 </figure>
 <p>&nbsp;</p>
 <p>Stage 1:</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>ssh to the bootstrap node using ssh key generated before the installation</li>
+  <li>inspect journal logs of release-images and bootkube services&nbsp;</li>
+  <li>inspect container logs using crictl cli</li>
+</ul>
+<p>Stage 2:</p>
+<ul>
+  <li>use oc or openshift-install to get the logs from the bootstrap <code><strong>export KUBECONFIG=${HOME}/ocp4-cluster/auth/kubeconfig</strong></code></li>
+  <li><code><strong>openshift-install gather bootstrap --dir /path</strong></code> | this command gathers the logs and fetch them as a tarball&nbsp;<ul>
+      <li>the archive contains:<ul>
+          <li>bootstrap/journals/ &nbsp;bootstrap/containers/ &nbsp;control-plane/ &nbsp;failed-units.txt &nbsp;rendered-assets/ resources/ &nbsp;unit-status/</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><code><strong>oc adm node-logs -u kubelet master01, oc debug node/master01</strong></code></li>
+  <li>&nbsp;Typical errors at this stage include:<ul>
+      <li>Control plane nodes installation issues</li>
+      <li>DNS resolution issues</li>
+    </ul>
+  </li>
+</ul>
+<p>Stage 3:</p>
+<ul>
+  <li>Typical error is OpenShift operators installation issues</li>
+  <li>Instillation verification:</li>
+</ul>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1. Verify that all the cluster nodes have their system clock synchronized with a Network Time Protocol (NTP) server. &gt; <code><strong>cat /etc/chrony.conf</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2. Verify that all the cluster nodes are in a <code>Ready</code> status</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;3. Check that all the cluster nodes are reporting usage metrics. &gt; <code><strong>oc adm top node</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4. Ensure that there are no certificate signing requests (CSRs) pending approval. &gt; &nbsp;<code><strong>oc get csr | grep Pending</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;5. Confirm that the cluster version operator report shows that the OpenShift cluster is available and ready. &gt; &nbsp;<code><strong>oc get clusterversion</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6. Check that all the cluster operators are available and ready. &gt; <code><strong>oc get clusteroperators</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7. Verify that there are not any pods with scheduling or execution issues in the cluster. &gt; &nbsp;<code><strong>oc get pods --all-namespaces | grep -v -E 'Running|Completed'</strong></code></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
