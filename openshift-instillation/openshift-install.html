@@ -1,0 +1,98 @@
+<!--
+title: installer binary
+description: 
+published: true
+date: 2025-09-27T09:16:11.838Z
+tags: ocp, openshift, installation, implementation
+editor: ckeditor
+dateCreated: 2025-09-27T09:16:09.274Z
+-->
+
+<h1 style="text-align:center;"><strong>Openshfit-install</strong></h1>
+<p style="text-align:center;">&nbsp;</p>
+<p>Starting with OpenShift Container Platform 4.6, a full-stack installation on bare metal uses the OpenShift installer binary <code><strong>openshift-baremetal-install &nbsp;</strong></code>&nbsp;</p>
+<p>&nbsp;</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Option</td>
+        <td>Function</td>
+      </tr>
+      <tr>
+        <td>explain</td>
+        <td>explains the fields of InstallConfig APIs</td>
+      </tr>
+      <tr>
+        <td>explain installconfig</td>
+        <td>explains the fields of installconfig resource</td>
+      </tr>
+      <tr>
+        <td>log-level debug</td>
+        <td>enable debugging mode</td>
+      </tr>
+      <tr>
+        <td>dir</td>
+        <td>path to save the generated assets</td>
+      </tr>
+      <tr>
+        <td>create install-config</td>
+        <td>creates install-config.yaml</td>
+      </tr>
+      <tr>
+        <td>create manifests</td>
+        <td>creates k8s manifests out of install-config.yaml</td>
+      </tr>
+      <tr>
+        <td>create ignition-conifgs</td>
+        <td>creates ignition files out of k8s manifests</td>
+      </tr>
+      <tr>
+        <td>create cluster</td>
+        <td>deploy a cluster&nbsp;</td>
+      </tr>
+      <tr>
+        <td>wait-for bootstrap-complete</td>
+        <td>waits until the bootstrap installation phase ends</td>
+      </tr>
+      <tr>
+        <td>wait-for install-complete</td>
+        <td>waits until the cluster instillation ends</td>
+      </tr>
+      <tr>
+        <td>destroy cluster</td>
+        <td>delete the cluster</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>The workflow of cluster creation:</p>
+<ol>
+  <li>complete the general requirements</li>
+  <li>create a directory for the instillation: The OpenShift installer will create the installation directory if it does not exist.</li>
+  <li>generate the install-config.yaml</li>
+  <li>generate the k8s manifests: which contains the <code>MachineConfigs</code> object that is used in ignition files</li>
+  <li>generate the ignition files :</li>
+</ol>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Ignition files are valid for 24 hours, after which the included certificates expire. If the cluster installation fails, check the ignition &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;files to see if they are more than 24 hours old. If so, create new ignition files.</p>
+<p>&nbsp; 6. deploy the cluster</p>
+<p>! &nbsp; In case of UPI instead for using openshift-install create cluster, use the openshfit-install wait-for commands to moniter the cluster installation.</p>
+<p>! In UPI, after the installation of bootstrap, it automatically triggers the installation of ocp on the already booted CoreOS hosts</p>
+<p>! You can start using the <code>oc</code> command once the bootstrap has the Kubernetes API running on the temporary control plane.</p>
+<ul>
+  <li><code><strong>export KUBECONFIG=[HOME]/[instillation dir]/auth/kubeconfig</strong></code></li>
+  <li><code><strong>Or use the password in kubeadmin-password file</strong></code></li>
+  <li>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
