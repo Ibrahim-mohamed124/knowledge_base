@@ -2,7 +2,7 @@
 title: installer binary
 description: 
 published: true
-date: 2025-09-27T09:16:11.838Z
+date: 2025-09-27T09:33:51.103Z
 tags: ocp, openshift, installation, implementation
 editor: ckeditor
 dateCreated: 2025-09-27T09:16:09.274Z
@@ -83,8 +83,12 @@ dateCreated: 2025-09-27T09:16:09.274Z
 <ul>
   <li><code><strong>export KUBECONFIG=[HOME]/[instillation dir]/auth/kubeconfig</strong></code></li>
   <li><code><strong>Or use the password in kubeadmin-password file</strong></code></li>
-  <li>&nbsp;</li>
 </ul>
+<p>Useful commands:</p>
+<p>&nbsp; - &nbsp;<code><strong>watch 'oc get clusterversion; oc get clusteroperators; \</strong></code>
+  &gt; <code><strong>oc get pods --all-namespaces | grep -v -E "Running|Completed"; oc get nodes'</strong></code></p>
+<p>&nbsp; - <code><strong>oc get events -A -w</strong></code></p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
