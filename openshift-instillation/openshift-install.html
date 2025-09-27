@@ -2,7 +2,7 @@
 title: installer binary
 description: 
 published: true
-date: 2025-09-27T10:27:38.512Z
+date: 2025-09-27T10:35:53.250Z
 tags: ocp, openshift, installation, implementation
 editor: ckeditor
 dateCreated: 2025-09-27T09:16:09.274Z
@@ -90,8 +90,7 @@ dateCreated: 2025-09-27T09:16:09.274Z
   <li><code><strong>Or use the password in kubeadmin-password file</strong></code></li>
 </ul>
 <p>Useful commands:</p>
-<p>&nbsp; - &nbsp;<code><strong>watch 'oc get clusterversion; oc get clusteroperators; \</strong></code>
-  &gt; <code><strong>oc get pods --all-namespaces | grep -v -E "Running|Completed"; oc get nodes'</strong></code></p>
+<p>&nbsp; - &nbsp;<code><strong>watch 'oc get clusterversion; oc get clusteroperators; \</strong></code> &gt; <code><strong>oc get pods --all-namespaces | grep -v -E "Running|Completed"; oc get nodes'</strong></code></p>
 <p>&nbsp; - <code><strong>oc get events -A -w</strong></code></p>
 <h1 style="text-align:center;">Troubleshooting&nbsp;</h1>
 <p style="text-align:center;">Deployment stages &gt; determine the stage by looking at the installation logs</p>
@@ -126,13 +125,13 @@ dateCreated: 2025-09-27T09:16:09.274Z
 <p>Stage 1:</p>
 <ul>
   <li>ssh to the bootstrap node using ssh key generated before the installation</li>
-  <li>inspect journal logs of release-images and bootkube services&nbsp;</li>
+  <li>inspect journal logs of release-images and bootkube services</li>
   <li>inspect container logs using crictl cli</li>
 </ul>
 <p>Stage 2:</p>
 <ul>
   <li>use oc or openshift-install to get the logs from the bootstrap <code><strong>export KUBECONFIG=${HOME}/ocp4-cluster/auth/kubeconfig</strong></code></li>
-  <li><code><strong>openshift-install gather bootstrap --dir /path</strong></code> | this command gathers the logs and fetch them as a tarball&nbsp;<ul>
+  <li><code><strong>openshift-install gather bootstrap --dir /path</strong></code> | this command gathers the logs and fetch them as a tarball<ul>
       <li>the archive contains:<ul>
           <li>bootstrap/journals/ &nbsp;bootstrap/containers/ &nbsp;control-plane/ &nbsp;failed-units.txt &nbsp;rendered-assets/ resources/ &nbsp;unit-status/</li>
         </ul>
@@ -140,7 +139,7 @@ dateCreated: 2025-09-27T09:16:09.274Z
     </ul>
   </li>
   <li><code><strong>oc adm node-logs -u kubelet master01, oc debug node/master01</strong></code></li>
-  <li>&nbsp;Typical errors at this stage include:<ul>
+  <li>Typical errors at this stage include:<ul>
       <li>Control plane nodes installation issues</li>
       <li>DNS resolution issues</li>
     </ul>
@@ -159,7 +158,14 @@ dateCreated: 2025-09-27T09:16:09.274Z
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6. Check that all the cluster operators are available and ready. &gt; <code><strong>oc get clusteroperators</strong></code></p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7. Verify that there are not any pods with scheduling or execution issues in the cluster. &gt; &nbsp;<code><strong>oc get pods --all-namespaces | grep -v -E 'Running|Completed'</strong></code></p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>ETCD verification:<ul>
+      <li>&nbsp;<code><strong>oc get pods -n openshift-etcd | grep etcd-master</strong></code></li>
+      <li>&nbsp;<code><strong>oc rsh -n openshift-etcd etcd-master01 &nbsp;&gt;&gt; etcdctl endpoint health --cluster</strong></code></li>
+    </ul>
+  </li>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
