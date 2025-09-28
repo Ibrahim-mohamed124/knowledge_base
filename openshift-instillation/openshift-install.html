@@ -2,7 +2,7 @@
 title: installer binary
 description: 
 published: true
-date: 2025-09-28T07:21:45.509Z
+date: 2025-09-28T19:48:14.842Z
 tags: ocp, openshift, installation, implementation
 editor: ckeditor
 dateCreated: 2025-09-27T09:16:09.274Z
@@ -170,7 +170,24 @@ dateCreated: 2025-09-27T09:16:09.274Z
       <li><code><strong>curl -kIs&nbsp;</strong></code> <code><strong>https://console-openshift-console.apps.ocp4.example.com</strong></code> | check the connection of the console</li>
     </ul>
   </li>
-  <li>Openshift registry health:</li>
+  <li>Openshift registry health:<ul>
+      <li><code><strong>oc -n openshift-image-registry get deployment.apps/image-registry</strong></code></li>
+      <li><code><strong>oc -n openshift-image-registry &nbsp;get pods -o wide</strong></code></li>
+      <li><code><strong>oc debug node/master01 ; &nbsp;curl -Ik https://image-registry.openshift-image-registry.svc:5000/healthz</strong></code></li>
+      <li>Verify that the internal registry deployment is using persistent storage. Also, ensure that the image registry operator is in the <code>Managed</code> management state.<ul>
+          <li><code><strong>oc get configs.imageregistry.operator.openshift.io cluster -o yaml</strong></code></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Openshift Ingress health:<ul>
+      <li>Verify that the wildcard DNS record for applications, <code>*.apps.ocp4.example.com</code>, is configured to use the external load balancer IP address<ul>
+          <li><code><strong>dig test.apps.ocp4.example.com</strong></code></li>
+        </ul>
+      </li>
+      <li>Check that you can access an application exposed by an OpenShift Ingress route</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
