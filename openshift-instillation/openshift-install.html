@@ -2,7 +2,7 @@
 title: installer binary
 description: 
 published: true
-date: 2025-09-27T13:59:46.802Z
+date: 2025-09-28T07:13:40.349Z
 tags: ocp, openshift, installation, implementation
 editor: ckeditor
 dateCreated: 2025-09-27T09:16:09.274Z
@@ -160,11 +160,17 @@ dateCreated: 2025-09-27T09:16:09.274Z
 <p>&nbsp;</p>
 <ul>
   <li>ETCD verification:<ul>
-      <li>&nbsp;<code><strong>oc get pods -n openshift-etcd | grep etcd-master</strong></code></li>
-      <li>&nbsp;<code><strong>oc rsh -n openshift-etcd etcd-master01 &nbsp;&gt;&gt; etcdctl endpoint health --cluster</strong></code></li>
+      <li><code><strong>oc get pods -n openshift-etcd | grep etcd-master</strong></code></li>
+      <li><code><strong>oc rsh -n openshift-etcd etcd-master01 &nbsp;&gt;&gt; etcdctl endpoint health --cluster</strong></code></li>
     </ul>
   </li>
-  <li>&nbsp;</li>
+  <li>API Health verification:<ul>
+      <li><code><strong>dig api.ocp4.example.com</strong></code> &nbsp;| resolve the ip of the api loadbalancer</li>
+      <li><code><strong>curl -k https://api.ocp4.example.com:6443/version</strong></code> &nbsp;| check the version of api</li>
+      <li><code><strong>curl -kIs&nbsp;</strong></code> <code><strong>https://console-openshift-console.apps.ocp4.example.com</strong></code> | check the connection of the console</li>
+    </ul>
+  </li>
+  <li>Openshift registry health:</li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
