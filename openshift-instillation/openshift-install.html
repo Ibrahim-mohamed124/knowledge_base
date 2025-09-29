@@ -2,7 +2,7 @@
 title: installer binary
 description: 
 published: true
-date: 2025-09-28T20:22:58.445Z
+date: 2025-09-29T13:33:23.373Z
 tags: ocp, openshift, installation, implementation
 editor: ckeditor
 dateCreated: 2025-09-27T09:16:09.274Z
@@ -213,6 +213,6 @@ dateCreated: 2025-09-27T09:16:09.274Z
 <ul>
   <li><code><strong>oc get machines -n openshift-machine-api</strong></code></li>
   <li><code><strong>oc get machinesets -n openshift-machine-api</strong></code></li>
-  <li>&nbsp;</li>
+  <li><code><strong>sosreport -k crio.all=on -k crio.logs=on</strong></code> &nbsp;| on the nodes</li>
 </ul>
 <p>&nbsp;</p>
