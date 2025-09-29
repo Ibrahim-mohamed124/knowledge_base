@@ -2,7 +2,7 @@
 title: installer binary
 description: 
 published: true
-date: 2025-09-29T13:33:23.373Z
+date: 2025-09-29T13:37:53.818Z
 tags: ocp, openshift, installation, implementation
 editor: ckeditor
 dateCreated: 2025-09-27T09:16:09.274Z
@@ -214,5 +214,10 @@ dateCreated: 2025-09-27T09:16:09.274Z
   <li><code><strong>oc get machines -n openshift-machine-api</strong></code></li>
   <li><code><strong>oc get machinesets -n openshift-machine-api</strong></code></li>
   <li><code><strong>sosreport -k crio.all=on -k crio.logs=on</strong></code> &nbsp;| on the nodes</li>
+</ul>
+<p>@ to access the cluster metrics from redhat openshfit cluster manager console get the cluster id&nbsp;</p>
+<ul>
+  <li><code><strong>oc get clusterversion \</strong></code>
+    &gt; <code><strong>-o jsonpath='{.items[].spec.clusterID}{"\n"}'</strong></code></li>
 </ul>
 <p>&nbsp;</p>
