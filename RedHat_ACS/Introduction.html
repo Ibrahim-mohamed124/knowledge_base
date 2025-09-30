@@ -1,0 +1,51 @@
+<!--
+title: Intro
+description: 
+published: true
+date: 2025-09-30T06:04:08.431Z
+tags: acs, application security, images scanning, dast
+editor: ckeditor
+dateCreated: 2025-09-30T06:04:08.431Z
+-->
+
+<h1>ACS Architecture</h1>
+<p>⇒ Distributed architecture to minimize the impact of the underlaying nodes and support high scale deployments</p>
+<figure class="image"><img src="https://access.redhat.com/webassets/avalon/d/Red_Hat_Advanced_Cluster_Security_for_Kubernetes-4.5-Architecture-en-US/images/d0f8b5ac858b10110221e528d52b4797/acs-architecture-scannerv4.png" alt="Red&nbsp;Hat Advanced Cluster Security for Kubernetes architecture for Kubernetes"></figure>
+<p>Services:</p>
+<ul>
+  <li>Central: a service installed on one cluster</li>
+  <li>secure cluster services: installed on each cluster</li>
+</ul>
+<p>Instillation methods:</p>
+<ol>
+  <li>Operator: installs a lightweight version of the Scanner on each cluster to scan the images in the integrated openshift registry.</li>
+  <li>Helm chart: do not install the lightweight version of the Scanner by default, must explicitly set scanner.disable=false</li>
+  <li>roxctl method: cannot install the lightweight version of the Scanner</li>
+</ol>
+<p>&nbsp;</p>
+<h2>Central Services</h2>
+<ol>
+  <li>Central: application management interface for API interactions and users</li>
+  <li>Central DB: Postgesql 13 for data persistency</li>
+  <li>Scanner V4: vulnerability scanner for container images that is built on ClairCore for the Clair scanner<ol>
+      <li>support the scanning of language and OS dependencies</li>
+      <li>Used with StackRox scanner to provide node and platform scanning</li>
+      <li>Components:<ol>
+          <li>&nbsp;</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+</ol>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
