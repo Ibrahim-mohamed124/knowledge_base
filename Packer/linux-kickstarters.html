@@ -1,0 +1,216 @@
+<!--
+title: Linux-kickstarters
+description: 
+published: true
+date: 2025-09-30T14:15:27.210Z
+tags: iac, packer, linux
+editor: ckeditor
+dateCreated: 2025-09-30T14:15:27.210Z
+-->
+
+<h2>Linux Distribution Automation Methods</h2>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th><strong>Distribution</strong></th>
+        <th><strong>Family</strong></th>
+        <th><strong>Package Format</strong></th>
+        <th><strong>Automation Method</strong></th>
+        <th><strong>Config File</strong></th>
+        <th><strong>Boot Parameter</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Red Hat Enterprise Linux (RHEL)</strong></td>
+        <td>RPM</td>
+        <td>RPM</td>
+        <td>Kickstart</td>
+        <td><code>ks.cfg</code></td>
+        <td><code>inst.ks=</code></td>
+      </tr>
+      <tr>
+        <td><strong>CentOS / CentOS Stream</strong></td>
+        <td>RPM</td>
+        <td>RPM</td>
+        <td>Kickstart</td>
+        <td><code>ks.cfg</code></td>
+        <td><code>inst.ks=</code></td>
+      </tr>
+      <tr>
+        <td><strong>Rocky Linux</strong></td>
+        <td>RPM</td>
+        <td>RPM</td>
+        <td>Kickstart</td>
+        <td><code>ks.cfg</code></td>
+        <td><code>inst.ks=</code></td>
+      </tr>
+      <tr>
+        <td><strong>AlmaLinux</strong></td>
+        <td>RPM</td>
+        <td>RPM</td>
+        <td>Kickstart</td>
+        <td><code>ks.cfg</code></td>
+        <td><code>inst.ks=</code></td>
+      </tr>
+      <tr>
+        <td><strong>Oracle Linux</strong></td>
+        <td>RPM</td>
+        <td>RPM</td>
+        <td>Kickstart</td>
+        <td><code>ks.cfg</code></td>
+        <td><code>inst.ks=</code></td>
+      </tr>
+      <tr>
+        <td><strong>Fedora</strong></td>
+        <td>RPM</td>
+        <td>RPM</td>
+        <td>Kickstart</td>
+        <td><code>ks.cfg</code></td>
+        <td><code>inst.ks=</code></td>
+      </tr>
+      <tr>
+        <td><strong>openSUSE / SUSE Linux Enterprise</strong></td>
+        <td>RPM</td>
+        <td>RPM</td>
+        <td>AutoYaST</td>
+        <td><code>autoinst.xml</code></td>
+        <td><code>autoyast=</code></td>
+      </tr>
+      <tr>
+        <td><strong>Debian</strong></td>
+        <td>Debian</td>
+        <td>DEB</td>
+        <td>Preseed</td>
+        <td><code>preseed.cfg</code></td>
+        <td><code>auto url=</code> or <code>preseed/url=</code></td>
+      </tr>
+      <tr>
+        <td><strong>Ubuntu / Ubuntu Server</strong></td>
+        <td>Debian</td>
+        <td>DEB</td>
+        <td>Preseed (legacy)&lt;br&gt;Cloud-init/Autoinstall (20.04+)</td>
+        <td><code>preseed.cfg</code>&lt;br&gt;<code>user-data</code></td>
+        <td><code>preseed/url=</code>&lt;br&gt;<code>autoinstall</code></td>
+      </tr>
+      <tr>
+        <td><strong>Linux Mint</strong></td>
+        <td>Debian</td>
+        <td>DEB</td>
+        <td>Preseed</td>
+        <td><code>preseed.cfg</code></td>
+        <td><code>preseed/url=</code></td>
+      </tr>
+      <tr>
+        <td><strong>Kali Linux</strong></td>
+        <td>Debian</td>
+        <td>DEB</td>
+        <td>Preseed</td>
+        <td><code>preseed.cfg</code></td>
+        <td><code>preseed/url=</code></td>
+      </tr>
+      <tr>
+        <td><strong>Proxmox VE</strong></td>
+        <td>Debian</td>
+        <td>DEB</td>
+        <td>Preseed / Answer File</td>
+        <td><code>preseed.cfg</code></td>
+        <td><code>proxmox-boot-tool</code></td>
+      </tr>
+      <tr>
+        <td><strong>Pop!_OS</strong></td>
+        <td>Debian</td>
+        <td>DEB</td>
+        <td>Cloud-init</td>
+        <td><code>user-data</code></td>
+        <td><code>autoinstall</code></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h2>Key Differences</h2>
+<h3>RPM-based (Kickstart)</h3>
+<ul>
+  <li><strong>Syntax</strong>: INI-style with sections (<code>%packages</code>, <code>%post</code>, etc.)</li>
+  <li><strong>Flexibility</strong>: Very powerful scripting in <code>%post</code> and <code>%pre</code></li>
+  <li><strong>Example</strong>:</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>bash</p>
+<pre><code class="language-plaintext">install text
+url --url=http://mirror.example.com/rhel9
+lang en_US.UTF-8
+keyboard us
+%packages
+@core
+%end</code></pre>
+<h3>Debian-based (Preseed)</h3>
+<ul>
+  <li><strong>Syntax</strong>: Key-value pairs (debconf format)</li>
+  <li><strong>Complexity</strong>: Less intuitive, requires understanding debconf</li>
+  <li><strong>Example</strong>:</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>bash</p>
+<pre><code class="language-plaintext">d-i debian-installer/locale string en_US
+d-i keyboard-configuration/xkb-keymap select us
+d-i netcfg/get_hostname string debian-host</code></pre>
+<h3>Modern Ubuntu (Autoinstall)</h3>
+<ul>
+  <li><strong>Syntax</strong>: YAML-based (cloud-init)</li>
+  <li><strong>Modern</strong>: More user-friendly than preseed</li>
+  <li><strong>Example</strong>:</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>yaml</p>
+<pre><code class="language-plaintext">autoinstall:   version: 1   identity:     hostname: ubuntu-server
+    username: ubuntu
+    password: "$6$encrypted..."</code></pre>
+<h3>SUSE (AutoYaST)</h3>
+<ul>
+  <li><strong>Syntax</strong>: XML-based</li>
+  <li><strong>GUI Tool</strong>: Can generate configs via YaST</li>
+  <li><strong>Example</strong>:</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>xml</p>
+<pre><code class="language-xml">&lt;profile&gt;   &lt;install&gt;     &lt;image&gt;false&lt;/image&gt;   &lt;/install&gt; &lt;/profile&gt;</code></pre>
+<h2>Boot Parameter Examples</h2>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Distribution</th>
+        <th>Boot Command Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>RHEL/CentOS</strong></td>
+        <td><code>inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg</code></td>
+      </tr>
+      <tr>
+        <td><strong>Ubuntu (Preseed)</strong></td>
+        <td><code>auto url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg</code></td>
+      </tr>
+      <tr>
+        <td><strong>Ubuntu 20.04+ (Autoinstall)</strong></td>
+        <td><code>autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/</code></td>
+      </tr>
+      <tr>
+        <td><strong>Debian</strong></td>
+        <td><code>auto=true priority=critical preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg</code></td>
+      </tr>
+      <tr>
+        <td><strong>SUSE</strong></td>
+        <td><code>autoyast=http://{{ .HTTPIP }}:{{ .HTTPPort }}/autoinst.xml</code></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>This should give you a solid reference for automating installations across different Linux distributions!</p>
