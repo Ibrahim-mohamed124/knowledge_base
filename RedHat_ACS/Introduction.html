@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-01T12:33:22.048Z
+date: 2025-10-01T12:51:22.495Z
 tags: acs, application security, images scanning, dast
 editor: ckeditor
 dateCreated: 2025-09-30T06:04:08.431Z
@@ -42,10 +42,41 @@ dateCreated: 2025-09-30T06:04:08.431Z
   <li>scanner DB: the database for stockRox scanner</li>
 </ol>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Advisories&nbsp;</h3>
+<ul>
+  <li><a href="https://secdb.alpinelinux.org/"><u>Alpine Security Database</u></a></li>
+  <li>Data tracked in <a href="https://alas.aws.amazon.com/index.html"><u>Amazon Linux Security Center</u></a></li>
+  <li><a href="https://security-tracker.debian.org/tracker/data/json"><u>Debian Security Tracker</u></a></li>
+  <li><a href="https://linux.oracle.com/security/oval"><u>Oracle OVAL</u></a></li>
+  <li><a href="https://packages.vmware.com/photon/photon_oval_definitions/"><u>Photon OVAL</u></a></li>
+  <li><a href="https://access.redhat.com/security/data/oval/v2/"><u>Red&nbsp;Hat OVAL</u></a></li>
+  <li><a href="https://access.redhat.com/security/data/metrics/cvemap.xml"><u>Red&nbsp;Hat CVE Map</u></a>: This is used for images which appear in the <a href="https://catalog.redhat.com/software/containers/explore"><u>Red&nbsp;Hat Container Catalog</u></a>.</li>
+  <li><a href="https://support.novell.com/security/oval/"><u>SUSE OVAL</u></a></li>
+  <li><a href="https://security-metadata.canonical.com/oval/"><u>Ubuntu OVAL</u></a></li>
+  <li><a href="https://osv.dev/"><u>OSV</u></a>: This is used for language-related vulnerabilities, such as Go, Java, Node.js (JavaScript), Python, and Ruby. This source might provide GitHub Security Advisory (GHSA) IDs rather than CVE numbers for vulnerabilities. The RHACS Scanner V4 also uses the OSV database available at <a href="https://osv.dev/"><u>OSV.dev</u></a> under <a href="https://github.com/google/osv.dev/blob/master/LICENSE"><u>this license</u></a>.</li>
+  <li><a href="https://nvd.nist.gov/vuln/search"><u>NVD</u></a>: This is used for various purposes such as filling in information gaps when vendors do not provide information. For example, Alpine does not provide a description, CVSS score, severity, or published date.</li>
+  <li><a href="https://github.com/stackrox/stackrox/blob/master/scanner/updater/manual/vulns.go"><u>StackRox</u></a>: The upstream StackRox project maintains a set of vulnerabilities that might not be discovered due to data formatting from other sources or absence of data.</li>
+</ul>
+<p>The Scanner V4 Indexer uses the following files to index Red&nbsp;Hat containers:</p>
+<ul>
+  <li><a href="https://www.redhat.com/security/data/metrics/repository-to-cpe.json"><u>repository-to-cpe.json</u></a>: Maps RPM repositories to their related CPEs, which is required for matching vulnerabilities for RHEL-based images.</li>
+  <li><a href="https://access.redhat.com/security/data/metrics/container-name-repos-map.json"><u>container-name-repos-map.json</u></a>: This matches container names to the repositories to which they are shipped.</li>
+</ul>
+<h2>Secured clusters' services</h2>
+<ol>
+  <li>sensor: Analyze and monitor the cluster&nbsp;<ul>
+      <li>Listen to openshfit platform and Collector APIs</li>
+      <li>Report the current state of the cluster to the central services</li>
+      <li>Triggers a deploy-time and runtime violations according to a defined policy&nbsp;</li>
+      <li>Responsible for applying network policies, reprocessing of RHACS policies, and interacting with admission controllers</li>
+    </ul>
+  </li>
+  <li>Admission controllers: validating and mutating</li>
+  <li>Collector: &nbsp;analyze and monitor the container's runtime and network activities and report it to the sensor</li>
+  <li>StackRox scanner: in ocp, ACS install a Scanner-slim version to analyze the images in the internal registry and other registries</li>
+  <li>scanner db</li>
+  <li>scanner V4: optionally if enabled</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
