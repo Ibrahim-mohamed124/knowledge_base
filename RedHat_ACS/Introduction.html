@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-09-30T06:04:08.431Z
+date: 2025-10-01T12:33:22.048Z
 tags: acs, application security, images scanning, dast
 editor: ckeditor
 dateCreated: 2025-09-30T06:04:08.431Z
@@ -31,12 +31,17 @@ dateCreated: 2025-09-30T06:04:08.431Z
       <li>support the scanning of language and OS dependencies</li>
       <li>Used with StackRox scanner to provide node and platform scanning</li>
       <li>Components:<ol>
-          <li>&nbsp;</li>
+          <li>scanner v4 indexer: image indexing, pulls the images from the registry and finds the base OS of the image. It also looks for the installed packages, then stores this data in an index report.</li>
+          <li>scanner v4 matcher: consumes the index report to match the findings with the vulnerabilities in the &nbsp;scanner v4 db, then outputs a vulnerability report. It also updates the scanner v4 db to the latest.</li>
+          <li>scanner v4 db: stores the vulnerability data in a PVC</li>
         </ol>
       </li>
     </ol>
   </li>
+  <li>stackRox scanner: depend on clair v2 scanner to scan the cluster nodes and the whole platform</li>
+  <li>scanner DB: the database for stockRox scanner</li>
 </ol>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
