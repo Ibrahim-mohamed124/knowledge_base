@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-01T12:58:15.236Z
+date: 2025-10-03T20:01:56.361Z
 tags: acs, application security, images scanning, dast
 editor: ckeditor
 dateCreated: 2025-09-30T06:04:08.431Z
@@ -64,10 +64,10 @@ dateCreated: 2025-09-30T06:04:08.431Z
 </ul>
 <h2>Secured clusters' services</h2>
 <ol>
-  <li>sensor: Analyze and monitor the cluster&nbsp;<ul>
+  <li>sensor: Analyze and monitor the cluster<ul>
       <li>Listen to openshfit platform and Collector APIs</li>
       <li>Report the current state of the cluster to the central services</li>
-      <li>Triggers a deploy-time and runtime violations according to a defined policy&nbsp;</li>
+      <li>Triggers a deploy-time and runtime violations according to a defined policy</li>
       <li>Responsible for applying network policies, reprocessing of RHACS policies, and interacting with admission controllers</li>
     </ul>
   </li>
@@ -77,7 +77,14 @@ dateCreated: 2025-09-30T06:04:08.431Z
   <li>scanner db</li>
   <li>scanner V4: optionally if enabled</li>
 </ol>
-<p>&nbsp;</p>
+<h2>External Components</h2>
+<ol>
+  <li>Third-party systems: CI/CD, logging, email …</li>
+  <li>roxctl: cli to interact with ACS</li>
+  <li>Image registries: the pull secrets in each secured cluster are used to automatically configure image registries intergrations</li>
+  <li><strong>definitions.stackrox.io: </strong>Aggregates the vulnerability data from various sources and pass this data to the Central</li>
+  <li><strong>collector-modules.stackrox.io:&nbsp;</strong> Central interact with this endpoint to obtain supported kernel modules and pass the data to the collocter</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
