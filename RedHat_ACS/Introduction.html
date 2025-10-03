@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-03T20:01:56.361Z
+date: 2025-10-03T20:20:54.611Z
 tags: acs, application security, images scanning, dast
 editor: ckeditor
 dateCreated: 2025-09-30T06:04:08.431Z
@@ -86,8 +86,18 @@ dateCreated: 2025-09-30T06:04:08.431Z
   <li><strong>collector-modules.stackrox.io:&nbsp;</strong> Central interact with this endpoint to obtain supported kernel modules and pass the data to the collocter</li>
 </ol>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Interaction between services</h2>
+<ul>
+  <li>Central to Scanner v4 indexer: central request from the scanner v4 indexer to pull and index given images to generate the index report, and the indexer requests back some mapping files that help in the indexing process.</li>
+  <li>Central to Scanner v4 matcher: central request the matcher to consume the generated index report to generate the final scan report, and the matcher requests the latest vulnerabilities from the central, which is provided b definitions.stockrox.io endpoint.</li>
+  <li>Sensor to Scanner v4 indexer: if securedCluster is enabled, which is by default, the sensor requests &nbsp;from the indexer to index images and the indexer requests the mapping files from the sensor, unless the central is installed in the same namespace&nbsp;</li>
+  <li>Indexer to image registries: to pull the images</li>
+  <li>Matcher to indexer: to get the index report, only happens for images indexed in the central cluster.</li>
+  <li>Indexer to Scanner v4 DB: index report storage</li>
+  <li>Matcher to Scanner v4 DB: vulnerability report storage</li>
+  <li>Sensor to Central: sensor connects to the central to download updates, report activities on secured clusters, and observed policy violations. the central connects to the sensor to force reprocessing cluster policies.</li>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
