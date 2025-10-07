@@ -2,7 +2,7 @@
 title: instillation
 description: 
 published: true
-date: 2025-10-07T15:02:09.852Z
+date: 2025-10-07T16:51:20.980Z
 tags: implementation, security, iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-07T15:02:09.852Z
@@ -11,9 +11,20 @@ dateCreated: 2025-10-07T15:02:09.852Z
 <h1>Instillation steps</h1>
 <ol>
   <li>Download the vault binary from the HashiCorp, manually or using package managers</li>
-  <li>For manual binary download, &nbsp;unpack and move the executable to the PATH&nbsp;</li>
+  <li>For manual binary download, &nbsp;unpack and move the executable to the PATH</li>
   <li>Generate the configuration file vault.hcl</li>
-  <li>Create a systemd service unit file for automatic start at boot</li>
+  <li>Create a systemd service unit file for automatic start at boot &gt; for manual instillation only</li>
   <li>Implement the storage backend (consul or raft)</li>
   <li>launch vault service</li>
+</ol>
+<h1>Storage Backends</h1>
+<h2>Consul</h2>
+<ol>
+  <li>Can scale independently from vault nodes</li>
+  <li>Built-in integration with vault&nbsp;</li>
+  <li>Support HA</li>
+  <li>Built-in snapshots and data retention</li>
+  <li>Distributed K/V data store &gt; preferred odd numbers for quorum for the leader elections</li>
+  <li>&nbsp;Three/five vault:consul</li>
+  <li>Each vault node has a consul agent to communicate to the consul cluster</li>
 </ol>
