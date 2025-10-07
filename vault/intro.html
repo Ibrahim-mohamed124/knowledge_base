@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-07T13:05:35.364Z
+date: 2025-10-07T13:30:46.819Z
 tags: iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-06T20:02:56.809Z
@@ -206,6 +206,9 @@ dateCreated: 2025-10-06T20:02:56.809Z
   <li>Cluster IP and Port</li>
   <li>others (telemetry).. &nbsp;| telemetry</li>
 </ol>
+<blockquote>
+  <p>$ vault operator diagnose -config=/etc/vault.d/vault.hcl</p>
+</blockquote>
 <h2>Storage backend</h2>
 <ul>
   <li>Location to save vault data</li>
@@ -218,11 +221,12 @@ dateCreated: 2025-10-06T20:02:56.809Z
   <li>Detailed JSON report of all authenticated requests and responses, with hashed sensitive data</li>
 </ul>
 <pre><code class="language-plaintext">$ vault audit enable 	file file_path=/path.log</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Devices:<ol>
-      <li>file: just appends logs to a file, required a solution for log rotation like fluented&nbsp;</li>
+      <li>file: just appends logs to a file, required a solution for log rotation like fluented</li>
       <li>syslog: write logs to syslog, send data to local syslog agents</li>
-      <li>sockets: UDP dependent&nbsp;</li>
+      <li>sockets: UDP dependent</li>
     </ol>
   </li>
 </ul>
