@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-07T16:53:00.030Z
+date: 2025-10-07T18:06:32.007Z
 tags: iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-06T20:02:56.809Z
@@ -212,7 +212,7 @@ dateCreated: 2025-10-06T20:02:56.809Z
 <h2>Storage backend</h2>
 <ul>
   <li>Location to save vault data</li>
-  <li>Enterprise vault uses Consul(needs an agent on each vault node) or Integrated storage for HA and file system for non HA vault servers</li>
+  <li>Enterprise vault uses Consul(needs an agent on each vault node) or Integrated storage for HA (RAFT) and file system for non HA vault servers</li>
   <li>nodes of the cluster are primary/standby. One active at a time</li>
   <li>Replication happens at the vault APIs level not on the storage backend level between clusters, but it happens on the storage backend on the same cluster</li>
 </ul>
