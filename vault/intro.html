@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-07T07:52:47.059Z
+date: 2025-10-07T09:59:04.898Z
 tags: iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-06T20:02:56.809Z
@@ -94,8 +94,71 @@ dateCreated: 2025-10-06T20:02:56.809Z
   <li>Vault starts in a sealed state: vault can reach the data but cannot decrypt it ( no operations are allowed at all),&nbsp;</li>
   <li>Unsealed state: vault nodes can reconstruct the master key to decrypt the encryption key, then decrypt the data, and the nodes stores the encryption key in their memory</li>
   <li>Sealing again: &nbsp;purge all the encryption keys in the memory</li>
-  <li>&nbsp;</li>
+  <li>Un/Sealing mechanisms:<ul>
+      <li>Key Shards: Shamir's secret sharing algorithm, which breaks the master key to smaller fragments (shards ) so master key is not stored in one place(person). Reconstructing the master key requires at least three of these shards.&nbsp;<ul>
+          <li>Default option&nbsp;</li>
+          <li>the shards can be &nbsp;encrypted in different PGP keys</li>
+        </ul>
+      </li>
+      <li>Auto unseal: cloud services to protect the master key, AWS KMS,…., or on-prim HSM<ul>
+          <li>the master key is stored in the storage backend encrypted by the cloud service or HSM</li>
+          <li>in vault configuration file the type of auto unseal is configured &nbsp;&gt;&gt; seal “type”{} block</li>
+          <li>Automatically unseal upon node restart or a service operation&nbsp;</li>
+          <li>provide recovery keys for manual unsealing</li>
+        </ul>
+      </li>
+      <li>Transit Autounseal: protect the master key by another vault cluster<ul>
+          <li>uses a transit secret of another vault cluster</li>
+          <li>support key rotation</li>
+          <li>the core vault must by highly available</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td><strong>Key Shards</strong></td>
+        <td><strong>Auto unseal from a public cloud or HSM</strong></td>
+        <td><strong>Transit Auto Unseal</strong></td>
+      </tr>
+      <tr>
+        <td>Simplest from&nbsp;</td>
+        <td>automatic</td>
+        <td>automatic</td>
+      </tr>
+      <tr>
+        <td>works on any platform</td>
+        <td>Integration &nbsp;benefits with the cloud platforms</td>
+        <td>Platform agnostic</td>
+      </tr>
+      <tr>
+        <td>flexible</td>
+        <td>cloud lock-in&nbsp;</td>
+        <td>works on any platform</td>
+      </tr>
+      <tr>
+        <td>Risk for keys exposure</td>
+        <td>&nbsp;</td>
+        <td>Require a centralized cluster</td>
+      </tr>
+      <tr>
+        <td>manual intervention</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>manual rotation&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
