@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-07T12:55:28.110Z
+date: 2025-10-07T13:05:35.364Z
 tags: iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-06T20:02:56.809Z
@@ -42,7 +42,7 @@ dateCreated: 2025-10-06T20:02:56.809Z
 <ul>
   <li>Secret Management</li>
   <li>Store, generate, and encrypt data</li>
-  <li>Dynamic credentials generation&nbsp;</li>
+  <li>Dynamic credentials generation</li>
   <li>More than one secret engine can be enabled in one cluster (different or the same secret engine)</li>
   <li><mark class="marker-green">Isolated by using paths&nbsp;</mark></li>
 </ul>
@@ -54,7 +54,7 @@ dateCreated: 2025-10-06T20:02:56.809Z
 </ul>
 <h4>Audit Devices</h4>
 <ul>
-  <li>Json formatted logs for requests and responses&nbsp;</li>
+  <li>Json formatted logs for requests and responses</li>
   <li>Sensitive Information is hashed</li>
   <li>Many audit devices can be used &gt; non is enabled by default<ul>
       <li><mark class="marker-green">the log must be written first before responding to a client!</mark></li>
@@ -69,16 +69,16 @@ dateCreated: 2025-10-06T20:02:56.809Z
     </ul>
   </li>
   <li>Path: a prefix that tell the core where to route the secret to secret engines, auth methods, and audit devices.</li>
-  <li>Mount: a path at which the secret engines, auth methods, and audit devices are mounted and receive requests&nbsp;</li>
+  <li>Mount: a path at which the secret engines, auth methods, and audit devices are mounted and receive requests</li>
   <li>System backend: is the default backend that is mounted at the /sys endpoint</li>
   <li>Each component has its default endpoint /, and it can be configured using the -path flag (expect the reserved pathes)</li>
-  <li>Master Key:&nbsp;<ul>
+  <li>Master Key:<ul>
       <li>is used to encrypt and decrypt the encryption key</li>
       <li>Generated during vault initialization or rekeying</li>
       <li>Never written to storage with the unseal mechanisms, but it is written under the core/master when using auto seal in the storage backend(encrypted)</li>
     </ul>
   </li>
-  <li>Encryption Key:&nbsp;<ul>
+  <li>Encryption Key:<ul>
       <li>Stored with the data in a keyring</li>
       <li>Can be rotated manually</li>
     </ul>
@@ -91,12 +91,12 @@ dateCreated: 2025-10-06T20:02:56.809Z
 </blockquote>
 <h3>Seal and Unseal states</h3>
 <ul>
-  <li>Vault starts in a sealed state: vault can reach the data but cannot decrypt it ( no operations are allowed at all),&nbsp;</li>
+  <li>Vault starts in a sealed state: vault can reach the data but cannot decrypt it ( no operations are allowed at all),</li>
   <li>Unsealed state: vault nodes can reconstruct the master key to decrypt the encryption key, then decrypt the data, and the nodes stores the encryption key in their memory</li>
   <li>Sealing again: &nbsp;purge all the encryption keys in the memory</li>
   <li>Un/Sealing mechanisms:<ul>
-      <li>Key Shards: Shamir's secret sharing algorithm, which breaks the master key to smaller fragments (shards ) so master key is not stored in one place(person). Reconstructing the master key requires at least three of these shards.&nbsp;<ul>
-          <li>Default option&nbsp;</li>
+      <li>Key Shards: Shamir's secret sharing algorithm, which breaks the master key to smaller fragments (shards ) so master key is not stored in one place(person). Reconstructing the master key requires at least three of these shards.<ul>
+          <li>Default option</li>
           <li>the shards can be &nbsp;encrypted in different PGP keys</li>
         </ul>
       </li>
@@ -112,7 +112,7 @@ dateCreated: 2025-10-06T20:02:56.809Z
   <li>Auto unseal: cloud services to protect the master key, AWS KMS,…., or on-prim HSM<ul>
       <li>the master key is stored in the storage backend encrypted by the cloud service or HSM</li>
       <li>in vault configuration file the type of auto unseal is configured &nbsp;&gt;&gt; seal “type”{} block</li>
-      <li>Automatically unseal upon node restart or a service operation&nbsp;</li>
+      <li>Automatically unseal upon node restart or a service operation</li>
       <li>provide recovery keys for manual unsealing</li>
     </ul>
   </li>
@@ -175,7 +175,7 @@ dateCreated: 2025-10-06T20:02:56.809Z
   <li>Prepares the storage backend to receive data</li>
   <li>creates the master and encryption keys</li>
   <li>optionally, define numbers of key shards, threshold or recovery keys</li>
-  <li>&nbsp;define the encryption with GPG keys</li>
+  <li>define the encryption with GPG keys</li>
   <li>generate the initial root token, cloud be encrypted by GPG keys</li>
 </ul>
 <blockquote>
@@ -197,8 +197,8 @@ dateCreated: 2025-10-06T20:02:56.809Z
 <h3>sections</h3>
 <ol>
   <li>Storage Backend | storage</li>
-  <li>Listeners and Ports &gt; required to respond to all requests 0.0.0.0 | listener&nbsp;</li>
-  <li>TLS certificates &nbsp;</li>
+  <li>Listeners and Ports &gt; required to respond to all requests 0.0.0.0 | listener</li>
+  <li>TLS certificates</li>
   <li>Seal type | seal</li>
   <li>Cluster name</li>
   <li>log level</li>
@@ -215,10 +215,20 @@ dateCreated: 2025-10-06T20:02:56.809Z
 </ul>
 <h2>Audit Devices</h2>
 <ul>
-  <li>Detailed JSON report of all authenticated requests and responses, with hashed sensitive data&nbsp;</li>
+  <li>Detailed JSON report of all authenticated requests and responses, with hashed sensitive data</li>
 </ul>
 <pre><code class="language-plaintext">$ vault audit enable 	file file_path=/path.log</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Devices:<ol>
+      <li>file: just appends logs to a file, required a solution for log rotation like fluented&nbsp;</li>
+      <li>syslog: write logs to syslog, send data to local syslog agents</li>
+      <li>sockets: UDP dependent&nbsp;</li>
+    </ol>
+  </li>
+</ul>
+<pre><code class="language-plaintext">	To complete a request vault must write the logs to at least one device, otherwise it does not send
+	a response to the client, which essentially means that vault is down! So, it is recommended to 
+	enable more than one audit device on each vault cluster.</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
