@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-07T07:20:27.894Z
+date: 2025-10-07T07:37:25.888Z
 tags: iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-06T20:02:56.809Z
@@ -61,8 +61,28 @@ dateCreated: 2025-10-06T20:02:56.809Z
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Architecture&nbsp;</h2>
+<ul>
+  <li>Barrier: A virtual fence around the core components of vault (every thing expect the storage backend, the GUI(http/s), and the API)<ul>
+      <li>Any data the move through the Barrier is encrypted and decrypted at the Barrier, and the Barrier needs authentication tokens to perform any actions as well.</li>
+    </ul>
+  </li>
+  <li>Path: a prefix that tell the core where to route the secret to secret engines, auth methods, and audit devices.</li>
+  <li>Mount: a path at which the secret engines, auth methods, and audit devices are mounted and receive requests&nbsp;</li>
+  <li>System backend: is the default backend that is mounted at the /sys endpoint</li>
+  <li>Each component has its default endpoint /, and it can be configured using the -path flag (expect the reserved pathes)</li>
+  <li>Master Key:&nbsp;<ul>
+      <li>is used to encrypt and decrypt the encryption key</li>
+      <li>Generated during vault initialization or rekeying</li>
+      <li>Never written to storage with the unseal mechanisms, but it is written under the core/master when using auto seal in the storage backend(encrypted)</li>
+    </ul>
+  </li>
+  <li>Encryption Key:&nbsp;<ul>
+      <li>Stored with the data in a keyring</li>
+      <li>Can be rotated manually&nbsp;</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
