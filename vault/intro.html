@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-07T09:59:04.898Z
+date: 2025-10-07T11:43:10.100Z
 tags: iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-06T20:02:56.809Z
@@ -100,19 +100,31 @@ dateCreated: 2025-10-06T20:02:56.809Z
           <li>the shards can be &nbsp;encrypted in different PGP keys</li>
         </ul>
       </li>
-      <li>Auto unseal: cloud services to protect the master key, AWS KMS,…., or on-prim HSM<ul>
-          <li>the master key is stored in the storage backend encrypted by the cloud service or HSM</li>
-          <li>in vault configuration file the type of auto unseal is configured &nbsp;&gt;&gt; seal “type”{} block</li>
-          <li>Automatically unseal upon node restart or a service operation&nbsp;</li>
-          <li>provide recovery keys for manual unsealing</li>
-        </ul>
-      </li>
-      <li>Transit Autounseal: protect the master key by another vault cluster<ul>
-          <li>uses a transit secret of another vault cluster</li>
-          <li>support key rotation</li>
-          <li>the core vault must by highly available</li>
-        </ul>
-      </li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>$ vault operator init -key-shares=3 -key-threshold=2</p>
+  <p>$ vault operator unseal</p>
+  <p>$ vault login &lt;Root_token&gt;</p>
+</blockquote>
+<ul>
+  <li>Auto unseal: cloud services to protect the master key, AWS KMS,…., or on-prim HSM<ul>
+      <li>the master key is stored in the storage backend encrypted by the cloud service or HSM</li>
+      <li>in vault configuration file the type of auto unseal is configured &nbsp;&gt;&gt; seal “type”{} block</li>
+      <li>Automatically unseal upon node restart or a service operation&nbsp;</li>
+      <li>provide recovery keys for manual unsealing</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>$ vault operator unseal -migrate</p>
+</blockquote>
+<ul>
+  <li>Transit Autounseal: protect the master key by another vault cluster<ul>
+      <li>uses a transit secret of another vault cluster</li>
+      <li>support key rotation</li>
+      <li>the core vault must by highly available</li>
     </ul>
   </li>
 </ul>
@@ -158,10 +170,40 @@ dateCreated: 2025-10-06T20:02:56.809Z
   </table>
 </figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Vault Initialization</h2>
+<ul>
+  <li>Prepares the storage backend to receive data</li>
+  <li>creates the master and encryption keys</li>
+  <li>optionally, define numbers of key shards, threshold or recovery keys</li>
+  <li>&nbsp;define the encryption with GPG keys</li>
+  <li>generate the initial root token, cloud be encrypted by GPG keys</li>
+</ul>
+<blockquote>
+  <p>$ vault operator init [options]</p>
+</blockquote>
+<h2>Vault conf file</h2>
+<ul>
+  <li>written on HCL or JSON in /etc/vauld.d/</li>
+</ul>
+<blockquote>
+  <p>stanza1 “option” {</p>
+  <p>&nbsp; private_ paramters = values</p>
+  <p>}</p>
+  <p>global_parameters = vaules</p>
+</blockquote>
+<blockquote>
+  <p>$ vault server -config /path</p>
+</blockquote>
+<h3>sections</h3>
+<ol>
+  <li>Storage Backend | storage</li>
+  <li>Listeners and Ports &gt; required to respond to all requests 0.0.0.0 | listener&nbsp;</li>
+  <li>TLS certificates &nbsp;</li>
+  <li>Seal type | seal</li>
+  <li>Cluster name</li>
+  <li>log level</li>
+  <li>UI</li>
+  <li>Cluster IP and Port</li>
+  <li>others (telemetry).. &nbsp;| telemetry</li>
+</ol>
 <p>&nbsp;</p>
