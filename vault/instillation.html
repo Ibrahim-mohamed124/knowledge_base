@@ -2,7 +2,7 @@
 title: instillation
 description: 
 published: true
-date: 2025-10-08T06:58:55.236Z
+date: 2025-10-08T08:22:41.519Z
 tags: implementation, security, iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-07T15:02:09.852Z
@@ -28,10 +28,34 @@ dateCreated: 2025-10-07T15:02:09.852Z
   <li>Three/five vault:consul</li>
   <li>Each vault node has a consul agent to communicate to the consul cluster</li>
 </ol>
+<pre><code class="language-plaintext">storate "consul" {
+	address = ip:port
+	path    = 
+	token   = 
+}</code></pre>
 <h2>RAFT ( Integrated Storage )</h2>
+<ol>
+  <li>Internal to vault (consume the nodes internal storage )</li>
+  <li>Data is replicated across all the cluster using RAFT protocol for elections</li>
+  <li>Support HA</li>
+  <li>No need for external network connectivity with storage provider</li>
+  <li>Built-in snapshots automatically via snapshot agent</li>
+</ol>
+<pre><code class="language-plaintext">storage "raft" {
+  path =
+  node_id = uniqe_per_node
+  retry_join {}
+}</code></pre>
 <pre><code class="language-plaintext">$ vault operator raft list-peers  [ to list all the peers in a HA raft cluster ]</code></pre>
 <p>&nbsp;∅ This command will initialize the cluster, but the cluster will be sealed. To unseal the cluster use the key shards from the leader server, and , to log in, you have to use the original root token of the leader server.</p>
 <pre><code class="language-plaintext">$ vault operator raft join http/x:server_IP:PORT</code></pre>
+<p>&nbsp;∅ To force the leader to step down, and instigate new elections</p>
+<pre><code class="language-plaintext">$ vault operator step-down</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h1>Auto unsealing</h1>
+<ol>
+  <li>Cloud provider</li>
+  <li>shards</li>
+  <li>another cluster</li>
+  <li>HSM</li>
+</ol>
