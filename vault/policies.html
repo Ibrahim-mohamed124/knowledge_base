@@ -2,7 +2,7 @@
 title: policies
 description: 
 published: true
-date: 2025-10-08T20:38:16.623Z
+date: 2025-10-08T20:43:33.495Z
 tags: vault, authorization, policies
 editor: ckeditor
 dateCreated: 2025-10-08T19:56:47.490Z
@@ -27,8 +27,12 @@ dateCreated: 2025-10-08T19:56:47.490Z
       <li>ex aws/creds/web-app</li>
       <li>glob&nbsp;<i> &gt; anything /\ /test-\*&nbsp;</i></li>
       <li><i>+ single directory in the path /*/</i></li>
+      <li><i>ACL templating: using variables replacement {{parameter.subparameter}} &nbsp;ex identity.entity.id</i></li>
     </ol>
   </li>
+</ol>
+<figure class="image"><img src="/c1apture.png"></figure>
+<ol>
   <li>capabilities &gt; list of create, update, delete, list, read, sudo, deny</li>
 </ol>
 <pre><code class="language-plaintext">path "" {
