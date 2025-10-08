@@ -1,0 +1,47 @@
+<!--
+title: Auth methods
+description: 
+published: true
+date: 2025-10-08T11:18:20.127Z
+tags: vault, authentication
+editor: ckeditor
+dateCreated: 2025-10-08T11:18:20.127Z
+-->
+
+<h1>Auth methods</h1>
+<ol>
+  <li>validate and assign polices to users by using tokens</li>
+  <li>multiple auth methods can be used &nbsp;</li>
+  <li>the fundamental goal of auth methods is to obtain a vault token</li>
+  <li>must be enabled and configured before usage</li>
+</ol>
+<h2>Tokens auth method</h2>
+<ol>
+  <li>Enabled by default and cannot be disabled</li>
+  <li>Responsible for generating and storing tokens</li>
+  <li>Authentication with external LDAP, OIDC will generate a token</li>
+</ol>
+<h2>Workflow</h2>
+<ol>
+  <li>client &gt; vault &gt; backend Idp</li>
+  <li>idp &gt; vault &gt; generate token with a policy and TTL</li>
+  <li>vault token &gt; client</li>
+  <li>client token &gt; vault</li>
+</ol>
+<h2>Operations</h2>
+<ul>
+  <li>Any change on the auth methods needs a token with enough privileges even the user is already authenticated</li>
+</ul>
+<pre><code class="language-plaintext">$ vault auth enable &lt;method&gt; 
+$ vault auth disable &lt;mount&gt;
+$ vault auth list
+$ vault auth tune  | to cofigure the parameters of auth methods like TTL
+$ vault auth help &lt;method&gt; | more info about an auth method</code></pre>
+<pre><code class="language-plaintext">$ vault write auth/mount/role[user]/role[user]_name options | ex. secret_id_ttl=10m, 	token_ttl=1m </code></pre>
+<ul>
+  <li>after authentication by using a token, a token helper ( saves token info in a local file .vault-token ) that inject the token in very cli command to avoid logging in many times</li>
+  <li>token can be saved in VUALT_TOKEN= environment &nbsp;variable</li>
+  <li>Response format can be managed by VUALT_FORMAT=json</li>
+</ul>
+<pre><code class="language-plaintext">$ vault login -method=auth_method_type</code></pre>
+<p>&nbsp;</p>
