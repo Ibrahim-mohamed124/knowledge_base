@@ -2,7 +2,7 @@
 title: policies
 description: 
 published: true
-date: 2025-10-08T19:56:47.490Z
+date: 2025-10-08T20:24:11.234Z
 tags: vault, authorization, policies
 editor: ckeditor
 dateCreated: 2025-10-08T19:56:47.490Z
@@ -12,5 +12,36 @@ dateCreated: 2025-10-08T19:56:47.490Z
 <ol>
   <li>RBAC</li>
   <li>written in json or HCL</li>
-  <li>&nbsp;</li>
+  <li>implicit deny</li>
+  <li>explicit deny takes precedence over anything else</li>
+  <li>one token could have one or more policies &gt; additive capabilities &nbsp;</li>
+  <li>Root policy is attached to the root token and cannot be deleted</li>
+  <li>Default policy is attached to all new non-root token, can be modified but cannot be deleted</li>
 </ol>
+<pre><code class="language-plaintext">$ vault policy [list|delete|fmt|read|write] [policy_name] /path to hcl or json file</code></pre>
+<h2>Anatomy of policies</h2>
+<p>Roles:</p>
+<ol>
+  <li>path<ol>
+      <li>ex sys/policies</li>
+      <li>ex aws/creds/web-app</li>
+    </ol>
+  </li>
+  <li>capabilities &gt; list of create, update, delete, list, read, sudo, deny</li>
+</ol>
+<pre><code class="language-plaintext">path "" {
+  capabilites = ["create","update"]
+}</code></pre>
+<p>∅ Root protected path needs root token or sudo capability to be altered</p>
+<ul>
+  <li>ex sys/step-down…</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
