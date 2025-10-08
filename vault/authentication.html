@@ -2,7 +2,7 @@
 title: Auth methods
 description: 
 published: true
-date: 2025-10-08T11:47:18.925Z
+date: 2025-10-08T13:20:27.306Z
 tags: vault, authentication
 editor: ckeditor
 dateCreated: 2025-10-08T11:18:20.127Z
@@ -63,3 +63,18 @@ $ vault auth help &lt;method&gt; | more info about an auth method</code></pre>
     </ul>
   </li>
 </ul>
+<h2>Identity Group</h2>
+<ul>
+  <li>cloud have subgroups</li>
+</ul>
+<h3>Types of groups</h3>
+<ol>
+  <li>&nbsp;Internal group: group entities to propagate identical policies, created manually<ul>
+      <li>used in vault namespaces to propagate permissions to child namespaces</li>
+    </ul>
+  </li>
+  <li>&nbsp;External group: infer from auth methods(backend idp), created manually or automatically<ul>
+      <li>group name must match the group name in the idp</li>
+    </ul>
+  </li>
+</ol>
