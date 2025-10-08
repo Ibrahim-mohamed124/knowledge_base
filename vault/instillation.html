@@ -2,7 +2,7 @@
 title: instillation
 description: 
 published: true
-date: 2025-10-07T16:51:20.980Z
+date: 2025-10-08T06:58:55.236Z
 tags: implementation, security, iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-07T15:02:09.852Z
@@ -18,13 +18,20 @@ dateCreated: 2025-10-07T15:02:09.852Z
   <li>launch vault service</li>
 </ol>
 <h1>Storage Backends</h1>
-<h2>Consul</h2>
+<h2>Consul ( External Storage )</h2>
 <ol>
   <li>Can scale independently from vault nodes</li>
-  <li>Built-in integration with vault&nbsp;</li>
+  <li>Built-in integration with vault</li>
   <li>Support HA</li>
   <li>Built-in snapshots and data retention</li>
   <li>Distributed K/V data store &gt; preferred odd numbers for quorum for the leader elections</li>
-  <li>&nbsp;Three/five vault:consul</li>
+  <li>Three/five vault:consul</li>
   <li>Each vault node has a consul agent to communicate to the consul cluster</li>
 </ol>
+<h2>RAFT ( Integrated Storage )</h2>
+<pre><code class="language-plaintext">$ vault operator raft list-peers  [ to list all the peers in a HA raft cluster ]</code></pre>
+<p>&nbsp;∅ This command will initialize the cluster, but the cluster will be sealed. To unseal the cluster use the key shards from the leader server, and , to log in, you have to use the original root token of the leader server.</p>
+<pre><code class="language-plaintext">$ vault operator raft join http/x:server_IP:PORT</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
