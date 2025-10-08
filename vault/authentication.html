@@ -2,7 +2,7 @@
 title: Auth methods
 description: 
 published: true
-date: 2025-10-08T11:18:20.127Z
+date: 2025-10-08T11:47:18.925Z
 tags: vault, authentication
 editor: ckeditor
 dateCreated: 2025-10-08T11:18:20.127Z
@@ -11,7 +11,7 @@ dateCreated: 2025-10-08T11:18:20.127Z
 <h1>Auth methods</h1>
 <ol>
   <li>validate and assign polices to users by using tokens</li>
-  <li>multiple auth methods can be used &nbsp;</li>
+  <li>multiple auth methods can be used</li>
   <li>the fundamental goal of auth methods is to obtain a vault token</li>
   <li>must be enabled and configured before usage</li>
 </ol>
@@ -37,6 +37,7 @@ $ vault auth disable &lt;mount&gt;
 $ vault auth list
 $ vault auth tune  | to cofigure the parameters of auth methods like TTL
 $ vault auth help &lt;method&gt; | more info about an auth method</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">$ vault write auth/mount/role[user]/role[user]_name options | ex. secret_id_ttl=10m, 	token_ttl=1m </code></pre>
 <ul>
   <li>after authentication by using a token, a token helper ( saves token info in a local file .vault-token ) that inject the token in very cli command to avoid logging in many times</li>
@@ -44,4 +45,21 @@ $ vault auth help &lt;method&gt; | more info about an auth method</code></pre>
   <li>Response format can be managed by VUALT_FORMAT=json</li>
 </ul>
 <pre><code class="language-plaintext">$ vault login -method=auth_method_type</code></pre>
-<p>&nbsp;</p>
+<h2>Entities&nbsp;</h2>
+<ul>
+  <li>Vault creates new entities to new logins and attach an alias to them, using the <strong>identity secrets engine</strong> ( manages all vault identities )</li>
+  <li>an entity represents a user, and cloud have zero or more aliases&nbsp;</li>
+  <li>alias: Mapping between entities and auth_methods.<ul>
+      <li>composed of an auth_method and identification</li>
+    </ul>
+  </li>
+  <li>vault uses entities to track the logging in and out of users</li>
+  <li>can be created manually</li>
+  <li>Entity: contains alias, entity_id, policies, metadata</li>
+  <li>If an entity(manually created) has many aliases<ul>
+      <li>the entity itself has some polices</li>
+      <li>the alias has some other polices &nbsp;</li>
+      <li>when a user logs in using a auth_method of an alias, they will have the polices ( in the token ) of both the log-in method and the manually created entity</li>
+    </ul>
+  </li>
+</ul>
