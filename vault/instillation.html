@@ -2,7 +2,7 @@
 title: instillation
 description: 
 published: true
-date: 2025-10-08T08:22:41.519Z
+date: 2025-10-08T08:28:21.424Z
 tags: implementation, security, iac, vault, hashicorp
 editor: ckeditor
 dateCreated: 2025-10-07T15:02:09.852Z
@@ -46,6 +46,7 @@ dateCreated: 2025-10-07T15:02:09.852Z
   node_id = uniqe_per_node
   retry_join {}
 }</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">$ vault operator raft list-peers  [ to list all the peers in a HA raft cluster ]</code></pre>
 <p>&nbsp;∅ This command will initialize the cluster, but the cluster will be sealed. To unseal the cluster use the key shards from the leader server, and , to log in, you have to use the original root token of the leader server.</p>
 <pre><code class="language-plaintext">$ vault operator raft join http/x:server_IP:PORT</code></pre>
@@ -58,4 +59,5 @@ dateCreated: 2025-10-07T15:02:09.852Z
   <li>shards</li>
   <li>another cluster</li>
   <li>HSM</li>
+  <li><a href="/vault/intro">/vault/intro &nbsp; &nbsp;&gt; </a>Architecture &gt; Seal and Unseal states</li>
 </ol>
