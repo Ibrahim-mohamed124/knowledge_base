@@ -2,7 +2,7 @@
 title: Auth methods
 description: 
 published: true
-date: 2025-10-08T13:20:27.306Z
+date: 2025-10-08T13:21:19.533Z
 tags: vault, authentication
 editor: ckeditor
 dateCreated: 2025-10-08T11:18:20.127Z
@@ -50,7 +50,7 @@ $ vault auth help &lt;method&gt; | more info about an auth method</code></pre>
   <li>Vault creates new entities to new logins and attach an alias to them, using the <strong>identity secrets engine</strong> ( manages all vault identities )</li>
   <li>an entity represents a user, and cloud have zero or more aliases&nbsp;</li>
   <li>alias: Mapping between entities and auth_methods.<ul>
-      <li>composed of an auth_method and identification</li>
+      <li>composed of an auth_method, identification and a policy</li>
     </ul>
   </li>
   <li>vault uses entities to track the logging in and out of users</li>
