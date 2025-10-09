@@ -2,7 +2,7 @@
 title: tokens
 description: 
 published: true
-date: 2025-10-09T10:12:16.647Z
+date: 2025-10-09T10:33:40.724Z
 tags: vault, tokens
 editor: ckeditor
 dateCreated: 2025-10-09T08:58:22.141Z
@@ -11,6 +11,7 @@ dateCreated: 2025-10-09T08:58:22.141Z
 <h1>Token auth method</h1>
 <ul>
   <li>Responsible for generating and storing tokens</li>
+  <li>default lease ttl = 32 days</li>
   <li>Types of tokens:<ul>
       <li>service tokens:<ul>
           <li>default token type</li>
@@ -37,7 +38,7 @@ dateCreated: 2025-10-09T08:58:22.141Z
 <ul>
   <li>Every token has TTL expect initial root token</li>
   <li>root tokens can create other root tokens <mark class="marker-yellow">$ vault token create</mark></li>
-  <li>TTL can be renewed till it hits the max_TTL</li>
+  <li>TTL can be renewed till it hits the max_TTL<mark class="pen-red">, </mark><mark class="marker-pink">renewal must be done before TTl</mark></li>
   <li>When Parents tokens are revoked all their children are revoked as well</li>
 </ul>
 <h2>Token lifecycle</h2>
@@ -88,6 +89,8 @@ dateCreated: 2025-10-09T08:58:22.141Z
 </ul>
 <pre><code class="language-plaintext">$ vault token lookup -accessor </code></pre>
 <p>&nbsp;</p>
+<p>∅ DR replication clusters need orphan tokens&nbsp;</p>
+<p>∅ CIDR bound tokens &gt; accessed only from certain netwrok</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">$ vault list auth/token/accessors</code></pre>
 <p>&nbsp;</p>
