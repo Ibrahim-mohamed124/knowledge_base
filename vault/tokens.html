@@ -2,7 +2,7 @@
 title: tokens
 description: 
 published: true
-date: 2025-10-09T09:39:26.343Z
+date: 2025-10-09T09:51:36.426Z
 tags: vault, tokens
 editor: ckeditor
 dateCreated: 2025-10-09T08:58:22.141Z
@@ -66,5 +66,7 @@ dateCreated: 2025-10-09T08:58:22.141Z
 </ul>
 <pre><code class="language-plaintext">$ vault token create -policy -orphan</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>∅ The auth methods can be configured to generate certain types of tokens with certain parameters:</p>
+<pre><code class="language-plaintext">$ vault write auth/..../user   token_type=  token_ttl=  period=</code></pre>
+<pre><code class="language-plaintext">$ vault token create|revoke|renew|lookup|capablities on a path /</code></pre>
 <p>&nbsp;</p>
