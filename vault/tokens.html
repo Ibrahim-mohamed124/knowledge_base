@@ -2,13 +2,12 @@
 title: tokens
 description: 
 published: true
-date: 2025-10-09T09:51:36.426Z
+date: 2025-10-09T10:05:18.477Z
 tags: vault, tokens
 editor: ckeditor
 dateCreated: 2025-10-09T08:58:22.141Z
 -->
 
-<h1>&nbsp;</h1>
 <h1>Token auth method</h1>
 <ul>
   <li>Responsible for generating and storing tokens</li>
@@ -37,6 +36,7 @@ dateCreated: 2025-10-09T08:58:22.141Z
 <h2>Token Heirarchy</h2>
 <ul>
   <li>Every token has TTL expect initial root token</li>
+  <li>root tokens can create other root tokens <mark class="marker-yellow">$ vault token create</mark></li>
   <li>TTL can be renewed till it hits the max_TTL</li>
   <li>When Parents tokens are revoked all their children are revoked as well</li>
 </ul>
@@ -69,4 +69,21 @@ dateCreated: 2025-10-09T08:58:22.141Z
 <p>∅ The auth methods can be configured to generate certain types of tokens with certain parameters:</p>
 <pre><code class="language-plaintext">$ vault write auth/..../user   token_type=  token_ttl=  period=</code></pre>
 <pre><code class="language-plaintext">$ vault token create|revoke|renew|lookup|capablities on a path /</code></pre>
+<p>&nbsp;</p>
+<h2>Root tokens</h2>
+<ul>
+  <li>Root tokens can be created by using unseal/recovery keys provided that their is a quorum</li>
+</ul>
+<pre><code class="language-plaintext">$ vault operator generate-root  -init</code></pre>
+<ul>
+  <li>This command provide one OTP that will be used to decrypt the root key after its generation</li>
+  <li>a quorum of &nbsp;the key holders must run <mark class="marker-yellow">$ vault operator generate-root</mark> with their unseal keys</li>
+  <li>Finally decrypt the key</li>
+</ul>
+<pre><code class="language-plaintext">$ vault operator generate-root -opt=one time passowrd -decode=the encyrpted key</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
