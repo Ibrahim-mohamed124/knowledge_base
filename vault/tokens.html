@@ -1,0 +1,43 @@
+<!--
+title: tokens
+description: 
+published: true
+date: 2025-10-09T08:58:22.141Z
+tags: vault, tokens
+editor: ckeditor
+dateCreated: 2025-10-09T08:58:22.141Z
+-->
+
+<h1>&nbsp;</h1>
+<h1>Token auth method</h1>
+<ul>
+  <li>Responsible for generating and storing tokens</li>
+  <li>Types of tokens:<ul>
+      <li>service tokens:<ul>
+          <li>default token type</li>
+          <li>persisted to storage ( for heavy i/o) | saved in the backend storage</li>
+          <li>can create child tokens</li>
+          <li>are not replicated to DR</li>
+        </ul>
+      </li>
+      <li>patch tokens:<ul>
+          <li>encrypted blobs ( large binary objects )</li>
+          <li>good for high-volume operations like encryption</li>
+          <li>are no persisted to storage</li>
+          <li>used for DR replication cluster promotion</li>
+          <li>cannot be renewed, revoked</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<figure class="image"><img src="/capsfdture.png"></figure>
+<pre><code class="language-plaintext">$ vault token lookup &lt;token&gt;</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
