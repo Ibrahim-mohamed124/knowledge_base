@@ -2,7 +2,7 @@
 title: tokens
 description: 
 published: true
-date: 2025-10-09T08:58:22.141Z
+date: 2025-10-09T09:39:26.343Z
 tags: vault, tokens
 editor: ckeditor
 dateCreated: 2025-10-09T08:58:22.141Z
@@ -34,10 +34,37 @@ dateCreated: 2025-10-09T08:58:22.141Z
 <figure class="image"><img src="/capsfdture.png"></figure>
 <pre><code class="language-plaintext">$ vault token lookup &lt;token&gt;</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Token Heirarchy</h2>
+<ul>
+  <li>Every token has TTL expect initial root token</li>
+  <li>TTL can be renewed till it hits the max_TTL</li>
+  <li>When Parents tokens are revoked all their children are revoked as well</li>
+</ul>
+<h2>Token lifecycle</h2>
+<ul>
+  <li>Periodic Tokens:&nbsp;<ul>
+      <li>required sudo privileges or root token permissions on the path auth/token/create</li>
+      <li>Do not have max_TTL, can be renewed indefinitely</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">$ vault token create  -policy=   -period=24h </code></pre>
+<ul>
+  <li>Service tokens with use limits:<ul>
+      <li>will expire at their end of last use, regardless the TTL and Max_TTL and vice versa</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">$ vault token create -policy= -use-limit=x</code></pre>
+<ul>
+  <li>Orphan tokens:<ul>
+      <li>required sudo privileges or root token permissions on the path auth/token/create</li>
+      <li>Do not have parents!</li>
+      <li>expire only at their TTL</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">$ vault token create -policy -orphan</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
