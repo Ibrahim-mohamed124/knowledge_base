@@ -2,7 +2,7 @@
 title: vault agent
 description: 
 published: true
-date: 2025-10-10T21:13:47.451Z
+date: 2025-10-10T21:59:36.421Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-10T21:13:47.451Z
@@ -11,8 +11,26 @@ dateCreated: 2025-10-10T21:13:47.451Z
 <h1>Auto auth</h1>
 <ul>
   <li>The agent runs as a daemon alongside the legacy application, and helps it to get the secrets stored in vault</li>
-  <li>Vault agent authenticate with vault and retrieve a token that is stored in a sync location(file) that the application can read to use the token to do an operation on &nbsp;vault APIs</li>
+  <li>Vault agent authenticate with vault and retrieve a token that is stored in a <mark class="marker-yellow">sink location(file)</mark> that the application can read to use the token to do an operation on &nbsp;vault APIs</li>
+  <li>vault agent configuration file defines the auth method ( machine oriented methods )</li>
+  <li>configuration file</li>
 </ul>
+<pre><code class="language-plaintext">auto_auth {
+	method "type" {
+		mount_path = "mount of the auth method"
+		config = {
+			parameters sepcific to auth methods
+		}
+	}
+	sink "file" {
+		config = {
+			path = "/path/token.txt"
+		}
+	}
+}
+vault {
+	address = "http://ip:port"
+}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
