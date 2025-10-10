@@ -2,7 +2,7 @@
 title: vault agent
 description: 
 published: true
-date: 2025-10-10T21:59:36.421Z
+date: 2025-10-10T22:11:11.769Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-10T21:13:47.451Z
@@ -25,6 +25,8 @@ dateCreated: 2025-10-10T21:13:47.451Z
 	sink "file" {
 		config = {
 			path = "/path/token.txt"
+			mode =  numeric file mode
+			wrap_ttl = response warping option
 		}
 	}
 }
@@ -32,7 +34,13 @@ vault {
 	address = "http://ip:port"
 }</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Response wrapping:&nbsp;<ul>
+      <li>auth method: protect against man in the meddle attacks</li>
+      <li>token sink:</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
