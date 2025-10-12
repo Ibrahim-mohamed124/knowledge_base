@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-12T12:33:37.886Z
+date: 2025-10-12T12:37:07.970Z
 tags: acs, application security, images scanning, dast
 editor: ckeditor
 dateCreated: 2025-09-30T06:04:08.431Z
@@ -98,6 +98,9 @@ dateCreated: 2025-09-30T06:04:08.431Z
   <li>Sensor to Central: sensor connects to the central to download updates, report activities on secured clusters, and observed policy violations. the central connects to the sensor to force reprocessing cluster policies.</li>
   <li>Collector to Sensor: Collector gathers data about container runtime and network activities and send them to Sensor; in addition, &nbsp;in supported OCP Collector gathers data about software packages installed on the nodes and sends them to Sensor to be analyzed by Scanner?. Collector requests the missing drivers from the Sensor &nbsp;??</li>
   <li>Admission Controller to Sensor: Sensors send policies to be enforced in the Admission controllers, and the admission controllers send the violations back to the Sensor</li>
+  <li>&nbsp;Central to definitions.stackrox.io: receive the aggregated vulnerability info</li>
+  <li>Central to collector-modules.stackrox.io: to download the supported kernel modules&nbsp;</li>
+  <li>Central to Image registries: to get the images metadata</li>
   <li>&nbsp;</li>
 </ul>
 <p>&nbsp;</p>
