@@ -2,7 +2,7 @@
 title: Replicatoin
 description: 
 published: true
-date: 2025-10-13T10:54:45.732Z
+date: 2025-10-13T11:11:06.278Z
 tags: vault
 editor: ckeditor
 dateCreated: 2025-10-13T10:37:55.835Z
@@ -19,6 +19,7 @@ dateCreated: 2025-10-13T10:37:55.835Z
           <li>handles reads only and foreword writes to leader</li>
           <li>Clients authenticate to the performance cluster separately</li>
           <li>Does not replicate tokens or leases, so applications need another token to authenticate to the performance cluster</li>
+          <li>Can have DR replication cluster</li>
         </ul>
       </li>
       <li>Disaster Recovery replication<ul>
@@ -31,3 +32,42 @@ dateCreated: 2025-10-13T10:37:55.835Z
   </li>
 </ul>
 <figure class="image"><img src="/captu65re.png"></figure>
+<p>&nbsp;</p>
+<ul>
+  <li>Replication ports tcp &nbsp;8200/8201, resolvable DNS names</li>
+  <li>Replication is not enabled by default, and must be explicitly enabled</li>
+  <li>Vault creates internal root CA on the primary cluster and creates the client certs as well to be used in TLS connection between nodes</li>
+  <li>must pass the TLS through the load balancer if exist</li>
+  <li>Secondary Token: single use token to permit the secondary cluster to replicate data from the primary cluster<ul>
+      <li>protected with response wrapping</li>
+      <li>includes information such as:<ul>
+          <li>client and CA certs</li>
+          <li>address of the primary cluster</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
