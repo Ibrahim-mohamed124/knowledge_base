@@ -2,10 +2,32 @@
 title: Replicatoin
 description: 
 published: true
-date: 2025-10-13T10:37:55.835Z
+date: 2025-10-13T10:54:45.732Z
 tags: vault
 editor: ckeditor
 dateCreated: 2025-10-13T10:37:55.835Z
 -->
 
 <h1>High Availability&nbsp;</h1>
+<ul>
+  <li>Vault Enterprise that works in leader-follower model</li>
+  <li>Leader is responsible for writing secrets to its backend storage and then replicate them asynchronously to the followers</li>
+  <li>the followers redirect write requests to the leader</li>
+  <li>&nbsp;Types of Replication<ul>
+      <li>Performance replication<ul>
+          <li>expand the cluster to multiple regions&nbsp;</li>
+          <li>handles reads only and foreword writes to leader</li>
+          <li>Clients authenticate to the performance cluster separately</li>
+          <li>Does not replicate tokens or leases, so applications need another token to authenticate to the performance cluster</li>
+        </ul>
+      </li>
+      <li>Disaster Recovery replication<ul>
+          <li>Does not service any requests, warm standby</li>
+          <li>replicate tokens and leases</li>
+          <li>clients authenticate with the primary cluster, and when the secondary is up they can use it</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<figure class="image"><img src="/captu65re.png"></figure>
