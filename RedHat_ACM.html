@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-16T17:28:44.189Z
+date: 2025-10-16T17:41:14.076Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-16T15:57:56.497Z
@@ -30,14 +30,14 @@ dateCreated: 2025-10-16T15:57:56.497Z
   <li>Global hub agent: Runs on the managed hub cluster to gather data for the Global hub manager&nbsp;</li>
   <li>Global hub visualization: exposed by a route and provides info about clusters health, violations, compliance, and performance</li>
 </ol>
-<h2>&nbsp;Design considerations&nbsp;</h2>
+<h2>&nbsp;Design considerations of the global ACM</h2>
 <ul>
   <li>Storage: PostgreSQL requires at least 20&nbsp;GB to store data for three managed hubs with 250 clusters and 50 policies for 18 months.</li>
   <li>Networking: use secure HTTPS communication on port 443 for Grafana, Kafka, and PostgreSQL to ensure reliable connectivity.</li>
   <li>Middleware Integration: Organizations integrate existing Kafka version 3.4+, PostgreSQL version 13+, or Grafana instances instead of provided ones, to configure secrets and access appropriately.</li>
   <li>Access Control: The <code><strong>cluster-admin</strong></code> role remains necessary for installation, and <strong>Grafana access aligns with OpenShift console authentication</strong>. (depends on the same authentication of managed clusters?)</li>
 </ul>
-<h2>Architecture &nbsp;</h2>
+<h2>Architecture &nbsp;of ACM</h2>
 <ol>
   <li>Hub Cluster = RHACM Cluster:<ul>
       <li>A central controller &gt; Users<strong> authenticate to the Hub cluster</strong> to access its console and APIs, which <strong>relies on the local cluster authentication layer.</strong></li>
@@ -52,7 +52,29 @@ dateCreated: 2025-10-16T15:57:56.497Z
   </li>
 </ol>
 <figure class="image"><img src="/arch.png"></figure>
-<p>&nbsp;</p>
+<h2>&nbsp;Operations of ACM</h2>
+<ul>
+  <li>Lifecycle management:&nbsp;<ul>
+      <li>creation, importing, managing, upgrading(individually or in bluk), destroying openshfit clusters across platforms</li>
+      <li>this functionality is provided by <strong>multicluster engine for kubernetes operator </strong>that is installed by default with RHACM&nbsp;</li>
+    </ul>
+  </li>
+  <li>Application Lifecycle:<ul>
+      <li>manage the application resources across managed clusters</li>
+      <li>Red&nbsp;Hat OpenShift GitOps, which is based on <strong>Argo CD</strong>, is integrated with RHACM.</li>
+      <li><strong>Ansible Automation Platform jobs enable you to automate tasks.&nbsp;</strong></li>
+    </ul>
+  </li>
+  <li>Governance:&nbsp;<ul>
+      <li>define policies that either <strong>enforce </strong>security compliance or inform you of changes that <strong>violate </strong>the configured compliance requirements for your environment</li>
+    </ul>
+  </li>
+  <li>Observability:&nbsp;<ul>
+      <li>observability component collects and reports the status and health of OpenShift&nbsp;4.x or later versions of managed clusters to the hub cluster, which are visible from the Grafana dashboard.</li>
+      <li>must be enabled after the RHACM installation, because it requires persistent storage.&nbsp;</li>
+    </ul>
+  </li>
+</ul>
 <h2>Instillation</h2>
 <ul>
   <li>&nbsp;</li>
