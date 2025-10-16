@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-16T19:46:43.944Z
+date: 2025-10-16T19:56:03.079Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -53,7 +53,12 @@ dateCreated: 2025-10-16T19:32:45.334Z
 <ol>
   <li>Create <code>ClusterDeployment</code> Custom Resource (CR): Core <mark class="marker-yellow">Hive resource</mark> to control the lifecycle of a cluster and the Hive API entry point</li>
   <li>The <code>ClusterDeployment</code> CR references the short name of a <code>ClusterImageSet</code> CR to specify<mark class="marker-green"> <strong>the RHOCP version to the new cluster.</strong></mark></li>
-  <li>The <code>ClusterImageSet</code> CR: A CRD that is provided by the Hive operator to define the RHOCP installer images. That custom resource can be pointed at by ClusterDeployment resource to create new clusters on <strong>different platforms or provisioning workflows(agent-based, image-based(UPI,IPI)</strong>, ensuring <strong>version consistency</strong>.&nbsp;</li>
+  <li>The <code>ClusterImageSet</code> CR: A CRD that is provided by the Hive operator to define the RHOCP installer images. That custom resource can be pointed at by ClusterDeployment resource to create new clusters on <strong>different platforms or provisioning workflows(agent-based, image-based(using images to install ocp)</strong>, ensuring <strong>version consistency</strong>.&nbsp;<ul>
+      <li><strong>Immutable reference: </strong>The CRD reference installer images by digest, so it ensures that the same installer image version is used always</li>
+      <li><strong>Decoupling installer from CRs: </strong>Upgrades and deploying new minor versions involve creating a <code>ClusterImageSet</code> CR, not editing every <code>ClusterDeployment</code> CR.</li>
+      <li><strong>Central catalog of images: </strong>Administrators maintain a library of approved RHOCP installer images. Select the latest-approved or stable-4.x.x <code>ClusterImageSet</code> CR to avoid manually searching through quay.io or registry.redhat.io.</li>
+    </ul>
+  </li>
 </ol>
 <blockquote>
   <p>An <strong>RPM-hosted installer image</strong> is a pre-built container image that contains:</p>
@@ -61,3 +66,38 @@ dateCreated: 2025-10-16T19:32:45.334Z
   <p>All required <strong>RPM packages</strong> for bootstrapping and configuring the cluster</p>
   <p>Dependencies for the <strong>Agent-based Installer</strong> or <strong>Zero Touch Provisioning (ZTP)</strong></p>
 </blockquote>
+<pre><code class="language-plaintext">apiVersion: hive.openshift.io/v1
+kind: ClusterImageSet
+metadata:
+  labels:
+    channel: fast
+    visible: 'true'
+  name: &lt;referenced by ClusterDeployment
+spec:
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.x.1-x86_64 2 &gt; version of ocp installer </code></pre>
+<pre><code class="language-plaintext">apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: mycluster
+  namespace: mynamespace
+spec:
+  baseDomain: hive.example.com
+  clusterName: mycluster
+  platform:
+    aws:
+      credentialsSecretRef:
+        name: mycluster-aws-creds
+      region: us-east-1
+  provisioning:
+    imageSetRef:
+      name: &lt;name of clusterImageSet&gt;
+    installConfigSecretRef:
+      name: mycluster-install-config
+    sshPrivateKeySecretRef:
+      name: mycluster-ssh-key
+  pullSecretRef:
+    name: mycluster-pull-secret</code></pre>
+<p>&nbsp;</p>
+<p><strong>&nbsp;4. </strong>The Hive controller watches the <code>imageSetRef.name</code> field, looks up the corresponding <code>ClusterImageSet</code> CR, and uses its <code>spec.releaseImage</code> to provision the cluster.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
