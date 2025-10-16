@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-16T17:52:21.276Z
+date: 2025-10-16T17:57:18.592Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-16T15:57:56.497Z
@@ -96,4 +96,32 @@ metadata:
 spec: {}</code></pre>
 <p>&nbsp;4. The custom resource creation displays the <code>Phase: Installing</code> status during installation, and takes several minutes to complete. After this custom resource creation process completes, the status changes to <code>Phase: Running</code>.</p>
 <p>∅ <strong>the RHACM operator and the </strong><code><strong>MultiClusterHub</strong></code><strong> custom resource, to run on infrastructure nodes by using node selectors and tolerations.&nbsp;</strong></p>
+<h3>Troubleshooting Installation Issues</h3>
+<ul>
+  <li>installation of the RHACM operator gets stuck in the <code>Pending</code> status<ul>
+      <li>check the pods in the installation namespace</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">reason: Unschedulable
+message: '0/6 nodes are available: 3 Insufficient cpu, 3 node(s) had taint {node-role.kubernetes.io/master:
+        }, that the pod didn't tolerate.'</code></pre>
+<ul>
+  <li>OpenShift cluster is not connected to the internet</li>
+  <li>images for the RHACM operator are not available in the local endpoint, for a disconnected installation.</li>
+  <li>cluster nodes do not have enough resources to install the RHACM operator.</li>
+</ul>
 <p>&nbsp;</p>
+<ul>
+  <li>the RHACM operator might encounter installation issues after a prior failure of installation or uninstallation of the operator:<ul>
+      <li>This issue can occur when the operator is uninstalled, but the custom resources are not removed</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">MCE_NAMESPACE=open-cluster-management
+oc delete multiclusterengine --all
+oc delete apiservice v1.admission.cluster.open-cluster-management.io v1.admission.work.open-cluster-management.io
+oc delete crd discoveredclusters.discovery.open-cluster-management.io discoveryconfigs.discovery.open-cluster-management.io
+oc delete mutatingwebhookconfiguration ocm-mutating-webhook managedclustermutators.admission.cluster.open-cluster-management.io
+oc delete validatingwebhookconfiguration ocm-validating-webhook
+oc delete ns $MCE_NAMESPACE</code></pre>
