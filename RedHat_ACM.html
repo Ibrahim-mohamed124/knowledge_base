@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-16T17:17:05.944Z
+date: 2025-10-16T17:28:44.189Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-16T15:57:56.497Z
@@ -39,15 +39,20 @@ dateCreated: 2025-10-16T15:57:56.497Z
 </ul>
 <h2>Architecture &nbsp;</h2>
 <ol>
-  <li>Hub Cluster:<ul>
-      <li>A central controller that in a RHACM cluster ( Hub cluster is a component on the RHACM cluster that runs on a local openshift cluster!!!!!) &gt; Users<strong> authenticate to the Hub cluster</strong> to access the RHACM console and APIs, which <strong>relies on the local cluster authentication layer.</strong></li>
+  <li>Hub Cluster = RHACM Cluster:<ul>
+      <li>A central controller &gt; Users<strong> authenticate to the Hub cluster</strong> to access its console and APIs, which <strong>relies on the local cluster authentication layer.</strong></li>
       <li><code>MultiClusterHub</code> resource: is consumed by RHACM operator to manage the lifecycle of ACM components. It is created at <code>open-cluster-management</code> namespace.</li>
-      <li>Gather info from managed clusters in async method and &nbsp;maintains the state of clusters and applications that run on it.</li>
+      <li>Gathers info from managed clusters in async method and &nbsp;maintains the state of clusters and applications that run on it.</li>
       <li>The <i>local cluster</i> refers to the OpenShift cluster that hosts the hub cluster. <strong>The local cluster is also a managed cluster.</strong></li>
+    </ul>
+  </li>
+  <li>Managed Clusters:<ul>
+      <li><code>klusterlet</code> component is the agent that is <strong>installed on the managed cluster</strong>, and controls the connections between the hub cluster and the managed cluster.</li>
     </ul>
   </li>
 </ol>
 <figure class="image"><img src="/arch.png"></figure>
+<p>&nbsp;</p>
 <h2>Instillation</h2>
 <ul>
   <li>&nbsp;</li>
