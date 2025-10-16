@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-16T15:57:56.497Z
+date: 2025-10-16T16:33:29.744Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-16T15:57:56.497Z
@@ -12,13 +12,23 @@ dateCreated: 2025-10-16T15:57:56.497Z
 <ul>
   <li>First at all it is only useful for large global enterprises with hybrid infrastructure because ACM has the ability to manage clusters in different platforms, but most implementations in Egypt is for small companies.</li>
   <li>It might be useful for these reasons:<ul>
-      <li>RHACM platform compatibility, such as with x86 or Arm, ensures that legacy workloads run efficiently in private clouds.</li>
+      <li>RHACM platform compatibility, such as with x86 or Arm, ensures that<strong> legacy workloads</strong> run efficiently in private clouds.</li>
       <li>RHACM optimizes resource allocation across hybrid clouds to control expenses.</li>
-      <li>RHACM enforces policies to meet compliance across private and public clouds.</li>
-      <li>cohesive IT infrastructure: blend public, private, and on-premise resources</li>
+      <li>RHACM enforces policies to meet <strong>compliance </strong>across private and public clouds.</li>
+      <li><strong>cohesive IT infrastructure</strong>: blend public, private, and on-premise resources</li>
     </ul>
   </li>
 </ul>
+<p>∅ <strong>Scalability</strong>: Large cluster fleets overwhelm a single management hub, which requires division into smaller groups, <strong>with a hub to manage each group.</strong></p>
+<h2>Core Components of the global ACM</h2>
+<p>∅ <strong>Manages other ACMs</strong></p>
+<ol>
+  <li>Global hub operator: &nbsp;Control the lifecycle of global hub components such as global hub manager, Garfana, Kafka, Postgresql and &nbsp;global hub agent on the managed hub clusters</li>
+  <li>Global hub manager: Inputs data from Kafka into Postgresql, and it posts data into Kafka for managing hub clusters</li>
+  <li>Global hub agent: Runs on the managed hub cluster to gather data for the Global hub manager&nbsp;</li>
+  <li>Global hub visualization: exposed by a route and provides info about clusters health, violations, compliance, and performance</li>
+  <li>&nbsp;</li>
+</ol>
 <h2>Instillation</h2>
 <ul>
   <li>&nbsp;</li>
