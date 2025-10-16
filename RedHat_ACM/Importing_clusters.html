@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-16T19:56:03.079Z
+date: 2025-10-16T20:07:52.207Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -99,5 +99,39 @@ spec:
     name: mycluster-pull-secret</code></pre>
 <p>&nbsp;</p>
 <p><strong>&nbsp;4. </strong>The Hive controller watches the <code>imageSetRef.name</code> field, looks up the corresponding <code>ClusterImageSet</code> CR, and uses its <code>spec.releaseImage</code> to provision the cluster.</p>
+<h3><strong>Upgrading a cluster</strong></h3>
+<ol>
+  <li>Just change the imageSetRef.name to a later one with higher version</li>
+</ol>
+<h3>Importing Existing Clusters</h3>
+<p>From the RHACM web console, go to the <strong>Infrastructure</strong> → <strong>Clusters</strong> menu.</p>
+<p>Click <strong>Import cluster</strong>.</p>
+<p>Provide the required import cluster name.</p>
+<p>Optionally select a cluster set for the import. The import uses the <code>default</code> managed cluster set if nothing is selected.</p>
+<p>Optionally add labels. If you remove a hub cluster and try to import it again, you must add the <code>local-cluster:true</code> label to the <code>ManagedCluster</code> CR.</p>
+<p>For the <code>Import mode</code>, use <code>Run import command manually</code>.</p>
+<p>Click <strong>Next</strong>.</p>
+<p>Click <strong>Next</strong> on the <code>Automation</code> page.</p>
+<p>Click <strong>Generate command</strong> on the <code>Review</code> page.</p>
+<p>Click <strong>Copy command</strong> to copy the generated command and token to the clipboard.</p>
+<p>Paste and run the copied command in a terminal session on the target cluster.</p>
+<p>Return to the <strong>Infrastructure</strong> → <strong>Clusters</strong> menu.</p>
+<p>The newly imported cluster is immediately displayed in the <strong>Infrastructure</strong> → <strong>Clusters</strong> menu. It takes several minutes to see all the cluster details, because RHACM is installing the add-ons in the managed cluster.</p>
+<ul>
+  <li>import modes:<ul>
+      <li>Run import command manually on the target cluster</li>
+      <li>enter the API url and API token for the target cluster</li>
+      <li>KubeConfig certs</li>
+    </ul>
+  </li>
+</ul>
+<h4>Scaling a Cluster</h4>
+<ol>
+  <li>&nbsp;</li>
+</ol>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
