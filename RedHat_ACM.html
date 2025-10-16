@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-16T17:41:14.076Z
+date: 2025-10-16T17:52:21.276Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-16T15:57:56.497Z
@@ -72,10 +72,28 @@ dateCreated: 2025-10-16T15:57:56.497Z
   <li>Observability:&nbsp;<ul>
       <li>observability component collects and reports the status and health of OpenShift&nbsp;4.x or later versions of managed clusters to the hub cluster, which are visible from the Grafana dashboard.</li>
       <li>must be enabled after the RHACM installation, because it requires persistent storage.&nbsp;</li>
+      <li>depend on open source tools like promtheus, thanos, alertmanager</li>
     </ul>
   </li>
 </ul>
 <h2>Instillation</h2>
+<h4>Prerequisites and Sizing for RHACM</h4>
 <ul>
-  <li>&nbsp;</li>
+  <li>Network communication between the hub cluster and the managed clusters</li>
+  <li>Accurately sizing the hub cluster requires testing and monitoring the resource usage of the hub cluster and knowledge of what is deployed on it.</li>
 </ul>
+<p>&nbsp;</p>
+<ol>
+  <li>install the RHACM operator from the <strong>OperatorHub</strong> menu in the OpenShift web console</li>
+  <li>recommended namespace for the installation is <code>open-cluster-management</code>.</li>
+  <li>create the <code>MultiClusterHub</code> custom resource to deploy the RHACM services.&nbsp;</li>
+</ol>
+<pre><code class="language-plaintext">apiVersion: operator.open-cluster-management.io/v1
+kind: MultiClusterHub
+metadata:
+  name: multiclusterhub
+  namespace: open-cluster-management
+spec: {}</code></pre>
+<p>&nbsp;4. The custom resource creation displays the <code>Phase: Installing</code> status during installation, and takes several minutes to complete. After this custom resource creation process completes, the status changes to <code>Phase: Running</code>.</p>
+<p>∅ <strong>the RHACM operator and the </strong><code><strong>MultiClusterHub</strong></code><strong> custom resource, to run on infrastructure nodes by using node selectors and tolerations.&nbsp;</strong></p>
+<p>&nbsp;</p>
