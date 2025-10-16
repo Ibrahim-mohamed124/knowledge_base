@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-16T17:57:18.592Z
+date: 2025-10-16T18:30:04.607Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-16T15:57:56.497Z
@@ -17,7 +17,7 @@ dateCreated: 2025-10-16T15:57:56.497Z
       <li>RHACM optimizes resource allocation across hybrid clouds to control expenses.</li>
       <li>RHACM enforces policies to meet <strong>compliance </strong>across private and public clouds.</li>
       <li><strong>cohesive IT infrastructure</strong>: blend public, private, and on-premise resources</li>
-      <li>RHACM: Provides <strong>cluster lifecycle management</strong> from creation to destruction&nbsp;</li>
+      <li>RHACM: Provides <strong>cluster lifecycle management</strong> from creation to destruction</li>
     </ul>
   </li>
 </ul>
@@ -27,7 +27,7 @@ dateCreated: 2025-10-16T15:57:56.497Z
 <ol>
   <li>Global hub operator: &nbsp;Control the lifecycle of global hub components such as global hub manager, Garfana, Kafka, Postgresql and &nbsp;global hub agent on the managed hub clusters</li>
   <li>Global hub manager: Inputs data from Kafka into Postgresql, and it posts data into Kafka for managing hub clusters</li>
-  <li>Global hub agent: Runs on the managed hub cluster to gather data for the Global hub manager&nbsp;</li>
+  <li>Global hub agent: Runs on the managed hub cluster to gather data for the Global hub manager</li>
   <li>Global hub visualization: exposed by a route and provides info about clusters health, violations, compliance, and performance</li>
 </ol>
 <h2>&nbsp;Design considerations of the global ACM</h2>
@@ -54,9 +54,9 @@ dateCreated: 2025-10-16T15:57:56.497Z
 <figure class="image"><img src="/arch.png"></figure>
 <h2>&nbsp;Operations of ACM</h2>
 <ul>
-  <li>Lifecycle management:&nbsp;<ul>
+  <li>Lifecycle management:<ul>
       <li>creation, importing, managing, upgrading(individually or in bluk), destroying openshfit clusters across platforms</li>
-      <li>this functionality is provided by <strong>multicluster engine for kubernetes operator </strong>that is installed by default with RHACM&nbsp;</li>
+      <li>this functionality is provided by <strong>multicluster engine for kubernetes operator </strong>that is installed by default with RHACM by using MultiClusterEngine resource</li>
     </ul>
   </li>
   <li>Application Lifecycle:<ul>
@@ -65,13 +65,13 @@ dateCreated: 2025-10-16T15:57:56.497Z
       <li><strong>Ansible Automation Platform jobs enable you to automate tasks.&nbsp;</strong></li>
     </ul>
   </li>
-  <li>Governance:&nbsp;<ul>
+  <li>Governance:<ul>
       <li>define policies that either <strong>enforce </strong>security compliance or inform you of changes that <strong>violate </strong>the configured compliance requirements for your environment</li>
     </ul>
   </li>
-  <li>Observability:&nbsp;<ul>
+  <li>Observability:<ul>
       <li>observability component collects and reports the status and health of OpenShift&nbsp;4.x or later versions of managed clusters to the hub cluster, which are visible from the Grafana dashboard.</li>
-      <li>must be enabled after the RHACM installation, because it requires persistent storage.&nbsp;</li>
+      <li>must be enabled after the RHACM installation, because it requires persistent storage.</li>
       <li>depend on open source tools like promtheus, thanos, alertmanager</li>
     </ul>
   </li>
@@ -86,7 +86,7 @@ dateCreated: 2025-10-16T15:57:56.497Z
 <ol>
   <li>install the RHACM operator from the <strong>OperatorHub</strong> menu in the OpenShift web console</li>
   <li>recommended namespace for the installation is <code>open-cluster-management</code>.</li>
-  <li>create the <code>MultiClusterHub</code> custom resource to deploy the RHACM services.&nbsp;</li>
+  <li>create the <code>MultiClusterHub</code> custom resource to deploy the RHACM services.</li>
 </ol>
 <pre><code class="language-plaintext">apiVersion: operator.open-cluster-management.io/v1
 kind: MultiClusterHub
@@ -106,6 +106,7 @@ spec: {}</code></pre>
 <pre><code class="language-plaintext">reason: Unschedulable
 message: '0/6 nodes are available: 3 Insufficient cpu, 3 node(s) had taint {node-role.kubernetes.io/master:
         }, that the pod didn't tolerate.'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>OpenShift cluster is not connected to the internet</li>
   <li>images for the RHACM operator are not available in the local endpoint, for a disconnected installation.</li>
