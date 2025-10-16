@@ -2,7 +2,7 @@
 title: Intro
 description: 
 published: true
-date: 2025-10-16T16:58:04.487Z
+date: 2025-10-16T17:17:05.944Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-16T15:57:56.497Z
@@ -30,13 +30,24 @@ dateCreated: 2025-10-16T15:57:56.497Z
   <li>Global hub agent: Runs on the managed hub cluster to gather data for the Global hub manager&nbsp;</li>
   <li>Global hub visualization: exposed by a route and provides info about clusters health, violations, compliance, and performance</li>
 </ol>
-<h2>&nbsp;Design</h2>
+<h2>&nbsp;Design considerations&nbsp;</h2>
 <ul>
   <li>Storage: PostgreSQL requires at least 20&nbsp;GB to store data for three managed hubs with 250 clusters and 50 policies for 18 months.</li>
   <li>Networking: use secure HTTPS communication on port 443 for Grafana, Kafka, and PostgreSQL to ensure reliable connectivity.</li>
   <li>Middleware Integration: Organizations integrate existing Kafka version 3.4+, PostgreSQL version 13+, or Grafana instances instead of provided ones, to configure secrets and access appropriately.</li>
   <li>Access Control: The <code><strong>cluster-admin</strong></code> role remains necessary for installation, and <strong>Grafana access aligns with OpenShift console authentication</strong>. (depends on the same authentication of managed clusters?)</li>
 </ul>
+<h2>Architecture &nbsp;</h2>
+<ol>
+  <li>Hub Cluster:<ul>
+      <li>A central controller that in a RHACM cluster ( Hub cluster is a component on the RHACM cluster that runs on a local openshift cluster!!!!!) &gt; Users<strong> authenticate to the Hub cluster</strong> to access the RHACM console and APIs, which <strong>relies on the local cluster authentication layer.</strong></li>
+      <li><code>MultiClusterHub</code> resource: is consumed by RHACM operator to manage the lifecycle of ACM components. It is created at <code>open-cluster-management</code> namespace.</li>
+      <li>Gather info from managed clusters in async method and &nbsp;maintains the state of clusters and applications that run on it.</li>
+      <li>The <i>local cluster</i> refers to the OpenShift cluster that hosts the hub cluster. <strong>The local cluster is also a managed cluster.</strong></li>
+    </ul>
+  </li>
+</ol>
+<figure class="image"><img src="/arch.png"></figure>
 <h2>Instillation</h2>
 <ul>
   <li>&nbsp;</li>
