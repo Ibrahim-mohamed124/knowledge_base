@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T16:29:16.321Z
+date: 2025-10-17T16:40:56.065Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -531,4 +531,52 @@ status:
 <ul>
   <li>Neither Kubernetes nor OpenShift currently provides a way to federate all the internal OAuth servers of each cluster. To solve this problem, you can configure OAuth to specify a identity provider such as LDAP for centrally managing the users who access the managed clusters.</li>
 </ul>
+<h2>Troubleshooting Common Import Issues for Managed Clusters</h2>
+<ul>
+  <li>The network between the new cluster and the hub cluster does not meet the requirements. Specifically, TCP ports 6443 and 443 in both directions are required. Also, both clusters must resolve the DNS names of the API endpoints.</li>
+  <li>The API endpoint TLS certificate is not trusted. The clusters must trust the certificate of their counterparts. If you use a custom certificate authority (CA) to issue these certificates, then ensure that the CA certificate is part of the trusted CA bundle.</li>
+  <li>The time between the clusters is not synchronized. Ensure that you configured the <code>chrony</code> time service in your clusters.</li>
+  <li>The Kubernetes managed cluster cannot pull the RHACM images from the Red&nbsp;Hat registries. Kubernetes clusters require a secret with your RHOCP pull secret for retrieving the images from Red&nbsp;Hat.</li>
+  <li>The <mark class="marker-yellow">import controller pods </mark>that are running in the hub cluster failed</li>
+</ul>
+<pre><code class="language-plaintext">oc get pods -n multicluster-engine \
+  -l app=managedcluster-import-controller-v2
+oc logs -n multicluster-engine \
+  -l app=managedcluster-import-controller-v2</code></pre>
+<ul>
+  <li>The import secret resource was not created in the hub cluster. For each managed cluster, RHACM creates a namespace with the name of the cluster. In this namespace, RHACM creates the <code><i>cluster-name</i>-import</code> secret.</li>
+</ul>
+<pre><code class="language-plaintext">oc get secret mycluster-import -n mycluster
+oc logs -n multicluster-engine \
+  -l app=managedcluster-import-controller-v2 &gt;&gt; responsible for creating the secret</code></pre>
+<ul>
+  <li>The <code>klusterlet</code> resource on the managed cluster has a degraded status.<ul>
+      <li>Verify the status of the <code>RegistrationDesiredDegraded</code> and <code>WorkDesiredDegraded</code> conditions in the <code>.status.conditions</code> section of the resource. Both conditions must be false</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get klusterlets klusterlet \
+  -o jsonpath-as-json='{.status.conditions}'
+[
+    [
+...output omitted...
+        {
+            "lastTransitionTime": "2025-04-28T10:07:39Z",
+            "message": "deployments replicas are desired: 1",
+            "observedGeneration": 2,
+            "reason": "DeploymentsFunctional",
+            "status": "False",
+            "type": "RegistrationDesiredDegraded"
+        },
+        {
+            "lastTransitionTime": "2025-04-28T10:07:39Z",
+            "message": "deployments replicas are desired: 1",
+            "observedGeneration": 2,
+            "reason": "DeploymentsFunctional",
+            "status": "False",
+            "type": "WorkDesiredDegraded"
+        },
+...output omitted...
+    ]
+]</code></pre>
 <p>&nbsp;</p>
