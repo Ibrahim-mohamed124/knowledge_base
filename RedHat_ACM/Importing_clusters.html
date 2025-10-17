@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T08:49:41.264Z
+date: 2025-10-17T08:53:54.848Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -223,6 +223,16 @@ spec:
     </table>
   </figure>
 </blockquote>
+<h4>Removing Imported Clusters from RHACM</h4>
+<ol>
+  <li>Detaching the cluster will automatically remove most of RHACM components on the managed clusters</li>
+  <li>Some components should be removed manually:</li>
+</ol>
+<ul>
+  <li>The <code>klusterlet</code> cluster role</li>
+  <li>The <code>open-cluster-management: klusterlet-admin-aggregate-clusterrole</code> cluster role</li>
+  <li>The <code>klusterlet</code> cluster role binding</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
