@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T08:35:57.488Z
+date: 2025-10-17T08:49:41.264Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -72,7 +72,7 @@ metadata:
   labels:
     channel: fast
     visible: 'true'
-  name: &lt;referenced by ClusterDeployment
+  name: &lt;referenced by ClusterDeployment&gt;
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.x.1-x86_64 2 &gt; version of ocp installer </code></pre>
 <pre><code class="language-plaintext">apiVersion: hive.openshift.io/v1
@@ -127,7 +127,7 @@ spec:
 </ul>
 <h4>Scaling a Cluster</h4>
 <ol>
-  <li><code>SiteConfig</code> operator: Red Hat OpenShift component that automates cluster provisioning and configuration—especially for edge and single-node deployments—using declarative YAML resources.<ul>
+  <li><code>SiteConfig</code> operator: Red Hat OpenShift component that automates cluster provisioning and configuration—<strong>especially for edge and single-node deployments</strong>—using declarative YAML resources.<ul>
       <li>It introduces a <strong>ClusterInstance API</strong>, which <mark class="marker-yellow">separates cluster definitions from installation methods</mark>, making it easier to manage clusters declaratively.</li>
       <li>A template-driven cluster provisioning solution with the <code>ClusterInstance</code> API</li>
       <li>Dynamically generates installation manifests based on user-defined templates that are instantiated from the data in the <code>ClusterInstance</code> CR.</li>
@@ -146,9 +146,83 @@ spec:
 <blockquote>
   <p>To scale the cluster, set the <code>clusterinstance.spec.nodes</code> list to use the appropriate number of nodes for the installation.</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p><strong>The Hive Operator and SiteConfig Operator both automate OpenShift cluster provisioning, but they serve different use cases: Hive is designed for dynamic, cloud-based Cluster-as-a-Service models, while SiteConfig is tailored for declarative, GitOps-driven edge deployments using image-based workflows.</strong></p>
+</blockquote>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th><strong>Hive Operator</strong></th>
+        <th><strong>SiteConfig Operator</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Primary Use Case</strong></td>
+        <td>Cluster-as-a-Service (CaaS) for dynamic provisioning</td>
+        <td>Declarative provisioning for edge and disconnected clusters</td>
+      </tr>
+      <tr>
+        <td><strong>Deployment Style</strong></td>
+        <td>API-driven, dynamic installs</td>
+        <td>GitOps-driven, image-based installs</td>
+      </tr>
+      <tr>
+        <td><strong>Target Environments</strong></td>
+        <td>Cloud platforms (AWS, Azure, GCP), bare metal</td>
+        <td>Far-edge, Single Node OpenShift (SNO), disconnected sites</td>
+      </tr>
+      <tr>
+        <td><strong>Installation Method</strong></td>
+        <td>Uses OpenShift installer and dynamic provisioning</td>
+        <td>Uses prebuilt RPM-hosted installer images</td>
+      </tr>
+      <tr>
+        <td><strong>Key Resources</strong></td>
+        <td><code>ClusterDeployment</code>, <code>ClusterPool</code>, <code>SyncSet</code></td>
+        <td><code>SiteConfig</code>, <code>ClusterInstance</code>, <code>BareMetalHost</code></td>
+      </tr>
+      <tr>
+        <td><strong>Integration</strong></td>
+        <td>Works with RHACM for cluster lifecycle management</td>
+        <td>Works with ZTP and GitOps pipelines</td>
+      </tr>
+      <tr>
+        <td><strong>Customization</strong></td>
+        <td>Post-install via SyncSets and MachinePools</td>
+        <td>Pre-install via declarative YAML and GitOps</td>
+      </tr>
+      <tr>
+        <td><strong>Provisioning Speed</strong></td>
+        <td>Slower (dynamic install per request)</td>
+        <td>Faster (prebuilt image-based install)</td>
+      </tr>
+      <tr>
+        <td><strong>Disconnected Support</strong></td>
+        <td>Limited</td>
+        <td>Full support</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<blockquote>
+  <figure class="table">
+    <table>
+      <tbody>
+        <tr>
+          <td><strong>SiteConfig Operator</strong></td>
+          <td>Reads <code>SiteConfig</code>, generates Hive resources, monitors status</td>
+        </tr>
+        <tr>
+          <td><strong>Hive Operator</strong></td>
+          <td>Implements <code>ClusterDeployment</code>, provisions clusters, manages lifecycle</td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
