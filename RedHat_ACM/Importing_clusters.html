@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T09:35:25.736Z
+date: 2025-10-17T12:12:18.503Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -264,7 +264,19 @@ spec:
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/search-architecture.svg"></figure>
 <ul>
-  <li>&nbsp;</li>
+  <li>Collector: In the hub cluster, the collector is deployed in the <code>open-cluster-management</code> namespace. In the other managed clusters, the collector is deployed in the <code>open-cluster-management-agent-addon</code> namespace, as part of the <code>search-collector</code> add-on.<ul>
+      <li>Uses the <mark class="marker-yellow">Kubernetes API</mark> to collect the information about the objects, and then the collector <mark class="marker-yellow">computes relationships for objects within the managed clusters.</mark></li>
+    </ul>
+  </li>
+  <li>Indexer<strong>: </strong>Deployed only in the RHACM hub cluster, in the <code>open-cluster-management</code> namespace.&nbsp;<ul>
+      <li>Receives data from the collectors and writes that data to a <mark class="marker-yellow">PostgreSQL database that runs as a pod in the hub cluster</mark></li>
+    </ul>
+  </li>
+  <li>Search API: The search API uses the RBAC of each managed cluster. For example, <mark class="marker-yellow">you can search for objects in a managed cluster only where you have authorization</mark>.<ul>
+      <li>Some filters<mark class="marker-yellow"> allow arithmetic comparators for numeric fields</mark>, such as the <code>cpu</code>, <code>replicas</code>, <code>capacity</code>, and <code>memory</code> filters.</li>
+      <li>&nbsp;</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
