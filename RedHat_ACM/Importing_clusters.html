@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T16:48:17.219Z
+date: 2025-10-17T17:36:03.066Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -268,10 +268,10 @@ spec:
       <li>Uses the <mark class="marker-yellow">Kubernetes API</mark> to collect the information about the objects, and then the collector <mark class="marker-yellow">computes relationships for objects within the managed clusters.</mark></li>
     </ul>
   </li>
-  <li>Indexer<strong>: </strong>Deployed only in the RHACM hub cluster, in the <code>open-cluster-management</code> namespace.&nbsp;<ul>
+  <li>Indexer<strong>: </strong>Deployed only in the RHACM hub cluster, in the <code>open-cluster-management</code> namespace.<ul>
       <li>Receives data from the collectors and writes that data to a <mark class="marker-yellow">PostgreSQL database that runs as a pod in the hub cluster</mark></li>
       <li>The search filters are the keys of the indexing process &gt; the filter name is the key and values are the objects values of a specific attribute &nbsp;e.g metadata.namespace(indexer key): value</li>
-      <li>&nbsp;Not all of objects attributes are indexed</li>
+      <li>Not all of objects attributes are indexed</li>
     </ul>
   </li>
   <li>Search API: The search API uses the RBAC of each managed cluster. For example, <mark class="marker-yellow">you can search for objects in a managed cluster only where you have authorization</mark>.<ul>
@@ -325,8 +325,9 @@ spec:
           memory: 1Gi
     queryapi: {}
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>Set the memory limits by annotating the <code>search-collector</code> resource of the <code>ManagedClusterAddOn</code> kind in the managed cluster namespace in the hub cluster.&nbsp;</li>
+  <li>Set the memory limits by annotating the <code>search-collector</code> resource of the <code>ManagedClusterAddOn</code> kind in the managed cluster namespace in the hub cluster.</li>
 </ul>
 <pre><code class="language-plaintext"> oc annotate ManagedClusterAddOn search-collector -n mycluster \
   addon.open-cluster-management.io/search_memory_request=512Mi \
@@ -350,6 +351,7 @@ data:
   ansibleIntegration: disabled
   awsPrivateWizardStep: enabled
   singleNodeOpenshift: disabled</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Replace the default search templates by creating the <code>console-search-config</code> configuration map in the <code>open-cluster-management</code> namespace.</li>
 </ul>
@@ -395,17 +397,17 @@ data:
 <ul>
   <li>Openshift default roles:<ul>
       <li>Cluster-Admin: with cluster role binding &gt; superuser</li>
-      <li>edit, view, admin: namespaced or cluster wide access to the open-cluster-management resources || <mark class="marker-yellow">administration?????? of the hub cluster???</mark></li>
+      <li>edit, view, admin: namespaced or cluster wide access to the open-cluster-management resources&nbsp;</li>
     </ul>
   </li>
   <li>RHACM roles:<ul>
       <li><code><strong>open-cluster-management:cluster-manager-admin:</strong></code> RHACM superuser, can create ManagedCluster(import, create clusters)</li>
       <li><code><strong>open-cluster-management:admin:</strong><i><strong>managed_cluster_name:</strong></i></code> Admin access to specific ManagedCluster resource, created for users who created the ManagedCluster automatically.</li>
       <li><code><strong>open-cluster-management:view:</strong><i><strong>managed_cluster_name:</strong></i></code> &nbsp;RHACM view access to the <code>ManagedCluster</code> resource named <code><i>managed_cluster_name</i></code>.</li>
-      <li><code><strong>open-cluster-management:managedclusterset:admin:</strong><i><strong>managed_clusterset_name:&nbsp;</strong></i></code> administrator access to the <code>managedcluster</code>, <code>clusterclaim</code>, <code>clusterdeployment</code>, and <code>clusterpool</code> resources, which have the <code>cluster.open-cluster-management.io/clusterset=<i>managed_clusterset_name</i></code> label.&nbsp;</li>
+      <li><code><strong>open-cluster-management:managedclusterset:admin:</strong><i><strong>managed_clusterset_name:&nbsp;</strong></i></code> administrator access to the <code>managedcluster</code>, <code>clusterclaim</code>, <code>clusterdeployment</code>, and <code>clusterpool</code> resources, which have the <code>cluster.open-cluster-management.io/clusterset=<i>managed_clusterset_name</i></code> label.</li>
       <li><code><strong>open-cluster-management:managedclusterset:view:</strong><i><strong>managed_clusterset_name:</strong></i></code> RHACM view access to the <code>ManagedClusterSet</code> resource named <code><i>managed_clusterset_name</i></code></li>
       <li><code><strong>open-cluster-management:managedclusterset:bind:</strong><i><strong>managed_clusterset_name:</strong></i></code> The user can bind the <code>ManagedClusterSet</code> resource named <code><i>managed_clusterset_name</i></code> to a namespace. To give access to the managed clusters<ul>
-          <li>RHACM view access to the <code>ManagedClusterSet</code> resource named <code><i>managed_clusterset_name</i></code>.&nbsp;</li>
+          <li>RHACM view access to the <code>ManagedClusterSet</code> resource named <code><i>managed_clusterset_name</i></code>.</li>
         </ul>
       </li>
       <li><code><strong>open-cluster-management:​subscription-admin:</strong></code> can create Git subscriptions that deploy Kubernetes resources that are specified in YAML files to multiple namespaces.</li>
@@ -421,7 +423,7 @@ data:
 <ul>
   <li>Namespace-scoped resource that defines a rule to <mark class="marker-yellow">dynamically select a set of managed clusters</mark> in one or multiple managed cluster sets, which are bound to the placement namespace(the managed cluster sets).</li>
   <li>To create the <code>Placement</code> resource, you need the <mark class="marker-yellow">cluster administrator</mark> and the <mark class="marker-yellow">cluster set administrator </mark>roles.</li>
-  <li><strong>Predicates: </strong>section in the <code>Placement</code> resource enables you to filter managed clusters from managed cluster sets by using the <code>labelSelector</code> and the <code>claimSelector</code> parameters.&nbsp;<ul>
+  <li><strong>Predicates: </strong>section in the <code>Placement</code> resource enables you to filter managed clusters from managed cluster sets by using the <code>labelSelector</code> and the <code>claimSelector</code> parameters.<ul>
       <li><code>numberOfClusters</code> parameter defines the number of clusters to select.</li>
     </ul>
   </li>
@@ -450,6 +452,7 @@ spec:
               operator: In
               values:
                 - us-west-1</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Taints and Tolerations:</strong>
     <ul>
@@ -469,6 +472,7 @@ spec:
       key: gpu
       value: "true"
       timeAdded: '2025-04-23T05:12:23Z'</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: cluster.open-cluster-management.io/v1beta1
 kind: Placement
 metadata:
@@ -507,10 +511,11 @@ spec:
       - scoreCoordinate:
           builtIn: ResourceAllocatableMemory
         weight: 2</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Placement Decisions:&nbsp;</strong>
     <ul>
-      <li>The <code>Placement</code> resource creates one ore more <code>PlacementDecision</code> resources in the same namespace with the <code>cluster.open-cluster-management.io/placement=<i>placement_name</i></code> label.&nbsp;</li>
+      <li>The <code>Placement</code> resource creates one ore more <code>PlacementDecision</code> resources in the same namespace with the <code>cluster.open-cluster-management.io/placement=<i>placement_name</i></code> label.</li>
       <li>Contains the managed clusters that the placement selected.</li>
     </ul>
   </li>
@@ -543,12 +548,14 @@ status:
   -l app=managedcluster-import-controller-v2
 oc logs -n multicluster-engine \
   -l app=managedcluster-import-controller-v2</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The import secret resource was not created in the hub cluster. For each managed cluster, RHACM creates a namespace with the name of the cluster. In this namespace, RHACM creates the <code><i>cluster-name</i>-import</code> secret.</li>
 </ul>
 <pre><code class="language-plaintext">oc get secret mycluster-import -n mycluster
 oc logs -n multicluster-engine \
   -l app=managedcluster-import-controller-v2 &gt;&gt; responsible for creating the secret</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The <code>klusterlet</code> resource on the managed cluster has a degraded status.<ul>
       <li>Verify the status of the <code>RegistrationDesiredDegraded</code> and <code>WorkDesiredDegraded</code> conditions in the <code>.status.conditions</code> section of the resource. Both conditions must be false</li>
@@ -581,6 +588,7 @@ oc get klusterlets klusterlet \
 ...output omitted...
     ]
 ]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Importing a managed cluster that was previously attached to another RHACM hub might fail. This issue occurs when the managed cluster was not properly detached: some <mark class="marker-yellow">stale resources</mark>, such as the <code>klusterlet</code> resource, might still exist.<ul>
       <li>clean up the managed cluster by deleting the <code>klusterlet</code> resource, the <code>open-cluster-management-agent</code> and <code>open-cluster-management-agent-addon</code> namespaces, and the RHACM custom resource definitions (CRDs).</li>
@@ -603,6 +611,7 @@ spec:
   managedClusterClientConfigs:
   - caBundle: LS0t...Cg==
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Collecting Data and Opening Support Cases:</strong></li>
 </ul>
