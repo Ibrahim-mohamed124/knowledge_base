@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T16:08:40.959Z
+date: 2025-10-17T16:28:04.796Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -450,10 +450,83 @@ spec:
               operator: In
               values:
                 - us-west-1</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li><strong>Taints and Tolerations:</strong>
+    <ul>
+      <li>The taints are properties of the <code>ManagedClusters</code> resource.</li>
+      <li>The tolerations apply to the <code>Placement</code> resource</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  name: cluster1
+spec:
+  hubAcceptsClient: true
+  taints:
+    - effect: NoSelect
+      key: gpu
+      value: "true"
+      timeAdded: '2025-04-23T05:12:23Z'</code></pre>
+<pre><code class="language-plaintext">apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: placement1
+  namespace: ns1
+spec:
+  tolerations:
+    - key: gpu
+      value: "true"
+      operator: Equal
+      tolerationSeconds: 300 </code></pre>
+<ul>
+  <li><strong>Prioritizers:</strong>
+    <ul>
+      <li>Sort the clusters by prioritizer scores and select the top <code>n</code> clusters from that group by using the <code>prioritizerPolicy</code> section in the <code>Placement</code> resource.</li>
+      <li>prioritizer policy:<ul>
+          <li>mode: additive or exact, In <code>Additive</code> mode, any prioritizer that is not explicitly enumerated is enabled in its default configurations. In <code>Exact</code> mode, any prioritizer that is not explicitly enumerated is weighted as zero.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">  apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: placement1
+  namespace: ns1
+spec:
+  numberOfClusters: 1 1
+  prioritizerPolicy: 2
+    mode: Additive 3
+    configurations: 4
+      - scoreCoordinate: 5
+          builtIn: ResourceAllocatableCPU 6
+        weight: 2 7
+      - scoreCoordinate:
+          builtIn: ResourceAllocatableMemory
+        weight: 2</code></pre>
+<ul>
+  <li><strong>Placement Decisions:&nbsp;</strong>
+    <ul>
+      <li>The <code>Placement</code> resource creates one ore more <code>PlacementDecision</code> resources in the same namespace with the <code>cluster.open-cluster-management.io/placement=<i>placement_name</i></code> label.&nbsp;</li>
+      <li>Contains the managed clusters that the placement selected.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: PlacementDecision
+metadata:
+  labels:
+    cluster.open-cluster-management.io/placement: placement1 
+  name: placement1-decision-1
+  namespace: default
+status:
+  decisions: &lt;ordered according to the score&gt;
+    - clusterName: cluster1
+    - clusterName: cluster2
+    - clusterName: cluster3</code></pre>
+<h3>Centralized Identity Management Service</h3>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
