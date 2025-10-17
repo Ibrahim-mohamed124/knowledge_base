@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T17:36:03.066Z
+date: 2025-10-17T17:43:46.383Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -595,6 +595,10 @@ oc get klusterlets klusterlet \
       <li><a href="https://access.redhat.com/solutions/5950901">https://access.redhat.com/solutions/5950901</a></li>
     </ul>
   </li>
+</ul>
+<pre><code class="language-plaintext">oc get crd -o name | grep \
+  open-cluster-management | xargs oc delete</code></pre>
+<ul>
   <li>When the network between the managed cluster and the hub cluster is unstable, the status of the managed cluster might alternate between <code>Unknown</code> and <code>Ready</code>.<ul>
       <li>Because RHACM retries the connection five times, the total grace period is <code>leaseDurationSeconds x 5</code>. For example, if you set the <code>leaseDurationSeconds</code> parameter to 120, then the grace period is 10 minutes (120 x 5 seconds).</li>
     </ul>
