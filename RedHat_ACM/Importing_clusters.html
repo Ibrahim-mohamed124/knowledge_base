@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T12:12:18.503Z
+date: 2025-10-17T12:27:41.289Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -270,13 +270,107 @@ spec:
   </li>
   <li>Indexer<strong>: </strong>Deployed only in the RHACM hub cluster, in the <code>open-cluster-management</code> namespace.&nbsp;<ul>
       <li>Receives data from the collectors and writes that data to a <mark class="marker-yellow">PostgreSQL database that runs as a pod in the hub cluster</mark></li>
+      <li>The search filters are the keys of the indexing process &gt; the filter name is the key and values are the objects values of a specific attribute &nbsp;e.g metadata.namespace(indexer key): value</li>
+      <li>&nbsp;Not all of objects attributes are indexed</li>
     </ul>
   </li>
   <li>Search API: The search API uses the RBAC of each managed cluster. For example, <mark class="marker-yellow">you can search for objects in a managed cluster only where you have authorization</mark>.<ul>
       <li>Some filters<mark class="marker-yellow"> allow arithmetic comparators for numeric fields</mark>, such as the <code>cpu</code>, <code>replicas</code>, <code>capacity</code>, and <code>memory</code> filters.</li>
-      <li>&nbsp;</li>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Configuring RHACM Search</h4>
+<h5>Persistent Storage for the Database</h5>
+<ul>
+  <li>By default PostgreSQL stores data in empty directory volume.</li>
+  <li>To configure PVC: Edit the &nbsp;<code>search-v2-operator</code> resource of the <code>Search</code> kind in the <code>open-cluster-management</code> namespace</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: search.open-cluster-management.io/v1alpha1
+kind: Search
+metadata:
+  name: search-v2-operator
+  namespace: open-cluster-management
+spec:
+  dbStorage:
+    size: 10Gi
+    storageClassName: &lt;SC name&gt;</code></pre>
+<h5>Resource Allocations</h5>
+<ul>
+  <li>Set the limits in the <code>search-v2-operator</code> resource in the <code>open-cluster-management</code> namespace in the hub cluster.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: search.open-cluster-management.io/v1alpha1
+kind: Search
+metadata:
+  name: search-v2-operator
+  namespace: open-cluster-management
+spec:
+  dbStorage:
+    size: 10Gi
+    storageClassName: fastdisk
+  deployments:
+    collector:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 128Mi
+        requests:
+          cpu: 250m
+          memory: 64Mi
+    database: {}
+    indexer:
+      resources:
+        limits:
+          memory: 5Gi
+        requests:
+          memory: 1Gi
+    queryapi: {}
+...output omitted...</code></pre>
+<ul>
+  <li>Set the memory limits by annotating the <code>search-collector</code> resource of the <code>ManagedClusterAddOn</code> kind in the managed cluster namespace in the hub cluster.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext"> oc annotate ManagedClusterAddOn search-collector -n mycluster \
+  addon.open-cluster-management.io/search_memory_request=512Mi \
+  addon.open-cluster-management.io/search_memory_limit=1Gi</code></pre>
+<h5>Saved Search Queries and Search Templates</h5>
+<ul>
+  <li>You can adjust the &nbsp;number of saved searches for each user by adding the <code>SAVED_SEARCH_LIMIT</code> key to the <code>console-mce-config</code> configuration map in the <code>multicluster-engine</code> namespace</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: console-mce-config
+  namespace: multicluster-engine
+  annotations:
+    installer.multicluster.openshift.io/release-version: 2.8.0
+  labels:
+    backplaneconfig.name: multiclusterengine
+data:
+  SAVED_SEARCH_LIMIT: "20"
+  LOG_LEVEL: info
+  ansibleIntegration: disabled
+  awsPrivateWizardStep: enabled
+  singleNodeOpenshift: disabled</code></pre>
+<ul>
+  <li>Replace the default search templates by creating the <code>console-search-config</code> configuration map in the <code>open-cluster-management</code> namespace.</li>
+</ul>
+<pre><code class="language-plaintext">kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: console-search-config
+  namespace: open-cluster-management
+data:
+  suggestedSearches: |-
+    [
+      {
+        "id": "search.suggested.&lt;uniqe_id&gt;.name",
+        "name": "Pods in mycluster",
+        "description": "Show the pods in the mycluster OCP cluster",
+        "searchText": "kind:Pod cluster:mycluster"
+      },
+      {
+        "id": "search.suggested.&lt;uniqe_id&gt;.name",
+        "name": "Frontend deployments",
+        "description": "Show deployments with the tier=frontend label",
+        "searchText": "kind:Deployment label:tier=frontend"
+      }
+    ]</code></pre>
