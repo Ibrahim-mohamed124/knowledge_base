@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T09:33:54.623Z
+date: 2025-10-17T09:35:25.736Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -50,7 +50,7 @@ dateCreated: 2025-10-16T19:32:45.334Z
   </table>
 </figure>
 <p>&nbsp;</p>
-<h3>Creating clusters</h3>
+<h4>Creating clusters</h4>
 <ol>
   <li>Create <code>ClusterDeployment</code> Custom Resource (CR): Core <mark class="marker-yellow">Hive resource</mark> to control the lifecycle of a cluster and the Hive API entry point</li>
   <li>The <code>ClusterDeployment</code> CR references the short name of a <code>ClusterImageSet</code> CR to specify<mark class="marker-green"> <strong>the RHOCP version to the new cluster.</strong></mark></li>
@@ -100,11 +100,11 @@ spec:
     name: mycluster-pull-secret</code></pre>
 <p>&nbsp;</p>
 <p><strong>&nbsp;4. </strong>The Hive controller watches the <code>imageSetRef.name</code> field, looks up the corresponding <code>ClusterImageSet</code> CR, and uses its <code>spec.releaseImage</code> to provision the cluster.</p>
-<h3><strong>Upgrading a cluster</strong></h3>
+<h4><strong>Upgrading a cluster</strong></h4>
 <ol>
   <li>Just change the imageSetRef.name to a later one with higher version</li>
 </ol>
-<h3>Importing Existing Clusters</h3>
+<h4>Importing Existing Clusters</h4>
 <p>From the RHACM web console, go to the <strong>Infrastructure</strong> → <strong>Clusters</strong> menu.</p>
 <p>Click <strong>Import cluster</strong>.</p>
 <p>Provide the required import cluster name.</p>
@@ -260,7 +260,7 @@ spec:
 </ul>
 <h3>Search tab</h3>
 <ul>
-  <li>&nbsp;provides visibility of the Kubernetes objects across the cluster fleet from a single user interface.</li>
+  <li>provides visibility of the Kubernetes objects across the cluster fleet from a single user interface.</li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/search-architecture.svg"></figure>
 <ul>
