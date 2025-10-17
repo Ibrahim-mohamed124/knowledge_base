@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T13:53:20.159Z
+date: 2025-10-17T16:08:40.959Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -417,7 +417,39 @@ data:
 <p style="text-align:center;">managed cluster admin</p>
 <p style="text-align:center;">susbcription-admin</p>
 <p style="text-align:center;">&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Placement</h2>
+<ul>
+  <li>Namespace-scoped resource that defines a rule to <mark class="marker-yellow">dynamically select a set of managed clusters</mark> in one or multiple managed cluster sets, which are bound to the placement namespace(the managed cluster sets).</li>
+  <li>To create the <code>Placement</code> resource, you need the <mark class="marker-yellow">cluster administrator</mark> and the <mark class="marker-yellow">cluster set administrator </mark>roles.</li>
+  <li><strong>Predicates: </strong>section in the <code>Placement</code> resource enables you to filter managed clusters from managed cluster sets by using the <code>labelSelector</code> and the <code>claimSelector</code> parameters.&nbsp;<ul>
+      <li><code>numberOfClusters</code> parameter defines the number of clusters to select.</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p><code>ClaimSelector</code><strong> is used to filter clusters based on labels attached to their </strong><code>ClusterClaims</code><strong>.</strong><br>A <strong>ClusterClaim</strong> is a <strong>cluster-scoped custom resource</strong> created on a <strong>managed cluster</strong>. These claims are collected by the <strong>registration agent</strong> and synced to the <strong>status of the corresponding </strong><code>ManagedCluster</code> on the hub cluster.</p>
+</blockquote>
+<pre><code class="language-plaintext">apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: placement1
+  namespace: default
+spec:
+  numberOfClusters: 3 
+  clusterSets: 
+    - dev
+    - stage
+  predicates: 
+    - requiredClusterSelector:
+        labelSelector: 
+          matchLabels:
+            purpose: test
+        claimSelector: 
+          matchExpressions:
+            - key: region.open-cluster-management.io
+              operator: In
+              values:
+                - us-west-1</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
