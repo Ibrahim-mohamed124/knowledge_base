@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T08:53:54.848Z
+date: 2025-10-17T09:33:54.623Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -13,6 +13,7 @@ dateCreated: 2025-10-16T19:32:45.334Z
   <li>The <strong>multicluster engine operator </strong>uses the <strong>Hive operator</strong> that is provided with Red&nbsp;Hat OpenShift Container Platform (RHOCP) to provision clusters for all <mark class="marker-yellow">providers except the on-premise clusters and hosted control planes.</mark></li>
   <li>on-premise clusters, multicluster engine operator uses the<strong> central infrastructure management and the assisted installer function from RHOCP.</strong></li>
   <li>The <strong>Hive Operator</strong> is a Kubernetes Operator developed by Red Hat to automate the provisioning, management, and lifecycle of OpenShift clusters—especially in large-scale, multi-cluster environments.</li>
+  <li>The RHACM installation process deploys <strong>the console as a plug-in to the hub OpenShift web console</strong>.</li>
   <li>Cloud Native Computing Foundation (CNCF) Kubernetes Conformance Program: ensures that Kubernetes implementations from different vendors meet a consistent set of standards, <strong>enabling interoperability</strong>, reliability, and portability across platforms.<ul>
       <li>Amazon Web Services</li>
       <li>Amazon Web Services GovCloud</li>
@@ -31,7 +32,7 @@ dateCreated: 2025-10-16T19:32:45.334Z
     <tbody>
       <tr>
         <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Clusters</td>
-        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Use to create clusters or to import existig clusters.</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Use to create clusters or to import existing clusters.</td>
       </tr>
       <tr>
         <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Automation</td>
@@ -233,6 +234,37 @@ spec:
   <li>The <code>open-cluster-management: klusterlet-admin-aggregate-clusterrole</code> cluster role</li>
   <li>The <code>klusterlet</code> cluster role binding</li>
 </ul>
-<p>&nbsp;</p>
+<h3>Home tab</h3>
+<p>The <strong>Home</strong> section provides information about RHACM and its use cases, and includes shortcuts to the main product features. The section contains two submenus:</p>
+<ul>
+  <li><strong>Welcome:&nbsp;</strong> provides information and links to access the main RHACM features. This page includes a link for contacting the Red&nbsp;Hat support team.</li>
+  <li><strong>Overview: </strong>provides a summary and a high-level overview of the details and statuses of the managed clusters.</li>
+</ul>
+<h3>Applications tab</h3>
+<ul>
+  <li>Use the <strong>Applications</strong> section to create, deploy, or manage applications across a cluster fleet. For this component, RHACM integrates with Red&nbsp;Hat OpenShift GitOps, which is based on Argo CD.</li>
+</ul>
+<h3>Governance tab</h3>
+<ul>
+  <li>Use the <strong>Governance</strong> section to control and enforce compliance standards for the cluster fleet. You create and manage policies and policy controllers, and apply them to the cluster fleet.</li>
+</ul>
+<h3>Credentials tab</h3>
+<ul>
+  <li>A credential stores the connection details that RHACM uses for<mark class="marker-yellow"> accessing an external entity</mark>, such as a cloud provider or an external application platform. RHACM uses the following credential types:<ul>
+      <li><strong>Cloud provider credentials,</strong> such as Amazon Web Services, Google Cloud Platform, and Microsoft Azure</li>
+      <li><strong>Data center credentials</strong>, such as Red&nbsp;Hat OpenStack Platform and bare metal resources</li>
+      <li>Automation and other credentials, such as<strong> Red&nbsp;Hat Ansible Automation Platform</strong></li>
+      <li>Use the <strong>Credentials</strong> section to create and administer credentials for all your cloud providers and systems</li>
+    </ul>
+  </li>
+</ul>
+<h3>Search tab</h3>
+<ul>
+  <li>&nbsp;provides visibility of the Kubernetes objects across the cluster fleet from a single user interface.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/search-architecture.svg"></figure>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
