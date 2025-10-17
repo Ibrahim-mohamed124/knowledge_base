@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T16:40:56.065Z
+date: 2025-10-17T16:48:17.219Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-16T19:32:45.334Z
@@ -555,7 +555,9 @@ oc logs -n multicluster-engine \
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">oc get klusterlets klusterlet \
+<pre><code class="language-plaintext">oc get managedcluster mycluster \
+  -o jsonpath-as-json='{.status.conditions}'
+oc get klusterlets klusterlet \
   -o jsonpath-as-json='{.status.conditions}'
 [
     [
@@ -579,4 +581,38 @@ oc logs -n multicluster-engine \
 ...output omitted...
     ]
 ]</code></pre>
+<ul>
+  <li>Importing a managed cluster that was previously attached to another RHACM hub might fail. This issue occurs when the managed cluster was not properly detached: some <mark class="marker-yellow">stale resources</mark>, such as the <code>klusterlet</code> resource, might still exist.<ul>
+      <li>clean up the managed cluster by deleting the <code>klusterlet</code> resource, the <code>open-cluster-management-agent</code> and <code>open-cluster-management-agent-addon</code> namespaces, and the RHACM custom resource definitions (CRDs).</li>
+      <li><a href="https://access.redhat.com/solutions/5950901">https://access.redhat.com/solutions/5950901</a></li>
+    </ul>
+  </li>
+  <li>When the network between the managed cluster and the hub cluster is unstable, the status of the managed cluster might alternate between <code>Unknown</code> and <code>Ready</code>.<ul>
+      <li>Because RHACM retries the connection five times, the total grace period is <code>leaseDurationSeconds x 5</code>. For example, if you set the <code>leaseDurationSeconds</code> parameter to 120, then the grace period is 10 minutes (120 x 5 seconds).</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+...output omitted...
+  name: mycluster
+spec:
+  hubAcceptsClient: true
+  leaseDurationSeconds: 60 &gt;&gt; default reporting period
+  managedClusterClientConfigs:
+  - caBundle: LS0t...Cg==
+...output omitted...</code></pre>
+<ul>
+  <li><strong>Collecting Data and Opening Support Cases:</strong></li>
+</ul>
+<pre><code class="language-plaintext">oc adm must-gather \
+  --image=registry.redhat.io/rhacm2/acm-must-gather-rhel9:v2.13 \
+  --dest-dir=./must-gather-rhacm
+oc get clusterversion \
+  -o jsonpath='{.items[].spec.clusterID}{"\n"}'
+date +"%m-%d-%Y-%H-%M-%S"
+tar cvaf \
+  must-gather-05-25-2025-12-45-36-2e52...9c5b.tar.gz \
+  ./must-gather-rhacm</code></pre>
 <p>&nbsp;</p>
