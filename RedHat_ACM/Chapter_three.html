@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T08:40:16.127Z
+date: 2025-10-18T08:46:28.767Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
@@ -137,13 +137,84 @@ spec:
 <ul>
   <li>Policy controllers monitor whether your cluster complies with a policy, and report the policy status</li>
   <li>Supported controllers<ul>
-      <li>Kubernetes Configuration Policy Controller</li>
-      <li>Certificate Policy Controller</li>
-      <li>Policy Set Controller</li>
-      <li>Operator Policy Controller</li>
-      <li>&nbsp;</li>
+      <li>Kubernetes Configuration Policy Controller<ul>
+          <li>manages, configures, and monitors Kubernetes resources.</li>
+          <li>monitors policy violations and remediates them by using the <i>enforce</i> feature.&nbsp;</li>
+          <li>install, configure, or retrieve reports from other operators such as a compliance operator.</li>
+        </ul>
+      </li>
+      <li>Certificate Policy Controller<ul>
+          <li>monitors certificates for the selected namespaces.&nbsp;</li>
+          <li>certificate policy has a namespace selector to exclude or include namespaces</li>
+          <li>detects when a certificate is about to expire in the default namespace.</li>
+        </ul>
+      </li>
     </ul>
   </li>
+</ul>
+<pre><code class="language-plaintext">policy-templates:
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: CertificatePolicy
+      metadata:
+        name: policy-certificate-example
+      spec:
+        namespaceSelector:
+          include:
+            - default
+          exclude:
+            - kube-*
+        remediationAction: inform
+        severity: low
+        minimumDuration: 300h</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;">Parameter</th>
+        <th style="padding:5px;vertical-align:top;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>severity</code></td>
+        <td style="padding:5px;vertical-align:top;">Reports when the policy is non-compliant.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>remediationAction</code></td>
+        <td style="padding:5px;vertical-align:top;">You can set the parameter to <code>inform</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>minimumDuration</code></td>
+        <td style="padding:5px;vertical-align:top;">The minimum duration for the certificate expiration. For example, if the parameter value is set to <code>300h</code>, and any certificates have an expiration age of fewer than 300 hours, then the policy displays the <code>Not-compliant</code> status.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>minimumCADuration</code></td>
+        <td style="padding:5px;vertical-align:top;">The minimum duration for the signing certificate expiration.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>maximumDuration</code></td>
+        <td style="padding:5px;vertical-align:top;">The maximum duration for the certificate expiration. For example, if the parameter value is set to <code>300h</code>, and any certificates have an expiration age of more than 300 hours, then the policy displays the <code>Not-compliant</code> status.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>maximumCADuration</code></td>
+        <td style="padding:5px;vertical-align:top;">The maximum duration for the signing certificate expiration.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>allowedSANPattern</code></td>
+        <td style="padding:5px;vertical-align:top;">You can specify an expression with this parameter. It compares patterns against DNS names. That expression must be present in every SAN entry in the certificates.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>disallowedSANPattern</code></td>
+        <td style="padding:5px;vertical-align:top;">You can specify an expression with this parameter. It compares patterns against DNS names. That expression must not be present in any SAN entry in the certificates.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>Policy Set Controller</li>
+  <li>Operator Policy Controller</li>
+  <li>&nbsp;</li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
