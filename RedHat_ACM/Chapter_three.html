@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T14:22:19.819Z
+date: 2025-10-18T17:50:00.076Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
@@ -42,7 +42,7 @@ dateCreated: 2025-10-17T18:52:01.980Z
       <li>Generates the policies in the managed cluster namespace, depending on the placements that are bound to the root policy</li>
       <li>Watches Placement, PlacementBinding, PolicyAutomation objects</li>
       <li>Add the compliance state from replicated polices(the ones that it generated in the managed cluster namespaces) to the root policy</li>
-      <li>Started the automated processes from policyAutomation objects&nbsp;</li>
+      <li>Started the automated processes from policyAutomation objects</li>
     </ul>
   </li>
   <li><strong>The governance policy add-on controller:</strong>
@@ -68,7 +68,7 @@ dateCreated: 2025-10-17T18:52:01.980Z
   <p>policy-based framework: Every <code>Policy</code> object requires the <code>policy-templates</code>, <code>Placement</code>, and <code>PlacementBinding</code> templates.</p>
 </blockquote>
 <ul>
-  <li>Policy-template: provide a template inside the Policy object to create policies&nbsp;</li>
+  <li>Policy-template: provide a template inside the Policy object to create policies</li>
   <li>Placement: to target specific clusters</li>
   <li>PlacementBinding: to binds the policy to a placement object</li>
   <li>Policies cannot be created in the managed cluster namespaces, and RHACM will delete it automatically if created</li>
@@ -139,12 +139,12 @@ spec:
   <li>Supported controllers<ul>
       <li>Kubernetes Configuration Policy Controller<ul>
           <li>manages, configures, and monitors Kubernetes resources.</li>
-          <li>monitors policy violations and remediates them by using the <i>enforce</i> feature.&nbsp;</li>
+          <li>monitors policy violations and remediates them by using the <i>enforce</i> feature.</li>
           <li>install, configure, or retrieve reports from other operators such as a compliance operator.</li>
         </ul>
       </li>
       <li>Certificate Policy Controller<ul>
-          <li>monitors certificates for the selected namespaces.&nbsp;</li>
+          <li>monitors certificates for the selected namespaces.</li>
           <li>certificate policy has a namespace selector to exclude or include namespaces</li>
           <li>detects when a certificate is about to expire in the default namespace.</li>
         </ul>
@@ -167,6 +167,7 @@ spec:
         remediationAction: inform
         severity: low
         minimumDuration: 300h</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <thead>
@@ -234,6 +235,7 @@ status:
   - placementBinding: binding1
     placement: placement1
     policySet: policyset-ps</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Operator Policy Controller<ul>
       <li>install and monitor the Operator Lifecycle Manager (OLM) operators in your clusters</li>
@@ -299,12 +301,14 @@ oc delete placementrule my-placement-rule -n my-namespace
 kind: Kustomization
 generators: 
 - policy-generator-config.yaml</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">tree base
 base/
 ├── kustomization.yaml
 └── manifest-files
 │   └── manifest.yaml &gt; objects to be included in the policy
 └── policy-generator-config.yaml &gt; generator config file</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: policy.open-cluster-management.io/v1 &gt; policy generator config file
 kind: PolicyGenerator
 metadata:
@@ -318,6 +322,7 @@ policies:
   - name: &lt;object_name&gt;
     manifests: 
       - path: /manifest-files/manifest.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>kubectl kustomize --enable-alpha-plugins <code><i>path-to-kustomize-directory</i></code></li>
 </ul>
@@ -330,7 +335,7 @@ policies:
 </ol>
 <h4>The Policy Generator YAML Structure</h4>
 <ul>
-  <li><code>policyDefaults</code> section: introduce the default parameters&nbsp;<ul>
+  <li><code>policyDefaults</code> section: introduce the default parameters<ul>
       <li>Except for the namespace, <mark class="marker-yellow">any default value that is configured in the </mark><code><mark class="marker-yellow">policyDefaults</mark></code><mark class="marker-yellow"> section is overridden by an entry in the </mark><code><mark class="marker-yellow">policies</mark></code><mark class="marker-yellow"> section</mark>, and any default value that is configured in the <code>policySetDefaults</code> section is overridden by an entry in the <code>policySets</code> section.</li>
     </ul>
   </li>
@@ -341,12 +346,13 @@ policy-gen/
 └── manifest-files
 │   └── manifest.yaml
 └── policy-generator-config.yaml</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">PolicyGenerator &lt;dir&gt;/policygenerator.yaml</code></pre>
 <h3>Compliance&nbsp;</h3>
 <blockquote>
   <p>Compliance management is a continuous process to ensure that IT systems are compliant with the organization's policies and procedures.&nbsp;</p>
 </blockquote>
-<h3>The RHOCP Compliance Operator</h3>
+<h2>The RHOCP Compliance Operator</h2>
 <blockquote>
   <p>OpenSCAP is an open-source toolkit for automated security compliance, vulnerability assessment, and configuration auditing — especially powerful in Linux and OpenShift environments.</p>
 </blockquote>
@@ -374,9 +380,9 @@ policy-gen/
   <li><strong>ProfileBundle</strong>
     <ul>
       <li>The Compliance operator includes preconfigured <code>ProfileBundle</code> objects. The <code>ProfileBundle</code> object specifies the URL of a container image that contains the content image and the file that contains the compliance content. A <code>ProfileBundle</code> object can specify multiple <code>Profile</code> objects.</li>
-      <li>By default, when the compliance operator is deployed, it creates two <code>ProfileBundle</code> objects, one for <code>OCP</code> and one for <code>Red&nbsp;Hat CoreOS</code> (RHCOS).&nbsp;</li>
-      <li>Cluster-level scans use the <code>OCP</code> object, and node-level scans use the <code>RHCOS</code> object.&nbsp;</li>
-      <li>&nbsp;<code><strong>oc get profilebundle.compliance -n openshift-compliance</strong></code></li>
+      <li>By default, when the compliance operator is deployed, it creates two <code>ProfileBundle</code> objects, one for <code>OCP</code> and one for <code>Red&nbsp;Hat CoreOS</code> (RHCOS).</li>
+      <li>Cluster-level scans use the <code>OCP</code> object, and node-level scans use the <code>RHCOS</code> object.</li>
+      <li><code><strong>oc get profilebundle.compliance -n openshift-compliance</strong></code></li>
     </ul>
   </li>
   <li><strong>Profile</strong>
@@ -419,4 +425,14 @@ policy-gen/
     </ul>
   </li>
   <li><code><i><strong>ComplianceCheckResult</strong></i></code>: stores the results of the compliance scan</li>
+</ul>
+<h2>Integration of Other Policy Engines with RHACM</h2>
+<h3><strong>Open Policy Agent (OPA)</strong></h3>
+<ul>
+  <li>OPA is a general-purpose policy engine, to enforce policies in microservices, Kubernetes, CI/CD pipelines, API gateways, and more.</li>
+  <li>Use Rego &nbsp;as<mark class="marker-yellow"> high level</mark> declarative language to write polices, In this way, the application does not have to take decisions as they provided in the policy</li>
+</ul>
+<h4><strong>OPA gatekeeper</strong></h4>
+<ul>
+  <li><strong>gatekeeper</strong></li>
 </ul>
