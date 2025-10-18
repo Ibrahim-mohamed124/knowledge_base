@@ -2,12 +2,13 @@
 title: Basics
 description: 
 published: true
-date: 2025-09-29T19:40:29.294Z
+date: 2025-10-18T19:28:07.690Z
 tags: security, introduction, basics
 editor: ckeditor
 dateCreated: 2025-09-29T19:24:21.121Z
 -->
 
+<h1>&nbsp;</h1>
 <h1>&nbsp;security controls</h1>
 <ul>
   <li>An action or countermeasure to address security attacks (defensive measuers)<ul>
@@ -35,8 +36,52 @@ dateCreated: 2025-09-29T19:24:21.121Z
 <p style="text-align:center;">Types of security controls</p>
 <ol>
   <li style="text-align:justify;">Preventive: Proactive action to stop before incident &gt; polices</li>
-  <li style="text-align:justify;">Deterrent: Discourage users from doing somethings &gt; warnings&nbsp;</li>
+  <li style="text-align:justify;">Deterrent: Discourage users from doing somethings &gt; warnings</li>
   <li style="text-align:justify;">Detective: Monitor and identify incidents</li>
   <li style="text-align:justify;">Corrective controls: Mitigate the effect of the attack &gt; backups</li>
-  <li style="text-align:justify;">Compensating: Reduce the attack surface on a system that can not be replaced or upgraded&nbsp;</li>
+  <li style="text-align:justify;">Compensating: Reduce the attack surface on a system that can not be replaced or upgraded</li>
 </ol>
+<h3 style="text-align:justify;">CIA triad</h3>
+<ol>
+  <li style="text-align:justify;">Confidentiality:&nbsp;<ul>
+      <li style="text-align:justify;">Preventing unauthorized people from getting information</li>
+      <li style="text-align:justify;">Least privilege principle&nbsp;</li>
+      <li style="text-align:justify;">File encryption</li>
+    </ul>
+  </li>
+  <li style="text-align:justify;">Integrity &nbsp;<ul>
+      <li style="text-align:justify;">hashes</li>
+    </ul>
+  </li>
+  <li style="text-align:justify;">Availability</li>
+</ol>
+<h3 style="text-align:justify;">Non-repudiation &amp; AAA</h3>
+<ul>
+  <li style="text-align:justify;">Authentication, Authorization, Accounting(auditing or logging)</li>
+  <li style="text-align:justify;">Non-repudiation: Attribution of an action to an individual for accountability<ul>
+      <li style="text-align:justify;">Digital signatures</li>
+      <li style="text-align:justify;">PKI</li>
+      <li style="text-align:justify;">Audit Logs</li>
+      <li style="text-align:justify;">Time stamping&nbsp;</li>
+    </ul>
+  </li>
+</ul>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>RBAC(role)</td>
+        <td>ABAC(attribute)</td>
+      </tr>
+      <tr>
+        <td>Based on roles</td>
+        <td>Based of the attributes of a user like time of access, department</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h3>Zero trust&nbsp;</h3>
+<ul>
+  <li>Unlike the legacy concept of internal and external to a Network ( Completely trusting the internals ), Zero Trust do not fully trust anyone</li>
+  <li>&nbsp;</li>
+</ul>
