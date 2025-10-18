@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T08:46:28.767Z
+date: 2025-10-18T08:52:45.634Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
@@ -212,10 +212,57 @@ spec:
   </table>
 </figure>
 <ul>
-  <li>Policy Set Controller</li>
-  <li>Operator Policy Controller</li>
-  <li>&nbsp;</li>
+  <li>Policy Set Controller<ul>
+      <li>place together the policies that are in the same namespace, to deploy them at the same time to a cluster.</li>
+      <li>A <code>PolicySet</code> resource requires <code>PlacementBinding</code> to bind the <code>PolicySet</code> and <code>Placement</code> resources.</li>
+    </ul>
+  </li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: policy.open-cluster-management.io/v1beta1
+kind: PolicySet
+metadata:
+  name: pci
+  namespace: default
+spec:
+  description: Policies for PCI compliance
+  policies: 
+  - policy-pod
+  - policy-namespace
+status:
+  compliant: NonCompliant
+  placement:
+  - placementBinding: binding1
+    placement: placement1
+    policySet: policyset-ps</code></pre>
+<ul>
+  <li>Operator Policy Controller<ul>
+      <li>install and monitor the Operator Lifecycle Manager (OLM) operators in your clusters</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: policy.open-cluster-management.io/v1
+kind: Policy 
+metadata:
+  name: install-quay
+  namespace: open-cluster-management-global-set
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1beta1
+        kind: OperatorPolicy 
+        metadata:
+          name: install-quay
+        spec:
+          remediationAction: enforce 
+          severity: critical
+          complianceType: musthave 
+          upgradeApproval: None 
+          subscription: 
+            channel: stable-3.11
+            name: quay-operator
+            source: redhat-operators
+            sourceNamespace: openshift-marketplace </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
