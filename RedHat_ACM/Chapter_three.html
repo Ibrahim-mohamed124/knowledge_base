@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T11:13:08.080Z
+date: 2025-10-18T11:15:28.627Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
@@ -379,6 +379,7 @@ policy-gen/
   <li><strong>Profile</strong>
     <ul>
       <li>The <code>Profile</code> object defines the rules and variables that can be evaluated for a certain compliance standard. You cannot create or modify the <code>Profile</code> object manually because it is derived from a single <code>ProfileBundle</code> object.</li>
+      <li><code><strong>oc get profile.compliance -n openshift-compliance -l compliance.openshift.io/profile-bundle=rhcos4</strong></code></li>
     </ul>
   </li>
   <li><strong>TailoredProfile</strong>
@@ -414,4 +415,5 @@ policy-gen/
       <li>The <code>ComplianceSuite</code> object is a bundle of <code>ComplianceScan</code> objects and maintains a record of each scan. Although the <code>ComplianceSuite</code> objects are automatically created when the <code>ScanSetting</code> and <code>ScanSettingBinding</code> objects are created, you can create them directly in specific use cases.</li>
     </ul>
   </li>
+  <li>&nbsp;</li>
 </ul>
