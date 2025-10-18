@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T11:15:28.627Z
+date: 2025-10-18T11:25:32.127Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
@@ -374,6 +374,9 @@ policy-gen/
   <li><strong>ProfileBundle</strong>
     <ul>
       <li>The Compliance operator includes preconfigured <code>ProfileBundle</code> objects. The <code>ProfileBundle</code> object specifies the URL of a container image that contains the content image and the file that contains the compliance content. A <code>ProfileBundle</code> object can specify multiple <code>Profile</code> objects.</li>
+      <li>By default, when the compliance operator is deployed, it creates two <code>ProfileBundle</code> objects, one for <code>OCP</code> and one for <code>Red&nbsp;Hat CoreOS</code> (RHCOS).&nbsp;</li>
+      <li>Cluster-level scans use the <code>OCP</code> object, and node-level scans use the <code>RHCOS</code> object.&nbsp;</li>
+      <li>&nbsp;<code><strong>oc get profilebundle.compliance -n openshift-compliance</strong></code></li>
     </ul>
   </li>
   <li><strong>Profile</strong>
