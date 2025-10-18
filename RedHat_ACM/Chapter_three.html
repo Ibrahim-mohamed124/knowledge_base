@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T09:59:51.909Z
+date: 2025-10-18T10:35:04.744Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
@@ -280,9 +280,68 @@ oc delete placementrule my-placement-rule -n my-namespace
 </ul>
 <h2>Policy Generator</h2>
 <ul>
-  <li>&nbsp;</li>
+  <li>Convert any manifest files to RHACM configuration policies, including files that are created from the <code>kustomize</code> directory.</li>
+  <li>Patch the input manifests before they are inserted into a generated RHACM policy.</li>
+  <li>Generate additional configuration policies so you can report on Gatekeeper policy violations through RHACM.</li>
+  <li>Generate policy sets on the hub cluster.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Interaction with Policy Generator</h4>
+<ol>
+  <li>By kustomize: by installing policy generator plugin into <code>${HOME}/.config/kustomize/plugin/policy.open-cluster-management.io/v1/policygenerator</code> directory.<ul>
+      <li>requirements:<ul>
+          <li>kustomization file: With policy-generator config file</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+<pre><code class="language-plaintext">apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators: 
+- policy-generator-config.yaml</code></pre>
+<pre><code class="language-plaintext">tree base
+base/
+├── kustomization.yaml
+└── manifest-files
+│   └── manifest.yaml &gt; objects to be included in the policy
+└── policy-generator-config.yaml &gt; generator config file</code></pre>
+<pre><code class="language-plaintext">apiVersion: policy.open-cluster-management.io/v1 &gt; policy generator config file
+kind: PolicyGenerator
+metadata:
+  name: namespace-existence-policies
+policyDefaults:
+  namespace: policies 
+  severity: low 
+  remediationAction: inform 
+  complianceType: musthave 
+policies: 
+  - name: &lt;object_name&gt;
+    manifests: 
+      - path: /manifest-files/manifest.yaml</code></pre>
+<ul>
+  <li>kubectl kustomize --enable-alpha-plugins <code><i>path-to-kustomize-directory</i></code></li>
+</ul>
+<ol>
+  <li><strong>The PolicyGenerator command-line tool:</strong>
+    <ul>
+      <li><strong>Download from </strong>the <strong>Command Line Tools</strong> page in the RHACM web console</li>
+    </ul>
+  </li>
+</ol>
+<h4>The Policy Generator YAML Structure</h4>
+<ul>
+  <li><code>policyDefaults</code> section: introduce the default parameters&nbsp;<ul>
+      <li>Except for the namespace, <mark class="marker-yellow">any default value that is configured in the </mark><code><mark class="marker-yellow">policyDefaults</mark></code><mark class="marker-yellow"> section is overridden by an entry in the </mark><code><mark class="marker-yellow">policies</mark></code><mark class="marker-yellow"> section</mark>, and any default value that is configured in the <code>policySetDefaults</code> section is overridden by an entry in the <code>policySets</code> section.</li>
+    </ul>
+  </li>
+  <li><code>policies</code> section: Include a list of polices names and the paths of objects that is included in the policy</li>
+</ul>
+<pre><code class="language-plaintext">tree &lt;dir&gt;
+policy-gen/
+└── manifest-files
+│   └── manifest.yaml
+└── policy-generator-config.yaml</code></pre>
+<pre><code class="language-plaintext">PolicyGenerator &lt;dir&gt;/policygenerator.yaml</code></pre>
+<h3>Updating Policy Generator Policies</h3>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
