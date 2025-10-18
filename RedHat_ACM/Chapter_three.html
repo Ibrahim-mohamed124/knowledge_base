@@ -2,12 +2,148 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-17T18:52:01.980Z
+date: 2025-10-18T08:35:51.275Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
 -->
 
+<blockquote>
+  <p><i>Governance</i> refers specifically to the set of rules, controls, policies, and resolutions in place to enforce policy standards. RHACM governance provides a policy-based approach for companies to monitor these standards.</p>
+</blockquote>
+<h3>Use cases of RHACM in governance&nbsp;</h3>
 <ul>
-  <li>test</li>
+  <li><strong>Manage compliance of multiple clusters, and remediates the non conformities by using policy controllers.</strong></li>
+  <li><strong>Check for policy violations by</strong>
+    <ul>
+      <li>Enforce security by using <strong>built-in policies.</strong></li>
+      <li>Install <strong>operators </strong>to check for policy violations.</li>
+      <li>Detect certificates that are close to expiring or that contain DNS names that fail to match specified patterns across your clusters.</li>
+    </ul>
+  </li>
+  <li><strong>Work across different environments, clouds, datacenters…</strong></li>
 </ul>
+<h3>Components of RHACM Governance</h3>
+<ol>
+  <li><strong>RHACM governance dashboard: </strong>displays a list of policies, cluster violations, and policy violations.</li>
+  <li><strong>Policy-based governance framework: </strong>supports <mark class="marker-yellow">policy creation and deployment to the managed clusters based on placement rules</mark>.</li>
+  <li><strong>Policy controllers:&nbsp;</strong>
+    <ul>
+      <li>Monitor policies and generate Kubernetes events for violation when the cluster is non-compliant.</li>
+      <li>propagate the violations to the hub cluster.</li>
+    </ul>
+  </li>
+  <li><strong>Open source community: </strong>The <code>stolostron/policy-collection</code> repository on GitHub has stable, community policy examples. You can contribute and deploy policies by using GitOps.</li>
+</ol>
+<h4>Policy-based Governance Framework Architecture</h4>
+<ol>
+  <li><strong>The policy propagator controller:</strong>
+    <ul>
+      <li>Generates the policies in the managed cluster namespace, depending on the placements that are bound to the root policy</li>
+      <li>Watches Placement, PlacementBinding, PolicyAutomation objects</li>
+      <li>Add the compliance state from replicated polices(the ones that it generated in the managed cluster namespaces) to the root policy</li>
+      <li>Started the automated processes from policyAutomation objects&nbsp;</li>
+    </ul>
+  </li>
+  <li><strong>The governance policy add-on controller:</strong>
+    <ul>
+      <li>Manages the installation of policy controllers on managed clusters, and manages the governance policy framework controller on the managed clusters</li>
+    </ul>
+  </li>
+  <li><strong>The governance policy framework controller:</strong>
+    <ul>
+      <li>Runs as <code>governance-policy-framework</code> pod on managed clusters on the managed clusters. Contains many controllers:<ul>
+          <li><code>Spec Sync</code> controller</li>
+          <li><code>Status Sync</code> controller</li>
+          <li><code>Template Sync</code> controller: monitors policies in the cluster namespace and updates defined objects in the policy templates for any policy change.</li>
+          <li><code>Gatekeeper Sync</code> controller: &nbsp;records <code>Gatekeeper</code> constraint audit results as compliance events in the corresponding policies.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+<figure class="image image_resized" style="width:100%;"><img src="/governance-architecture-1.svg"></figure>
+<h3>RHACM Policy Overview</h3>
+<blockquote>
+  <p>policy-based framework: Every <code>Policy</code> object requires the <code>policy-templates</code>, <code>Placement</code>, and <code>PlacementBinding</code> templates.</p>
+</blockquote>
+<ul>
+  <li>Policy-template: provide a template inside the Policy object to create policies&nbsp;</li>
+  <li>Placement: to target specific clusters</li>
+  <li>PlacementBinding: to binds the policy to a placement object</li>
+  <li>Policies cannot be created in the managed cluster namespaces, and RHACM will delete it automatically if created</li>
+</ul>
+<h4>Policy YAML File</h4>
+<pre><code class="language-plaintext">apiVersion: policy.open-cluster-management.io/v1 
+kind: Policy 
+metadata:
+  name: &lt; policy-namespace &gt;
+  annotations: 
+    policy.open-cluster-management.io/standards: NIST SP 800-53 
+    policy.open-cluster-management.io/categories: CM Configuration Management 
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration 
+spec:
+  remediationAction: inform 
+  disabled: false 
+  policy-templates: 
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-namespace-example
+        spec:
+          remediationAction: inform _# the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction._
+          severity: low
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["default"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: Namespace _# must have namespace 'prod'_
+                apiVersion: v1
+                metadata:
+                  name: prod
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-namespace
+placementRef:
+  name: placement-policy-namespace
+  kind: Placement
+  apiGroup: cluster.open-cluster-management.io
+subjects:
+- name: policy-namespace
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: Placement
+metadata:
+  name: placement-policy-namespace
+spec:
+  predicates:
+  - requiredClusterSelector:11
+      labelSelector:
+        matchExpressions:
+        - {key: environment, operator: In, values: ["dev"]}
+    tolerations:
+	- key: cluster.open-cluster-management.io/unavailable
+          operator: Exists
+        - key: cluster.open-cluster-management.io/unreachable
+          operator: Exists</code></pre>
+<h3>RHACM Policy Controllers Overview</h3>
+<ul>
+  <li>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
