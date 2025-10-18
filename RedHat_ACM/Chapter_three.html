@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T10:39:22.017Z
+date: 2025-10-18T11:13:08.080Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-17T18:52:01.980Z
@@ -342,5 +342,76 @@ policy-gen/
 │   └── manifest.yaml
 └── policy-generator-config.yaml</code></pre>
 <pre><code class="language-plaintext">PolicyGenerator &lt;dir&gt;/policygenerator.yaml</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Compliance&nbsp;</h3>
+<blockquote>
+  <p>Compliance management is a continuous process to ensure that IT systems are compliant with the organization's policies and procedures.&nbsp;</p>
+</blockquote>
+<h3>The RHOCP Compliance Operator</h3>
+<blockquote>
+  <p>OpenSCAP is an open-source toolkit for automated security compliance, vulnerability assessment, and configuration auditing — especially powerful in Linux and OpenShift environments.</p>
+</blockquote>
+<ul>
+  <li>The compliance operator i<mark class="marker-yellow">nspects Kubernetes objects and the nodes that are running on the cluster to detect any gaps in compliance</mark>. Then inform or remediate the findings</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/policy-compliance-operator.svg"></figure>
+<h3>OpenSCAP</h3>
+<ul>
+  <li>a <strong>Security Content Automation Protocol (SCAP)</strong> compliant scanner that scans for compliance and vulnerabilities.</li>
+  <li>OpenSCAP employs community-based compliance content that was developed as part of the <code>ComplianceAsCode/content</code> project that is distributed as a container image to allow rapid updates</li>
+  <li>The compliance operator consumes the compliance content from the container image and exposes it in a custom resource.</li>
+</ul>
+<h3>Compliance Operator Policy</h3>
+<ul>
+  <li>RHACM uses the compliance operator policy to deploy the compliance operator across a fleet of clusters.</li>
+  <li>Creating a compliance operator policy results in the creation of a namespace(openshift-compliance), an OperatorGroup, and a subscription.</li>
+</ul>
+<h3>Compliance Operator Policy CRDs</h3>
+<ul>
+  <li>The compliance operator uses custom resource definitions that represent security policy content, the configuration or result, and its scanning processes.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/compliance_operator.svg"></figure>
+<ul>
+  <li><strong>ProfileBundle</strong>
+    <ul>
+      <li>The Compliance operator includes preconfigured <code>ProfileBundle</code> objects. The <code>ProfileBundle</code> object specifies the URL of a container image that contains the content image and the file that contains the compliance content. A <code>ProfileBundle</code> object can specify multiple <code>Profile</code> objects.</li>
+    </ul>
+  </li>
+  <li><strong>Profile</strong>
+    <ul>
+      <li>The <code>Profile</code> object defines the rules and variables that can be evaluated for a certain compliance standard. You cannot create or modify the <code>Profile</code> object manually because it is derived from a single <code>ProfileBundle</code> object.</li>
+    </ul>
+  </li>
+  <li><strong>TailoredProfile</strong>
+    <ul>
+      <li>Use the <code>TailoredProfile</code> object to modify the default <code>Profile</code> object based on your organization requirements. You can enable or disable rules, set variable values, and provide justification for the customization.</li>
+    </ul>
+  </li>
+  <li><strong>ScanSetting</strong>
+    <ul>
+      <li>The <code>ScanSetting</code> custom resource defines the scan settings:<ul>
+          <li>The nodes to scan</li>
+          <li>The allocated storage for the results collection</li>
+          <li>The time and frequency for the scan</li>
+          <li>The retention policy</li>
+          <li>The compliance operator creates a <code>ScanSetting</code> object named <code>default</code>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>ScanSettingBinding</strong>
+    <ul>
+      <li>The <code>ScanSettingBinding</code> object binds the <code>ScanSetting</code> object with the profiles.</li>
+      <li>The <code>ScanSetting</code> and <code>ScanSettingBinding</code> objects generate the <code>ComplianceSuite</code> object.</li>
+    </ul>
+  </li>
+  <li><strong>ComplianceScan</strong>
+    <ul>
+      <li>The <code>ComplianceScan</code> object represents a single scan and is referenced by the <code>ComplianceSuite</code> object.</li>
+    </ul>
+  </li>
+  <li><strong>ComplianceSuite</strong>
+    <ul>
+      <li>The <code>ComplianceSuite</code> object is a bundle of <code>ComplianceScan</code> objects and maintains a record of each scan. Although the <code>ComplianceSuite</code> objects are automatically created when the <code>ScanSetting</code> and <code>ScanSettingBinding</code> objects are created, you can create them directly in specific use cases.</li>
+    </ul>
+  </li>
+</ul>
