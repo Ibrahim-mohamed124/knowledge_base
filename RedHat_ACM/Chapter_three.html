@@ -2,10 +2,10 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-18T18:58:20.355Z
+date: 2025-10-19T08:10:21.131Z
 tags: 
 editor: ckeditor
-dateCreated: 2025-10-17T18:52:01.980Z
+dateCreated: 2025-10-19T08:02:50.801Z
 -->
 
 <blockquote>
@@ -435,10 +435,10 @@ policy-gen/
 <h4><strong>OPA gatekeeper</strong></h4>
 <ul>
   <li>Gatekeeper is a<strong> </strong>OPA for Kubernetes environments and works as Kubernetes admission controller webhook</li>
-  <li>RHACM provides a built-in policy to deploy the OPA gatekeeper operator.&nbsp;</li>
+  <li>RHACM provides a built-in policy to deploy the OPA gatekeeper operator.</li>
   <li>GateKeeper operator provides constraints and constraint templates to define admission and audit templates for multiple clusters.</li>
   <li>Integration steps:<ol>
-      <li>Deployment of gatekeeper operator and creation of gatekeeper custom resource&nbsp;</li>
+      <li>Deployment of gatekeeper operator and creation of gatekeeper custom resource</li>
       <li>Creation of constraints, audit, and admission templates by <mark class="marker-yellow">a configuration policy&nbsp;</mark></li>
     </ol>
   </li>
@@ -449,4 +449,58 @@ policy-gen/
   <li>A configuration policy installs the Gatekeeper operator in the targeted cluster or set of clusters based on a placement and creates the <code>Gatekeeper</code> custom resource.</li>
 </ul>
 <h5>Gatekeeper Custom Resource Configuration</h5>
-<p>&nbsp;</p>
+<ul>
+  <li>Exclude namespaces from certain processes for all constraints on your hub cluster.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: operator.gatekeeper.sh/v1alpha1
+kind: Gatekeeper
+metadata:
+  name: gatekeeper
+...output omitted...
+spec:
+  audit:
+    logLevel: INFO
+    replicas: 1
+  mutatingWebhook: Disabled
+  validatingWebhook: Enabled
+  webhook:
+    emitAdmissionEvents: Enabled
+    logLevel: INFO
+    replicas: 2
+  config: 1
+    matches:
+    - excludedNamespaces: 2
+      - test-*
+      - my-namespace
+      processes: 3
+      - '*'
+    disableDefaultMatches: false 4</code></pre>
+<ul>
+  <li>Gatekeeper operator updates the <code>Config</code> resource within the <code>openshift-gatekeeper-system</code> namespace, and appends the namespaces to exclude.</li>
+</ul>
+<pre><code class="language-plaintext">oc get configs config \
+  -n openshift-gatekeeper-system -oyaml
+apiVersion: config.gatekeeper.sh/v1alpha1
+kind: Config
+metadata:
+  name: config
+...output omitted...
+spec:
+  match:
+  - excludedNamespaces: 1
+    - kube-*
+    - multicluster-engine
+    - hypershift
+    - hive
+    - rhacs-operator
+    - open-cluster-*
+    - openshift-*
+    processes:
+    - webhook
+    - mutation-webhook
+  - excludedNamespaces: 2
+    - test-*
+    - my-namespace
+    processes:
+    - '*'
+...output omitted...</code></pre>
