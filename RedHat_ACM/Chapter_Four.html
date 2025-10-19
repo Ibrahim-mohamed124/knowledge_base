@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-19T12:07:02.983Z
+date: 2025-10-19T12:10:56.011Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -18,7 +18,10 @@ dateCreated: 2025-10-19T11:32:32.884Z
 <h4>components&nbsp;</h4>
 <ol>
   <li><code>multiclusterhub-operator</code> pod: deploys the <code>multicluster-observability-operator</code> pod by default</li>
-  <li><code>multicluster-observability-operator: </code>sends hub cluster data to the managed clusters.</li>
+  <li><code>multicluster-observability-operator: </code>sends hub cluster data to the managed clusters.<ul>
+      <li>Watches for new managed clusters and automatically deploys metric and alert collection services to the managed clusters.</li>
+    </ul>
+  </li>
   <li><code>observability-endpoint-operator</code> pod: automatically deployed to each imported or created managed cluster. This controller starts a metrics collector that collects and sends the data<mark class="marker-yellow"> from OpenShift Prometheus</mark> to the RHACM hub cluster.</li>
   <li>observability add-on controller: API server that automatically updates the log of the managed clusters.</li>
   <li>Thanos Compactor:&nbsp;<ul>
@@ -28,3 +31,8 @@ dateCreated: 2025-10-19T11:32:32.884Z
   </li>
   <li>Grafana: visualization&nbsp;</li>
 </ol>
+<h3>Configuration</h3>
+<ul>
+  <li>The RHACM observability service is always installed in the hub cluster, although it is not enabled by default, due to the requirements for persistent storage, CPU, and memory.</li>
+  <li>&nbsp;</li>
+</ul>
