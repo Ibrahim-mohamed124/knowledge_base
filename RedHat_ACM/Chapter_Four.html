@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-19T11:34:32.234Z
+date: 2025-10-19T12:06:48.493Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -15,4 +15,16 @@ dateCreated: 2025-10-19T11:32:32.884Z
   <li>Alertmanager: A tool to manage and <mark class="marker-yellow">receive alerts from Prometheus.</mark></li>
 </ul>
 <figure class="image"><img src="/obs-arch.png"></figure>
-<p>&nbsp;</p>
+<h4>pods</h4>
+<ol>
+  <li><code>multiclusterhub-operator</code> pod: deploys the <code>multicluster-observability-operator</code> pod by default</li>
+  <li><code>multicluster-observability-operator: </code>sends hub cluster data to the managed clusters.</li>
+  <li><code>observability-endpoint-operator</code> pod: automatically deployed to each imported or created managed cluster. This controller starts a metrics collector that collects and sends the data<mark class="marker-yellow"> from OpenShift Prometheus</mark> to the RHACM hub cluster.</li>
+  <li>observability add-on controller: API server that automatically updates the log of the managed clusters.</li>
+  <li>Thanos Compactor:&nbsp;<ul>
+      <li>ensures that queries are performing well by using the retention configuration and compaction of the data in storage.</li>
+      <li>Deployed by <code>multicluster-observability-operator</code></li>
+    </ul>
+  </li>
+  <li>Grafana: visualization&nbsp;</li>
+</ol>
