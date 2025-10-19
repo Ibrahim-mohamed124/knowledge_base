@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-19T08:10:21.131Z
+date: 2025-10-19T08:34:02.422Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T08:02:50.801Z
@@ -504,3 +504,63 @@ spec:
     processes:
     - '*'
 ...output omitted...</code></pre>
+<h4>Deploying Constraints by Using Gatekeeper Policies</h4>
+<ul>
+  <li>Add constraint templates and constraints to the <code>policy-templates</code> section of a <code>Policy</code> resource.&nbsp;</li>
+  <li><code>ConstraintTemplate</code> object defines the schema for the <code>Constraint</code> object, and contains the Rego code to evaluate the policy violation.&nbsp;</li>
+  <li>The <code>Constraint</code> object provides the value of the parameters that are defined in <code>ConstraintTemplate</code> object.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: require-gatekeeper-labels-on-ns
+spec:
+  remediationAction: inform 1
+  disabled: false
+  policy-templates:
+    - objectDefinition: 2
+        apiVersion: templates.gatekeeper.sh/v1beta1
+        kind: ConstraintTemplate
+        metadata:
+          name: k8srequiredlabels
+          annotations:
+            policy.open-cluster-management.io/severity: low 3
+        spec:
+          crd:
+            spec:
+              names:
+                kind: K8sRequiredLabels
+              validation:
+                openAPIV3Schema: 4
+                  properties:
+                    labels:
+                      type: array
+                      items: string
+          targets:
+            - target: admission.k8s.gatekeeper.sh
+              rego: | 5
+                package k8srequiredlabels
+                violation[{"msg": msg, "details": {"missing_labels": missing}}] {
+                  provided := {label | input.review.object.metadata.labels[label]}
+                  required := {label | label := input.parameters.labels[_]}
+                  missing := required - provided
+                  count(missing) &gt; 0
+                  msg := sprintf("you must provide labels: %v", [missing])
+                }
+    - objectDefinition: 6
+        apiVersion: constraints.gatekeeper.sh/v1beta1
+        kind: K8sRequiredLabels
+        metadata:
+          name: ns-must-have-gk
+          annotations:
+            policy.open-cluster-management.io/severity: low
+        spec:
+          enforcementAction: dryrun 7
+          match:
+            kinds:
+              - apiGroups: [""]
+                kinds: ["Namespace"]
+            namespaces: 8
+              - test-labels-ns
+          parameters: 9
+            labels: ["gatekeeper"]</code></pre>
