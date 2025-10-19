@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-19T08:34:02.422Z
+date: 2025-10-19T08:36:52.764Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T08:02:50.801Z
@@ -556,6 +556,9 @@ spec:
             policy.open-cluster-management.io/severity: low
         spec:
           enforcementAction: dryrun 7
+          
+          
+
           match:
             kinds:
               - apiGroups: [""]
@@ -564,3 +567,34 @@ spec:
               - test-labels-ns
           parameters: 9
             labels: ["gatekeeper"]</code></pre>
+<h5>Gatekeeper Admission Webhook</h5>
+<pre><code class="language-plaintext">   - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-gatekeeper-admission
+        spec:
+          remediationAction: inform 1
+          severity: low
+          object-templates:
+            - complianceType: mustnothave 2
+              objectDefinition:
+                apiVersion: v1
+                kind: Event
+                metadata:
+                  namespace: openshift-gatekeeper-system 3
+                  annotations:
+                    constraint_action: deny 4
+                    constraint_kind: K8sRequiredLabels 5
+                    constraint_name: ns-must-have-gk 6
+                    event_type: violation 7</code></pre>
+<ul>
+  <li><code>policy-gatekeeper-admission</code> configuration policy within a RHACM policy to check for Kubernetes API requests that are denied by the Gatekeeper admission webhook.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
