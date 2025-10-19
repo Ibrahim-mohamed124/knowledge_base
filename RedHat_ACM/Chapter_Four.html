@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-19T12:10:56.011Z
+date: 2025-10-19T12:22:30.608Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -34,5 +34,54 @@ dateCreated: 2025-10-19T11:32:32.884Z
 <h3>Configuration</h3>
 <ul>
   <li>The RHACM observability service is always installed in the hub cluster, although it is not enabled by default, due to the requirements for persistent storage, CPU, and memory.</li>
-  <li>&nbsp;</li>
 </ul>
+<h4>Prerequisites for the Observability Service</h4>
+<p>You must meet the following conditions to enable the observability service:</p>
+<ul>
+  <li>A user with the cluster administrator role, the <code>open-cluster-management:cluster-manager-admin</code> role, or an S3 administrator</li>
+  <li>To define a storage class in the <code>MultiClusterObservability</code> custom resource, if no default storage class is specified</li>
+  <li>To have direct network access to the hub cluster</li>
+  <li>To configure an object store to create a storage solution. RHACM supports Amazon Web Services S3, Google Cloud Storage, and Red&nbsp;Hat OpenShift Data Foundation, among other cloud providers.</li>
+  <li>The observability components require 2701&nbsp;m CPU and 11972&nbsp;Mi memory to enable the observability service.</li>
+</ul>
+<pre><code class="language-plaintext"> oc create namespace open-cluster-management-observability
+ DOCKER_CONFIG_JSON=oc extract  secret/multiclusterhub-operator-pull-secret \
+   -n open-cluster-management --to=-
+   or
+ DOCKER_CONFIG_JSON=oc extract   secret/pull-secret -n openshift-config --to=-
+ oc create secret generic multiclusterhub-operator-pull-secret \
+  -n open-cluster-management-observability \
+  --from-literal=.dockerconfigjson="$DOCKER_CONFIG_JSON" \
+  --type=kubernetes.io/dockerconfigjson</code></pre>
+<ul>
+  <li>The RHACM observability service needs a persistent object store. The following YAML example defines an <code>ObjectBucketClaim</code> named <code>thanos-obc</code> that uses the <code>openshift-storage.noobaa.io</code> storage class that<mark class="marker-yellow"> Red&nbsp;Hat OpenShift Data Foundation provides.</mark></li>
+  <li>Red&nbsp;Hat OpenShift Data Foundation creates, with the same name, <mark class="marker-yellow">a matching secret and a configuration map, which contain the bucket information and credentials.</mark></li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+
+metadata:
+  name: thanos-obc
+  namespace: open-cluster-management-observability
+spec:
+  storageClassName: openshift-storage.noobaa.io
+  generateBucketName: observability-bucket</code></pre>
+<pre><code class="language-plaintext">oc extract --to=- cm/thanos-obc \
+  -n open-cluster-management-observability
+# BUCKET_REGION
+
+# BUCKET_SUBREGION
+
+# BUCKET_HOST
+s3.openshift-storage.svc
+# BUCKET_NAME
+thanos-obc-b2cdf931-0ec5-41a9-9b31-033d360d3a38
+# BUCKET_PORT
+443</code></pre>
+<pre><code class="language-plaintext"> oc extract --to=- secret/thanos-obc \
+  -n open-cluster-management-observability
+# AWS_SECRET_ACCESS_KEY
+MWykFQTUVUHLw3Lgjvts+WUBu2QH6hF1XLuXYYsR
+# AWS_ACCESS_KEY_ID
+Z9VYaOjvJVveQ1Az4rkX</code></pre>
+<p>&nbsp;</p>
