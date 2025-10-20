@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-20T08:45:08.927Z
+date: 2025-10-20T08:47:59.995Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -194,9 +194,19 @@ spec:
       <li>The metrics can be exported as platform metrics or as user workload metrics.&nbsp;</li>
       <li>Needs a <code>observability-metrics-custom-allowlist</code> configuration map within the <code>open-cluster-management-observability</code> namespace. After the configmap creation the <code>metrics-collector-deployment</code> pod restarts in the <code>open-cluster-management-observability</code> namespace.</li>
       <li>Applying <code>observability-metrics-custom-allowlist</code> configuration map on a managed cluster in the <code>open-cluster-management-addon-observability</code> namespace will collect metrics from only this managed cluster.</li>
+      <li>To add user workload metrics, set the namespace to capture the metric in the configuration map.&nbsp;</li>
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: observability-metrics-custom-allowlist
+  namespace: monitored_namespace &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; the namespace to be monitored 
+data:
+  uwl_metrics_list.yaml: 
+    names: 
+      - sample_metrics</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
