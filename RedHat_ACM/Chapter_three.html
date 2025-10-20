@@ -2,7 +2,7 @@
 title: Chapter_Three ~ Fire
 description: 
 published: true
-date: 2025-10-19T10:29:30.591Z
+date: 2025-10-20T11:55:40.183Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T08:02:50.801Z
@@ -326,13 +326,10 @@ policies:
 <ul>
   <li>kubectl kustomize --enable-alpha-plugins <code><i>path-to-kustomize-directory</i></code></li>
 </ul>
-<ol>
-  <li><strong>The PolicyGenerator command-line tool:</strong>
-    <ul>
-      <li><strong>Download from </strong>the <strong>Command Line Tools</strong> page in the RHACM web console</li>
-    </ul>
-  </li>
-</ol>
+<p><strong>&nbsp; &nbsp;2. The PolicyGenerator command-line tool:</strong></p>
+<ul>
+  <li><strong>Download from </strong>the <strong>Command Line Tools</strong> page in the RHACM web console</li>
+</ul>
 <h4>The Policy Generator YAML Structure</h4>
 <ul>
   <li><code>policyDefaults</code> section: introduce the default parameters<ul>
@@ -598,14 +595,13 @@ spec:
 <h4>deployment policies</h4>
 <ul>
   <li><strong>Definition Issues: </strong>incorrect syntax, missing information in configuration fields, or providing incorrect parameters</li>
-  <li><strong>Placement Issues: </strong>Policies must be placed in the correct namespace and cluster for the intended effect.&nbsp;</li>
-  <li><strong>Conflict Issues: </strong>multiple policies are applied to the same resource.&nbsp;</li>
+  <li><strong>Placement Issues: </strong>Policies must be placed in the correct namespace and cluster for the intended effect.</li>
+  <li><strong>Conflict Issues: </strong>multiple policies are applied to the same resource.</li>
   <li><strong>Evaluation Issues: </strong>Policies might not evaluate as expected due to issues with the policy engine or the underlying infrastructure.</li>
   <li><strong>Remediation Issues: </strong>remediation actions violate other policies, cannot be performed successfully, or if issues arise with the policy controller.</li>
   <li>objects to inspect: <code><strong>policy&nbsp;</strong></code></li>
   <li>Use the <code>oc logs</code> command in the <code>open-cluster-management</code> namespace to view the <code>grc-policy-propagator-xxx</code> and <code>grc-policy-addon-controller-xxx</code> component logs. These logs capture the controller activities and policy propagation across clusters.</li>
-  <li><code><strong>oc describe operator gatekeeper
-        &nbsp;-n open-cluster-management</strong></code></li>
+  <li><code><strong>oc describe operator gatekeeper &nbsp;-n open-cluster-management</strong></code></li>
   <li>oc get managedcluster</li>
   <li>Deploying <code>PolicySets</code> can encounter conflicts when multiple policies require a specific order of application<ul>
       <li>Update the policy resource YAML file with <code>dependencies</code> and <code>extradependencies</code> to define the order for correct deployment.</li>
