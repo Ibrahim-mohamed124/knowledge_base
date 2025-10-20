@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-20T08:24:26.151Z
+date: 2025-10-20T08:33:29.153Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -154,4 +154,46 @@ spec:
          replicas: 6
 ...output omitted...</code></pre>
 <h4>Prometheus Rules</h4>
+<ul>
+  <li>Prometheus supports two types of rules that can be configured and evaluated at regular intervals: <mark class="marker-yellow">recording rules and alerting rules.</mark>
+    <ol>
+      <li><strong>Recording rules:</strong></li>
+    </ol>
+  </li>
+</ul>
+<blockquote>
+  <p>Recording rules allow you to <strong>precompute PromQL expressions</strong> and store the results as new time series. These precomputed metrics can then be queried just like any other metric, making dashboards and alerts faster and more efficient.</p>
+</blockquote>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;– requires a <code>record</code> field for the name of the output time series, an <code>expr</code> field for the PromQL expression to evaluate, and an optional labels field for additional labels.</p>
+<pre><code class="language-plaintext">- record: code:prometheus_http_requests_total:sum
+  expr: sum by (code) (prometheus_http_requests_total)
+  labels:
+    env: stage</code></pre>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2. &nbsp;<strong>Alerting rules:</strong></p>
+<blockquote>
+  <p><i>Alerting rules</i> enable you to define conditions for alerts based on Prometheus expressions, and to receive notifications when these conditions are met.</p>
+</blockquote>
+<pre><code class="language-plaintext">- alert: HighRequestLatency
+  expr: job:request_latency_seconds:mean5m{job="myjob"} &gt; 0.5
+  for: 10m
+  keep_firing_for: 5m
+  labels:
+    severity: page
+  annotations:
+    summary: High request latency</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
