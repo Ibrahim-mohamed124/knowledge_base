@@ -2,7 +2,7 @@
 title: Chapter_one ~ Air
 description: 
 published: true
-date: 2025-10-20T09:19:41.391Z
+date: 2025-10-20T09:21:36.520Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-19T08:03:10.889Z
@@ -28,15 +28,15 @@ dateCreated: 2025-10-19T08:03:10.889Z
 <ol>
   <li>Global hub operator: &nbsp;Control the lifecycle of global hub components such as global hub manager, Garfana, Kafka, Postgresql and &nbsp;global hub agent on the managed hub clusters</li>
   <li>Global hub manager: Inputs data from Kafka into Postgresql, and it <mark class="marker-yellow">posts data into Kafka for managing hub clusters</mark></li>
-  <li>Global hub agent: Runs on the <mark class="marker-yellow">managed hub cluster to gather data for the Global hub manage</mark>r</li>
+  <li>Global hub agent: Runs on the <mark class="marker-yellow">managed hub cluster to gather data for the Global hub manager</mark></li>
   <li>Global hub visualization: exposed by a route and provides info about clusters health, violations, compliance, and performance</li>
 </ol>
 <h2>&nbsp;Design considerations of the global ACM</h2>
 <ul>
   <li>Storage: PostgreSQL requires at least 20&nbsp;GB to store data for three managed hubs with 250 clusters and 50 policies for 18 months.</li>
-  <li>Networking: use secure HTTPS communication on port 443 for Grafana, Kafka, and PostgreSQL to ensure reliable connectivity.</li>
+  <li>Networking: use <mark class="marker-yellow">secure HTTPS communication on port 443 for Grafana, Kafka, and PostgreSQL to ensure reliable connectivity.</mark></li>
   <li>Middleware Integration: Organizations integrate existing Kafka version 3.4+, PostgreSQL version 13+, or Grafana instances instead of provided ones, to configure secrets and access appropriately.</li>
-  <li>Access Control: The <code><strong>cluster-admin</strong></code> role remains necessary for installation, and <strong>Grafana access aligns with OpenShift console authentication</strong>. (depends on the same authentication of managed clusters?)</li>
+  <li>Access Control: The <code><strong>cluster-admin</strong></code> role remains <mark class="marker-yellow">necessary for installation</mark>, and <strong>Grafana access aligns with OpenShift console authentication</strong>. (depends on the same authentication of managed clusters? No I think it depends on the local-cluster of RHACM authentication)</li>
 </ul>
 <h2>Architecture &nbsp;of ACM</h2>
 <ol>
