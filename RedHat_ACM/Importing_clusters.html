@@ -2,10 +2,10 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-17T17:43:46.383Z
+date: 2025-10-20T08:58:50.266Z
 tags: 
 editor: ckeditor
-dateCreated: 2025-10-16T19:32:45.334Z
+dateCreated: 2025-10-19T08:02:59.907Z
 -->
 
 <h3>Red&nbsp;Hat Advanced Cluster Management Lifecycle</h3>
@@ -53,7 +53,7 @@ dateCreated: 2025-10-16T19:32:45.334Z
 <h4>Creating clusters</h4>
 <ol>
   <li>Create <code>ClusterDeployment</code> Custom Resource (CR): Core <mark class="marker-yellow">Hive resource</mark> to control the lifecycle of a cluster and the Hive API entry point</li>
-  <li>The <code>ClusterDeployment</code> CR references the short name of a <code>ClusterImageSet</code> CR to specify<mark class="marker-green"> <strong>the RHOCP version to the new cluster.</strong></mark></li>
+  <li>The <code>ClusterDeployment</code> CR references the short name of a <code>ClusterImageSet</code> CR to specify&nbsp;<mark class="marker-green"> <strong>the RHOCP version to the new cluster.</strong></mark></li>
   <li>The <code>ClusterImageSet</code> CR: A CRD that is provided by the Hive operator to define the RHOCP installer images. That custom resource can be pointed at by ClusterDeployment resource to create new clusters on <strong>different platforms or provisioning workflows(agent-based, image-based(using images to install ocp)</strong>, ensuring <strong>version consistency</strong>.<ul>
       <li><strong>Immutable reference: </strong>The CRD reference installer images by digest, so it ensures that the same installer image version is used always</li>
       <li><strong>Decoupling installer from CRs: </strong>Upgrades and deploying new minor versions involve creating a <code>ClusterImageSet</code> CR, not editing every <code>ClusterDeployment</code> CR.</li>
@@ -397,7 +397,7 @@ data:
 <ul>
   <li>Openshift default roles:<ul>
       <li>Cluster-Admin: with cluster role binding &gt; superuser</li>
-      <li>edit, view, admin: namespaced or cluster wide access to the open-cluster-management resources&nbsp;</li>
+      <li>edit, view, admin: namespaced or cluster wide access to the open-cluster-management resources</li>
     </ul>
   </li>
   <li>RHACM roles:<ul>
@@ -598,6 +598,7 @@ oc get klusterlets klusterlet \
 </ul>
 <pre><code class="language-plaintext">oc get crd -o name | grep \
   open-cluster-management | xargs oc delete</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>When the network between the managed cluster and the hub cluster is unstable, the status of the managed cluster might alternate between <code>Unknown</code> and <code>Ready</code>.<ul>
       <li>Because RHACM retries the connection five times, the total grace period is <code>leaseDurationSeconds x 5</code>. For example, if you set the <code>leaseDurationSeconds</code> parameter to 120, then the grace period is 10 minutes (120 x 5 seconds).</li>
