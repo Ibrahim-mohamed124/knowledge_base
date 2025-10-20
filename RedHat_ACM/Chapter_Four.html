@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-20T08:51:57.553Z
+date: 2025-10-20T08:57:43.429Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -214,10 +214,47 @@ data:
     </ul>
   </li>
   <li>RHACM custom alerts:<ul>
-      <li>&nbsp;</li>
+      <li>Applying the <code>thanos-ruler-custom-rules</code> configuration map within the <code>open-cluster-management-observability</code> namespace. Creating the configuration map causes the <code>observability-thanos-rule</code> pods to restart in the <code>open-cluster-management-observability</code> namespace.</li>
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: thanos-ruler-custom-rules
+  namespace: open-cluster-management-observability
+data:
+  custom_rules.yaml: | 
+    groups: 
+      - name: cluster-health
+        rules:
+        - alert: ClusterCPUReq-70 
+          annotations:
+            summary: Notify when CPU requests on a cluster are greater than the defined utilization limit
+            description: "The cluster has a high CPU usage: {{ $value }} core for {{ $labels.cluster }} {{ $labels.clusterID }}." 
+          expr: | 
+            sum(namespace_cpu:kube_pod_container_resource_requests:sum) by (clusterID, cluster) / sum(kube_node_status_allocatable{resource="cpu"}) by (clusterID, cluster) &gt; 0.7
+          for: 5s 
+          labels:
+            severity: critical</code></pre>
+<h4>Grafana Dashboards in RHACM</h4>
+<ul>
+  <li>the <code>MultiClusterObservability</code> custom resource creates a Grafana console with more than 15 dashboards. These dashboards are stored in <code>ConfigMap</code> objects in the <code>open-cluster-management-observability</code> namespace that have the <code>grafana-dashboard-</code> prefix to learn the definitions of the dashboards.</li>
+</ul>
+<h4>Forwarding Metrics to External Services</h4>
+<ul>
+  <li>Override the <code>alertmanager-config</code> secret in the <code>open-cluster-management-observability</code> namespace to add integrations or to configure routes for Alertmanager.</li>
+</ul>
+<pre><code class="language-plaintext">...output omitted...
+route:
+  receiver: 'slack-notifications'
+  group_by: [alertname, datacenter, app]
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - channel: '#alerts'
+    text: 'https://internal.myorg.net/wiki/alerts/{{ .GroupLabels.app }}/{{ .GroupLabels.alertname }}'</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
