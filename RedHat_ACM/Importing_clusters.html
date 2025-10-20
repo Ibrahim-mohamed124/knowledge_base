@@ -2,7 +2,7 @@
 title: Chapter two ~ Earth
 description: 
 published: true
-date: 2025-10-20T10:19:24.947Z
+date: 2025-10-20T10:31:24.743Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T08:02:59.907Z
@@ -381,7 +381,7 @@ data:
 <ul>
   <li><i>managed cluster set: a group of managed clusters represented by <mark class="marker-yellow">ManagedClusterSet resource</mark>, which helps in configuring access to managed clusters</i>
     <ul>
-      <li><code>ManagedClusterSetBinding</code> : Is a resource to bind manage cluster set to a <strong>namespace. </strong><mark class="marker-yellow">Granting the hub cluster users permissions to that namespace will grant them permissions to the managed clusters</mark></li>
+      <li><code>ManagedClusterSetBinding</code> : Is a resource to bind manage cluster set to a <strong>namespace. </strong><mark class="marker-yellow">Granting the hub cluster users permissions to that namespace will grant them permissions to do ACM operations on the managed clusters</mark></li>
       <li>Each cluster must be a member of a managed cluster set. A managed cluster <mark class="marker-yellow">cannot be included in more than one managed cluster set</mark>. It is <strong>not bound to any namespace</strong>, so it’s not used for RBAC.</li>
       <li>At instillation RHACM creates a default ManagedClusterSet that has cluster that<mark class="marker-yellow"> do not belong to other sets </mark>(cannot be deleted or updated)</li>
       <li>RHACM automatically creates a managed cluster set named <code>global</code>, and the namespace <code>open-cluster-management-global-set</code>. RHACM also creates a <code>ManagedClusterSetBinding</code> resource named <code>global</code> that binds the <code>global</code> managed cluster set to the <code>open-cluster-management-global-set</code> namespace.</li>
