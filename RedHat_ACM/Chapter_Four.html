@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-20T08:33:29.153Z
+date: 2025-10-20T08:45:08.927Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -181,8 +181,22 @@ spec:
     severity: page
   annotations:
     summary: High request latency</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>RHACM Metrics</h4>
+<ul>
+  <li>The RHACM observability service provides a set of default metrics; the service receives in-cluster platform metrics from Prometheus, and federates a subset of the metrics into Thanos.</li>
+  <li><code>observability-metrics-allowlist</code> configuration map within the <code>open-cluster-management-observability</code> namespace:&nbsp;<ul>
+      <li>Stores the default metrices</li>
+      <li>Stores a set of recording rules</li>
+      <li>Cannot be modified</li>
+    </ul>
+  </li>
+  <li>RHACM Custom Metrics:<ul>
+      <li>The metrics can be exported as platform metrics or as user workload metrics.&nbsp;</li>
+      <li>Needs a <code>observability-metrics-custom-allowlist</code> configuration map within the <code>open-cluster-management-observability</code> namespace. After the configmap creation the <code>metrics-collector-deployment</code> pod restarts in the <code>open-cluster-management-observability</code> namespace.</li>
+      <li>Applying <code>observability-metrics-custom-allowlist</code> configuration map on a managed cluster in the <code>open-cluster-management-addon-observability</code> namespace will collect metrics from only this managed cluster.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
