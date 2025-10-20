@@ -2,10 +2,10 @@
 title: tokens
 description: 
 published: true
-date: 2025-10-09T10:33:40.724Z
+date: 2025-10-20T18:21:26.458Z
 tags: vault, tokens
 editor: ckeditor
-dateCreated: 2025-10-09T08:58:22.141Z
+dateCreated: 2025-10-14T17:07:40.219Z
 -->
 
 <h1>Token auth method</h1>
@@ -43,7 +43,7 @@ dateCreated: 2025-10-09T08:58:22.141Z
 </ul>
 <h2>Token lifecycle</h2>
 <ul>
-  <li>Periodic Tokens:&nbsp;<ul>
+  <li>Periodic Tokens:<ul>
       <li>required sudo privileges or root token permissions on the path auth/token/create</li>
       <li>Do not have max_TTL, can be renewed indefinitely</li>
     </ul>
@@ -57,11 +57,13 @@ dateCreated: 2025-10-09T08:58:22.141Z
   </li>
 </ul>
 <pre><code class="language-plaintext">$ vault token create -policy= -use-limit=x</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Orphan tokens:<ul>
       <li>required sudo privileges or root token permissions on the path auth/token/create</li>
       <li>Do not have parents!</li>
       <li>expire only at their TTL</li>
+      <li>Can create child tokens that will be orphan when their parents are deleted</li>
     </ul>
   </li>
 </ul>
@@ -69,6 +71,7 @@ dateCreated: 2025-10-09T08:58:22.141Z
 <p>&nbsp;</p>
 <p>∅ The auth methods can be configured to generate certain types of tokens with certain parameters:</p>
 <pre><code class="language-plaintext">$ vault write auth/..../user   token_type=  token_ttl=  period=</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">$ vault token create|revoke|renew|lookup|capablities on a path /</code></pre>
 <p>&nbsp;</p>
 <h2>Root tokens</h2>
@@ -76,6 +79,7 @@ dateCreated: 2025-10-09T08:58:22.141Z
   <li>Root tokens can be created by using unseal/recovery keys provided that their is a quorum</li>
 </ul>
 <pre><code class="language-plaintext">$ vault operator generate-root  -init</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>This command provide one OTP that will be used to decrypt the root key after its generation</li>
   <li>a quorum of &nbsp;the key holders must run <mark class="marker-yellow">$ vault operator generate-root</mark> with their unseal keys</li>
