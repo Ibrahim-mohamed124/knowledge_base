@@ -2,7 +2,7 @@
 title: Chapter_Four ~ Water
 description: 
 published: true
-date: 2025-10-19T12:27:20.693Z
+date: 2025-10-20T07:23:31.248Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-19T11:32:32.884Z
@@ -24,12 +24,12 @@ dateCreated: 2025-10-19T11:32:32.884Z
   </li>
   <li><code>observability-endpoint-operator</code> pod: automatically deployed to each imported or created managed cluster. This controller starts a metrics collector that collects and sends the data<mark class="marker-yellow"> from OpenShift Prometheus</mark> to the RHACM hub cluster.</li>
   <li>observability add-on controller: API server that automatically updates the log of the managed clusters.</li>
-  <li>Thanos Compactor:&nbsp;<ul>
+  <li>Thanos Compactor:<ul>
       <li>ensures that queries are performing well by using the retention configuration and compaction of the data in storage.</li>
       <li>Deployed by <code>multicluster-observability-operator</code></li>
     </ul>
   </li>
-  <li>Grafana: visualization&nbsp;</li>
+  <li>Grafana: visualization</li>
 </ol>
 <h3>Configuration</h3>
 <ul>
@@ -53,6 +53,7 @@ dateCreated: 2025-10-19T11:32:32.884Z
   -n open-cluster-management-observability \
   --from-literal=.dockerconfigjson="$DOCKER_CONFIG_JSON" \
   --type=kubernetes.io/dockerconfigjson</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The RHACM observability service needs a persistent object store. The following YAML example defines an <code>ObjectBucketClaim</code> named <code>thanos-obc</code> that uses the <code>openshift-storage.noobaa.io</code> storage class that<mark class="marker-yellow"> Red&nbsp;Hat OpenShift Data Foundation provides.</mark></li>
   <li>Red&nbsp;Hat OpenShift Data Foundation creates, with the same name, <mark class="marker-yellow">a matching secret and a configuration map, which contain the bucket information and credentials.</mark></li>
@@ -66,6 +67,7 @@ metadata:
 spec:
   storageClassName: openshift-storage.noobaa.io
   generateBucketName: observability-bucket</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc extract --to=- cm/thanos-obc \
   -n open-cluster-management-observability
 # BUCKET_REGION
@@ -78,12 +80,14 @@ s3.openshift-storage.svc
 thanos-obc-b2cdf931-0ec5-41a9-9b31-033d360d3a38
 # BUCKET_PORT
 443</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext"> oc extract --to=- secret/thanos-obc \
   -n open-cluster-management-observability
 # AWS_SECRET_ACCESS_KEY
 MWykFQTUVUHLw3Lgjvts+WUBu2QH6hF1XLuXYYsR
 # AWS_ACCESS_KEY_ID
 Z9VYaOjvJVveQ1Az4rkX</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Create the <code>thanos-object-storage</code> secret within the <code>open-cluster-management-observability</code> namespace by using the information from the configuration map and the credentials from the secret.</li>
 </ul>
@@ -102,6 +106,7 @@ stringData:
       insecure: true
       access_key: Z9VYaOjvJVveQ1Az4rkX
       secret_key: MWykFQTUVUHLw3Lgjvts+WUBu2QH6hF1XLuXYYsR</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To enable the observability service, you must create a <code>MultiClusterObservability</code> custom resource instance in the <code>open-cluster-management-observability</code> namespace. The <code>MultiClusterObservability</code> object requires a secret that contains the credentials of the S3 bucket storage.</li>
 </ul>
@@ -110,23 +115,25 @@ kind: MultiClusterObservability
 metadata:
   name: observability
 spec:
-  enableDownsampling: true 1
-  observabilityAddonSpec: 2
-    enableMetrics: true 3
+  enableDownsampling: true 
+  observabilityAddonSpec: 
+    enableMetrics: true 
     interval: 30
-  storageConfig: 4
-    metricObjectStorage: 5
+  storageConfig: 
+    metricObjectStorage: 
       key: thanos.yaml
-      name: thanos-object-storage 6
-    alertmanagerStorageSize: 1Gi 7
-    compactStorageSize: 20Gi 8
-    receiveStorageSize: 20Gi 9
-    ruleStorageSize: 1Gi 10
-    storeStorageSize: 10Gi 11
+      name: thanos-object-storage 
+    alertmanagerStorageSize: 1Gi 
+    compactStorageSize: 20Gi 
+    receiveStorageSize: 20Gi 
+    ruleStorageSize: 1Gi 
+    storeStorageSize: 10Gi 
     storageClass: ocs-external-storagecluster-ceph-rbd 12
-  nodeSelector: 13
+  nodeSelector: 
     node-role.kubernetes.io/infra:</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The creation of the <code>MultiClusterObservability</code> resource creates the pods for Thanos, Alertmanager, and Grafana in the <code>open-cluster-management-observability</code> namespace.</li>
+  <li>&nbsp;</li>
 </ul>
 <p>&nbsp;</p>
