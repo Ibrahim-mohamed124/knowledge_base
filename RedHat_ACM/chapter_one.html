@@ -2,7 +2,7 @@
 title: Chapter_one ~ Air
 description: 
 published: true
-date: 2025-10-20T09:16:57.909Z
+date: 2025-10-20T09:19:41.391Z
 tags: openshift, acm, hub
 editor: ckeditor
 dateCreated: 2025-10-19T08:03:10.889Z
@@ -27,8 +27,8 @@ dateCreated: 2025-10-19T08:03:10.889Z
 <p>∅ <strong>Manages other ACMs</strong></p>
 <ol>
   <li>Global hub operator: &nbsp;Control the lifecycle of global hub components such as global hub manager, Garfana, Kafka, Postgresql and &nbsp;global hub agent on the managed hub clusters</li>
-  <li>Global hub manager: Inputs data from Kafka into Postgresql, and it posts data into Kafka for managing hub clusters</li>
-  <li>Global hub agent: Runs on the managed hub cluster to gather data for the Global hub manager</li>
+  <li>Global hub manager: Inputs data from Kafka into Postgresql, and it <mark class="marker-yellow">posts data into Kafka for managing hub clusters</mark></li>
+  <li>Global hub agent: Runs on the <mark class="marker-yellow">managed hub cluster to gather data for the Global hub manage</mark>r</li>
   <li>Global hub visualization: exposed by a route and provides info about clusters health, violations, compliance, and performance</li>
 </ol>
 <h2>&nbsp;Design considerations of the global ACM</h2>
