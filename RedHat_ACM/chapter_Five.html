@@ -2,15 +2,30 @@
 title: Chapter_Five ~ Metal
 description: 
 published: true
-date: 2025-10-20T18:35:38.377Z
+date: 2025-10-20T18:58:45.818Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-20T18:35:38.377Z
 -->
 
-<h3>OpenShift GitOps Application Model</h3>
+<h3>GitOps Application Model</h3>
 <ul>
   <li><strong>ApplicationSet</strong> custom resource represents Argo CD applications that a controller generates.</li>
   <li><strong>Placement: </strong>For cluster targeting</li>
+  <li><strong>ClusterSet: </strong>managed clusters group</li>
   <li><strong>GitOpsCluster &nbsp;</strong>custom resource represents an Argo CD server and its associated placement, to help integrating Argo CD with RHACM's cluster management capabilities.</li>
+</ul>
+<h3>Push and Pull Models</h3>
+<ul>
+  <li>In the <i>Push</i> model, the Argo CD server, which is running on the hub cluster,<mark class="marker-yellow"> takes direct action</mark> to deploy application resources to the managed clusters.<ul>
+      <li>hub cluster must own the necessary credentials to access and interact with the managed clusters.</li>
+      <li>The Argo CD application on the hub cluster actively communicates with the Git repository and then directly applies the manifests to the managed clusters</li>
+    </ul>
+  </li>
+  <li>Conversely, in the <i>Pull</i> model, the hub cluster <mark class="marker-yellow">propagates the application resources</mark> to the managed clusters by using a <code>ManifestWork</code> object<ul>
+      <li>Each managed cluster individually communicates with the Git repository to deploy the resource manifests locally</li>
+      <li>Argo CD server must be running on each target managed cluster, which then deploys the replicated application resources locally.</li>
+    </ul>
+  </li>
+  <li>&nbsp;</li>
 </ul>
