@@ -2,7 +2,7 @@
 title: Chapter_Five ~ Metal
 description: 
 published: true
-date: 2025-10-20T18:58:45.818Z
+date: 2025-10-20T19:13:33.297Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-20T18:35:38.377Z
@@ -20,6 +20,7 @@ dateCreated: 2025-10-20T18:35:38.377Z
   <li>In the <i>Push</i> model, the Argo CD server, which is running on the hub cluster,<mark class="marker-yellow"> takes direct action</mark> to deploy application resources to the managed clusters.<ul>
       <li>hub cluster must own the necessary credentials to access and interact with the managed clusters.</li>
       <li>The Argo CD application on the hub cluster actively communicates with the Git repository and then directly applies the manifests to the managed clusters</li>
+      <li><mark class="marker-yellow">Push model is the default method</mark> for deploying applications unless you use explicit <mark class="marker-yellow">annotations </mark>to enable the Pull model.</li>
     </ul>
   </li>
   <li>Conversely, in the <i>Pull</i> model, the hub cluster <mark class="marker-yellow">propagates the application resources</mark> to the managed clusters by using a <code>ManifestWork</code> object<ul>
@@ -27,5 +28,34 @@ dateCreated: 2025-10-20T18:35:38.377Z
       <li>Argo CD server must be running on each target managed cluster, which then deploys the replicated application resources locally.</li>
     </ul>
   </li>
-  <li>&nbsp;</li>
 </ul>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Push model</td>
+        <td>Pull model</td>
+      </tr>
+      <tr>
+        <td>centralized hub cluster has reliable and direct network connectivity to all remote clusters</td>
+        <td>the centralized hub cluster cannot start connections to remote clusters, but the remote clusters can communicate back to the centralized cluster</td>
+      </tr>
+      <tr>
+        <td>a managed cluster cannot reach the Git server directly due to network constraints or security policie</td>
+        <td>each managed cluster maintains its own copy of the configuration and independently pulls updates from Git.</td>
+      </tr>
+      <tr>
+        <td><mark class="marker-pink">Deploying applications by using the Push model can potentially overload the OpenShift GitOps controller's memory and CPU usage on the hub cluster</mark></td>
+        <td><mark class="marker-green">provides significant scalability relief by offloading the direct deployment workload from the hub cluster's controller</mark></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>enhance security because you do not need to centrally store sensitive cluster credentials on the hub cluster for direct push operations to every managed cluster, <strong>Decentralization</strong></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>Reduce the impact of a single point of centralized failure for application delivery</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
