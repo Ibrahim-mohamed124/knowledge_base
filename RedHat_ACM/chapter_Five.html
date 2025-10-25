@@ -2,10 +2,10 @@
 title: Chapter_Five ~ Metal
 description: 
 published: true
-date: 2025-10-20T19:17:22.740Z
+date: 2025-10-25T13:48:23.039Z
 tags: 
 editor: ckeditor
-dateCreated: 2025-10-20T18:35:38.377Z
+dateCreated: 2025-10-25T10:39:25.587Z
 -->
 
 <h3>GitOps Application Model</h3>
@@ -63,3 +63,34 @@ dateCreated: 2025-10-20T18:35:38.377Z
     </tbody>
   </table>
 </figure>
+<blockquote>
+  <p><code>ManifestWork</code> is used to define a group of Kubernetes resources on the hub to be applied to the managed cluster. In the open-cluster-management project, a <code>ManifestWork</code> resource must be created in the cluster namespace. A work agent implemented in <a href="https://github.com/open-cluster-management-io/ocm/tree/main/cmd/work"><u>work</u></a> project is run on the managed cluster and monitors the <code>ManifestWork</code> resource in the cluster namespace on the hub cluster.</p>
+</blockquote>
+<pre><code class="language-plaintext">apiVersion: work.open-cluster-management.io/v1
+kind: ManifestWork
+metadata:
+  namespace: &lt;target managed cluster&gt;
+  name: hello-work-demo
+spec:
+  workload:
+    manifests:
+      - apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: hello
+          namespace: default
+        spec:
+          selector:
+            matchLabels:
+              app: hello
+          template:
+            metadata:
+              labels:
+                app: hello
+            spec:
+              containers:
+                - name: hello
+                  image: quay.io/asmacdo/busybox
+                  command:
+                    ["sh", "-c", 'echo "Hello, Kubernetes!" &amp;&amp; sleep 3600']
+</code></pre>
