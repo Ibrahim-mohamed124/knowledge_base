@@ -2,7 +2,7 @@
 title: Chapter_Five ~ Metal
 description: 
 published: true
-date: 2025-10-25T15:16:39.364Z
+date: 2025-10-25T15:34:35.551Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-25T10:39:25.587Z
@@ -114,6 +114,80 @@ spec:
 <blockquote>
   <p>In Argo CD, an <i>application</i> is a resource that references a Git repository with Kubernetes resource definitions.</p>
 </blockquote>
+<ul>
+  <li>In the pull mode the operator must be installed on each managed cluster unlike in the push mode</li>
+</ul>
+<h3>Configuration</h3>
+<ul>
+  <li>Grant the OpenShift administrators access to the Argo CD web console.<ul>
+      <li>OpenShift manages the Argo CD instances by using <code>ArgoCD</code> resources.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">---
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: openshift-gitops
+  namespace: openshift-gitops
+spec:
+  ...output omitted...
+  rbac:
+    defaultPolicy: ""
+    policy: |
+      g, system:cluster-admins, role:admin   &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; the kube-admin user
+      g, cluster-admins, role:admin          &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; anyone in the cluster-admins group
+      g, ocpadmins, role:admin
+    scopes: '[groups]'
+...output omitted...</code></pre>
+<ul>
+  <li>Grant the Argo CD instance the required permissions to deploy applications.<ul>
+      <li>must grant the <code>cluster-admin</code> permissions to <code>openshift-gitops-argocd-application-controller</code> service account in addition to the default permissions.</li>
+    </ul>
+  </li>
+  <li>Install your custom certificate authority (CA) certificates into the Argo CD instance so that Argo CD can pull Git repositories from private Git systems.<ul>
+      <li>Add the private CA certificate to a configuration map in the <code>openshift-gitops</code> namespace. or create a configuration map with the <code>config.openshift.io/inject-trusted-cabundle</code> label. When this label is set, OpenShift automatically populates the configuration map with the cluster CA bundle.</li>
+      <li>Mount the configuration map as a volume inside the Argo CD instance.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: openshift-gitops
+  namespace: openshift-gitops
+  ...output omitted...
+spec:
+  ...output omitted...
+  repo:
+    volumeMounts:
+      - mountPath:
+          /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+        subPath: ca-bundle.crt
+        name: cluster-root-ca-bundle
+    volumes:
+      - configMap:
+          name: cluster-root-ca-bundle
+        name: cluster-root-ca-bundle
+...output omitted...</code></pre>
+<h3>Importing Managed Clusters into Argo CD</h3>
+<ul>
+  <li>register the managed clusters with Argo CD by creating a <code>GitOpsCluster</code> resource:</li>
+</ul>
+<pre><code class="language-plaintext">---
+apiVersion: apps.open-cluster-management.io/v1beta1
+kind: GitOpsCluster
+metadata:
+  name: gitops-clusters
+  namespace: openshift-gitops
+spec:
+  argoServer:  
+    argoNamespace: openshift-gitops
+  placementRef:  
+    kind: Placement
+    apiVersion: cluster.open-cluster-management.io/v1beta1
+    name: clusters-for-gitops
+    namespace: openshift-gitops</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
