@@ -2,7 +2,7 @@
 title: Chapter_Five ~ Metal
 description: 
 published: true
-date: 2025-10-25T15:34:43.306Z
+date: 2025-10-25T19:27:33.800Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-25T10:39:25.587Z
@@ -188,8 +188,43 @@ spec:
     apiVersion: cluster.open-cluster-management.io/v1beta1
     name: clusters-for-gitops
     namespace: openshift-gitops</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Deploying applications</h3>
+<ul>
+  <li>ArgoCD supports deploying resources from Git repos with many content types:<ol>
+      <li>Kustomize:&nbsp;<ul>
+          <li>Argo CD automatically detects the Kustomize structure of the application in the Git repository, and uses Kustomize to deploy the application.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+<blockquote>
+  <p>Each configuration set needs a <code>kustomization.yaml</code> file. The <code>kustomization.yaml</code> files define how the settings in the overlay interact with the base YAML files to build new manifests. The new manifest builds are called <i>variants</i>, and consist of the base YAML files and their overlays.</p>
+</blockquote>
+<pre><code class="language-plaintext">--- &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; base directory
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - route.yaml
+  - service.yaml</code></pre>
+<pre><code class="language-plaintext">--- &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; overlay dir
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - pvc.yaml
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: myapp
+      spec:
+        replicas: 3</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
