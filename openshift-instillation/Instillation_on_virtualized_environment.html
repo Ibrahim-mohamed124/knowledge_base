@@ -1,0 +1,119 @@
+<!--
+title: Instillation on virtualized environment
+description: 
+published: true
+date: 2025-10-28T11:47:16.613Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-10-28T11:47:16.613Z
+-->
+
+<h3>Vmware</h3>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Action</td>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Full-stack Automation</td>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Pre-existing Infrastructure</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Build network</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Setup load balancer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configure DNS</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Hardware or VM provisioning</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">OS installation</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Generate ignition configs</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">OS support</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer: RHCOS</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User: RHCOS</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configure persistent storage for the internal registry</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configure dynamic storage provider</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Installer</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">User</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configure node provisioning and autoscaling</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Only for providers with OpenShift Machine API support.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<figure class="image image_resized" style="width:100%;"><img src="/ipi-resources.svg"></figure>
+<ul>
+  <li>A Full Stack cluster architecture consists of the following:<ul>
+      <li><strong>Bastion host (Optional)</strong>
+        <ul>
+          <li>The bastion host<mark class="marker-yellow"> requires network connectivity to the cloud provider API to install OpenShift and to the OpenShift API for managing OpenShift after installation.</mark></li>
+        </ul>
+      </li>
+      <li><strong>Control plane nodes</strong>
+        <ul>
+          <li>Manages workloads for the compute nodes and runs services required to control the cluster.</li>
+        </ul>
+      </li>
+      <li><strong>Compute nodes</strong>
+        <ul>
+          <li>Location where the actual workloads requested by Kubernetes users run and are managed.</li>
+        </ul>
+      </li>
+      <li><strong>Infrastructure nodes</strong>
+        <ul>
+          <li><mark class="marker-yellow">Run core infrastructure components </mark>such as service brokers and logging.</li>
+        </ul>
+      </li>
+      <li><strong>Temporary bootstrap node</strong>
+        <ul>
+          <li>A temporary node that runs a minimal Kubernetes used to deploy the OpenShift control plane. It is deleted at the end of the installation.</li>
+        </ul>
+      </li>
+      <li><strong>Ingress load balancer</strong>
+        <ul>
+          <li>The virtual IP (VIP) is managed by<mark class="marker-yellow"> Keepalived</mark> and is only hosted on nodes that have a router instance. Traffic destined for the \*.apps Ingress VIP are passed directly to the router instance.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>Keepalived is a routing software written in C. The main goal of this project is to provide simple and robust facilities for loadbalancing and high-availability to Linux system and Linux based infrastructures. Loadbalancing framework relies on well-known and widely used <a href="http://www.linux-vs.org/"><strong>Linux Virtual Server (IPVS)</strong></a> kernel module providing Layer4 loadbalancing. Keepalived implements a set of checkers to dynamically and adaptively maintain and manage loadbalanced server pool according their health. On the other hand high-availability is achieved by <a href="http://datatracker.ietf.org/wg/vrrp/"><strong>VRRP</strong></a> protocol. VRRP is a fundamental brick for router failover. In addition, Keepalived implements a set of hooks to the VRRP finite state machine providing low-level and high-speed protocol interactions. In order to offer fastest network failure detection, Keepalived implements <a href="http://datatracker.ietf.org/wg/bfd/"><strong>BFD</strong></a> protocol. VRRP state transition can take into account BFD hint to drive fast state transition. Keepalived frameworks can be used independently or all together to provide resilient infrastructures.</p>
+</blockquote>
+<ul>
+  <li><strong>API load balancer</strong>
+    <ul>
+      <li>When a client creates a new request the API, HAproxy on the node hosting the API IP load balances across nodes using <mark class="marker-yellow">round robin</mark>.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
