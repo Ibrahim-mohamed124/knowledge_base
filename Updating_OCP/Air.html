@@ -1,0 +1,56 @@
+<!--
+title: Air
+description: 
+published: true
+date: 2025-10-28T17:20:09.568Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-10-28T17:20:09.568Z
+-->
+
+<h1>Updates</h1>
+<ul>
+  <li>Red&nbsp;Hat released a new software distribution system that provides the upgrade path to update your cluster and the underlying operating system, which enable over-the-air updates</li>
+  <li>This distrusted system manages the <mark class="marker-yellow">controller manifests</mark>, cluster roles, and any other resources to update a cluster to a particular version.&nbsp;</li>
+  <li>Red&nbsp;Hat hosts and manages this service at <a href="https://console.redhat.com/openshift">https://console.redhat.com/openshift</a>, and hosts cluster images at <a href="https://quay.io/">https://quay.io</a>.&nbsp;</li>
+  <li><i><strong>upgrade paths</strong>: the allowed updates for a cluster in a certain channel (stable, fast, candidate…etc), which depends on the duration of subscription and other metrics that are sent to the OTA updates system by cluster telemetric system.</i></li>
+  <li><strong>update channels</strong>: Controls the frequency and stability of updates, depending on the existence of bugs in new releases.</li>
+</ul>
+<blockquote>
+  <p>A channel name consists of the following parts: the tier (release candidate, fast, stable, and extended update support), the major version (<code>4</code>), and the minor version (<code>.12</code>).&nbsp;</p>
+</blockquote>
+<blockquote>
+  <p>Red Hat does not offer major-version, in-place upgrades. Similar to the process for upgrading from <mark class="marker-yellow">OpenShift 2 to OpenShift 3</mark>, moving between major versions of OpenShift will require a fresh installation and a migration of applications.&nbsp;</p>
+</blockquote>
+<ul>
+  <li><strong>OTA policy engine: </strong>Determine the upgrade paths</li>
+</ul>
+<blockquote>
+  <p>the question here is that why are we using a general tool to determine the upgrade path for a cluster?? Is not that supposed to be generated according the metrics that the cluster sends to the OTA engine?&nbsp;</p>
+</blockquote>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>The Candidate Channel</td>
+        <td>updates for testing feature acceptance in the next version of OpenShift Container Platform<br>promoted to the <i>fast</i> or <i>stable</i> channels when they meet the quality standards<br>Red&nbsp;Hat does not support the updates that are listed only in the <i>candidate</i> channel.</td>
+      </tr>
+      <tr>
+        <td>The Fast Channel</td>
+        <td>
+          <p>Development and QA environments.<br>updates as soon as Red&nbsp;Hat declares the given version as a general availability release</p>
+          <p>Red&nbsp;Hat supports the updates that are released in this channel</p>
+        </td>
+      </tr>
+      <tr>
+        <td>The Stable Channel</td>
+        <td>production environments<br>updates in the <i>fast</i> channel are enabled in the <i>stable</i> channel If operational clusters pass additional testing and validation<br><mark class="marker-yellow">If Red&nbsp;Hat observes operational issues from a </mark><i><mark class="marker-yellow">fast</mark></i><mark class="marker-yellow"> channel update, then that update is skipped in the </mark><i><mark class="marker-yellow">stable</mark></i><mark class="marker-yellow"> channel.</mark><br>Red&nbsp;Hat supports the updates that are released in this channel</td>
+      </tr>
+      <tr>
+        <td>The Extended Update Support Channel</td>
+        <td>Red&nbsp;Hat denotes all even-numbered minor releases as Extended Update Support (EUS) releases.<br>EUS releases have no difference between <code>stable-4.<i>x</i></code> and <code>eus-4.<i>x</i></code> channels (where <code><i>x</i></code> denotes the even-numbered minor release) until OpenShift Container Platform moves to the EUS phase. You can switch to the EUS channel as soon as it becomes available.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
