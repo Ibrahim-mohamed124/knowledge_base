@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-10-28T18:05:26.943Z
+date: 2025-10-28T18:20:18.911Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T17:20:09.568Z
@@ -121,3 +121,78 @@ oc annotate machinehealthcheck -n openshift-machine-api \
     </ul>
   </li>
 </ul>
+<h4>Update the Cluster by Using the Command Line</h4>
+<ul>
+  <li>Be sure to u<mark class="marker-yellow">pdate all operators that are installed through the OLM to the 4.14 version before updating the OpenShift cluster.</mark></li>
+  <li>Retrieve the cluster version and review the current update channel information. If you are running the cluster in production, then ensure that the channel reads <code>stable</code>.</li>
+</ul>
+<pre><code class="language-plaintext">[user@host ~]$ oc get clusterversion
+NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
+version   4.14.0    True        False         2d      Cluster version is 4.14.0
+
+[user@host ~]$ oc get clusterversion -o jsonpath='{.items[0].spec.channel}{"\n"}'
+stable-4.14</code></pre>
+<ul>
+  <li>View the available updates and note the version number of the update to apply.</li>
+</ul>
+<pre><code class="language-plaintext">[user@host ~]$ oc adm upgrade
+Cluster version is 4.14.0
+
+Upstream is unset, so the cluster will use an appropriate default.
+Channel: stable-4.14 (available channels: candidate-4.14, candidate-4.15, eus-4.14, fast-4.14, stable-4.14)
+
+Recommended updates:
+
+VERSION    IMAGE
+4.14.10    quay.io/openshift-release-dev/ocp-release@sha256:...
+...output omitted...</code></pre>
+<ul>
+  <li>Apply the latest update to your cluster, or update to a specific version:</li>
+  <li>Run the following command to install the latest available update for your cluster.</li>
+</ul>
+<pre><code class="language-plaintext">[user@host ~]$ oc adm upgrade --to-latest=true</code></pre>
+<ul>
+  <li>Run the following command to install a specific version. <i>VERSION</i> corresponds to one of the available versions that the <code>oc adm upgrade</code> command returns.</li>
+</ul>
+<pre><code class="language-plaintext">[user@host ~]$ oc adm upgrade --to=VERSION</code></pre>
+<ul>
+  <li>The previous command initializes the update process. Run the following command t<mark class="marker-yellow">o review the status of the Cluster Version Operator (CVO) and the installed cluster operators.</mark></li>
+</ul>
+<pre><code class="language-plaintext">[user@host ~]$ oc get clusterversion
+NAME     VERSION  AVAILABLE  PROGRESSING  SINCE  STATUS
+version  4.14.0   True       True         1m     Working towards 4.14.10 ...
+
+[user@host ~]$ oc get clusteroperators
+NAME                       VERSION     AVAILABLE   PROGRESSING   DEGRADED  ...
+authentication             4.14.0      True        False         False     ...
+baremetal                  4.14.10     False       True          False     ...
+cloud-controller-manager   4.14.10     True        False         True      ...
+...output omitted...</code></pre>
+<ul>
+  <li>Use the following command to review the cluster version history and monitor the status of the update. It might take some time for all the objects to finish updating.<ul>
+      <li>The history contains a list of the most recent versions that were applied to the cluster. This list is updated when the CVO applies an update. The list is ordered by date, where the newest update is first in the list.</li>
+      <li>If the rollout completed successfully, then updates in the history have a <code>Completed</code> state. Otherwise, <mark class="marker-yellow">the update has a </mark><code><mark class="marker-yellow">Partial</mark></code><mark class="marker-yellow"> state if it failed or did not complete.</mark></li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">[user@host ~]$ oc describe clusterversion
+...output omitted...
+  History:
+    Completion Time:    2024-02-10T04:38:12Z
+    Image:              quay.io/openshift-release-dev/ocp-release@sha256:...
+    Started Time:       2024-02-10T03:35:05Z
+    State:              Partial
+    Verified:           true
+    Version:            4.14.10
+    Completion Time:    2024-02-10T12:39:02Z
+    Image:              quay.io/openshift-release-dev/ocp-release@sha256:...
+    Started Time:       2024-02-10T12:23:14Z
+    State:              Completed
+    Verified:           false
+    Version:            4.14.10</code></pre>
+<ul>
+  <li>After the process completes, you can confirm that the cluster is updated to the new version.</li>
+</ul>
+<pre><code class="language-plaintext">[user@host ~]$ oc get clusterversion
+NAME     VERSION  AVAILABLE  PROGRESSING  SINCE  STATUS
+version  4.14.10  True       False        30m    Cluster version is 4.14.10</code></pre>
