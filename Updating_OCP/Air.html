@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-10-28T17:20:09.568Z
+date: 2025-10-28T17:42:44.573Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T17:20:09.568Z
@@ -11,8 +11,8 @@ dateCreated: 2025-10-28T17:20:09.568Z
 <h1>Updates</h1>
 <ul>
   <li>Red&nbsp;Hat released a new software distribution system that provides the upgrade path to update your cluster and the underlying operating system, which enable over-the-air updates</li>
-  <li>This distrusted system manages the <mark class="marker-yellow">controller manifests</mark>, cluster roles, and any other resources to update a cluster to a particular version.&nbsp;</li>
-  <li>Red&nbsp;Hat hosts and manages this service at <a href="https://console.redhat.com/openshift">https://console.redhat.com/openshift</a>, and hosts cluster images at <a href="https://quay.io/">https://quay.io</a>.&nbsp;</li>
+  <li>This distrusted system manages the <mark class="marker-yellow">controller manifests</mark>, cluster roles, and any other resources to update a cluster to a particular version.</li>
+  <li>Red&nbsp;Hat hosts and manages this service at <a href="https://console.redhat.com/openshift">https://console.redhat.com/openshift</a>, and hosts cluster images at <a href="https://quay.io/">https://quay.io</a>.</li>
   <li><i><strong>upgrade paths</strong>: the allowed updates for a cluster in a certain channel (stable, fast, candidate…etc), which depends on the duration of subscription and other metrics that are sent to the OTA updates system by cluster telemetric system.</i></li>
   <li><strong>update channels</strong>: Controls the frequency and stability of updates, depending on the existence of bugs in new releases.</li>
 </ul>
@@ -53,4 +53,44 @@ dateCreated: 2025-10-28T17:20:09.568Z
     </tbody>
   </table>
 </figure>
+<blockquote>
+  <h3><strong>Update Path</strong></h3>
+  <p>An update path is a <strong>validated transition</strong> from one OpenShift version to another.</p>
+  <p>It can be:</p>
+  <p><strong>Z-stream</strong>: 4.16.1 → 4.16.2 (within the same channel)</p>
+  <p><strong>Minor version jump</strong>: 4.16.2 → 4.17.0 (requires switching to <code>stable-4.17</code>)</p>
+  <p>Red Hat defines these paths in the <strong>OpenShift Update Graph</strong>, ensuring safety and compatibility.</p>
+</blockquote>
+<h3>Upgrade Paths</h3>
+<ul>
+  <li>You can apply each of the upgrade channels to a Red&nbsp;Hat OpenShift Container Platform version 4.14 cluster in different environments. The following paragraphs describe an example scenario where the<mark class="marker-yellow"> 4.14.3 version has a defect.</mark></li>
+</ul>
+<ol>
+  <li><strong>Stable channel:&nbsp;</strong>
+    <ul>
+      <li>When using the <code>stable-4.14</code> channel, you can upgrade your cluster from 4.14.0 to 4.14.1 or to 4.14.2. If an issue is discovered in the 4.14.3 release, then you cannot upgrade to that version. When a patch becomes available in the 4.14.4 release, you can update your cluster to that version.</li>
+      <li>This channel is suited to production environments, because the Red&nbsp;Hat SRE teams and support services test the releases in that channel.</li>
+    </ul>
+  </li>
+  <li><strong>Fast channel</strong>
+    <ul>
+      <li>The <code>fast-4.14</code> channel can deliver 4.14.1 and 4.14.2 updates but not 4.14.3. Red&nbsp;Hat also supports this channel, and you can apply it to development, QA, or production environments.</li>
+      <li>Administrators must<mark class="marker-yellow"> specifically choose a different minor version channel,</mark> such as <code>fast-4.14</code>, <mark class="marker-yellow">to upgrade to a new release in a new minor version when it becomes available.</mark></li>
+    </ul>
+  </li>
+  <li><strong>Candidate channel</strong>
+    <ul>
+      <li>You can use the <code>candidate-4.14</code> channel to install the latest features of OpenShift. With this channel, you can upgrade to all <i>z-stream</i> releases, such as 4.14.1, 4.14.2, and 4.14.3.</li>
+      <li>You use this channel to access the latest features of the product as they get released. This channel is suited to development and pre-production environments.</li>
+    </ul>
+  </li>
+  <li><strong>EUS channel</strong>
+    <ul>
+      <li>When switching to the <code>eus-4.14</code> channel, the <code>stable-4.14</code> channel does not receive <i>z-stream</i> updates until the next EUS version becomes available.</li>
+    </ul>
+  </li>
+</ol>
+<blockquote>
+  <p>To ensure the stability of the cluster and the proper level of support, switch only from a <i>stable</i> channel to a <i>fast</i> channel. Although it is possible to<mark class="marker-yellow"> switch from a </mark><i><mark class="marker-yellow">stable</mark></i><mark class="marker-yellow"> channel or a </mark><i><mark class="marker-yellow">fast</mark></i><mark class="marker-yellow"> channel to a </mark><i><mark class="marker-yellow">candidate</mark></i><mark class="marker-yellow"> channel, it is not recommended</mark></p>
+</blockquote>
 <p>&nbsp;</p>
