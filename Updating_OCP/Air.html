@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-10-28T18:20:18.911Z
+date: 2025-10-28T18:30:47.420Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T17:20:09.568Z
@@ -196,3 +196,53 @@ cloud-controller-manager   4.14.10     True        False         True      ...
 <pre><code class="language-plaintext">[user@host ~]$ oc get clusterversion
 NAME     VERSION  AVAILABLE  PROGRESSING  SINCE  STATUS
 version  4.14.10  True       False        30m    Cluster version is 4.14.10</code></pre>
+<h3>Kubernetes API Deprecation Policy</h3>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">API version</td>
+        <td style="padding:5px;vertical-align:top;">Category</td>
+        <td style="padding:5px;vertical-align:top;">Description</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">v1alpha1</td>
+        <td style="padding:5px;vertical-align:top;">Alpha</td>
+        <td style="padding:5px;vertical-align:top;">Experimental features</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">v1beta1</td>
+        <td style="padding:5px;vertical-align:top;">Beta</td>
+        <td style="padding:5px;vertical-align:top;">Pre-release features</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">v1</td>
+        <td style="padding:5px;vertical-align:top;">Stable</td>
+        <td style="padding:5px;vertical-align:top;">Stable features, generally available</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<pre><code class="language-plaintext"> oc api-resources</code></pre>
+<ul>
+  <li>You can identify from the API request count whether a workload uses a deprecated API version. <mark class="marker-yellow">The API request count output contains four columns</mark>. A value in the <code>REMOVEDINRELEASE</code> column indicates that the API version is deprecated and specifies the Kubernetes version that will remove it.</li>
+</ul>
+<pre><code class="language-plaintext"> oc get apirequestcounts | awk '{if(NF==4){print $0}}'
+ 
+FILTER='{range .status.currentHour..byUser[*]}{..byVerb[*].verb}{","}{.username}{","}{.userAgent}{"\n"}{end}'
+TYPE=apirequestcount.apiserver.openshift.io/cronjobs.v1.batch
+echo ${TYPE} ; oc get ${TYPE} -o jsonpath="${FILTER}" | column -t -s ',' -N "Verbs,Username,UserAgent"</code></pre>
+<h4>Deprecated API Alerts in OpenShift</h4>
+<ul>
+  <li><strong>APIRemovedInNextReleaseInUse</strong>
+    <ul>
+      <li>This alert is triggered for APIs that OpenShift Container Platform will remove in the next release.</li>
+    </ul>
+  </li>
+  <li><strong>APIRemovedInNextEUSReleaseInUse</strong>
+    <ul>
+      <li>This alert is triggered for APIs that OpenShift Container Platform Extended Update Support (EUS) will remove in the next release.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
