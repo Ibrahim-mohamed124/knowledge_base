@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-10-28T18:04:03.048Z
+date: 2025-10-28T18:05:26.943Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T17:20:09.568Z
@@ -117,7 +117,7 @@ oc annotate machinehealthcheck -n openshift-machine-api \
           <li>The<mark class="marker-yellow"> OLM orchestrates updates to any operators that are running in the cluster.</mark></li>
         </ul>
       </li>
-      <li>The updates use the <code>rpm-ostree</code> technology for managing <mark class="marker-yellow">transactional upgrades</mark>. Updates are delivered via container images and are part of the OpenShift update process. When the update deploys, the nodes pull the new image, extract it, write the packages to the disk, and then modify the bootloader to boot into the new version.</li>
+      <li><mark class="marker-pink">The updates use the </mark><code><mark class="marker-pink">rpm-ostree</mark></code><mark class="marker-pink"> technology for managing transactional upgrades. Updates are delivered via container images and are part of the OpenShift update process. When the update deploys, the nodes pull the new image, extract it, write the packages to the disk, and then modify the bootloader to boot into the new version.</mark></li>
     </ul>
   </li>
 </ul>
