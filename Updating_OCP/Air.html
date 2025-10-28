@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-10-28T17:42:44.573Z
+date: 2025-10-28T17:46:34.401Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T17:20:09.568Z
@@ -93,4 +93,5 @@ dateCreated: 2025-10-28T17:20:09.568Z
 <blockquote>
   <p>To ensure the stability of the cluster and the proper level of support, switch only from a <i>stable</i> channel to a <i>fast</i> channel. Although it is possible to<mark class="marker-yellow"> switch from a </mark><i><mark class="marker-yellow">stable</mark></i><mark class="marker-yellow"> channel or a </mark><i><mark class="marker-yellow">fast</mark></i><mark class="marker-yellow"> channel to a </mark><i><mark class="marker-yellow">candidate</mark></i><mark class="marker-yellow"> channel, it is not recommended</mark></p>
 </blockquote>
+<pre><code class="language-plaintext">oc patch clusterversion version --type="merge" --patch '{"spec":{"channel":"fast-4.14"}}'</code></pre>
 <p>&nbsp;</p>
