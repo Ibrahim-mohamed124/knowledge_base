@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-10-28T18:32:48.513Z
+date: 2025-10-28T18:45:27.770Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T17:20:09.568Z
@@ -247,4 +247,73 @@ echo ${TYPE} ; oc get ${TYPE} -o jsonpath="${FILTER}" | column -t -s ',' -N "Ver
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/api-removed-alerts.png"></figure>
 <p>&nbsp;</p>
+<h2>Update Operators with the OLM</h2>
+<ul>
+  <li>For each installed operator, you can decide whether the <mark class="marker-yellow">OLM automatically applies updates, or whether the updates require administrator approval.</mark></li>
+  <li><mark class="marker-yellow">Operator providers can create multiple channels for an operator.</mark> The provider can follow different policies to push updates to each channel, so that each channel contains different versions of the operator. When installing an operator, you choose the channel to follow for updates.</li>
+  <li><mark class="marker-yellow">You can create custom catalogs, and decide which versions of operators to include in the catalog.</mark> For example, in a multicluster environment, you configure operators to update automatically, but add only tested versions to the catalog.</li>
+  <li>When you create a subscription by using the <code>oc</code> command, the resource specification contains an <code>installPlanApproval</code> property that requires an <code>Automatic</code> or <code>Manual</code> value.</li>
+  <li>The <mark class="marker-yellow">subscription </mark>resources and the <mark class="marker-yellow">install plan</mark> resources contain information about upgrades</li>
+</ul>
+<pre><code class="language-plaintext">oc get sub -n openshift-operators web-terminal -o yaml
+...output omitted...
+spec:
+  channel: fast
+  installPlanApproval: Manual
+  name: web-terminal
+  source: do280-catalog-redhat
+  sourceNamespace: openshift-marketplace
+  startingCSV: web-terminal.v1.5.1
+status:
+...output omitted...
+  conditions:
+...output omitted...
+  - lastTransitionTime: "2022-11-24T13:46:21Z"
+    reason: RequiresApproval
+    status: "True"
+    type: InstallPlanPending
+  currentCSV: web-terminal.v1.6.0 1
+  installPlanGeneration: 2
+  installPlanRef:
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: InstallPlan
+    name: install-72vnw 2
+    namespace: openshift-operators
+    resourceVersion: "194989"
+    uid: 8dc979fe-936f-475a-8977-36d210c4da98
+  installedCSV: web-terminal.v1.5.1 3
+...output omitted...
+  state: UpgradePending
+1- The currentCSV key shows the latest available version in the channel.
+
+2- The installPlanRef section contains a reference to the install plan resource.
+
+3- The installedCSV key shows the current version.</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext"> oc get installplan -n openshift-operators install-72vnw -o yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: InstallPlan
+...output omitted...
+spec:
+  approval: Manual 1
+  approved: false 2
+  clusterServiceVersionNames:
+  - web-terminal.v1.6.0 3
+  generation: 2
+status:
+...output omitted...
+  phase: RequiresApproval
+...output omitted...
+1
+- The approval key indicates whether updates must be approved.
+
+2- The approved key shows whether the update is approved.
+
+3- The clusterServiceVersionNames shows the updated version.</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc patch installplan install-72vnw --type merge   --patch '{"spec":{"approved":true}}'</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>When updating a cluster, you might need to update operators if the installed version of the operator is not compatible with the updated OpenShift version. Before you update a cluster, review and install any operator updates that are needed for compatibility fixes. <mark class="marker-yellow">If no compatible updates are available, then you must update the cluster by uninstalling incompatible operators.</mark></li>
+</ul>
 <p>&nbsp;</p>
