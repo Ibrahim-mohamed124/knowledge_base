@@ -2,7 +2,7 @@
 title: Instillation on virtualized environment
 description: 
 published: true
-date: 2025-10-28T12:51:41.724Z
+date: 2025-10-28T14:39:19.217Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T11:47:16.613Z
@@ -190,6 +190,11 @@ dateCreated: 2025-10-28T11:47:16.613Z
       <li>Formerly maintained by VMware, this is the default storage deployed when using both full-stack and pre-existing infrastructure installation methods. The plug-in creates vSphere storage using the in-tree storage drivers for vSphere included in OpenShift Container Platform, and is used when vSphere CSI drivers are not available. These drivers are supported by Red&nbsp;Hat on vSphere 6.5 and later.</li>
     </ul>
   </li>
+</ul>
+<blockquote>
+  <p>In-tree storage drivers are older, legacy storage plugins compiled directly into the Kubernetes core, while <a href="https://www.google.com/search?q=Container+Storage+Interface+%28CSI%29&amp;rlz=1C1MMCH_enEG1173EG1173&amp;oq=storage+in-tree+drivers&amp;gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIICAEQABgWGB4yCAgCEAAYFhgeMggIAxAAGBYYHjIICAQQABgWGB4yCAgFEAAYFhgeMggIBhAAGBYYHjIICAcQABgWGB4yCAgIEAAYFhgeMgoICRAAGAoYFhge0gEIOTE4MWowajeoAgCwAgA&amp;sourceid=chrome&amp;ie=UTF-8&amp;mstk=AUtExfC1mUCdcP3xXOViiCTBalD7aRiiBXwSQ1Tw60uZ4R3jVeXX0CwEchd7-HHXDbcUjNKpz95Z2HWCpS15TOF8JcMzLKyXFjXBhHK3LsaHO3Vj2Fz9woqONhi4xc7QKFOiX6Y&amp;csui=3&amp;ved=2ahUKEwj025mqj8eQAxWCX0EAHXpbHPkQgK4QegQIARAE">Container Storage Interface (CSI)</a> drivers are a modern, external, and pluggable standard for storage integration. In-tree drivers are being deprecated in favor of CSI, which provides better maintainability, a faster development cycle, and more security.</p>
+</blockquote>
+<ul>
   <li>vSphere CSI driver<ul>
       <li>The Container Storage Integration (CSI) provisioner is not deployed by Red&nbsp;Hat. It is a Day 2 operation deployed by the customer. The plug-in creates vSphere storage using the standard Container Storage Interface. The vSphere CSI driver is provided and supported by VMware.</li>
     </ul>
