@@ -2,7 +2,7 @@
 title: Instillation on virtualized environment
 description: 
 published: true
-date: 2025-10-28T11:47:16.613Z
+date: 2025-10-28T12:02:03.308Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T11:47:16.613Z
@@ -116,4 +116,61 @@ dateCreated: 2025-10-28T11:47:16.613Z
     </ul>
   </li>
 </ul>
+<h4>OpenShift Network Plug-ins for vSphere</h4>
+<ul>
+  <li><strong>OpenShift software defined networking (</strong><mark class="marker-yellow"><strong>SDN</strong></mark><strong>) is available for layer 2 VM connectivity.</strong></li>
+  <li><strong>Networking (NSX-T):</strong>
+    <ul>
+      <li>an alternative for openshift software defined network that is intergrated to vshpere</li>
+      <li>NSX-T creates overlay networks for <mark class="marker-yellow">VM connectivity</mark> with additional features:<ul>
+          <li>micro-segmentation</li>
+          <li>&nbsp;load balancers</li>
+          <li>granular security policies</li>
+          <li>NSX-T enables any traffic to or from the VM to be firewalled at the network layer.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>NSX Container Plug-in (NCP):</strong>
+    <ul>
+      <li>integrates NSX-T and OpenShift</li>
+      <li>NSX manager provides visibility into which<mark class="marker-yellow"> pods are connected to which networks.</mark></li>
+    </ul>
+  </li>
+</ul>
+<h4>Cluster Storage for vshpere</h4>
+<ul>
+  <li><mark class="marker-yellow">vSphere Cloud Provider </mark>to support the persistent storage requirements of containers.&nbsp;</li>
+  <li>VSphere cloud provider provides <mark class="marker-yellow">volume plug-ins </mark>that are accessed by the OpenShift platform, backed by<mark class="marker-yellow"> VMware vSAN</mark> or any supported vSphere Datastore. <mark class="marker-yellow">Virtual Machine File System</mark> (VMFS), <mark class="marker-yellow">Network File System</mark> (NFS) or <mark class="marker-yellow">Virtual Storage Area Network </mark>(vSAN) datastores, are available storage offerings.</li>
+</ul>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Volume Plug-in</td>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">ReadWriteOnce</td>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">ReadOnlyMany</td>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">ReadWriteMany</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">VMware vSphere</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">X</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">&nbsp;</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Cinder</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">X</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">&nbsp;</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">NFS</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">X</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">X</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">X</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
