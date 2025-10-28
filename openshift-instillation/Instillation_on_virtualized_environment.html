@@ -2,7 +2,7 @@
 title: Instillation on virtualized environment
 description: 
 published: true
-date: 2025-10-28T12:02:03.308Z
+date: 2025-10-28T12:27:39.993Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T11:47:16.613Z
@@ -173,4 +173,26 @@ dateCreated: 2025-10-28T11:47:16.613Z
     </tbody>
   </table>
 </figure>
+<ol>
+  <li><strong>Virtual Storage Area Network (vSAN)</strong>
+    <ul>
+      <li>Local resources on the physical servers are <code>pooled</code>, or combined together.</li>
+      <li>Each node contains a group of disks, hard drives, or solid state drives (SSDs) that defines the capacity tier.</li>
+    </ul>
+  </li>
+</ol>
+<blockquote>
+  <p>A flash-based cache device such as SATA or SSD are <code>pooled</code> together across the nodes to form the vSAN data store. Attempts to write to the VSAN data store will traverse the cache first and then are flushed to the capacity tier. The data is cached as it is read into the cache tier. For example, if the same set of blocks are repeatably accessed for the VM, then you can conclude that they are staying in cache.</p>
+</blockquote>
+<p>&nbsp; 2. <strong>vSphere ESXi Plug-ins=vSphere Cloud Provider:</strong></p>
+<ul>
+  <li>Storage In-tree drivers<ul>
+      <li>Formerly maintained by VMware, this is the default storage deployed when using both full-stack and pre-existing infrastructure installation methods. The plug-in creates vSphere storage using the in-tree storage drivers for vSphere included in OpenShift Container Platform, and is used when vSphere CSI drivers are not available. These drivers are supported by Red&nbsp;Hat on vSphere 6.5 and later.</li>
+    </ul>
+  </li>
+  <li>vSphere CSI driver<ul>
+      <li>The Container Storage Integration (CSI) provisioner is not deployed by Red&nbsp;Hat. It is a Day 2 operation deployed by the customer. The plug-in creates vSphere storage using the standard Container Storage Interface. The vSphere CSI driver is provided and supported by VMware.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
