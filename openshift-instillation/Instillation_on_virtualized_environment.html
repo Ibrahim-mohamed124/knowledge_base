@@ -2,7 +2,7 @@
 title: Instillation on virtualized environment
 description: 
 published: true
-date: 2025-10-28T12:27:39.993Z
+date: 2025-10-28T12:51:41.724Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T11:47:16.613Z
@@ -195,4 +195,22 @@ dateCreated: 2025-10-28T11:47:16.613Z
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<h2>Installation of OpenShift on vSphere Using Full-stack Automation</h2>
+<ul>
+  <li>Prerequisites:<ol>
+      <li>Use persistent storage with ReadWriteMany access mode for the OpenShift internal registry as a Day 2 task.</li>
+      <li>Verify that the vSphere server has only one data center and one cluster. If there is more than one resource pool, then worker nodes will not provision during installation.</li>
+      <li>Verify that the two DNS records, API and .apps are valid.</li>
+    </ol>
+  </li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/ipi-resources.svg"></figure>
+<ul>
+  <li>Run openshift install and provide:<ul>
+      <li>SSH key when the interactive installer prompts you for the key</li>
+      <li>Provide the information required by the target platform, vSphere, including the vCenter URL, username, and password.</li>
+      <li>Provide values for the base domain, cluster name, and the pull secret when prompted by the the installer.</li>
+      <li>&nbsp;</li>
+    </ul>
+  </li>
+</ul>
