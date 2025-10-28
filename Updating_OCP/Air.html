@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-10-28T17:46:34.401Z
+date: 2025-10-28T18:04:03.048Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T17:20:09.568Z
@@ -94,4 +94,30 @@ dateCreated: 2025-10-28T17:20:09.568Z
   <p>To ensure the stability of the cluster and the proper level of support, switch only from a <i>stable</i> channel to a <i>fast</i> channel. Although it is possible to<mark class="marker-yellow"> switch from a </mark><i><mark class="marker-yellow">stable</mark></i><mark class="marker-yellow"> channel or a </mark><i><mark class="marker-yellow">fast</mark></i><mark class="marker-yellow"> channel to a </mark><i><mark class="marker-yellow">candidate</mark></i><mark class="marker-yellow"> channel, it is not recommended</mark></p>
 </blockquote>
 <pre><code class="language-plaintext">oc patch clusterversion version --type="merge" --patch '{"spec":{"channel":"fast-4.14"}}'</code></pre>
-<p>&nbsp;</p>
+<h3>Pausing the Machine Health Check Resource</h3>
+<ul>
+  <li>During the upgrade process, nodes in the cluster might become temporarily unavailable. In the case of worker nodes, <mark class="marker-yellow">the machine health check might identify such nodes as unhealthy and reboot them</mark>. To avoid rebooting such nodes, pause all the machine health check resources before updating the cluster.</li>
+</ul>
+<pre><code class="language-plaintext">oc get machinehealthcheck -n openshift-machine-api
+oc annotate machinehealthcheck -n openshift-machine-api \
+  machine-api-termination-handler cluster.x-k8s.io/paused=""
+oc annotate machinehealthcheck -n openshift-machine-api \
+  machine-api-termination-handler cluster.x-k8s.io/paused-</code></pre>
+<h3>Over-the-air Updates</h3>
+<figure class="image image_resized" style="width:100%;"><img src="/updates-telemetry-back-end.svg"></figure>
+<ul>
+  <li>The Update Process<ul>
+      <li><strong>Machine Config Operator</strong>
+        <ul>
+          <li>The Machine Config Operator<mark class="marker-yellow"> applies the desired machine state to each of the nodes</mark>. This component also<mark class="marker-yellow"> handles the rolling upgrade of nodes in the cluster, and uses CoreOS Ignition as the configuration format</mark>.</li>
+        </ul>
+      </li>
+      <li><strong>Operator Lifecycle Manager</strong>
+        <ul>
+          <li>The<mark class="marker-yellow"> OLM orchestrates updates to any operators that are running in the cluster.</mark></li>
+        </ul>
+      </li>
+      <li>The updates use the <code>rpm-ostree</code> technology for managing <mark class="marker-yellow">transactional upgrades</mark>. Updates are delivered via container images and are part of the OpenShift update process. When the update deploys, the nodes pull the new image, extract it, write the packages to the disk, and then modify the bootloader to boot into the new version.</li>
+    </ul>
+  </li>
+</ul>
