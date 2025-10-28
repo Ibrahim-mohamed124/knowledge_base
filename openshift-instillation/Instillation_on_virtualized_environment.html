@@ -2,7 +2,7 @@
 title: Instillation on virtualized environment
 description: 
 published: true
-date: 2025-10-28T14:53:05.744Z
+date: 2025-10-28T15:05:17.127Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T11:47:16.613Z
@@ -308,13 +308,81 @@ dateCreated: 2025-10-28T11:47:16.613Z
   </li>
   <li><strong>Restart policy</strong>
     <ul>
-      <li>Configure the restart policy in the following order:</li>
-      <li>Stop compute nodes</li>
-      <li>Stop infra nodes</li>
-      <li>Stop master nodes</li>
-      <li>Start master nodes</li>
-      <li>Start infra nodes</li>
-      <li>Start compute nodes</li>
+      <li>Configure the restart policy in the following order:<ul>
+          <li>Stop compute nodes</li>
+          <li>Stop infra nodes</li>
+          <li>Stop master nodes</li>
+          <li>Start master nodes</li>
+          <li>Start infra nodes</li>
+          <li>Start compute nodes</li>
+        </ul>
+      </li>
     </ul>
   </li>
+  <li><mark class="marker-yellow">Three additional worker machines (CPU: 4 cores, RAM: 24 GB, Storage: 120 GB) dedicated for infra (registry, haproxy, etc.) are provisioned</mark>.</li>
+  <li>The other worker machines are dedicated for computing (compute machines).</li>
 </ol>
+<h4>Installing OpenShift Using Full-stack Automation on vSphere checklist</h4>
+<ul class="todo-list">
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Download the installer binary, oc tools, and pull secret from the Red&nbsp;Hat OpenShift Cluster Manager site.</span></label></li>
+</ul>
+<pre><code class="language-plaintext">sudo -i
+OCP_VERSION=4.6.4
+MIRROR=mirror.openshift.com/pub/openshift-v4/clients
+wget \
+&gt; https://{MIRROR}/ocp/${OCP_VERSION}/openshift-install-linux-${OCP_VERSION}.tar.gz
+tar zxvf openshift-install-linux-${OCP_VERSION}.tar.gz \
+&gt; -C /usr/bin
+rm -f openshift-install-linux-${OCP_VERSION}.tar.gz
+chmod +x /usr/bin/openshift-install
+openshift-install version
+</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">wget \
+&gt; https://{MIRROR}/ocp/${OCP_VERSION}/openshift-client-linux-${OCP_VERSION}.tar.gz
+tar zxvf openshift-client-linux-${OCP_VERSION}.tar.gz \
+&gt; -C /usr/bin
+rm -f openshift-client-linux-${OCP_VERSION}.tar.gz
+chmod +x /usr/bin/oc
+oc completion bash &gt;/etc/bash_completion.d/openshift
+oc version
+</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">su - user
+ssh-keygen -f ${HOME}/.ssh/ocp46-key -N ''</code></pre>
+<p>&nbsp;</p>
+<ul class="todo-list">
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Download the root CA certificates from vCenter and add them to your bastion VM.</span></label></li>
+</ul>
+<pre><code class="language-plaintext"> sudo wget vcenter.sddc.vmwaremc.com/downloads/certs/download.zip
+ sudo unzip download.zip
+ sudo cp certs/lin/* /etc/pki/ca-trust/source/anchors
+ sudo update-ca-trust extract</code></pre>
+<p>&nbsp;</p>
+<ul class="todo-list">
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Run the openshift-install binary to create the install-config.yaml file.</span></label></li>
+</ul>
+<pre><code class="language-plaintext">Create an install directory
+openshift-install create install-config --dir=ocp46 &gt; --log-level=info</code></pre>
+<ul class="todo-list">
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Input values when prompted by the installer binary.</span></label></li>
+</ul>
+<pre><code class="language-plaintext">? SSH Public Key /user/.ssh/ocp4ipi.pub
+? Platform vsphere
+? vCenter  vcenter.vmwarecloud.com
+? Usernanme  cloudadmin@vmclocal.com
+Info connecting to vcenter vcenter.vmwarecloud.com
+Info Defaulting to only available datacenter: SDDC
+Info Defaulting to only available cluster: cluster1
+? Default Datastore: WorkloadData
+? Network network-segment1
+? Virtual IP Address for API 192.168.1.100
+? Virtual IP Address for Ingress 192.168.1.110
+? Base Domain example.com
+? Cluster Name ocp4
+? Pull Secret ...output omitted.</code></pre>
+<ul class="todo-list">
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Run the installer binary to create the cluster.</span></label></li>
+</ul>
+<pre><code class="language-plaintext">openshift-install create cluster --dir=ocp46 \
+&gt; --log-level=debug</code></pre>
