@@ -2,7 +2,7 @@
 title: Instillation on virtualized environment
 description: 
 published: true
-date: 2025-10-28T14:39:19.217Z
+date: 2025-10-28T14:53:05.744Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-28T11:47:16.613Z
@@ -206,6 +206,8 @@ dateCreated: 2025-10-28T11:47:16.613Z
       <li>Use persistent storage with ReadWriteMany access mode for the OpenShift internal registry as a Day 2 task.</li>
       <li>Verify that the vSphere server has only one data center and one cluster. If there is more than one resource pool, then worker nodes will not provision during installation.</li>
       <li>Verify that the two DNS records, API and .apps are valid.</li>
+      <li>A DHCP server is necessary for the network and provides persistent IP addresses to the cluster machines.</li>
+      <li>Required vCenter Account Privileges: to create the openshfit infrastructure&nbsp;</li>
     </ol>
   </li>
 </ul>
@@ -215,7 +217,104 @@ dateCreated: 2025-10-28T11:47:16.613Z
       <li>SSH key when the interactive installer prompts you for the key</li>
       <li>Provide the information required by the target platform, vSphere, including the vCenter URL, username, and password.</li>
       <li>Provide values for the base domain, cluster name, and the pull secret when prompted by the the installer.</li>
-      <li>&nbsp;</li>
+    </ul>
+  </li>
+  <li>After the invocation of openshift-install binary:<ul>
+      <li>The Red&nbsp;Hat Enterprise&nbsp;Linux CoreOS image is downloaded and used to create the virtual machines</li>
+      <li>After The bootstrap and control plane virtual machines are cloned, they are automatically powered on and begin the deployment</li>
+      <li>The control plane nodes create the worker nodes using the same template downloaded previously.</li>
     </ul>
   </li>
 </ul>
+<h4>Installing OpenShift Using Full-stack on vSphere Mandatory Requirement Checklist</h4>
+<ul>
+  <li>The following lists the mandatory requirements that the cluster administrator should consider before deploying an OpenShift cluster using the full-stack automation method on vSphere.</li>
+</ul>
+<ol>
+  <li><strong>vSphere version</strong>
+    <ul>
+      <li>VMware vSphere 6.5</li>
+      <li>VMware vSphere 6.7</li>
+      <li>VMware vSphere 7.0</li>
+    </ul>
+  </li>
+  <li><mark class="marker-pink"><strong>vSphere data center</strong></mark>
+    <ul>
+      <li><mark class="marker-pink">vCenter has only one data center.</mark></li>
+      <li><mark class="marker-pink">vSphere data center has only one cluster.</mark></li>
+    </ul>
+  </li>
+  <li><strong>vSphere data store</strong>
+    <ul>
+      <li>Create a data store for persistent volumes that is accessible by all the machine nodes in the data center for Day 1 installation.</li>
+    </ul>
+  </li>
+  <li><strong>vSphere VM folder</strong>
+    <ul>
+      <li><mark class="marker-yellow">Create a new folder to contain all the cluster VMs.</mark></li>
+    </ul>
+  </li>
+  <li><strong>Resource pool</strong>
+    <ul>
+      <li>The installer binary creates the machine in the default resource pool.</li>
+      <li>Configuring another resource pool is <strong>NOT</strong> possible and must be considered when planning an OpenShift cluster deployment.</li>
+    </ul>
+  </li>
+  <li><strong>Physical hosts</strong>
+    <ul>
+      <li>Use separate physical hosts for the cluster machines to maintain high availability of the cluster.</li>
+    </ul>
+  </li>
+  <li><strong>VM / VM anti affinity</strong>
+    <ul>
+      <li><mark class="marker-yellow">Configure anti affinity rules for control plane and infra VMs when they do not reside in the same physical host.</mark></li>
+    </ul>
+  </li>
+  <li><strong>DRS disabled</strong>
+    <ul>
+      <li>VMware vMotion is intended to provide live migration of virtual machines between hosts while preventing downtime. VMware <mark class="marker-yellow">Distributed Resource Scheduler (DRS) is disabled for control plane and infra worker nodes.</mark></li>
+      <li>A node draining procedure is implemented before migrating compute worker nodes.</li>
+      <li>In VMware DRS, virtual machines are migrated when triggered by the level of utilization on specific hosts.</li>
+      <li>A VMware DRS migration might, in turn, trigger another VMware DRS migration if the OpenShift node being migrated becomes <code>NotReady</code> and the workloads on that node are scheduled on other nodes.</li>
+    </ul>
+  </li>
+  <li><strong>Network</strong>
+    <ul>
+      <li>Configure DHCP, DHCP IP reservations, or static IP addresses for the cluster VMs.</li>
+    </ul>
+  </li>
+  <li><strong>Image registry</strong>
+    <ul>
+      <li><mark class="marker-yellow">File storage is installed as a storage technology for high available cluster internal registry.</mark></li>
+      <li>NFS on RHEL is not supported.</li>
+      <li>Others NFS implementations are supported (NetApp, HPE, DELL, etc).</li>
+      <li>OCS using CephFS is supported.</li>
+    </ul>
+  </li>
+  <li><strong>Monitoring &amp; logging</strong>
+    <ul>
+      <li><mark class="marker-yellow">Install block storage for both monitoring and logging</mark>.</li>
+    </ul>
+  </li>
+  <li><strong>Storage provisioning strategy</strong>
+    <ul>
+      <li>Choose either a static or a dynamic storage provisioning strategy.</li>
+    </ul>
+  </li>
+  <li><strong>vSphere account</strong>
+    <ul>
+      <li>Create a service account in vSphere with the roles and permissions annotated on the vSphere Storage for Kubernetes Permission web page: <a href="https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/vcp-roles.html">https://vmware.github.io/vsphere-storage-for-kubernetes/documentation/vcp-roles.html</a></li>
+    </ul>
+  </li>
+  <li><strong>Restart policy</strong>
+    <ul>
+      <li>Configure the restart policy in the following order:</li>
+      <li>Stop compute nodes</li>
+      <li>Stop infra nodes</li>
+      <li>Stop master nodes</li>
+      <li>Start master nodes</li>
+      <li>Start infra nodes</li>
+      <li>Start compute nodes</li>
+    </ul>
+  </li>
+</ol>
