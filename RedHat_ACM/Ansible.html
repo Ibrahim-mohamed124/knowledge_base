@@ -1,0 +1,32 @@
+<!--
+title: Avatar_Level
+description: 
+published: true
+date: 2025-10-29T21:07:03.850Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-10-29T21:07:03.850Z
+-->
+
+<h3>Benefits of Integrating Ansible with RHACM</h3>
+<ul>
+  <li><strong>Consistency and standardization:</strong>
+    <ul>
+      <li>Eliminate configuration drift: Manually applying policies across many clusters is prone to errors and inconsistencies. Ansible applies the exact same policy definitions uniformly.&nbsp;<ul>
+          <li><mark class="marker-yellow">RHACM detects</mark> that a cluster is<mark class="marker-yellow"> missing a required</mark> logging agent.</li>
+          <li>It<mark class="marker-yellow"> triggers an Ansible job via Automation Platform</mark>.</li>
+          <li>Ansible installs and configures the agent uniformly across all affected clusters.</li>
+          <li><mark class="marker-yellow">RHACM verifies compliance post-remediation</mark>.</li>
+        </ul>
+      </li>
+      <li>Repeatable, standardized workflows: <a href="https://www.redhat.com/en/topics/automation/what-is-an-ansible-playbook">Ansible Playbooks</a> allow you to define <mark class="marker-yellow">repeatable, standardized workflows for policy deployment, updates, and enforcement. </mark>This promotes best practices and reduces reliance on individual knowledge.</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p><strong>RHACM Supports auto-remediation</strong> — <i>but only for Kubernetes-native resources</i> (e.g., enforcing a <code>ConfigMap</code>, <code>Namespace</code>, or <code>PodSecurityPolicy</code>).</p>
+</blockquote>
+<ul>
+  <li><strong>Enhanced governance and compliance: </strong>Advanced Cluster Management policies are <mark class="marker-yellow">declaratively defined</mark>, and Ansible complements this by <mark class="marker-yellow">consistently applying these declarative states</mark>. If a cluster deviates from the desired policy, you can use Ansible to remediate the issue.</li>
+  <li><strong>Auditing and reporting: </strong>You can use Ansible to enforce policies and<mark class="marker-yellow"> gather compliance data from clusters</mark>, aiding in auditing and generating reports on your security posture. This provides better visibility and control.</li>
+</ul>
