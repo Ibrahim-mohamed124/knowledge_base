@@ -2,10 +2,65 @@
 title: Chapter_one ~ Air
 description: 
 published: true
-date: 2025-10-30T09:17:18.921Z
+date: 2025-10-30T09:46:35.908Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-30T09:17:18.921Z
 -->
 
 <h3>Introduction to OpenShift Virtualization</h3>
+<ul>
+  <li><i><mark class="marker-yellow">Kernel-based Virtual Machine</mark></i><mark class="marker-yellow"> (KVM) </mark>technology as the hypervisor and the<mark class="marker-yellow"> libvirt libraries</mark> for defining the virtual machines.&nbsp;</li>
+  <li>KVM and libvirt are run in <mark class="marker-yellow">a container that can be deployed in Kubernetes and OpenShift platforms</mark> along with containerized applications.</li>
+  <li>The <i><mark class="marker-yellow">Quick EMUlator</mark></i><mark class="marker-yellow"> (QEMU) guest agent passes information about a VM to the host.</mark></li>
+  <li>OpenShift Virtualization operator offers features for enterprise-grade virtualization, such as live migration, high availability, system scheduling, power management, image management, snapshots, thin provisioning, and monitoring.<ul>
+      <li>Based on the <i>KubeVirt</i> Kubernetes virtualization add-on</li>
+    </ul>
+  </li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/containerizingkvm.svg"></figure>
+<p>&nbsp;</p>
+<h3>KubeVirt</h3>
+<ul>
+  <li>KubeVirt delivers container-native virtualization by using the <i>Kernel-based Virtual Machine (KVM)</i> Linux Kernel hypervisor within a Kubernetes container.</li>
+</ul>
+<h3>OpenShift Virtualization Operator</h3>
+<ul>
+  <li>OpenShift Virtualization is an open source technology to enable running VMs in Red&nbsp;Hat OpenShift with the OpenShift Virtualization operator. It is based on the upstream <i>KubeVirt</i> project, and runs and manages traditional VMs as if they were containers.</li>
+  <li><strong>HyperConverged Operator (HCO)</strong>
+    <ul>
+      <li>The HCO <mark class="marker-yellow">deploys and manages virtualization components and supplemental operators,</mark> such as the <i>Containerized Data Importer (CDI)</i>, for OpenShift Virtualization.</li>
+    </ul>
+  </li>
+  <li><strong>Hostpath Provisioner Operator (HPP)</strong>
+    <ul>
+      <li>The HPP operator is a<mark class="marker-yellow"> local storage provisioner for virtual machines</mark>. Local storage or mounted volumes on nodes can be provisioned to <i>Virtual Machine Instances (VMIs)</i>.</li>
+    </ul>
+  </li>
+  <li><strong>QEMU agent</strong>
+    <ul>
+      <li>The <i>Quick EMUlator</i> (QEMU) <mark class="marker-yellow">guest agent is a daemon that runs inside the VM and passes information to the host about the VM, users, file systems, and secondary networks.</mark></li>
+    </ul>
+  </li>
+  <li><strong>Kernel-based Virtual Machine (KVM)</strong>
+    <ul>
+      <li>KVM is an open source virtualization technology that is built into the Linux kernel that enables a host machine to run multiple, isolated virtual environments, <i>guest VMs</i>.</li>
+    </ul>
+  </li>
+  <li><strong>Containerized Data Importer (CDI)</strong>
+    <ul>
+      <li>An upstream<mark class="marker-yellow"> Kubernetes component that delivers a hardware-independent management layer for storage volumes that attach to deployed instances.</mark></li>
+    </ul>
+  </li>
+  <li><strong>Virtual machine consoles</strong>
+    <ul>
+      <li>Connect to VMs by using command-line tools, the web console, and common protocols, such as <i>Remote Desktop Protocol</i> (RDP) for Windows VMs, and SSH.</li>
+    </ul>
+  </li>
+  <li><strong>Stand-alone Virtual Machine Instances (VMIs)</strong>
+    <ul>
+      <li>Use the command line and the web console to<mark class="marker-yellow"> manage stand-alone VMIs that were created independently from the OpenShift cluster,</mark> such as VMIs that were created by using scripts, with automation, or with other command-line methods.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
