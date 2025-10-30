@@ -2,7 +2,7 @@
 title: Chapter_one ~ Air
 description: 
 published: true
-date: 2025-10-30T09:46:35.908Z
+date: 2025-10-30T10:14:16.887Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-10-30T09:17:18.921Z
@@ -24,7 +24,7 @@ dateCreated: 2025-10-30T09:17:18.921Z
 <ul>
   <li>KubeVirt delivers container-native virtualization by using the <i>Kernel-based Virtual Machine (KVM)</i> Linux Kernel hypervisor within a Kubernetes container.</li>
 </ul>
-<h3>OpenShift Virtualization Operator</h3>
+<h3>OpenShift Virtualization Components&nbsp;</h3>
 <ul>
   <li>OpenShift Virtualization is an open source technology to enable running VMs in Red&nbsp;Hat OpenShift with the OpenShift Virtualization operator. It is based on the upstream <i>KubeVirt</i> project, and runs and manages traditional VMs as if they were containers.</li>
   <li><strong>HyperConverged Operator (HCO)</strong>
@@ -63,4 +63,68 @@ dateCreated: 2025-10-30T09:17:18.921Z
     </ul>
   </li>
 </ul>
+<figure class="image image_resized" style="width:100%;"><img src="/virtualization_components.svg"></figure>
+<h4>The OpenShift Virtualization Operator</h4>
+<ul>
+  <li><code><strong>virt-api</strong></code>
+    <ul>
+      <li><mark class="marker-yellow">A cluster-level component that provides an HTTP RESTful entry point to manage VM and VM-related workflows within the cluster</mark>. It updates virtualization Custom Resource Definitions (CRD) and handles defaulting and validating Virtual Machine Instance (VMI) CRDs.</li>
+    </ul>
+  </li>
+  <li><code><strong>virt-controller</strong></code>
+    <ul>
+      <li><mark class="marker-yellow">A cluster-level component that handles cluster-wide virtualization functions and manages the lifecycle of pods that are associated with VMIs.</mark> The operator creates the pod where the VM objects execute.</li>
+    </ul>
+  </li>
+  <li><code><strong>virt-handler</strong></code>
+    <ul>
+      <li><mark class="marker-yellow">A host-level DaemonSet resource, which runs on each node, and monitors for changes to a VM object and runs the necessary operations to meet the required state.</mark></li>
+    </ul>
+  </li>
+  <li><code><strong>virt-launcher</strong></code>
+    <ul>
+      <li><mark class="marker-yellow">The primary container in a VMI-associated pod runs the </mark><code><mark class="marker-yellow">virt-launcher</mark></code><mark class="marker-yellow"> component to provide control groups (cgroups) and namespaces for hosting the VMI process</mark>. This processing occurs when the <code>virt-handler</code> component passes the VM CRD object to the <code>virt-launcher</code> component. The <code>virt-launcher</code> component uses a container-local <code>libvirtd</code> instance to start the VMI. The <code>virt-launcher</code> component then monitors the VMI process until the process exits at VMI termination.</li>
+    </ul>
+  </li>
+  <li><code><strong>libvirtd</strong></code>
+    <ul>
+      <li><mark class="marker-yellow">Every VMI pod has a </mark><code><mark class="marker-yellow">libvirtd</mark></code><mark class="marker-yellow"> instance for the </mark><code><mark class="marker-yellow">virt-launcher</mark></code><mark class="marker-yellow"> component to manage the lifecycle of a VMI process.</mark></li>
+    </ul>
+  </li>
+</ul>
+<h4>The HyperConverged Operator</h4>
 <p>&nbsp;</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Resource name</td>
+        <td style="padding:5px;vertical-align:top;">Description</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>deployment/hco-webhook</code></td>
+        <td style="padding:5px;vertical-align:top;">Validates the HyperConverged custom resource contents.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>deployment/hyperconverged-cluster-cli-download</code></td>
+        <td style="padding:5px;vertical-align:top;">Provides the <code>virtctl</code> tool binaries to the cluster so that you can download them directly from the cluster.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>kubevirt/kubevirt-kubevirt-hyperconverged</code></td>
+        <td style="padding:5px;vertical-align:top;">Contains all needed operators, CRs, and objects for OpenShift Virtualization.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>ssp/ssp-kubevirt-hyperconverged</code></td>
+        <td style="padding:5px;vertical-align:top;">A Scheduling, Scale, and Performance (SSP) CR.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>cdi/cdi-kubevirt-hyperconverged</code></td>
+        <td style="padding:5px;vertical-align:top;">A Containerized Data Importer (CDI) CR.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>networkaddonsconfig/cluster</code></td>
+        <td style="padding:5px;vertical-align:top;">A CR that instructs and is managed by the Cluster Network Addons operator.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
