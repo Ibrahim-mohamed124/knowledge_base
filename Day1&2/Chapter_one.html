@@ -1,0 +1,663 @@
+<!--
+title: Chapter 1.  Authentication and Identity Management
+description: 
+published: true
+date: 2025-11-06T11:03:04.786Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-05T10:36:26.618Z
+-->
+
+<h1>Chapter&nbsp;1.&nbsp; Authentication and Identity Management</h1>
+<ul>
+  <li>Authentication could be via <mark class="marker-yellow">certificates or tokens</mark></li>
+  <li>Kubernetes considers to be authenticated any user that presents<mark class="marker-yellow"> a valid certificate that is signed by a trusted certificate authority (CA).</mark> Kubernetes reads the <code>subject</code> field from the certificate, and assigns the username and the groups with the <code>common name</code> (CN) and the <code>organization</code> (O) fields, respectively.</li>
+  <li>If the request does not present an access token or certificate, then Kubernetes assigns to the request the <code>system:anonymous</code> system user and the <code>system:unauthenticated</code> system group.</li>
+  <li>Kubernetes uses RBAC policies to determine whether the anonymous user has appropriate access to perform the requested action.</li>
+</ul>
+<h2>Authentication in OpenShift</h2>
+<ul>
+  <li>OpenShift includes its own built-in OAuth server</li>
+</ul>
+<h3>Authentication Methods</h3>
+<ul>
+  <li>The OpenShift OAuth server handles user authentication, and it issues OAuth tokens that grant access to specific resources.</li>
+</ul>
+<ol>
+  <li><strong>X.509 client certificates</strong></li>
+  <li><strong>OAuth access tokens</strong>
+    <ul>
+      <li>OpenShift preconfigures Kubernetes to trust tokens that its own internal OAuth server issues.</li>
+    </ul>
+  </li>
+</ol>
+<h3>The OpenShift OAuth Server</h3>
+<ul>
+  <li>At OCP instillation the authentication operator is installed, which managed the lifecycle of the OAuth server</li>
+  <li>The <mark class="marker-yellow">OpenShift OAuth server provides various identity providers (IdPs) that enable integration with identity management systems</mark> such as OpenID Connect and LDAP servers.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/auth-firstlogin.svg"></figure>
+<ul>
+  <li>OpenShift web console stores the token in the browser memory instead of in a <code>kubeconfig</code> file</li>
+  <li>The<mark class="marker-yellow"> two endpoints for login, which are the API server and the OAuth server,</mark> are the reason why you must accept two server certificates the first time that you log in to the OpenShift web console.</li>
+  <li>OAuth user access tokens can be retrieved &nbsp;from the OpenShift OAuth server by using the <code><i>namespace_route</i>/oauth/authorize</code> and <code><i>namespace_route</i>/oauth/token</code> endpoints.</li>
+</ul>
+<h4>Configure the OpenShift OAuth Server</h4>
+<ul>
+  <li>After the user successfully logs in to the cluster, the OAuth server creates the<mark class="marker-yellow"> OAuth access token for the user</mark>, and <mark class="marker-yellow">OpenShift creates the identity and user resources.</mark></li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders: 1
+  - name: htpasswd-idp-name 2
+    mappingMethod: claim 3
+    type: HTPasswd
+    htpasswd:
+      fileData:
+        name: htpasswd-secret 4
+  - name: ldap-idp-name
+    mappingMethod: claim
+    type: LDAP
+    ldap:
+...output omitted...</code></pre>
+<h3>Users, Groups, and Identities</h3>
+<h4>System Groups</h4>
+<ul>
+  <li>predefined groups that are<mark class="marker-yellow"> built into the system</mark> to grant specific permissions and access rights to certain categories of users.<ul>
+      <li><code><strong>system:authenticated</strong></code>
+        <ul>
+          <li>All authenticated users in the cluster, regardless of their role or namespace</li>
+        </ul>
+      </li>
+      <li><code><strong>system:authenticated:oauth</strong></code>
+        <ul>
+          <li>All authenticated users with an OAuth access token in the cluster</li>
+        </ul>
+      </li>
+      <li><code><strong>system:unauthenticated</strong></code>
+        <ul>
+          <li>Unauthenticated users, meaning those users who did not yet pass any authentication process</li>
+        </ul>
+      </li>
+      <li><code><strong>system:masters</strong></code>
+        <ul>
+          <li>Users with administrative access to the cluster Members of this group have full control over all resources and actions within the cluster, including cluster-level operations and management.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The<mark class="marker-yellow"> Kubernetes API server adds the strings from system groups to the user and group strings from the client certificate or from the token</mark>, whenever they apply. Then, Kubernetes uses RBAC rules to approve or deny the request depending on the user and groups.</li>
+</ul>
+<h4>User resource</h4>
+<ul>
+  <li>Defines regular users in the cluster</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: user.openshift.io/v1
+kind: User
+metadata:
+  name: ibrahim
+fullName: Ibrahim El Giza
+identities:
+  - myidp:ibrahim
+groups:
+  - dev-team
+  - openshift-admins
+</code></pre>
+<ul>
+  <li>The OpenShift internal OAuth server automatically creates user resources when users first log in to the cluster through an IdP.</li>
+</ul>
+<h4>Group resources&nbsp;</h4>
+<ul>
+  <li>Defines groups in the cluster.</li>
+  <li>OpenShift supports users as members of one or more groups.</li>
+  <li>OpenShift internal OAuth server automatically creates group resources when users first log in to the cluster through an OpenID Connect (OIDC) IdP.</li>
+  <li>Other supported IdPs should &nbsp;manually manage group resources in OpenShift.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: user.openshift.io/v1
+kind: Group
+metadata:
+  name: dev-team
+users:
+  - ibrahim
+  - fatma
+  - ahmed
+</code></pre>
+<h4>Identity resource</h4>
+<ul>
+  <li>The identity resource keeps a record of successful authentication attempts from a specific <mark class="marker-yellow">user and IdP.</mark></li>
+  <li>OpenShift maps external user identities from IdPs to user resources.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: user.openshift.io/v1
+kind: Identity
+metadata:
+  name: myidp:ibrahim
+providerName: myidp
+providerUserName: ibrahim
+user:
+  name: ibrahim
+  uid: 12345678-90ab-cdef-1234-567890abcdef
+</code></pre>
+<h3>OAuth Server Mapping Methods</h3>
+<ul>
+  <li>After a login, openshift creates the user(from the preferred name in the idp) and identity resources and maps them.</li>
+  <li>To avoid collisions, mappingMethod parameter is essential:<ul>
+      <li>claim:<mark class="marker-yellow"> fails if a user with that username is already mapped to another identity</mark></li>
+      <li>add: If a user with that username exists in OpenShift, then it maps the identity to the existing user, <mark class="marker-yellow">and adds the new identity to any existing identity mappings for the user.</mark></li>
+      <li>lookup: OpenShift looks up an existing identity, user identity mapping, and user,<mark class="marker-yellow"> but does not automatically provision users or identities.</mark> Thus, with this method you must manually provision users. With this method, cluster administrators can set up identities and users manually, or by using an external process.</li>
+    </ul>
+  </li>
+</ul>
+<h2>LDAP Authentication and Group Synchronization</h2>
+<ul>
+  <li>When users enter credentials for the cluster, the OAuth server initiates a connection and a corresponding <mark class="marker-yellow">query to the LDAP server,</mark> and creates bindings when matching unique entries are found.</li>
+  <li><mark class="marker-yellow">Additional configuration within the OpenShift cluster is required to synchronize groups from the LDAP database</mark>, as well as to define the appropriate access and permissions for each group.</li>
+</ul>
+<blockquote>
+  <p>The LDAP protocol defines a query language to retrieve information from database entries of a remote LDAP server, which can contain entries for users and groups within the organization.</p>
+</blockquote>
+<ul>
+  <li>LDAP:<ul>
+      <li>LDAP URI: a string that contains a group of parameters that are essential to the query:<ul>
+          <li>ldap: The LDAP protocol designation. For LDAP over SSL, use the <code>ldaps</code> protocol. Red&nbsp;Hat recommends using StartTLS over regular <code>ldap</code>.</li>
+          <li>host:port: the hostname and the listening port of the LDAP server, The default for <code>ldap</code> is <code>localhost:389</code>, and for <code>ldaps</code> is <code>localhost:636</code>.</li>
+          <li>basedn: The DN of the directory where a query begins. This directory is used as the root location for the search.</li>
+          <li>attributes<mark class="marker-yellow">: The target for the search, with the default as </mark><code><mark class="marker-yellow">uid</mark></code><mark class="marker-yellow">,</mark> which<mark class="marker-yellow"> the LDAP lookup is intended to return</mark>. Multiple attributes are provided by a comma-separated list.</li>
+          <li>scope: The scope of the LDAP lookup. The scope is either <code>one</code> or <code>sub</code>. The default is <code>sub</code> if unspecified.</li>
+          <li>filter: An LDAP filte<mark class="marker-yellow">r refines the results for the query</mark>. If omitted, the filter defaults to <code>(objectClass=*)</code>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">ldap://host:port/basedn?attribute?scope?filter</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>LDAP search account is configured during the OAuth IdP configuration, and contains a <mark class="marker-yellow">Bind Distinguished Name (Bind DN)</mark> and a<mark class="marker-yellow"> Bind Password</mark>, and it is used to search for identities that the user provided during the login.</li>
+</ul>
+<blockquote>
+  <p>In LDAP, the <strong>Bind Distinguished Name (Bind DN)</strong> and <strong>Bind Password</strong> are used to authenticate a client (like an application or user) to the LDAP server before performing operations like search, add, or modify.</p>
+</blockquote>
+<ul>
+  <li>On a unique match from the search, the <mark class="marker-yellow">provided credentials are submitted to the LDAP server in a second interaction</mark>, and an <mark class="marker-yellow">authentication binding is created</mark> between an <mark class="marker-yellow">OpenShift user resource and the returned LDAP </mark><code><mark class="marker-yellow">id</mark></code><mark class="marker-yellow"> and </mark><code><mark class="marker-yellow">preferredUsername</mark></code><mark class="marker-yellow"> values.</mark></li>
+  <li><mark class="marker-yellow">An administrator must synchronize groups from an LDAP server</mark> as an additional cluster-side configuration before a full LDAP IdP configuration is complete. It is <mark class="marker-yellow">necessary to create a cluster cron job to routinely query the LDAP server and to update the OpenShift groups</mark> to ensure consistency within the cluster to any organizational updates to the LDAP group entries</li>
+  <li>Useful commands:</li>
+</ul>
+<pre><code class="language-plaintext">ldapsearch -x -D bind_dn -H ldap_host_URI -b search_base \
+  --filter filter --requestedAttribute attributes -W
+</code></pre>
+<h3>Configuring an LDAP Server as an OpenShift IdP</h3>
+<p>&nbsp;1. Create an OpenShift secret resource to store the password for LDAP queries. This OpenShift secret resource contains the base64-encoded secret in the <code>bindPassword</code> field.</p>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Secret
+metadata:
+  name: ldap-secret
+  namespace: openshift-config
+type: Opaque
+data:
+  bindPassword: base64-encoded-bind-password</code></pre>
+<p>&nbsp;2. Create an OpenShift configuration map resource in the openshfit-config namespace that contains the certificate authority bundle (if the LDAP server uses encryption). it is a must to store the certificate authority in the <code>ca.crt</code> key of the configuration map resource.</p>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ca-config-map
+  namespace: openshift-config
+data:
+  ca.crt: |
+    CA_certificate_PEM</code></pre>
+<p>&nbsp;3. Update the CR to add the LDAP configuration to the existing OpenShift OAuth IdP entries.</p>
+<pre><code class="language-plaintext">apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: ldapidp 1
+    mappingMethod: claim 2
+    type: LDAP
+    ldap:
+      attributes:
+        id: 3
+        - dn
+        email: 4
+        - mail
+        name: 5
+        - cn
+        preferredUsername: 6
+        - uid
+      bindDN: 'cn=administrator,dc=example,dc=com' 7
+      bindPassword: 8
+        name: ldap-secret
+      ca: 9
+        name: ca-config-map
+      insecure: false 10
+      url: "ldaps://ldaps.example.com/ou=users,dc=acme,dc=com?uid" 11
+      
+1. Provider names are shown on the web console login screen and in the list of configured IdPs.
+
+2. Controls how mappings are established between this provider's identities and user objects.
+
+3. List of attributes where the first non-empty attribute is used. At least one attribute is required. If none of the listed attributes has a value, then authentication fails.
+
+4. List of attributes to use as the email address. The first non-empty attribute is used.
+
+5. List of attributes to use as the display name. The first non-empty attribute is used.
+
+6. List of attributes to use as the preferred username when provisioning a user for this identity. The first non-empty attribute is used.
+
+7. Required DN that is used during the search phase, unless anonymous searches are allowed. Must be set if the bindPassword parameter is defined.
+
+8. Required OpenShift secret resource that contains the bind password, unless anonymous searches are allowed. Must be set if the bindDN parameter is defined.
+
+9. Optional: Reference to an OpenShift configuration map resource that contains the privacy enhanced mail (PEM) encoded certificate authority bundle to validate server certificates for the configured URL. Used only when the insecure option is false.
+
+10. When true, no TLS connection is made to the server. When false, ldaps:// URLs connect by using TLS, and ldap:// URLs are upgraded to TLS. The insecure option must be set to false when ldaps:// URLs are in use, because these URLs always attempt to connect by using TLS.
+
+11. An RFC 2255 URL, which specifies the LDAP host and maps the identity parameters in the LDAP database schema. This url value associates the user-supplied login credential with the specific entries in the LDAP server for identity lookups.</code></pre>
+<p>&nbsp;4. Redeploy the IdP CR to the cluster with the added LDAP IdP.</p>
+<p>&nbsp;</p>
+<h3>OpenShift Group Synchronization with LDAP</h3>
+<ul>
+  <li>LDAP group synchronization requires a <mark class="marker-yellow">sync configuration file</mark> with a <mark class="marker-yellow">client configuration</mark> and <mark class="marker-yellow">a query definition.</mark></li>
+  <li>User-defined mappings can optionally provide granular details for establishing the custom relationships between group entries in the LDAP server and the corresponding OpenShift groups that you require.</li>
+  <li>Group synchronization requires a<mark class="marker-yellow"> project </mark>where the <mark class="marker-yellow">pods </mark>run, a <mark class="marker-yellow">service account</mark> to perform the work, a<mark class="marker-yellow"> cluster role</mark> where the right permissions are defined, and<mark class="marker-yellow"> cluster role binding</mark> to associate the cluster role with the service account. When the synchronization configuration is in place, the synchronization of groups is automated by using a <mark class="marker-yellow">cron job</mark> to schedule the recurring execution of the synchronization task.</li>
+</ul>
+<h4>LDAP Sync Configuration File</h4>
+<ul>
+  <li><code>LDAPSyncConfig</code> resource that contains the <mark class="marker-yellow">client LDAP configuration</mark> details and <mark class="marker-yellow">query definition</mark> for the LDAP group entities that are needed within OpenShift.</li>
+</ul>
+<pre><code class="language-plaintext">kind: LDAPSyncConfig
+apiVersion: v1
+url: ldap://example.com:389
+insecure: false 1
+rfc2307:
+    groupsQuery:
+        baseDN: "ou=groups,dc=example,dc=com"
+        scope: sub
+        derefAliases: never
+        pageSize: 0
+    groupUIDAttribute: dn 2
+    groupNameAttributes: [ cn ] 3
+    groupMembershipAttributes: [ member ]
+    usersQuery:
+        baseDN: "ou=users,dc=example,dc=com"
+        scope: sub
+        derefAliases: never
+        pageSize: 0
+    userUIDAttribute: dn 4
+    userNameAttributes: [ mail ] 5
+    tolerateMemberNotFoundErrors: false
+    tolerateMemberOutOfScopeErrors: false
+    
+1. When true, no TLS connection is made to the server. When false, ldaps:// URLs connect by using TLS, and ldap:// URLs are upgraded to TLS. The insecure option must be set to false when ldaps:// URLs are in use, because these URLs always attempt to connect by using TLS.
+2. The field that corresponds to the unique identifier field on the LDAP server for a group.
+3. The attribute for the name of the group.
+4. The field that corresponds the unique identifier field of the LDAP server for a user.
+5.The attribute for the name of the user.</code></pre>
+<p>&nbsp;</p>
+<h3>LDAP Synchronization</h3>
+<ol>
+  <li>Manually</li>
+</ol>
+<pre><code class="language-plaintext">oc adm groups sync --sync-config=config.yaml --confirm</code></pre>
+<p>&nbsp;2. Automatically:</p>
+<pre><code class="language-plaintext">oc new-project ldap-group-sync</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">The client bindPassword secret resource and the configuration map resource that are used during the configuration of the LDAP IdP are also needed for this task.</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: ldap-group-sync-acct
+  namespace: ldap-group-sync</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ldap-group-sync-acct
+rules:
+  - apiGroups:
+      - ''  
+      - user.openshift.io
+    resources:
+      - groups
+    verbs:
+      - get
+      - list
+      - create
+      - update</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ldap-group-sync-acct
+subjects:
+  - kind: ServiceAccount
+    name: ldap-group-sync-acct
+    namespace: ldap-group-sync
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ldap-group-sync-acct</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ldap-group-sync-acct
+  namespace: ldap-group-sync
+data:
+  sync.yaml: |
+    kind: LDAPSyncConfig
+    apiVersion: v1
+    url: ldaps://1.2.3.4:389
+    insecure: false
+    bindDN: cn=administrator,dc=example,dc=com
+    bindPassword:
+      file: "/etc/secrets/bindPassword"
+    ca: /etc/ldap-ca/ca.crt
+    rfc2307:
+      groupsQuery:
+        baseDN: "ou=groups,dc=example,dc=com"
+        scope: sub
+        filter: "(objectClass=groupOfMembers)"
+        derefAliases: never
+        pageSize: 0
+      groupUIDAttribute: dn
+      groupNameAttributes: [ cn ]
+      groupMembershipAttributes: [ member ]
+      usersQuery:
+        baseDN: "ou=users,dc=example,dc=com"
+        scope: sub
+        derefAliases: never
+        pageSize: 0
+      userUIDAttribute: dn
+      userNameAttributes: [ uid ]
+      tolerateMemberNotFoundErrors: false
+      tolerateMemberOutOfScopeErrors: false</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: ldap-group-sync-acct
+  namespace: ldap-group-sync
+spec:
+  schedule: "​*/30 * * * *​" 
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      ttlSecondsAfterFinished: 1800 
+      template:
+        spec:
+          containers:
+            - name: ldap-group-sync
+              image: "registry.redhat.io/openshift4/ose-cli:latest"
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "oc adm groups sync --sync-config=/etc/config/sync.yaml --confirm" 
+              volumeMounts:
+                - mountPath: "/etc/config"
+                  name: "ldap-sync-volume"
+                - mountPath: "/etc/secrets"
+                  name: "ldap-bind-password"
+                - mountPath: "/etc/ldap-ca"
+                  name: "ldap-ca"
+          volumes:
+            - name: "ldap-sync-volume"
+              configMap:
+                name: "ldap-group-sync-acct"
+            - name: "ldap-bind-password"
+              secret:
+                secretName: "ldap-secret" 
+            - name: "ldap-ca"
+              configMap:
+                name: "ca-config-map"
+          restartPolicy: "Never"
+          terminationGracePeriodSeconds: 30
+          activeDeadlineSeconds: 500
+          dnsPolicy: "ClusterFirst"
+          serviceAccountName: "ldap-group-sync-acct"</code></pre>
+<h2>OIDC Authentication and Group Claims</h2>
+<blockquote>
+  <p>OIDC is a set of standards for delegating the authentication of a user who accesses a protected resource. OIDC provides a way for applications to verify the identity of users and to obtain user profile information.</p>
+</blockquote>
+<ul>
+  <li>Red&nbsp;Hat provides Red&nbsp;Hat Single Sign-On (SSO) to<mark class="marker-yellow"> extend the capabilities of the OpenShift internal OAuth</mark>, and to serve as the solution for an OIDC identity infrastructure.</li>
+</ul>
+<h4>OIDC Tokens</h4>
+<ul>
+  <li>OIDC relies on the JavaScript Object Signing and Encryption (JOSE) set of standards. &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; JSON Web Token (JWT)</li>
+</ul>
+<blockquote>
+  <p>A JWT is composed of three parts:</p>
+  <p>Code</p>
+  <pre><code class="language-plaintext">&lt;Header&gt;.&lt;Payload&gt;.&lt;Signature&gt;</code></pre>
+  <p>&nbsp;</p>
+  <ul>
+    <li>The header contains the type of the token and the signing algorithm.</li>
+    <li>The payload contains the user claims. User claims are attributes for the user with details about their identity, profile, privileges, and group membership. Examples of user claims are the <code>sub</code>, <code>iat</code>, <code>exp</code>, or <code>iss</code> parameters, which are the identity for the user, the issue date, the expiration date, and the token issuer, respectively.</li>
+    <li>Finally, the signature is composed of the concatenation of the encoded header, the encoded payload, and the result of applying a signing algorithm.</li>
+  </ul>
+</blockquote>
+<ul>
+  <li>An <i>identity broker:</i>
+    <ul>
+      <li>Delegates the authentication of the user to the external IdP.</li>
+      <li>the OpenShift built-in OAuth server acts as an identity broker.</li>
+    </ul>
+  </li>
+  <li>Configuration:<ol>
+      <li>Configure the OIDC client in the IdP that authenticates the user to OpenShift to obtain connection parametrs</li>
+      <li>Use the connection parameters and credentials from the OIDC client to configure the OIDC IdP in the OpenShift built-in OAuth server.</li>
+    </ol>
+  </li>
+</ul>
+<h4>OIDC Claims</h4>
+<ul>
+  <li>OIDC claims are key/value pairs that contain information about the user in the JWT token.</li>
+  <li>openshift uses these claims to populate the user, identity, and group resources.</li>
+  <li>one claim must be configured to use as the user's identity. The default identity claim is <code>sub</code>, which stands for <i>subject identifier</i>.<ul>
+      <li><code><strong>sub:</strong></code>The remote identity for the user at the IdP.</li>
+      <li><code><strong>preferred_username:</strong></code>The preferred username when provisioning a user, which typically corresponds to the username in the authentication system for the user.</li>
+      <li><code><strong>email:</strong></code>Email address.</li>
+      <li><code><strong>name:</strong></code>Display name.</li>
+    </ul>
+  </li>
+  <li><strong>OIDC Group Claims: </strong>OpenShift uses the <code>group</code> claim to map the group membership of a user in the IdP to a group object.</li>
+</ul>
+<h4>Configuring OIDC IdP</h4>
+<ol>
+  <li>Obtain the client ID and the client secret from the OIDC IdP client for the OpenShift integration.</li>
+  <li>Create an OpenShift secret object, which contains the client secret that is obtained from the OIDC client configuration, in the <code>openshift-config</code> namespace.</li>
+  <li>Create an OpenShift configuration map object, which contains the certificate authority bundle in the <code>ca.crt</code> file parameter, in the <code>openshift-config</code> namespace (required only if the CA certificate is not configured as a system-wide CA).</li>
+  <li>Create the OAuth CR YAML file to include the OIDC IdP.</li>
+  <li>Apply the configuration file to the OAuth CR.</li>
+</ol>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: oidc_provider_name 1
+    mappingMethod: claim
+    type: OpenID
+    openID:
+      clientID: oidc_clientid 2
+      clientSecret: 3
+        name: secret_name
+      ca: 4
+        name: config_map_name
+      claims: 5
+        preferredUsername:
+        - preferred_username
+        - email
+        name:
+        - nickname
+        - given_name
+        - name
+        email:
+        - custom_email_claim
+        - email
+        groups:
+        - groups
+      issuer: https://external_idp_url.com 6
+      
+1. OpenShift prefixes the value of the identity claim with the provider name to form an identity 
+name, and uses the identity name to build the redirect URL.
+
+2. The client ID for the existing client in the IdP. You must enable the client to redirect to 
+https://oauth-openshift.apps.cluster_name.cluster_domain/oauth2callback/idp_provider_name.
+
+3. The name for the OpenShift secret object that contains the client secret.
+
+4. (Optional) The name for the OpenShift configuration map object that contains the certificate 
+authority bundle.
+
+5. The list of claims to use as the identity, such as the preferred username, email address, or groups.
+
+6. The URL for the IdP. OpenShift accepts only HTTPS URLs.</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>If your OIDC IdP supports the grant flow for resource owner password credentials (ROPC), then you can also log in through the IdP by using the <code>oc login</code> command with the username and the password.</p>
+  <p>If your OIDC IdP does not support the ROPC grant flow, then you receive a <code>You must obtain an API token</code> login error when you use the <code>oc login</code> command with the username and the password. Then, you must first get an OAuth access token and use it to log in by using the <code>oc login --token=<i>acces_token</i></code> command.</p>
+  <p>You can get the OAuth access token by logging in through the OpenShift web console and then clicking <strong>Help</strong> → <strong>Command line tools</strong> → <strong>Copy login command</strong>. You can also request the OAuth access token through the OpenShift REST API.</p>
+</blockquote>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get useroauthaccesstokens  &gt; to obtain the user access tokens issued by oauth</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>if you remove a user account from the OIDC IdP and the user is logged in to OpenShift, then the user can still perform tasks in OpenShift until they log out, because they still have a valid token that the OpenShift built-in OAuth server emits.</p>
+</blockquote>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc delete oauthaccesstoken $(oc get oauthaccesstoken -o \
+  jsonpath='{.items[?(@.userName=="username")].metadata.name}')</code></pre>
+<p>&nbsp;</p>
+<h2>Token and Client Certificate Authentication with kubeconfig Files</h2>
+<ul>
+  <li>Kubernetes enables external clients to authenticate to the Kubernetes API by embedding either a client certificate or an authentication token into a <code>kubeconfig</code> configuration file.</li>
+  <li><mark class="marker-yellow">SAs are specific to a particular project and cannot be directly shared across projects.</mark></li>
+  <li>In openshift, the SA automatically contains <mark class="marker-yellow">two secrets</mark>: an API token and credentials for the OpenShift Container Registry.</li>
+  <li>The <mark class="marker-yellow"><strong>automatically generated API token and credentials never expire.&nbsp;</strong></mark></li>
+  <li>Revoke the token and credentials by deleting the secrets, and openshift automatically creates new secrets</li>
+</ul>
+<blockquote>
+  <p>Starting with Kubernetes 1.23, SAs do not automatically create the secrets that contain long-term credentials for accessing the Kubernetes API. Thus, you must obtain the credentials by using the <code>TokenRequest</code> API. The tokens that the <code>TokenRequest</code> API provides are more secure than the tokens that are stored in secrets, because the <code>TokenRequest</code> tokens have a bounded lifetime; other API clients cannot read the <code>TokenRequest</code> tokens; and OpenShift automatically invalidates the <code>TokenRequest</code> tokens when the pod that they are mounted into is deleted.</p>
+</blockquote>
+<ul>
+  <li>Although Red&nbsp;Hat OpenShift Container Platform (RHOCP)&nbsp;4.14 is based on Kubernetes 1.27, it still creates the SA token secrets to communicate with the Kubernetes API server, because some features and workloads need the SA secrets.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/tokenapi.svg"></figure>
+<ul>
+  <li>Manually generate a bound SA token through the <code>TokenRequest</code> API, and use it as the bearer token for authentication to the Kubernetes API.</li>
+</ul>
+<pre><code class="language-plaintext">oc create token SA_name -n project --duration</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>The default lifetime for the SA<mark class="marker-yellow"> token is one hour.</mark></li>
+  <li>OpenShift assigns an SA to every pod that you deploy. By default, OpenShift creates the following SAs for every project:<ul>
+      <li><code><strong>builder:</strong></code>OpenShift uses this SA to <mark class="marker-yellow">build pods</mark>. By default, this SA has the <code>system:image-builder</code> role, so <mark class="marker-yellow">the resource can push images to any image stream in the project by using the internal Docker registry.</mark></li>
+      <li><code><strong>deployer:</strong></code>OpenShift uses this SA in<mark class="marker-yellow"> deployment pods</mark>. By default, this SA has the <code>system:deployer</code> role, so the resource can <mark class="marker-yellow">view and modify replication controllers and pods in the project</mark>. This SA exists only for applications that use OpenShift deployment configuration resources.</li>
+      <li><code><strong>default:</strong></code>OpenShift assigns this default SA to pods if you do not specify a different SA when you create the pods.</li>
+    </ul>
+  </li>
+  <li>If you grant roles to an SA, then you must use the name of the SA together with the name of the project and the <code>system:serviceaccount</code> string</li>
+</ul>
+<blockquote>
+  <p>Whenever you create an SA, it is automatically a member of the following groups:</p>
+  <p><code><strong>system:serviceaccounts</strong></code></p>
+  <p>This group includes all the SAs in the cluster.</p>
+  <p><code><strong>system:serviceaccounts:</strong><i><strong>project</strong></i></code></p>
+  <p>This group includes all the SAs in the specified project.</p>
+</blockquote>
+<h4>Create a Client Certificate</h4>
+<pre><code class="language-plaintext">openssl req -nodes -newkey rsa:4096 -keyout key_filename \
+ -subj "/O=group1/O=group2/CN=username" -out csr_filename</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: certificates.k8s.io/v1
+kind: CertificateSigningRequest
+metadata:
+  name: csr_name 
+spec:
+  signerName: kubernetes.io/kube-apiserver-client 
+  expirationSeconds: 604800 # one week 
+  request: $(base64 -w0 csr_filename) 
+  usages: 
+  - client auth</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc apply -f csr.yaml</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc adm certificate approve csr_name</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get csr csr_name -o jsonpath='{.status.certificate}' \
+  | base64 -d &gt; certificate_filename</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>When you run any <code>oc</code> command, OpenShift reads a <code>kubeconfig</code> file in the following ways in turn:</p>
+  <ol>
+    <li>The specified file in the <code>--kubeconfig</code> option, if you use it</li>
+    <li>The specified file in the <code>KUBECONFIG</code> environment variable, if it is set</li>
+    <li>The default <code>kubeconfig</code> file in <code>~/.kube/config</code></li>
+  </ol>
+</blockquote>
+<p>&nbsp;</p>
+<h3>User Impersonation</h3>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext"> oc auth can-i command --as user_to_impersonate \
+  --as-group group_to_impersonate
+  
+ oc auth can-i --list</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>Regular User That Impersonates Another User<ul>
+      <li>create a custom role with the appropriate permissions, and then create a role binding to assign the role to the user.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sudo-admin
+rules:
+- apiGroups: [""]  
+  resources: ["users"]
+  verbs: ["impersonate"]
+  resourceNames: ["admin"]</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext"> oc get nodes --as admin</code></pre>
+<p>&nbsp;</p>
+<h3>oc config command</h3>
+<blockquote>
+  <p>Available Commands:</p>
+  <p>&nbsp;current-context &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Display the current-context</p>
+  <p>&nbsp;delete-cluster &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Delete the specified cluster from the kubeconfig</p>
+  <p>&nbsp;delete-context &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Delete the specified context from the kubeconfig</p>
+  <p>&nbsp;delete-user &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Delete the specified user from the kubeconfig</p>
+  <p>&nbsp;get-clusters &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Display clusters defined in the kubeconfig</p>
+  <p>&nbsp;get-contexts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Describe one or many contexts</p>
+  <p>&nbsp;get-users &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Display users defined in the kubeconfig</p>
+  <p>&nbsp;new-admin-kubeconfig &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Generate, make the server trust, and display a new admin.kubeconfig.</p>
+  <p>&nbsp;new-kubelet-bootstrap-kubeconfig &nbsp; Generate, make the server trust, and display a new kubelet</p>
+  <p>/etc/kubernetes/kubeconfig.</p>
+  <p>&nbsp;refresh-ca-bundle &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Update the OpenShift CA bundle by contacting the apiserver.</p>
+  <p>&nbsp;rename-context &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Rename a context from the kubeconfig file</p>
+  <p>&nbsp;set &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Set an individual value in a kubeconfig file</p>
+  <p>&nbsp;set-cluster &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Set a cluster entry in kubeconfig</p>
+  <p>&nbsp;set-context &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Set a context entry in kubeconfig</p>
+  <p>&nbsp;set-credentials &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Set a user entry in kubeconfig</p>
+  <p>&nbsp;unset &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Unset an individual value in a kubeconfig file</p>
+  <p>&nbsp;use-context &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Set the current-context in a kubeconfig file</p>
+  <p>&nbsp;view &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Display merged kubeconfig settings or a specified kubeconfig file</p>
+</blockquote>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">openssl s_client -showcerts \
+  -connect api.ocp4.example.com:6443 &lt;/dev/null 2&gt;/dev/null|openssl x509 \
+  -outform PEM &gt; ocp-apiserver-cert.crt</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

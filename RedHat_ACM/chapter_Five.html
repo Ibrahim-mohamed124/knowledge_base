@@ -2,15 +2,15 @@
 title: Chapter_Five ~ Metal
 description: 
 published: true
-date: 2025-11-04T18:16:06.250Z
+date: 2025-10-25T19:27:43.481Z
 tags: 
 editor: ckeditor
-dateCreated: 2025-10-20T18:35:38.377Z
+dateCreated: 2025-10-25T10:39:25.587Z
 -->
 
 <h3>GitOps Application Model</h3>
 <ul>
-  <li><strong>ApplicationSet</strong> custom resource represents Argo CD application resource that a controller generates.</li>
+  <li><strong>ApplicationSet</strong> custom resource represents Argo CD applications that a controller generates.</li>
   <li><strong>Placement: </strong>For cluster targeting</li>
   <li><strong>ClusterSet: </strong>managed clusters group</li>
   <li><strong>GitOpsCluster &nbsp;</strong>custom resource represents an Argo CD server and its associated placement, to help integrating Argo CD with RHACM's cluster management capabilities.</li>
@@ -106,7 +106,7 @@ spec:
 <p><strong>∅ RHACM operator does not include Argo CD. Instead, you must install Argo CD by deploying the OpenShift GitOps operator.</strong></p>
 <ul>
   <li>OpenShift GitOps operator:<ul>
-      <li>manages Argo CD instances in OpenShift clusters.</li>
+      <li>&nbsp;manages Argo CD instances in OpenShift clusters.</li>
       <li>creates a default Argo CD instance in the <code>openshift-gitops</code> namespace.</li>
     </ul>
   </li>
@@ -140,7 +140,6 @@ spec:
       g, ocpadmins, role:admin
     scopes: '[groups]'
 ...output omitted...</code></pre>
-<p>&nbsp;</p>
 <ul>
   <li>Grant the Argo CD instance the required permissions to deploy applications.<ul>
       <li>must grant the <code>cluster-admin</code> permissions to <code>openshift-gitops-argocd-application-controller</code> service account in addition to the default permissions.</li>
@@ -189,137 +188,45 @@ spec:
     apiVersion: cluster.open-cluster-management.io/v1beta1
     name: clusters-for-gitops
     namespace: openshift-gitops</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h3>Deploying Applications</h3>
+<h3>Deploying applications</h3>
 <ul>
-  <li>ArgoCD fetches the manifests files for application resources from Git repos and supports many content types:<ol>
-      <li>Kustomize:</li>
+  <li>ArgoCD supports deploying resources from Git repos with many content types:<ol>
+      <li>Kustomize:&nbsp;<ul>
+          <li>Argo CD automatically detects the Kustomize structure of the application in the Git repository, and uses Kustomize to deploy the application.</li>
+        </ul>
+      </li>
     </ol>
   </li>
 </ul>
 <blockquote>
-  <p>Argo CD automatically detects the Kustomize structure of the application in the Git repository, and uses Kustomize to deploy the application.</p>
+  <p>Each configuration set needs a <code>kustomization.yaml</code> file. The <code>kustomization.yaml</code> files define how the settings in the overlay interact with the base YAML files to build new manifests. The new manifest builds are called <i>variants</i>, and consist of the base YAML files and their overlays.</p>
 </blockquote>
-<p>&nbsp; &nbsp; &nbsp;2. Helm charts</p>
-<p>&nbsp; &nbsp; &nbsp;3. directories&nbsp;</p>
-<h3>Application management</h3>
-<ol>
-  <li>ApplicationSet: acts as a template that Argo CD uses to create an <code>Application</code> resource for each cluster.<ul>
-      <li>Argo CD generates the <code>Application</code> resources in the <code>openshift-gitops</code> namespace</li>
-    </ul>
-  </li>
-</ol>
-<pre><code class="language-plaintext">---
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: myapp
-  namespace: openshift-gitops
-spec:
-  generators:
-    - clusterDecisionResource:
-        configMapRef: acm-placement
-        labelSelector:
-          matchLabels:
-            cluster.open-cluster-management.io/placement: myapp-placement  
-        requeueAfterSeconds: 180
-  template:  
-    metadata:
-      labels:
-        velero.io/exclude-from-backup: "true"
-      name: myapp-{{name}}  
-    spec:
-      destination:
-        namespace: myapp
-        server: '{{server}}'  
-      project: default
-      sources:  
-        - path: kustomize/overlays/production
-          repoURL: https://github.com/myorganization/myapp.git
-          targetRevision: main
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-          - CreateNamespace=true
-          - PruneLast=true</code></pre>
+<pre><code class="language-plaintext">--- &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; base directory
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - route.yaml
+  - service.yaml</code></pre>
+<pre><code class="language-plaintext">--- &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; overlay dir
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - pvc.yaml
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: myapp
+      spec:
+        replicas: 3</code></pre>
 <p>&nbsp;</p>
-<p>2. A <code>Placement</code> resource: selects clusters form a cluster set.</p>
-<pre><code class="language-plaintext">---
-apiVersion: cluster.open-cluster-management.io/v1beta1
-kind: Placement
-metadata:
-  name: myapp-placement
-  namespace: openshift-gitops
-spec:
-  clusterSets:  
-    - my-openshift-clusters
-  numberOfClusters: 3 
-  predicates:  
-    - requiredClusterSelector:
-        labelSelector:
-          matchLabels:
-            openshiftVersion: 4.18.6</code></pre>
-<h4>Deploying an Application by Using the Pull Model</h4>
-<ul>
-  <li>install the Red&nbsp;Hat OpenShift GitOps operator in each managed cluster</li>
-  <li>You cannot deploy applications on the hub cluster. Your <code>Placement</code> resource must exclude this cluster.</li>
-</ul>
-<pre><code class="language-plaintext">---
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: myapp-pull
-  namespace: openshift-gitops
-spec:
-  generators:
-    - clusterDecisionResource:
-        configMapRef: acm-placement
-        labelSelector:
-          matchLabels:
-            cluster.open-cluster-management.io/placement: myapp-pull-placement
-        requeueAfterSeconds: 180
-  template:
-    metadata:
-      annotations:
-        apps.open-cluster-management.io/ocm-managed-cluster: '{{name}}'
-        apps.open-cluster-management.io/ocm-managed-cluster-app-namespace:
-          openshift-gitops
-        argocd.argoproj.io/skip-reconcile: "true"
-      labels:
-        apps.open-cluster-management.io/pull-to-ocm-managed-cluster: "true"
-        velero.io/exclude-from-backup: "true"
-      name: myapp-pull-{{name}}
-    spec:
-      destination:
-        namespace: myapp-pull
-        server: '{{server}}'
-      project: default
-      sources:
-        - path: kustomize/overlays/production
-          repoURL: https://github.com/myorganization/myapp.git
-          targetRevision: main
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-          - CreateNamespace=true
-          - PruneLast=true</code></pre>
-<ol>
-  <li>The Argo CD instance that is running in the hub cluster processes the <code>ApplicationSet</code> resource and creates the corresponding <code>Application</code> resources.</li>
-  <li>The <code>argocd.argoproj.io/skip-reconcile="true"</code> annotation instructs Argo CD not to process the <code>Application</code> resources further.</li>
-  <li>RHACM detects the new <code>Application</code> resources with the <code>apps.open-cluster-management.io/pull-to-ocm-managed-cluster="true"</code> label.</li>
-  <li>RHACM creates <code>ManifestWork</code> resources in the namespaces of the managed clusters.</li>
-  <li>RHACM uses the <code>apps.open-cluster-management.io/ocm-managed-cluster</code> and <code>apps.open-cluster-management.io/ocm-managed-cluster-app-namespace</code> annotations to create these resources. A <code>ManifestWork</code> resource embeds the <code>Application</code> resource definition for the cluster.</li>
-  <li>The managed cluster retrieves and processes the <code>ManifestWork</code> resource from the hub cluster. The managed cluster creates the <code>Application</code> resource.</li>
-  <li>The Argo CD instance that is running in the managed cluster detects and processes the <code>Application</code> resource, which deploys the application.</li>
-  <li>The RHACM hub cluster collects the status of the application by creating a <code>MulticlusterApplicationSetReport</code> resource.</li>
-  <li>The topology view uses the <code>MulticlusterApplicationSetReport</code> resource for displaying the application status.</li>
-</ol>
-<h4>Deleting Applications</h4>
-<pre><code class="language-plaintext"> oc delete ApplicationSet myapp -n openshift-gitops
- oc delete placement myapp-placement -n openshift-gitops</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>

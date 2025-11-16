@@ -1,0 +1,386 @@
+<!--
+title: Stateful application storage operations
+description: 
+published: true
+date: 2025-11-11T19:13:48.652Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-11T17:16:59.056Z
+-->
+
+<h1><strong>Stateful application storage operations</strong></h1>
+<ul>
+  <li>portwox is able to clone applications configuration and data between namespaces in the same cluster or different clusters</li>
+</ul>
+<blockquote>
+  <p>All application storage operations require the <mark class="marker-yellow">administrator-level cluster privileges</mark> if you operate between namespaces</p>
+</blockquote>
+<ul>
+  <li>Main API resources:<ol>
+      <li>backupLocation</li>
+      <li>applicationBackup</li>
+    </ol>
+  </li>
+</ul>
+<h3>backupLocation</h3>
+<ul>
+  <li>portworx supports &nbsp;these object storage providers:<ol>
+      <li>S3 compatible storage</li>
+      <li>Azure blobs</li>
+      <li>GCC storage</li>
+    </ol>
+  </li>
+  <li>For S3 storage this data is required:</li>
+</ul>
+<pre><code class="language-plaintext">"endpoint" : "bucketEndpoint.com"
+"key": "ABCDEF1234567890"
+"secret": "ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890"</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>To restore backups to a different cluster, a backupLocation resource must be created on the new cluster that matches the backupLocation CRD on your original cluster.</p>
+</blockquote>
+<ul>
+  <li>There are two methods to provide the required data to connect to a S3 bucket:<ol>
+      <li>plaintext in the backupLocation resource</li>
+      <li>as a secret</li>
+    </ol>
+  </li>
+</ul>
+<h4><strong>Plaintext credentials</strong></h4>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: BackupLocation
+metadata:
+  name: mysql
+  namespace: mysql-app
+  annotations:
+    stork.libopenstorage.org/skipresource: "true"
+location:
+  type: s3
+  path: "bucket-name"
+  sync: true
+  s3Config:
+    region: us-east-1
+    accessKeyID: XXXX
+    secretAccessKey: XXXX
+    endpoint: "https://bucketEndpoint.com"
+    disableSSL: false</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li><strong>name:</strong> the backupLocation object's name</li>
+  <li><strong>namespace:</strong> the<mark class="marker-yellow"> namespace the backupLocation exists in</mark></li>
+  <li><strong>location:</strong>
+    <ul>
+      <li><strong>type:</strong> the <mark class="marker-yellow">object store type</mark></li>
+      <li><strong>path:</strong> <mark class="marker-yellow">the bucket Portworx will use for the backup</mark></li>
+      <li><strong>sync:</strong> If you're<mark class="marker-yellow"> restoring to a new cluster</mark>, set <code>sync</code> to true to allow your new cluster to retrieve the previous backups from your backup location.</li>
+      <li><strong>s3Config:</strong>
+        <ul>
+          <li><strong>region:</strong> which region your s3 bucket is located in</li>
+          <li><strong>accessKeyID:</strong> your bucket's accessKeyID</li>
+          <li><strong>secretAccessKey:</strong> your bucket's secretAccessKey</li>
+          <li><strong>endpoint:</strong> the URL or IP address of your bucket</li>
+          <li><strong>disableSSL:</strong> whether or not to disable SSL</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>If you use URL as your bucket endpoint, you must include the http prefix: either <code>https://</code> or <code>http://</code>, depending on whether or not you're using SSL.</p>
+</blockquote>
+<h4><strong>Kubernetes secret containing your credentials</strong></h4>
+<pre><code class="language-plaintext">  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: s3secret
+    namespace: mysql
+    annotations:
+      stork.libopenstorage.org/skipresource: "true" &gt; Annotate the Kubernetes secret so that other 
+      components like Stork and PX-Backup do not backup this resource.
+  stringData:
+    region: us-east-1
+    accessKeyID: &lt;access-key&gt;
+    secretAccessKey: &lt;secret-key&gt;
+    endpoint: "X.X.X.141:9010"
+    disableSSL: "false"
+    encryptionKey: "testKey"</code></pre>
+<ul>
+  <li><strong>name:</strong> the Secret object's name</li>
+  <li><strong>namespace:</strong> the <mark class="marker-yellow">namespace the Secret exists in</mark></li>
+  <li><strong>stringData:</strong>
+    <ul>
+      <li><strong>region:</strong> which region your s3 bucket is located in</li>
+      <li><strong>accessKeyID:</strong> your bucket's accessKeyID</li>
+      <li><strong>secretAccessKey:</strong> your bucket's secretAccessKey</li>
+      <li><strong>endpoint:</strong> the URL or IP address of your bucket</li>
+      <li><strong>disableSSL:</strong> whether or not to disable SSL</li>
+      <li><strong>encryptionKey:</strong> your secret's encryption key</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: BackupLocation
+metadata:
+  name: mysql-backup
+  namespace: mysql
+  annotations:
+    stork.libopenstorage.org/skipresource: "true"
+location:
+  type: s3
+  path: "bucket-name"
+  secretConfig: s3secret
+  sync: true</code></pre>
+<ul>
+  <li><strong>name:</strong> the backupLocation object's name</li>
+  <li><strong>namespace:</strong> the namespace the backupLocation exists in</li>
+  <li><strong>location:</strong>
+    <ul>
+      <li><strong>type:</strong> the object store type</li>
+      <li><strong>path:</strong> the bucket Portworx will use for the backup</li>
+      <li><strong>secretConfig:</strong> the <mark class="marker-yellow">Secret object containing your bucket's credentials</mark></li>
+      <li><strong>sync:</strong> If you're restoring to a new cluster, set <code>sync</code> to true to allow your new cluster to retrieve the previous backups from your backup location.</li>
+    </ul>
+  </li>
+</ul>
+<h3><strong>applicationBackup</strong></h3>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: ApplicationBackup
+metadata:
+  name: backup
+  namespace: mysql-app
+spec:
+  backupLocation: mysql
+  namespaces:
+  - mysql-app
+  reclaimPolicy: Delete
+  selectors:
+  preExecRule:
+  postExecRule:</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li><strong>name:</strong> the applicationBackup object's name</li>
+  <li><strong>namespace:</strong><mark class="marker-yellow"> the namespace the applicationBackup exists in</mark></li>
+  <li><strong>spec:</strong>
+    <ul>
+      <li><strong>backupLocation:</strong> what <mark class="marker-yellow">backupLocation object to use to determine where to send the backup</mark></li>
+      <li><strong>namespaces:</strong> the <mark class="marker-yellow">namespaces to backup</mark></li>
+      <li><strong>reclaimPolicy:</strong> <mark class="marker-yellow">what happens to objects in the object store when the </mark><code><mark class="marker-yellow">ApplicationBackup</mark></code><mark class="marker-yellow"> object is deleted</mark>, either <code>Delete</code> or <code>Retain</code></li>
+      <li><strong>selectors:</strong> define <mark class="marker-yellow">specific labels to determine which objects and volumes are backed-up</mark></li>
+      <li><strong>preExecRule:</strong> what rule to run before performing backup</li>
+      <li><strong>postExecRule:</strong> what rule to run after performing backup</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: Rule
+metadata:
+  name: cassandra-presnap-rule
+spec:
+  - podSelector:
+      app: cassandra
+    actions:
+    - type: command
+      value: nodetool flush</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">storkctl get applicationbackup -n mysql-app
+oc describe applicationbackup.stork.libopenstorage.org -n mysql-app</code></pre>
+<h3><strong>ApplicationBackupSchedule</strong></h3>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: SchedulePolicy
+metadata:
+  name: backupSchedule
+policy:
+  interval:
+    intervalMinutes: 60
+    retain: 5
+  daily:
+    time: "10:14PM"
+    retain: 5
+  weekly:
+    day: "Thursday"
+    time: "10:13PM"
+    retain: 5
+  monthly:
+    date: 14
+    time: "8:05PM"
+    retain: 5</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">storkctl get schedulepolicy</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: ApplicationBackupSchedule
+metadata:
+  name: backup
+  namespace: mysql
+spec:
+  schedulePolicyName: testpolicy
+  template:
+    spec:
+      backupLocation: mysql
+      namespaces:
+      - mysql
+      reclaimPolicy: Delete</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li><strong>name:</strong> the applicationBackupSchedule object's name</li>
+  <li><strong>namespace:</strong> the namespace the applicationBackupSchedule exists in</li>
+  <li><strong>spec.schedulePolicyName:</strong> the <mark class="marker-yellow">name of the schedule policy that defines when backup actions happen</mark></li>
+  <li><strong>spec.template.spec.backupLocation:</strong> the name of the <mark class="marker-yellow">backup location spec</mark></li>
+  <li><strong>spec.template.spec.namespaces:</strong> namespaces which will be backed up</li>
+  <li><strong>spec.template.spec.reclaimPolicy:</strong> what happens to objects in the object store when the <code>ApplicationBackup</code> object is deleted</li>
+</ul>
+<h2><strong>Restore an application</strong></h2>
+<blockquote>
+  <p>If you're restoring an <mark class="marker-yellow">application across namespaces on OpenShift, you must modify your destination namespace to include the same supplemental group annotation values as your source namespace:</mark></p>
+  <pre><code class="language-plaintext">annotations:  openshift.io/sa.scc.mcs: s0:c26,c25  
+              openshift.io/sa.scc.supplemental-groups: 1001990000/10000  
+              openshift.io/sa.scc.uid-range: 1001990000/10000</code></pre>
+</blockquote>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: ApplicationRestore
+metadata:
+  name: restore
+  namespace: mysql-app
+spec:
+  backupName: backup
+  backupLocation: mysql
+  namespaceMapping:
+    &lt;backup_namespace&gt;: &lt;restore_namespace&gt;
+  replacePolicy: Delete</code></pre>
+<ul>
+  <li><strong>name:</strong> the ApplicationRestore object's name</li>
+  <li><strong>namespace:</strong> the ApplicationRestore object's namespace</li>
+  <li><strong>spec.backupName:</strong> the name of the <code>applicationBackup</code> object to restore from</li>
+  <li><strong>spec.backupLocation:</strong><mark class="marker-yellow"> which backup location object to get application backups from</mark></li>
+  <li><strong>spec.namespaceMapping:</strong> <mark class="marker-yellow">a map of source and destination namespaces, </mark>allowing you to restore a backup to a different namespace</li>
+  <li><strong>spec.replacePolicy:</strong> specifies whether you want to <mark class="marker-yellow">delete or retain any matching existing resource in the target namespace</mark></li>
+</ul>
+<pre><code class="language-plaintext">storkctl get applicationbackup -n namespace
+storkctl get applicationrestore -n mysql-app</code></pre>
+<ul>
+  <li>To restore an application to a different cluster<ol>
+      <li>On the destination cluster, create BackupLocation CRD.</li>
+      <li>From the source cluster, get completed ApplicationBackup CR YAML and save it in a file with command:</li>
+    </ol>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get ApplicationBackup &lt;Backup-Which-need-to-be-Restored&gt; -oyaml &gt; backup-completed.yaml</code></pre>
+<h2><strong>Clone an Application</strong></h2>
+<blockquote>
+  <p>If you're cloning an application across namespaces on OpenShift, you must modify your destination namespace to include the same supplemental group annotation values as your source namespace:</p>
+</blockquote>
+<pre><code class="language-plaintext">annotations:  openshift.io/sa.scc.mcs: s0:c26,c25
+              openshift.io/sa.scc.supplemental-groups: 1001990000/10000
+              openshift.io/sa.scc.uid-range: 1001990000/10000</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>Distributed apps, such as Cassandra, may use the same node IDs on the destination namespace as their source, causing disruption when the new nodes join the source cluster.</p>
+</blockquote>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: ApplicationClone
+metadata:
+  name: clone-mysql
+  namespace: kube-system
+spec:
+  sourceNamespace: mysql-app
+  destinationNamespace: clone-mysql</code></pre>
+<ul>
+  <li><strong>name:</strong> the ApplicationClone object's name</li>
+  <li><strong>namespace:</strong> the ApplicationClone object's namespace</li>
+  <li><strong>spec.sourceNamespace:</strong> the <mark class="marker-yellow">namespace you want to clone applications </mark><i><mark class="marker-yellow">from</mark></i></li>
+  <li><strong>spec.destinationNamespace:</strong> the<mark class="marker-yellow"> namespace you want to clone applications </mark><i><mark class="marker-yellow">to</mark></i></li>
+</ul>
+<p>&nbsp;</p>
+<h2><strong>ApplicationRegistration</strong></h2>
+<ul>
+  <li>Back up and restore customer-specific CRDs by registering them to stork version 2.4.3</li>
+  <li>By default, Stork supports a number of customer-specific CRDs.</li>
+</ul>
+<pre><code class="language-plaintext">storkctl get applicationregistrations</code></pre>
+<h3><strong>Register a new CRD with Stork</strong></h3>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: ApplicationRegistration
+metadata:
+  name: myappname
+resources:
+- PodsPath: &lt;POD_PATH&gt; 
+  group: &lt;CRD_GROUP_NAME&gt;
+  version: &lt;CRD_VERSION&gt;
+  kind: &lt;CR_KIND&gt;
+  keepStatus: false
+  # To disable CR on migration, 
+  # CR spec path for disable 
+  suspendOptions:
+    path: &lt;spec_path&gt;
+    type: &lt;type_of_value_to_set&gt; (can be "int"/"bool")</code></pre>
+<ul>
+  <li><strong>metadata.name:</strong> With the name of the spec.</li>
+  <li><strong>resources.PodsPath:</strong> (Optional) With <mark class="marker-yellow">The path which stores the pods created by the CR</mark>. These will be deleted when scaling down the migration.</li>
+  <li><strong>resources.group:</strong> With the <mark class="marker-yellow">group of the CRD being registered.</mark></li>
+  <li><strong>resources.version:</strong> With the <mark class="marker-yellow">version of the CRD being registered.</mark></li>
+  <li><strong>resources.kind:</strong> With the <mark class="marker-yellow">kind of the CRD being registered.</mark></li>
+  <li><strong>resources.keepStatus:</strong> (Optional)<mark class="marker-yellow"> If you don't want to save the resource's status after migration</mark>, set this value to <code>false</code>.</li>
+  <li><strong>resources.suspendOptions.path:</strong> (Optional) With the path in the CRD spec which contains the option to suspend the application.</li>
+  <li><strong>resources.suspendOptions.type:</strong> (Optional) With the type of the field that is used to suspend the operation. For example, <code>int</code>, if the field contains the replica count for the application.</li>
+</ul>
+<p>example:</p>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: ApplicationRegistration
+metadata:
+  name: cassandra
+resources:
+- PodsPath: ""
+  group: cassandra.datastax.com
+  version: v1beta1
+  kind: CassandraDatacenter
+  keepStatus: false #cassandra datacenter status will not be migrated
+  suspendOptions:
+    path: spec.stopped #path to disable cassandra datacenter
+    type: bool #type of value to be set for spec.stopped</code></pre>
+<h3><strong>Managing application migrations with Stork</strong></h3>
+<ul>
+  <li>Migration of applications controlled by operators in Stork can be conducted with either <mark class="marker-yellow">asynchronous or synchronous DR methods.</mark></li>
+  <li><code>startApplications</code> parameter is set to <code>false</code> for migrations, it is expected that the application pods will not be running in the destination cluster once the migration is completed.&nbsp;</li>
+  <li>For DR scenarios, the <code>startApplications</code> flag is by default set to <code>false</code> since the applications need to be in a scale down state on the destination cluster.</li>
+  <li>Stork provides support fo<mark class="marker-yellow">r modifying the CR spec to scale down these applications</mark>, utilizing the options provided by the <code>ApplicationRegistration</code>'s <code>suspendOptions</code>.</li>
+</ul>
+<h4><strong>&nbsp;Safeguarding application pods during migration with Stork's stash strategy</strong></h4>
+<ul>
+  <li>For certain applications controlled by clusterwide operators that do not support scaling down via CR spec modifications, the pods related to these applications may <mark class="marker-yellow">become active in the destination namespace after migration</mark>.</li>
+  <li>Stork offers a feature known as the "Stash Strategy". This feature<mark class="marker-yellow"> allows the CR content to be stashed in a config map during migration on the destination cluster. </mark>The actual CR spec is created on the destination cluster only when the applications failover to the destination cluster using <code>storkctl.</code></li>
+  <li>Modifications need to be made in<mark class="marker-yellow"> both the source and destination clusters </mark>before initiating the migration.</li>
+</ul>
+<blockquote>
+  <p>Do not define any suspend options for application registrations with the <code>stashStrategy</code> enabled.</p>
+</blockquote>
+<p>example:</p>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: ApplicationRegistration
+metadata:
+  name: elasticsearch
+resources:
+- group: elasticsearch.k8s.elastic.co
+  keepStatus: false
+  kind: Elasticsearch
+  stashStrategy:
+    stashCR: true
+  version: v1
+- group: elasticsearch.k8s.elastic.co
+  keepStatus: false
+  kind: Elasticsearch
+  stashStrategy:
+    stashCR: true
+  version: v1beta1
+- group: elasticsearch.k8s.elastic.co
+  keepStatus: false
+  kind: Elasticsearch
+  stashStrategy:
+    stashCR: true
+  version: v1alpha1</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

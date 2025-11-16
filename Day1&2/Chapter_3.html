@@ -1,0 +1,326 @@
+<!--
+title: Chapter 3.  Cluster Partitioning
+description: 
+published: true
+date: 2025-11-16T13:17:38.991Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-09T10:57:53.457Z
+-->
+
+<h3>Node Pools</h3>
+<ul>
+  <li>A node pool is <mark class="marker-yellow">a logical group of OpenShift compute nodes.</mark> Compute nodes with similar hardware configurations can be organized into a node pool. Collecting these similar nodes into node pools provides a method of targeting placement for workload deployments.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/openshift-nodes-pool.svg"></figure>
+<h4>Node Provisioning</h4>
+<ul>
+  <li>a user-provisioned infrastructure (UPI):<ul>
+      <li><mark class="marker-yellow">Update the compute node Ignition file with an updated TLS certificate.</mark></li>
+      <li>Install Red&nbsp;Hat Enterprise Linux CoreOS (RHCOS) from an ISO image or by using a Preboot eXecution Environment (PXE) boot approach.</li>
+      <li>Add the new instance to the ingress load balancer.</li>
+      <li>Approve the Certificate Signing Requests (CSRs).</li>
+    </ul>
+  </li>
+</ul>
+<h4>Node Labels</h4>
+<ul>
+  <li>Use node labels to configure compute nodes to be a member of a specific node pool.</li>
+</ul>
+<pre><code class="language-plaintext"> oc label node/worker01 node-pool=gpu</code></pre>
+<h4>Node Configuration</h4>
+<ul>
+  <li>Manage nodes by defining groups of these nodes, which are called <i>machine configuration pools (MCP)</i>. The MCO uses the <code>master</code> and <code>worker</code> MCPs, by default. You can create custom MCPs for node pools. MCPs use labels to match one or more MCs to one or more nodes.</li>
+</ul>
+<h3>The Machine Configuration Operator</h3>
+<ul>
+  <li>The entire operating system is updated as a single image, instead of on a package-by-package basis.</li>
+  <li>The MCO comprises the following pods:<ul>
+      <li><code><strong>machine-config-operator</strong></code>
+        <ul>
+          <li>These pods form the <mark class="marker-yellow">main operator workload</mark> that manages the rest of the MCO components.</li>
+        </ul>
+      </li>
+      <li><code><strong>machine-config-controller</strong></code>
+        <ul>
+          <li>The machine configuration controller (MCC) manages the<mark class="marker-yellow"> synchronization of machine upgrades according to specified configurations through a machine configuration object.</mark> The MCC offers options to upgrade individual sets of machines.</li>
+        </ul>
+      </li>
+      <li><code><strong>machine-config-server</strong></code>
+        <ul>
+          <li>The machine configuration server (MCS)<mark class="marker-yellow"> provides instance customizations to machines that join the cluster.</mark> The MCS uses Ignition to provide the instance customizations to cluster nodes that join the cluster. <mark class="marker-yellow">The RHCOS operating system downloads and processes Ignition files at boot time.</mark></li>
+        </ul>
+      </li>
+      <li>MCO also requires the<mark class="marker-yellow"> machine-config-daemon daemonset (MCD)</mark> that RHCOS provides.</li>
+    </ul>
+  </li>
+  <li>The MCO can manage the following resources:<ul>
+      <li>systemd services</li>
+      <li>SSH keys</li>
+      <li>Kernel arguments</li>
+      <li>Files in the <code>/var</code> or <code>/etc</code> directories.</li>
+      <li>The MCO can also manage directories, such as the <code>/opt</code> and <code>/usr/local</code> directories, which can be writeable if symbolically linked to the <code>/var</code> or <code>/etc</code> directories.</li>
+    </ul>
+  </li>
+  <li>The MCO defines two custom resources (CRs), which are part of the <code>machineconfiguration.openshift.io/v1</code> API group.</li>
+</ul>
+<ol>
+  <li><code><strong>MachineConfig:</strong></code>
+    <ul>
+      <li>A machine configuration (MC) CR declares instance customizations by using the <mark class="marker-yellow">Ignition configuration format.</mark></li>
+    </ul>
+  </li>
+  <li><strong>MachineConfigPool</strong>
+    <ul>
+      <li>A machine configuration pool (MCP) CR uses labels to match one or more MCs to one or more nodes by means of the <code>machineConfigSelector</code> and <code>nodeSelector</code> parameters</li>
+    </ul>
+  </li>
+</ol>
+<figure class="image image_resized" style="width:100%;"><img src="/mco-schematic.svg"></figure>
+<ul>
+  <li>The MCO also manages two custom resources (CRs) for modifying <mark class="marker-yellow">CRI-O container runtime settings and the Kubelet service:</mark> the <code>ContainerRuntimeConfig</code> and <code>KubeletConfig</code> CRs, respectively.</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Machine Configurations</h3>
+<ul>
+  <li>Ignition files encode file contents by using the Base64 encoding scheme.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: worker 1
+  name: 60-journald 2
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+      - contents:
+          source: data:text/plain;charset=utf-8;base64,VGVzdGl...E8gKItAo= 3
+        filesystem: root
+        mode: 0644
+        path: /etc/systemd/journald.conf</code></pre>
+<p>&nbsp;</p>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The label for the MC. The MC uses the <code>machineconfiguration.openshift.io/role</code> MC role label. By default, OpenShift comes with preinstalled MCs for control plane and compute nodes.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;"><mark class="marker-yellow">Prefix the name with a two-digit number that specifies when to apply the configuration, relative to MCs that belong to the same MCP. Higher numbers have precedence.</mark></td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Use the <mark class="marker-yellow">data URL format to embed escaped file content.</mark> Base64 encoding is common for Ignition files.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get machineconfig \
+  --selector machineconfiguration.openshift.io/role=worker</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>The MCO reads MCs alphanumerically by the name, from <code>00-*</code> to <code>99-*</code>.</li>
+  <li>OpenShift stores the resulting compilation of MCs in a rendered MC resource. Thus, if two or more MCs apply changes to the same file, then the <mark class="marker-yellow">MCO applies only the changes from the MC with a higher number.&nbsp;</mark></li>
+  <li>For two MCs with the same number, the MCO uses the last one alphabetically. For example, the <code>99-worker-ssh-new</code> MC has precedence over the <code>99-worker-ssh-last</code> MC.</li>
+</ul>
+<h3>Machine Configuration Pools</h3>
+<ul>
+  <li>MCPs specify a <code>machineConfigSelector</code> MC label to select one or more MCs, and a <code>nodeSelector</code> node label to select one or more nodes.</li>
+  <li>Assigning the <code>worker</code> role to the custom MCP is critical so that OpenShift applies operating system updates that are labeled as <code>worker</code> to the machines in the pool. So, <code>machineConfigSelector</code> match expression selects both the <code>worker</code> role and the custom label.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/mc-reuse.svg"></figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<blockquote>
+  <p>Nodes with the <code>worker</code> role can be part of only one custom pool, and nodes with the <code>master</code> role cannot be part of a custom pool. In these cases, the MCO does not apply any changes that are specific to the custom pools, and shows an error in the MCC pod logs.</p>
+</blockquote>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+    name: custom 1
+spec:
+    machineConfigSelector:
+        matchExpressions:
+            - key: machineconfiguration.openshift.io/role
+              operator: In
+              values: [worker, custom] 2
+    nodeSelector:
+        matchLabels:
+            node-role.kubernetes.io/custom: "" 3</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name for the custom MCP.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The MC selector includes both the <code>worker</code> and <code>custom</code> MCs.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The node selector includes the nodes in the cluster with the <code>custom</code> role.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get machineconfigpool</code></pre>
+<p>&nbsp;</p>
+<p><code><strong>CONFIG:</strong></code>The name for the <mark class="marker-yellow">rendered MC that is applied to the nodes in the MCP</mark>. During the first update, this field remains blank.</p>
+<p><code><strong>UPDATED:</strong></code>The <code>True</code> status indicates that the<mark class="marker-yellow"> MCO applied the current MC to the nodes in that MCP.</mark> The <code>False</code> status indicates that nodes in the MCP are updating.</p>
+<p><code><strong>UPDATING:</strong></code>The <code>True</code> status indicates that the <mark class="marker-yellow">MCO is applying the intended MC</mark>. Nodes in the <code>UPDATING</code> state might not be available for scheduling. The <code>False</code> status indicates that all nodes in the MCP are updated.</p>
+<p><code><strong>DEGRADED:</strong></code>A <code>True</code> status indicates that the MCO is<mark class="marker-yellow"> blocked from applying the current or intended MC to at least one node in that MCP</mark>. A possible reason is a detection of configuration drift. Configuration drift is explained later in this section. Nodes that are degraded might not be available for scheduling. A <code>False</code> status indicates that all nodes in the MCP are ready.</p>
+<p><code><strong>MACHINECOUNT:</strong></code>Indicates the total number of machines in the MCP.</p>
+<p><code><strong>READYMACHINECOUNT:</strong></code>Indicates the total number of machines in the MCP that are ready for scheduling.</p>
+<p><code><strong>UPDATEDMACHINECOUNT:</strong></code>Indicates the total number of machines in the MCP with the current MC.</p>
+<p><code><strong>DEGRADEDMACHINECOUNT: </strong></code>Indicates the total number of machines in that MCP that are degraded or irreconcilable.</p>
+<p>&nbsp;</p>
+<h3>Infrastructure Nodes</h3>
+<ul>
+  <li>Infra role for nodes that host only infrastructure components, such as cluster logging, cluster monitoring, router, OAuth services or the integrated container image registry.&nbsp;</li>
+  <li>Infrastructure nodes do not count towards the total number of required OpenShift subscriptions to run the environment.</li>
+</ul>
+<h3>Machine Configuration Operator Updates</h3>
+<ul>
+  <li>The MCD reports the state of the node updates by using node annotations.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">oc describe node worker01
+Name:        worker01
+Roles:       worker
+Labels:      beta.kubernetes.io/arch=amd64
+             ...output omitted...
+             node-role.kubernetes.io/worker=
+             node.openshift.io/os_id=rhcos
+Annotations: machineconfiguration.openshift.io/currentConfig: rendered-worker-370...bfd 1
+             machineconfiguration.openshift.io/desiredConfig: rendered-worker-370...bfd 2
+             machineconfiguration.openshift.io/reason:
+             machineconfiguration.openshift.io/state: Done 3
+             volumes.kubernetes.io/controller-managed-attach-detach: true
+...output omitted...</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The current rendered MC that is applied to the node.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The intended rendered MC to be applied to the node.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The current node state regarding MCO.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>When the<mark class="marker-yellow"> intended configuration does not match the current configuration</mark>, the MCD applies the intended rendered MC, drains all the pods from the node, and reboots the node.</li>
+</ul>
+<blockquote>
+  <h4>Configuration Drift</h4>
+  <p>A <i>configuration drift</i> is the state where the configuration on a node does not fully match what the currently applied rendered MC specifies.</p>
+  <p>The MCD checks for configuration drifts when <mark class="marker-yellow">a node boots</mark>, or when<mark class="marker-yellow"> any of the specified files in the MC are modified outside the MC, or before a new MC is applied.</mark></p>
+</blockquote>
+<ul>
+  <li>When the MCD detects a configuration drift, the MCD performs the following tasks:<ol>
+      <li>Logs an<mark class="marker-yellow"> error message </mark>to the console.</li>
+      <li>Generates a<mark class="marker-yellow"> Kubernetes event.</mark></li>
+      <li><mark class="marker-yellow">Stops additional drift detection</mark> on the affected node.</li>
+      <li>Marks both the node and the MCP with the<mark class="marker-yellow"> degraded state.</mark></li>
+    </ol>
+  </li>
+</ul>
+<blockquote>
+  <p>A degraded node is online and operational, you cannot update it.</p>
+</blockquote>
+<h3>Remediation actions</h3>
+<ol>
+  <li>Generate:&nbsp;<ul>
+      <li>Generate a force file on the degraded node to<mark class="marker-yellow"> bypass the configuration drift detection and reapply the current MC.&nbsp;</mark>
+        <ul>
+          <li>Create<mark class="marker-yellow"> a debug pod on the node with the degraded state</mark> and create the <code>/run/machine-config-daemon-force</code> file.</li>
+          <li>OpenShift skips the MC validation, restarts the node, and applies the current MC to the node.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+<blockquote>
+  <p>The force file does not force the node upgrade; it instead skips validation of configurations on the system and attempts an update regardless of the difference.&nbsp;</p>
+</blockquote>
+<p>2. Rewrite:</p>
+<p>&nbsp; &nbsp; » Rewrite the file contents or change the file permissions of the files on the node to match the MC configuration.&nbsp;</p>
+<p>&nbsp; &nbsp; » This remediation does not require rebooting the node in a degraded state, and thus avoids possible downtime in your applications.</p>
+<pre><code class="language-plaintext"> oc describe mcp worker</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get pod -n openshift-machine-config-operator \
+  --field-selector spec.nodeName=worker01</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc logs machine-config-daemon-jsrzm \
+  -n openshift-machine-config-operator</code></pre>
+<p>&nbsp;</p>
+<h3>Configure MCO-related Custom Resources</h3>
+<ul>
+  <li>The MCO provides the <code>ContainerRuntimeConfig</code> CR to modify CRI-O container runtime settings, and the <code>KubeletConfig</code> CR to manage the Kubelet service.&nbsp;</li>
+  <li>OpenShift provides a <code>kubelet</code> configuration controller to the MCC. You can use the <code>KubeletConfig</code> CR to edit the <code>kubelet</code> parameters.</li>
+  <li>The MCO can write the <code>kubelet.conf</code> configuration file and the <code>kubelet.system</code> <code>systemd</code> unit file to Ignition, so Ignition writes these two files to configure the <code>kubelet</code> agent when it starts on a node.</li>
+  <li>MCD reboots the nodes to write the new configuration.</li>
+  <li>The MCO can write the <code>crio.conf</code> and <code>storage.conf</code> configuration files on the associated nodes with the updated values.</li>
+</ul>
+<blockquote>
+  <p>You can also use the <code>ContainerRuntimeConfig</code> CR to change the limit of PIDs or the maximum logging size. However, Red&nbsp;Hat recommends using the <code>KubeletConfig</code> CR to change these parameters, because they will likely be deprecated in a future version.</p>
+</blockquote>
+<h2>Node Configuration with Special Purpose Operators</h2>
+<ul>
+  <li>focus on specialized hardware tuning, cluster organization, and advanced optimizations.</li>
+  <li>Red&nbsp;Hat recommends running each special purpose operator within its own namespace and using a service account with the appropriate permissions.</li>
+</ul>
+<h3>The Node Tuning Operator</h3>
+<ul>
+  <li>The Node Tuning Operator is<mark class="marker-yellow"> a cluster operator </mark>that manages node-level optimizations by using the <mark class="marker-yellow">TuneD service</mark> and the <code>tuned</code> daemon.</li>
+  <li>The operator manages the containerized tuned daemon for RHOCP as a Kubernetes daemon set.&nbsp;</li>
+  <li>The Node Tuning Operator is installed by default in RHOCP clusters, and runs in the <code>openshift-cluster-node-tuning-operator</code> namespace.</li>
+</ul>
+<pre><code class="language-plaintext">oc get Tuned/default -o yaml \
+  -n openshift-cluster-node-tuning-operator</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get profile -n openshift-cluster-node-tuning-operator</code></pre>
+<h3>The Node Feature Discovery Operator</h3>
+<ul>
+  <li>The NFD operator detects hardware details, such as processor architecture, specialized PCI hardware such as GPUs or networking cards, and other system configurations on your cluster nodes. The NFD operator runs inside the <code>openshift-nfd</code> namespace for these operations.</li>
+</ul>
+<h3>The Kernel Module Management Operator</h3>
+<ul>
+  <li>Manages, builds, signs, and deploys out-of-tree kernel modules and device plug-ins on OpenShift Container Platform clusters.&nbsp;</li>
+  <li>A <code>Module</code> CRD specifies the kernel that can be added to one or more cluster nodes.</li>
+</ul>
