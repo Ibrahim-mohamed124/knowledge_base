@@ -1,0 +1,192 @@
+<!--
+title: Chapter One ~ Air
+description: 
+published: true
+date: 2025-11-04T18:32:26.491Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-04T05:32:56.024Z
+-->
+
+<h3>Storage Concepts&nbsp;</h3>
+<h4><strong>Kubernetes Persistent volumes</strong></h4>
+<ul>
+  <li>A piece of storage in the cluster that has been provisioned by an administrator.</li>
+  <li>The framework for provisioning storage has three components:<ol>
+      <li>storageClass</li>
+      <li>persistantVolumeClaim</li>
+      <li>persistantVolume</li>
+    </ol>
+  </li>
+</ul>
+<h6>&nbsp;StorageClass</h6>
+<ul>
+  <li>Different classes might map to quality-of-service levels, or to backup policies, or to arbitrary policies determined by the cluster administrators.</li>
+</ul>
+<pre><code class="language-plaintext">kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: portworx-sc-db
+provisioner: pxd.portworx.com
+parameters:
+  repl: "3"
+  io_profile: "db_remote"
+  createoptions: -N 128000
+
+
+provisioner: pxd.portworx.com indicates that volumes should be provisioned by the Portworx driver
+
+parameters provide driver specific parameters. The Kubernetes controller simply passes these 
+parameters as-is to the underlying driver (Portworx in this example).
+
+repl: "3" indicates that the Portworx volume needs to have 3 replicas
+
+io_profile: "db_remote" indicates that the Portworx volume needs to have IO profile optimized for 
+DB workloads.
+
+createoptions: indicates the filesystem formatting options for the specified filesystem 
+(ext4 or xfs).</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>Some fields like <code>allowVolumeExpansion</code> cannot be added after the storage class has been created.</p>
+</blockquote>
+<h6><strong>PersistentVolumeClaim (PVC)</strong></h6>
+<ul>
+  <li>A request for storage by a user</li>
+</ul>
+<pre><code class="language-plaintext">kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-db
+spec:
+  storageClassName: portworx-sc-db
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+name: postgres-db gives the name of the PVC.
+
+storageClassName: portworx-sc-db indicates that this PVC should be creating using the provisioner
+and parameters specified in the portworx-sc-db StorageClass.
+ 
+ReadWriteOnce indicates that only one pod is allowed to read and write to the volume.
+
+storage: 10Gi indicates this is a 10GiB PVC.</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>A one-one mapping between a PVC and a PV.</li>
+</ul>
+<h4><strong>Hyperconvergence</strong></h4>
+<ul>
+  <li>When a pod runs on the same host as its volume, it is known as convergence or hyper-convergence. Because this configuration reduces the network overhead of an application, performance is typically better.</li>
+  <li>Portworx uses <a href="https://github.com/libopenstorage/stork">Stork</a> to ensure that the nodes with data for a volume get prioritized when pods are being scheduled.</li>
+  <li><mark class="marker-yellow">Stork works as a scheduler extender:</mark>
+    <ol>
+      <li>The default Kubernetes scheduler assigns scores to all nodes in the cluster that are candidates for scheduling the pod. It takes into consideration the usual scheduling parameters like CPU, Memory, Taints, Tolerations, Affinities etc.</li>
+      <li>The<mark class="marker-yellow"> default scheduler then makes a request to Stork to filter nodes based on storage characteristics of the volume being used by the Pod.</mark> Stork will give higher scores to nodes that have the volume's data bits.</li>
+      <li>The default scheduler than picks the node with the higher score and assigns that to the pod.</li>
+    </ol>
+  </li>
+</ul>
+<h4><strong>Snapshots</strong></h4>
+<ul>
+  <li>Snapshots can be used to capture the state of a PVC at a given point of time.</li>
+</ul>
+<h6><strong>VolumeSnapshot</strong></h6>
+<ul>
+  <li>A VolumeSnapshot defines a users request to snapshot a PVC.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: volumesnapshot.external-storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: mysql-snapshot
+  namespace: default
+spec:
+  persistentVolumeClaimName: mysql-data
+  
+  
+  
+persistentVolumeClaimName: mysql-data indicates that user wants to snapshot the mysql-data PVC.</code></pre>
+<p>&nbsp;</p>
+<h6><strong>GroupVolumeSnapshot</strong></h6>
+<ul>
+  <li>A GroupVolumeSnapshot defines a users request to snapshot a group of PVCs. Portworx will quiesce IO on all volumes in the group and then trigger the snapshot.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: GroupVolumeSnapshot
+metadata:
+  name: mysql-group-snap
+spec:
+  pvcSelector:
+    matchLabels:
+      app: mysql
+      
+      
+pvcSelector specifies a label selector which will match all PVCs that have the label app=mysql</code></pre>
+<p>Targets:</p>
+<ol>
+  <li>local disk</li>
+  <li>s3 buckets</li>
+</ol>
+<ul>
+  <li>Portworx supports specifying <mark class="marker-yellow">pre and post rules that are run on the application pods using the volumes.</mark></li>
+</ul>
+<p>&nbsp;</p>
+<h6>VolumeSnapshotRestore</h6>
+<pre><code class="language-plaintext">apiVersion: stork.libopenstorage.org/v1alpha1
+kind: VolumeSnapshotRestore
+metadata:
+  name: mysql-snap-inrestore
+  namespace: default
+spec:
+  groupSnapshot: true or false
+  sourceName: mysql-snapshot
+  sourceNamespace: mysql-snap-restore-splocal</code></pre>
+<h4><strong>Migration</strong></h4>
+<ul>
+  <li>Migration is referred to the operation of transferring application workloads (e.g Deployments, Statefulsets, Jobs, ConfigMaps etc) and their data (PVCs) across Kubernetes clusters.</li>
+</ul>
+<ol>
+  <li>Establish a trust relationship between a pair of clusters.</li>
+  <li>An application namespace user can migrate applications and data within their namespace. An administrator can migrate on behalf of any Namespace or for all namespaces.</li>
+</ol>
+<figure class="image image_resized" style="width:100%;"><img src="/cluster-pair-10260ce91ab2262db8e351054a0f213e.png"></figure>
+<blockquote>
+  <p><strong>Migration with Stork on Kubernetes</strong> on Kubernetes moves application objects, configuration, and data including:</p>
+  <ul>
+    <li><strong>Kubernetes Objects</strong>: like Replication Controllers, StatefulSets, and Deployments which in turn includes the Pod specifications needed to run applications.</li>
+    <li><strong>Kubernetes Configuration</strong>: like ConfigMaps and Kubernetes Secrets needed for applications. (External secret stores such as Hashicorp Vault are not moved.)</li>
+    <li><strong>Portworx volumes</strong>: an incremental snapshot will be compressed and moved from the source cluster to the destination cluster</li>
+  </ul>
+  <p>The following will <strong>not</strong> be moved as they are either cluster-specific, external to the cluster, or imprudent:</p>
+  <ul>
+    <li><strong>Networking</strong>: external load balancers and overlay networking</li>
+    <li><strong>Service Accounts</strong></li>
+    <li><strong>Kube-System Namespace</strong>: anything in kube-system namespace will not be moved.</li>
+  </ul>
+</blockquote>
+<h3><strong>Storage pool caching</strong></h3>
+<ul>
+  <li>PX-Cache improves storage pool performance by using a cache drive and attaching it to the storage pool</li>
+  <li>The cache drive must be either an SSD or NVMe drive, and the<mark class="marker-yellow"> storage pool must be composed of magnetic drives.</mark></li>
+</ul>
+<blockquote>
+  <p><strong>IMPORTANT:</strong> You must enable pool caching at installation, and migration is <strong>not</strong> currently supported.</p>
+</blockquote>
+<figure class="image image_resized" style="width:100%;"><img src="/poolcache-e696c961de084ebf6f7206020b4677bd.png"></figure>
+<h6><strong>Prerequisites</strong></h6>
+<p>Before you can enable pool caching, you must meet the following prerequisites:</p>
+<ul>
+  <li>An NVMe or SSD drive must be attached to the same node as your storage pool</li>
+  <li>Linux kernel 4.20.13</li>
+  <li>The following packages must be installed on your node:<ul>
+      <li><code>thin-provisioning-tools</code></li>
+      <li><code>device mapper</code></li>
+      <li><code>lvm2</code></li>
+      <li><code>mdadm</code></li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext"> px-runc install -name portworx -c doc-cluster-caching -k etcd:http://127.0.0.1:4001 -s /dev/sdf -cache /dev/sdc -v /mnt:/mnt:shared</code></pre>
