@@ -2,7 +2,7 @@
 title: Chapter 2.  Running and Accessing Virtual Machines
 description: 
 published: true
-date: 2025-11-17T13:53:01.470Z
+date: 2025-11-17T14:04:57.051Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -99,6 +99,47 @@ dateCreated: 2025-11-17T13:40:32.886Z
     </ol>
   </li>
 </ul>
+<p>&nbsp;</p>
+<h3>Stand-alone VMIs</h3>
+<ul>
+  <li>A <i>stand-alone</i> VMI is created independently from the OpenShift Virtualization environment</li>
+</ul>
+<h3>common ways to create VMs</h3>
+<ul>
+  <li><strong>Templates:&nbsp;</strong>
+    <ul>
+      <li>predefined templates to create VMs with default parameters that are provided in the configuration of the available boot source from Red&nbsp;Hat.</li>
+      <li>create templates that define these custom settings and boot sources, override any parameters that are defined in the template for the VM.</li>
+    </ul>
+  </li>
+  <li><strong>Instance types:</strong>
+    <ul>
+      <li>Instance types must define CPU and memory resources. All other attributes are optional.</li>
+      <li>Cannot override any parameters that are defined in the instance type.&nbsp;</li>
+    </ul>
+  </li>
+  <li><strong>Declarative files:&nbsp;</strong></li>
+</ul>
+<pre><code class="language-plaintext">virtctl create vm --name mariadb-prod
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+...output omitted...
+    spec:
+      domain:
+        devices: {}
+        memory:
+          guest: 512Mi
+        resources: {}
+      terminationGracePeriodSeconds: 180
+status: {}</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
