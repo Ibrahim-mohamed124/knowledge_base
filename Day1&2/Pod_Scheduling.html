@@ -1,0 +1,22 @@
+<!--
+title: Chapter 4.  Pod Scheduling
+description: 
+published: true
+date: 2025-11-17T09:35:08.089Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-17T09:35:08.089Z
+-->
+
+<h3>OpenShift includes the following advanced scheduling features:</h3>
+<ul>
+  <li><mark class="marker-yellow">Scheduler profiles</mark>, to control how OpenShift schedules pods on nodes.</li>
+  <li><mark class="marker-yellow">Pod affinity rules</mark>, to keep sets of pods close to each other, on the same nodes. For example, you can run a REST service and its database on the same node to minimize network latency.</li>
+  <li><mark class="marker-yellow">Pod anti-affinity rules</mark>, to keep sets of pods far away from each other, on different nodes. For example, you can run replica pods of the same deployment in different nodes, so that if a node fails, then you do not lose all the pods for the workload.</li>
+  <li><mark class="marker-yellow">Node affinity,</mark> to keep sets of pods running on the same group of nodes. For example, you can configure a pod to run on nodes with a specific CPU.</li>
+  <li><mark class="marker-yellow">Node selectors</mark>, to schedule pods to a specific set of nodes. For example, you can schedule a pod to a node that provides special hardware that the pod needs.</li>
+  <li><mark class="marker-yellow">Taints and tolerations</mark>, to avoid scheduling pods to a specific set of nodes. For example, you can block a pod to run on a node that is reserved for OpenShift cluster services or control plane services.</li>
+  <li><mark class="marker-yellow">Pod disruption budget resource</mark>, which controls how many instances can be down at the same time during voluntary disruptions, such as when scaling down, updating applications, or draining a node for maintenance.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/advanced-scheduler.svg"></figure>
+<p>&nbsp;</p>
