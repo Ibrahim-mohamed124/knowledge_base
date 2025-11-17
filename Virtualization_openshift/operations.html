@@ -2,7 +2,7 @@
 title: Chapter 2.  Running and Accessing Virtual Machines
 description: 
 published: true
-date: 2025-11-17T14:18:18.143Z
+date: 2025-11-17T14:21:10.210Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -142,8 +142,37 @@ status: {}</code></pre>
 <blockquote>
   <p>To access OpenShift VMs with the <code>virtctl</code> tool, you must first log in to the OpenShift cluster with the <code>oc login</code> command. The <code>virtctl</code> tool refers to the Kubernetes configuration that the <code>oc</code> client creates</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>The <code>virtctl</code> tool calls the <code>remote-viewer</code> application. The <code>virtctl</code> tool requires a separate installation by default on Linux for VNC. You can use other VNC clients by passing the <code>--proxy-only</code> flag to the <code>virtctl vnc</code> command.</p>
+</blockquote>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;"><strong>Cluster role</strong></th>
+        <th style="padding:5px;vertical-align:top;"><strong>OpenShift Virtualization cluster role</strong></th>
+        <th style="padding:5px;vertical-align:top;"><strong>What users and groups with this role level can do</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>view</code></td>
+        <td style="padding:5px;vertical-align:top;"><code>kubevirt.io:view</code></td>
+        <td style="padding:5px;vertical-align:top;">View all OpenShift Virtualization resources, but cannot create, delete, modify, or access the resources.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>edit</code></td>
+        <td style="padding:5px;vertical-align:top;"><code>kubevirt.io:edit</code></td>
+        <td style="padding:5px;vertical-align:top;">Modify all OpenShift Virtualization resources, but cannot modify the OpenShift Virtualization runtime configuration.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>admin</code></td>
+        <td style="padding:5px;vertical-align:top;"><code>kubevirt.io:admin</code></td>
+        <td style="padding:5px;vertical-align:top;">View and modify all OpenShift Virtualization resources, and can modify the OpenShift Virtualization runtime configuration.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
