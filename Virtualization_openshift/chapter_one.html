@@ -2,15 +2,15 @@
 title: Chapter_one ~ Air
 description: 
 published: true
-date: 2025-10-30T10:14:26.223Z
+date: 2025-11-17T12:14:11.340Z
 tags: 
 editor: ckeditor
-dateCreated: 2025-10-30T09:17:18.921Z
+dateCreated: 2025-11-17T09:09:08.764Z
 -->
 
 <h3>Introduction to OpenShift Virtualization</h3>
 <ul>
-  <li><i><mark class="marker-yellow">Kernel-based Virtual Machine</mark></i><mark class="marker-yellow"> (KVM) </mark>technology as the hypervisor and the<mark class="marker-yellow"> libvirt libraries</mark> for defining the virtual machines.&nbsp;</li>
+  <li><i><mark class="marker-yellow">Kernel-based Virtual Machine</mark></i><mark class="marker-yellow"> (KVM) </mark>technology as the hypervisor and the<mark class="marker-yellow"> libvirt libraries</mark> for <mark class="marker-yellow">defining the virtual machines.</mark></li>
   <li>KVM and libvirt are run in <mark class="marker-yellow">a container that can be deployed in Kubernetes and OpenShift platforms</mark> along with containerized applications.</li>
   <li>The <i><mark class="marker-yellow">Quick EMUlator</mark></i><mark class="marker-yellow"> (QEMU) guest agent passes information about a VM to the host.</mark></li>
   <li>OpenShift Virtualization operator offers features for enterprise-grade virtualization, such as live migration, high availability, system scheduling, power management, image management, snapshots, thin provisioning, and monitoring.<ul>
@@ -128,3 +128,72 @@ dateCreated: 2025-10-30T09:17:18.921Z
     </tbody>
   </table>
 </figure>
+<p>&nbsp;</p>
+<h4>Operator CRs</h4>
+<ul>
+  <li>The chosen options during the HCO installation determine the operators that are deployed.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/virt_operators.svg"></figure>
+<p>&nbsp;</p>
+<ul>
+  <li>The default settings include the following operator CRs:<ul>
+      <li><strong>Containerized Data Importer (CDI)</strong>
+        <ul>
+          <li>The <mark class="marker-yellow">CDI operator components manage the authorization to upload VM disks into PVCs.</mark> The CDI also<mark class="marker-yellow"> directs external disk upload traffic to the appropriate upload server pod so that it can be written to the correct PVC and provides a helper pod that imports a virtual machine image into a PVC when creating a data volume.</mark></li>
+        </ul>
+      </li>
+      <li><strong>Hostpath Provisioner (HPP)</strong>
+        <ul>
+          <li>In an environment without available network storage, you can deploy the<mark class="marker-yellow"> hostpath provisioner to provision VMs on a node's local storage</mark>. The HPP operator includes<mark class="marker-yellow"> a deployment resource to provide a worker pod for each node where the HPP is designated to run</mark>. The pods mount the backing storage on the node. The<mark class="marker-yellow"> operator also deploys two daemonsets with driver interfaces of the HPP.</mark></li>
+        </ul>
+      </li>
+      <li><strong>Cluster Network Addons</strong>
+        <ul>
+          <li>The Cluster Network Addons operator deploys networking components on a cluster and manages the related resources for extended network functions.</li>
+        </ul>
+      </li>
+      <li><strong>Scheduling, Scale, and Performance (SSP)</strong>
+        <ul>
+          <li>The SSP operator deploys<mark class="marker-yellow"> common templates, related default boot sources, pipeline tasks, and the template validator.</mark></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<h3>Requirements</h3>
+<ol>
+  <li>&nbsp;All CPUs must be supported by Red&nbsp;Hat Enterprise Linux&nbsp;9</li>
+  <li>Intel VT or AMD-V hardware virtualization enabled, and have the no-execute (NX) flag enabled.</li>
+  <li>For live migration, shared storage is required.</li>
+  <li>&nbsp;create a <mark class="marker-yellow">default OpenShift Virtualization or OpenShift Container Platform storage class</mark> by setting the <code>storageclass.kubevirt.io/is-default-virt-class=true</code> or <code>storageclass.kubernetes.io/is-default-class=true</code> annotation on the storage class.</li>
+</ol>
+<h4>HyperConverged Configuration</h4>
+<ul>
+  <li><strong>Deployment Strategy:</strong>
+    <ol>
+      <li><strong>&nbsp;</strong>specify nodes by using node selectors, affinity rules, and tolerations for different virtualization workloads.&nbsp;</li>
+      <li>specify node placement rules for both virtual machines and operators.&nbsp;</li>
+    </ol>
+  </li>
+  <li><strong>Live Migration Configuration:</strong>
+    <ol>
+      <li>Live migration limits and timeouts are applied so that migration processes do not overwhelm the cluster.</li>
+    </ol>
+  </li>
+  <li><strong>Eviction Strategy:</strong>
+    <ol>
+      <li>defines at the cluster level whether to migrate the VMI instead of shutting it off when nodes are placed in maintenance mode and drained of all workloads.</li>
+      <li>If the VMI-specific eviction strategy field is set, then it overrides the cluster-level field.</li>
+    </ol>
+  </li>
+  <li><strong>Feature Gates:</strong>
+    <ol>
+      <li>key=value pair settings to enable or disable features.</li>
+      <li>Feature gates for OpenShift Virtualization&nbsp;4.16 are enabled to import common boot images and to run as non-root.</li>
+    </ol>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
