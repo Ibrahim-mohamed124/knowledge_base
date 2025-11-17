@@ -2,7 +2,7 @@
 title: Chapter 2.  Running and Accessing Virtual Machines
 description: 
 published: true
-date: 2025-11-17T14:28:55.507Z
+date: 2025-11-17T14:34:40.267Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -229,6 +229,14 @@ virtctl restart postgresql-rhel9</code></pre>
   <p>The <code>kubevirt.io</code> cluster roles provide permissions only for OpenShift Virtualization resources such as <code>VirtualMachines</code>, <code>VirtualMachineInstances</code>, and instance types. These roles do not provide permissions for standard OpenShift resources such as pods, services, or deployments.</p>
 </blockquote>
 <p>&nbsp;</p>
+<pre><code class="language-plaintext">virtctl console postgresql-rhel9
+virtctl vnc postgresql-rhel9
+virtctl ssh -i .ssh/lab_rsa --username developer postgresql-rhel9
+virtctl port-forward vm/postgresql-rhel9 22080:80
+oc port-forward pod/virt-launcher-postgresql-rhel9-gbxws 22080:80
+
+virtctl expose vm postgresql-rhel9 --name postgresql-service --type ClusterIP --port 5432
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
