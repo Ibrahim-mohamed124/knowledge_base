@@ -2,7 +2,7 @@
 title: Chapter 4.  Pod Scheduling
 description: 
 published: true
-date: 2025-11-17T09:35:08.089Z
+date: 2025-11-17T09:51:47.816Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:35:08.089Z
@@ -19,4 +19,58 @@ dateCreated: 2025-11-17T09:35:08.089Z
   <li><mark class="marker-yellow">Pod disruption budget resource</mark>, which controls how many instances can be down at the same time during voluntary disruptions, such as when scaling down, updating applications, or draining a node for maintenance.</li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/advanced-scheduler.svg"></figure>
+<blockquote>
+  <p>The default OpenShift pod scheduler determines the placement of pods onto nodes within the cluster. The scheduler reads data from the pod and identifies a suitable node based on configured profiles. After identifying the most suitable node, the scheduler creates a binding that associates the pod with a specific node, without modifying the pod.</p>
+</blockquote>
+<ul>
+  <li>The OpenShift default pod scheduler determines the placement of a pod onto a particular node according to the following procedure:<ol>
+      <li>Node filtering: The OpenShift scheduler<mark class="marker-yellow"> filters the nodes based on the configured constraints or requirements by means of functions called </mark><i><mark class="marker-yellow">predicates</mark></i><mark class="marker-yellow">.</mark> These predicates include available CPU capacity on the node to satisfy a pod's CPU resource request, free ports, or volume availability, among others.</li>
+      <li>Prioritize the filtered list of nodes: In this step, the<mark class="marker-yellow"> scheduler assesses each node by using a set of priority or scoring functions, and assigns each node a score from 0 to 10</mark>. A score of 0 indicates a poor fit, and a score of 10 indicates an excellent fit for hosting the pod. Additionally, OpenShift administrators can assign a numeric weight to each scoring function in the scheduler's configuration. With this weight attribute, administrators can prioritize certain scoring functions.</li>
+      <li>Select the best node: <mark class="marker-yellow">OpenShift sorts the nodes based on their scores and selects the node with the highest score.</mark> If multiple nodes receive the same score, then OpenShift selects one node randomly.</li>
+      <li>If a pod does not specify its resource requests, then the scheduler could place it on a node that is already full, which could lead to poor performance or even killing the pod if the node is out of memory.</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
+<h4>Scheduler Profiles</h4>
+<pre><code class="language-plaintext">oc edit scheduler cluster &gt;&gt;&gt;&gt; spec.profile parameter.</code></pre>
+<ul>
+  <li><code><strong>LowNodeUtilization</strong></code>
+    <ul>
+      <li>By using this profile<mark class="marker-yellow">, OpenShift distributes pods evenly across nodes to ensure a low resource usage per node.</mark> This profile provides the default scheduler behavior.</li>
+    </ul>
+  </li>
+  <li><code><strong>HighNodeUtilization</strong></code>
+    <ul>
+      <li>With this profile,<mark class="marker-yellow"> OpenShift places as many pods as possible onto as few nodes as possible. </mark>This profile minimizes the node count but increases the resource usage per node.</li>
+    </ul>
+  </li>
+  <li><code><strong>NoScoring</strong></code>
+    <ul>
+      <li>This profile aims for quick scheduling cycles by<mark class="marker-yellow"> disabling all the score plug-ins</mark>. Thus, by using this profile you sacrifice better scheduling decisions for faster ones.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<h4>Pod Disruption Budget</h4>
+<ul>
+  <li>policy resource to control the disruption of pods during voluntary disruptions, such as scaling down, updating applications, or draining a node for maintenance. Pod disruption budgets do not apply on node failures.</li>
+  <li>manage the availability and stability of your applications during disruptions, to reduce the risk of service degradation or downtime when maintaining or updating your cluster.</li>
+  <li>The configuration for a pod disruption budget consists of the following parts:<ul>
+      <li>A label selector to target a specific set of pods. By using the label selector, you define the pods that the pod disruption budget protects. Only pods that match the label selector are subject to the budget constraints. The pod selector in a pod disruption budget typically selects only pods from the same deployment.</li>
+      <li>The availability level, which specifies the minimum number of pods that must be available simultaneously. You can define the following availability levels:<ul>
+          <li><code><strong>minAvailable</strong></code>
+            <ul>
+              <li>Defines the minimum number of pods that must always be available, even during a disruption. A pod is available when it has the <code>Ready</code> condition with the <code>True</code> value.</li>
+            </ul>
+          </li>
+          <li><code><strong>maxUnavailable</strong></code>
+            <ul>
+              <li>Defines the maximum number of pods that can be unavailable during a disruption.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
