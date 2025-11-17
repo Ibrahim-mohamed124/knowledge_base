@@ -2,7 +2,7 @@
 title: Chapter 2.  Running and Accessing Virtual Machines
 description: 
 published: true
-date: 2025-11-17T13:42:14.797Z
+date: 2025-11-17T13:47:49.047Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -72,9 +72,16 @@ dateCreated: 2025-11-17T13:40:32.886Z
   <li>create a disk to contain the configuration map or the secret.</li>
   <li>After adding the disk with the configuration map or secret, &nbsp;start the VM and mount the disk manually from the VM console.</li>
 </ol>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Components of Virtual Machine Creation</h3>
+<blockquote>
+  <p><code>libvirtd</code> instance provides a low-level virtualization architecture and interfaces with the kernel to manage the lifecycle of the VM process.</p>
+</blockquote>
+<ol>
+  <li>The <code>virt-controller</code> operator monitors for new VMI objects.</li>
+  <li>The <code>virt-handler</code> daemon set runs on each node to execute any necessary actions to meet a VM object's defined state. The <code>virt-handler</code> daemon set monitors for changes in a VM, and creates the <code>virt-launcher</code> container.</li>
+  <li>The <code>virt-launcher</code> container runs within each VM's pod and instantiates the VM with the use of a local <code>libvirtd</code> instance.</li>
+  <li>the <code>virt-launcher</code> pod routes IPv4 traffic to the<mark class="marker-yellow"> Dynamic Host Configuration Protocol (DHCP) address of the VMI, </mark>This routing enables you to connect to a VMI with a port-forwarding connection(SNAT)</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
