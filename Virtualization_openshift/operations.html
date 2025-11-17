@@ -2,7 +2,7 @@
 title: Chapter 2.  Running and Accessing Virtual Machines
 description: 
 published: true
-date: 2025-11-17T13:47:49.047Z
+date: 2025-11-17T13:51:25.246Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -82,8 +82,22 @@ dateCreated: 2025-11-17T13:40:32.886Z
   <li>The <code>virt-launcher</code> container runs within each VM's pod and instantiates the VM with the use of a local <code>libvirtd</code> instance.</li>
   <li>the <code>virt-launcher</code> pod routes IPv4 traffic to the<mark class="marker-yellow"> Dynamic Host Configuration Protocol (DHCP) address of the VMI, </mark>This routing enables you to connect to a VMI with a port-forwarding connection(SNAT)</li>
 </ol>
+<blockquote>
+  <p>the DHCP address for the guest is provided by a DHCP server instance that runs inside the virt‑launcher pod (the pod networking layer) and hands out IPs to the guest over the tap/bridge the launcher creates</p>
+</blockquote>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>The <code>libvirtd</code> instance also includes the <code>virsh</code> command, to manage VMs. This utility provides several commands to list, start, stop, or reboot VMs, which can be accessed from the virt-launcher pod:<ol>
+      <li><code>virsh list</code>: Lists all running VMs.</li>
+      <li><code>virsh start</code>: Starts a VM.</li>
+      <li><code>virsh shutdown</code>: Shuts down a VM.</li>
+      <li><code>virsh dumpxml</code>: Dumps the XML configuration of a VM to STDOUT. You can use it to update an existing VM or use it as a template to create another VM.</li>
+      <li><code>virsh reset</code>: Resets a VM without shutting it down previously.</li>
+      <li><code>virsh restore</code>: Restores a VM from a saved file.</li>
+      <li><code>virsh migrate</code>: Migratesa VM to another host.</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
