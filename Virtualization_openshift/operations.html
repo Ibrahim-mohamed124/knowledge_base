@@ -1,0 +1,69 @@
+<!--
+title: Chapter 2.  Running and Accessing Virtual Machines
+description: 
+published: true
+date: 2025-11-17T13:40:32.886Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-17T13:40:32.886Z
+-->
+
+<h2>Virtual Machine Resources</h2>
+<ul>
+  <li>VM object specifies a template to create a running instance of the VM inside your cluster. The <mark class="marker-yellow">running instance of a VM is a </mark><i><mark class="marker-yellow">Virtual Machine Instance (VMI)</mark></i>. A container inside a pod executes and manages the VMI.</li>
+  <li>A VM object specifies the template for a VMI pod.</li>
+  <li>If a VMI is deleted, then<mark class="marker-yellow"> Kubernetes generates another instance that is based on the VM object configuration.</mark></li>
+</ul>
+<blockquote>
+  <p>When a VM is created and started, a <code>virt-controller</code> pod signals to a <code>virt-handler</code> pod on a cluster node to create a <code>virt-launcher</code> pod for the VMI. The <code>virt-launcher</code> pod consists of a running <code>libvirtd</code> container instance to execute the VMI as an isolated process.</p>
+</blockquote>
+<h3>Components of an OpenShift Virtual Machine</h3>
+<h4>Virtual Machine Consoles</h4>
+<ul>
+  <li><strong>VNC Console: </strong>The VNC console provides both text-based and graphical consoles, depending on the configuration of the VMI's operating system.</li>
+  <li><strong>Serial Console: </strong>The <i>serial console</i> connects you to the VMI's text-based console through its serial port.</li>
+  <li><strong>RDP Console: </strong>The <i>Quick Emulator</i> (QEMU) guest agent must be installed and running on the VMI to use the RDP console.</li>
+</ul>
+<h4>Network Interfaces</h4>
+<ul>
+  <li><strong>Default Pod Network:</strong>
+    <ul>
+      <li>The <i>default pod network</i> assigns an IP address to the VMI from the cluster's pod network.</li>
+      <li>Network interface must use the masquerade binding method.</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>Masquerade binding connects the<mark class="marker-yellow"> guest NIC to the Pod’s network namespace through a Linux bridge and a tap device</mark>, then applies Network Address Translation so the guest’s IP traffic is translated to the Pod IP that the cluster CNI understands. That NAT step is what lets the rest of the cluster (other pods, services, CNI routing) treat the VMI as a pod endpoint and reach it using cluster networking semantics</p>
+</blockquote>
+<ul>
+  <li><strong>Multus:</strong>
+    <ul>
+      <li>Multus provides a <i>Custom Resource Definition</i> (CRD), which is called a <i>Network Attachment Definition</i> (NAD), to enable you to connect pods, VMs, or VMIs to one or more networks.</li>
+    </ul>
+  </li>
+  <li><strong>Single Root I/O Virtualization:</strong>
+    <ul>
+      <li>a <i>Single Root I/O Virtualization</i> (SR-IOV) device that enables a VMI to connect to a virtual function network for high performance.</li>
+    </ul>
+  </li>
+</ul>
+<h4>Persistent Volumes and Persistent Volume Claims</h4>
+<h4>Boot Sources</h4>
+<ul>
+  <li>A boot source is a fully configured disk image that includes the operating system (OS), drivers, and other initial data for a VM.<ul>
+      <li>cloud image in either RAW or QCOW2 format</li>
+      <li>installation disk image in ISO format</li>
+      <li>container disk from a container image registry</li>
+      <li>PVC.&nbsp;</li>
+      <li>Base operating system images from container registries, such as Quay.io</li>
+    </ul>
+  </li>
+  <li>Upload a boot source from a local system, use an existing volume, use an existing snapshot, or download the volume from a registry</li>
+</ul>
+<blockquote>
+  <p>The download from a registry creates a <code>dataimportcron</code> resource that defines a cron job to pull and import the disk image.</p>
+</blockquote>
+<ul>
+  <li>The <i>Containerized Data Importer</i> (CDI) imports the golden images from Red&nbsp;Hat to the <code>openshift-virtualization-os-images</code> project as snapshots or PVCs.</li>
+</ul>
