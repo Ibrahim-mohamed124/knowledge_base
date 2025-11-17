@@ -2,7 +2,7 @@
 title: Chapter 2.  Running and Accessing Virtual Machines
 description: 
 published: true
-date: 2025-11-17T14:37:03.164Z
+date: 2025-11-17T14:52:20.906Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -239,8 +239,30 @@ virtctl expose vm postgresql-rhel9 --name postgresql-service --type ClusterIP --
 </code></pre>
 <p>&nbsp;</p>
 <h2>Monitoring and Inspecting Virtual Machines</h2>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>The QEMU guest agent that is installed in the VM provides information about the VM, users, file systems, and secondary networks.&nbsp;</li>
+  <li><strong>Virtualization</strong> → <strong>Overview</strong> and select the <strong>Top consumers</strong> tab. This tab lists the VMs that are the top consumers of resources, such as CPU, memory, and storage throughput.</li>
+</ul>
+<pre><code class="language-plaintext"> oc exec -it virt-launcher-pod-name -n namespace -- /bin/bash
+ virsh dommemstat vm-name
+ virsh domstate vm-name</code></pre>
+<h4>Managing Virtual Machine Instances</h4>
+<ul>
+  <li>view a list of file systems that are available to the VMI with the <code>virtctl fslist <i>vmi-name</i></code> command.</li>
+</ul>
+<pre><code class="language-plaintext">virtctl fslist production-mariadb -n production-vms</code></pre>
+<ul>
+  <li>view guest agent information about the VMI's operating system with the <code>virtctl guestosinfo <i>vmi-name</i></code> command.</li>
+  <li>Enable monitoring for user-defined projects by setting the <code>enableUserWorkload: true</code> field in the <code>cluster-monitoring-config</code> configuration map in the <code>openshift-monitoring</code> namespace.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true</code></pre>
+<ul>
+  <li>Only cluster administrators have access to all namespaces concurrently in the <strong>Observe</strong> → <strong>Metrics</strong> interface.</li>
+</ul>
