@@ -2,7 +2,7 @@
 title: Chapter 2.  Running and Accessing Virtual Machines
 description: 
 published: true
-date: 2025-11-17T14:27:12.516Z
+date: 2025-11-17T14:28:55.507Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -120,11 +120,12 @@ dateCreated: 2025-11-17T13:40:32.886Z
   </li>
   <li><strong>Declarative files:&nbsp;</strong></li>
 </ul>
-<pre><code class="language-plaintext">virtctl create vm --name postgresql-rhel9
+<pre><code class="language-plaintext">virtctl create vm --name postgresql-rhel9  --namespace production --memory=5Gi
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
  name: postgresql-rhel9
+ namespace: production
 spec:
  runStrategy: Always
  template:
@@ -144,7 +145,7 @@ spec:
      domain:
        devices: {}
        memory:
-         guest: 512Mi
+         guest: 5Gi
        resources: {}
      terminationGracePeriodSeconds: 180
      volumes: 3
@@ -181,6 +182,7 @@ status: {}</code></pre>
   <li>After editing the configuration of the VM, save the changes and exit the text editor. After closing the text editor, restart the VM to create an instance with the latest changes by using the <code>virtctl restart <i>VM-name</i></code> command:</li>
 </ul>
 <pre><code class="language-plaintext">oc edit vm postgresql-rhel9
+oc patch vm postgresql-rhel9 --type merge -p '{"spec":{"template":{"metadata":{"labels":{"servertype":"production"}}}}}'
 virtctl restart postgresql-rhel9</code></pre>
 <blockquote>
   <p>Enabling SSH access creates a node port service within the VM's namespace.&nbsp;</p>
