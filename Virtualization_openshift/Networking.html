@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T18:56:28.560Z
+date: 2025-11-18T19:04:15.977Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -224,6 +224,29 @@ spec:
   <p>When you use network policies in your project, you must add a rule to enable the traffic that comes from the router pods. Otherwise, the <code>route</code> resources do not work, because the router pods cannot reach the destination pods and virtual machines.</p>
   <p>&nbsp;<code><strong>network.openshift.io/policy-group: ingress</strong></code> &nbsp; &gt; label to be used in the networkpolicy</p>
 </blockquote>
+<p>&nbsp;</p>
+<h2>Exposing Non-HTTP Services</h2>
+<figure class="image image_resized" style="width:100%;"><img src="/nodeport.svg"></figure>
+<blockquote>
+  <p>Although the <code>NodePort</code> service type can be used for TCP and UDP traffic, Red&nbsp;Hat recommends avoiding doing so, for the following reasons:</p>
+  <ol>
+    <li>You must expose the IP addresses of your cluster nodes from outside the cluster. The node IP exposure is a security risk.</li>
+    <li>You cannot select a port outside the default range (30000 to 32767).</li>
+    <li>In cloud environments, the IP address of cluster nodes might not be permanent. For example, the cloud infrastructure might add or remove nodes to adapt the cluster to the load.</li>
+    <li>A NodePort service might require additional network configuration to enable external access to the port.</li>
+  </ol>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
