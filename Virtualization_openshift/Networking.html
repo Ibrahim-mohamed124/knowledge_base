@@ -2,29 +2,28 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T16:53:17.040Z
+date: 2025-11-18T17:14:05.229Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
 -->
 
 <blockquote>
-  <p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;"><i>Software-Defined Network (SDN): E</i>nables Kubernetes to control the network traffic and the network resources programmatically, similar to the VMware vSwitch software program.</span></p>
+  <p><i>Software-Defined Network (SDN): E</i>nables Kubernetes to control the network traffic and the network resources programmatically, similar to the VMware vSwitch software program.</p>
 </blockquote>
-<h1><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Cluster Network Operator</span></h1>
+<h1>Cluster Network Operator</h1>
 <ul>
-  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Manages the SDN by calling a <mark class="marker-yellow">plug-in</mark> that adheres to the <mark class="marker-yellow">Container Network Interface</mark> (CNI) specification to configure container network interfaces like:</span>
-    <ul>
-      <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">OVN-Kubernetes</span></li>
-      <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Kuryr</span></li>
+  <li>Manages the SDN by calling a <mark class="marker-yellow">plug-in</mark> that adheres to the <mark class="marker-yellow">Container Network Interface</mark> (CNI) specification to configure container network interfaces like:<ul>
+      <li>OVN-Kubernetes</li>
+      <li>Kuryr</li>
     </ul>
   </li>
 </ul>
 <blockquote>
-  <p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">OVN-Kubernetes provider, which runs the Open <mark class="marker-yellow">vSwitch (OVS) plug-in on each node</mark>, is selected by default during installation.</span></p>
+  <p>OVN-Kubernetes provider, which runs the Open <mark class="marker-yellow">vSwitch (OVS) plug-in on each node</mark>, is selected by default during installation.</p>
 </blockquote>
 <blockquote>
-  <p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;"><strong>the vswitch plugin does not replace kube‑proxy.</strong> In OpenShift, kube‑proxy is still responsible for implementing Kubernetes Service semantics (cluster IPs, NodePorts, load‑balancing). The vswitch (part of the OpenShift SDN or OVN‑Kubernetes plugin) handles <i>pod‑to‑pod networking and policy enforcement</i></span></p>
+  <p><strong>the vswitch plugin does not replace kube‑proxy.</strong> In OpenShift, kube‑proxy is still responsible for implementing Kubernetes Service semantics (cluster IPs, NodePorts, load‑balancing). The vswitch (part of the OpenShift SDN or OVN‑Kubernetes plugin) handles <i>pod‑to‑pod networking and policy enforcement</i></p>
 </blockquote>
 <figure class="image image_resized" style="width:100%;"><img src="/pod-sdn.svg"></figure>
 <figure class="image image_resized" style="width:100%;"><img src="/pod-service-sdn.svg"></figure>
@@ -44,7 +43,7 @@ spec:
   serviceNetwork:
   - 172.30.0.0/16 2
 ...output omitted...</code></pre>
-<p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">&nbsp;</span></p>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -52,27 +51,43 @@ spec:
         <td style="padding:0px;vertical-align:top;">
           <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
         </td>
-        <td style="padding:0px;vertical-align:top;"><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">The pod network CIDR</span></td>
+        <td style="padding:0px;vertical-align:top;">The pod network CIDR</td>
       </tr>
       <tr>
         <td style="padding:0px;vertical-align:top;">
           <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
         </td>
-        <td style="padding:0px;vertical-align:top;"><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">The service network CIDR</span></td>
+        <td style="padding:0px;vertical-align:top;">The service network CIDR</td>
       </tr>
     </tbody>
   </table>
 </figure>
 <p>&nbsp;</p>
-<h4><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">DNS Operator&nbsp;</span></h4>
+<h4>DNS Operator&nbsp;</h4>
 <ul>
-  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Deploys and runs a DNS server, which monitors the services to automatically create and update the DNS records.&nbsp;</span></li>
-  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Manages the <code>svc.cluster.local</code> domain name for services, and creates records in the <code>servicename.namespace.svc.cluster.local</code> format.</span></li>
-  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">The operator automatically creates the <code>/etc/resolv.conf</code> configuration file inside the pods so that name resolution is immediately available without further configuration.</span></li>
-  <li>&nbsp;</li>
+  <li>Deploys and runs a DNS server, which monitors the services to automatically create and update the DNS records.&nbsp;</li>
+  <li>Manages the <code>svc.cluster.local</code> domain name for services, and creates records in the <code>servicename.namespace.svc.cluster.local</code> format.</li>
+  <li>The operator automatically creates the <code>/etc/resolv.conf</code> configuration file inside the pods so that name resolution is immediately available without further configuration.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Exposing a vm</h4>
+<ul>
+  <li>The <code>virt-launcher</code> process that runs inside the pod runs a Dynamic Host Configuration Protocol (DHCP) server, which provides an<mark class="marker-yellow"> IP address and the DNS configuration to the VM.</mark></li>
+  <li>The <code>virt-launcher</code> pod redirects the inbound traffic to the VM and routes the outbound traffic to its destination.</li>
+  <li>After editing a <code>VirtualMachine</code> resource manifest, Kubernetes does not automatically propagate the changes to the <code>VirtualMachineInstance</code> and <code>virt-launcher</code> pod resources.&nbsp;<mark class="marker-yellow"> Restart the VM to re-create the resources and apply the latest changes.</mark></li>
+</ul>
+<blockquote>
+  <p>When you restart a VM resource in OpenShift:</p>
+  <ol>
+    <li>The VM controller <strong>terminates the current VMI</strong> (the running instance).</li>
+    <li>A <strong>new VMI object and virt-lanucher pod are created</strong> to represent the restarted VM.</li>
+    <li>The new VMI goes through the full boot process again (cloud‑init, disk attach, network setup).</li>
+  </ol>
+  <p>So yes — restarting a VM destroys the existing VMI and creates a new one. This is by design: VMIs are ephemeral objects tied to the current execution of the VM.</p>
+</blockquote>
+<ul>
+  <li>To label a vm without restarting it label its virt-lanucher pod ( temporary solution, when restarting the vm the label will be gone )</li>
+  <li><code>virtctl</code> tool &nbsp;provides a way to create a service from the command line.</li>
+</ul>
+<pre><code class="language-plaintext"> virtctl expose vmi backendvm --name backend \
+  --type ClusterIP --port 80 --target-port 8080</code></pre>
 <p>&nbsp;</p>
