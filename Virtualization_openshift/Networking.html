@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T17:36:40.430Z
+date: 2025-11-18T18:48:00.701Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -195,11 +195,24 @@ spec:
 <blockquote>
   <p>Non-cloud environments can also configure an <code>External IP</code> to send traffic to services by using the <code>LoadBalancer</code> service type. The <code>External IP</code> feature is disabled by default and can be a security risk, because sensitive in-cluster traffic that is destined for external resources might be intercepted.</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Ingress Operator</h4>
+<ul>
+  <li>Manages the Ingress Controller, and provides the typical way to enable external access to cluster resources. The Ingress Controller is limited to HTTP, HTTPS, and TLS by using SNI, and is configured to accept external requests and to proxy them based on configured routes.</li>
+</ul>
+<h4>Red&nbsp;Hat OpenShift routes</h4>
+<ul>
+  <li>A route connects a public-facing DNS hostname to an internal-facing service IP.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/route.svg"></figure>
+<ul>
+  <li>Red&nbsp;Hat OpenShift assigns a name in the <code><i>routename-namespace.default_domain</i></code> format.</li>
+  <li>For other traffic types, such as UDP traffic or non-web TCP traffic, Red&nbsp;Hat recommends that you use services of the <code>LoadBalancer</code> or the <code>NodePort</code> type.</li>
+  <li>Routes could be hostname or path based</li>
+</ul>
+<pre><code class="language-plaintext"> oc expose service/web --name web \
+  --hostname web-production.apps.mycompany.com
+ oc expose service/restapi --path=/api \
+  --hostname=intranet-prod.apps.mycompany.com</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
