@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T18:48:00.701Z
+date: 2025-11-18T18:51:31.659Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -213,7 +213,12 @@ spec:
   --hostname web-production.apps.mycompany.com
  oc expose service/restapi --path=/api \
   --hostname=intranet-prod.apps.mycompany.com</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>the <code>oc expose</code> command can create only unencrypted routes. Use the <code>oc create route</code> command instead to create encrypted routes.</li>
+</ul>
+<pre><code class="language-plaintext">oc create route edge \ 
+  --service web \ 
+  --hostname api.apps.acme.com </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
