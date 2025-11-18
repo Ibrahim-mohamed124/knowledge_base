@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T19:26:27.078Z
+date: 2025-11-18T19:38:38.576Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -269,9 +269,97 @@ spec:
   <li>The L2Advertisement custom resource enables advertising the load balancer IP addresses that the selected pools provide with gratuitous ARP packets on layer 2.</li>
 </ul>
 <pre><code class="language-plaintext">oc get l2advertisement -n metallb-system</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Using Load Balancer Services with VMs</h3>
+<ul>
+  <li>The <code>kubevirt.io/domain=vm1</code> label represents the VM name, and it is passed to the VMI and the <code>virt-launcher</code> pod when the VM is started.</li>
+  <li>VMs that are created by using instance types, the <code>vm.kubevirt.io/name</code> label is applied to the <code>virt-launcher</code> pod.</li>
+  <li>These labels can be used as selectors for the service</li>
+  <li>Pass only one <code>--port</code> parameter when creating the service with the <code>oc expose</code> command. You can edit the Kubernetes load balancer service resource manifest to add more ports, if needed. Because the <code>--port</code> parameter adds a single port, it does not add a name parameter to the port. However, the manifest requires the name parameter when multiple ports are configured.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    kubevirt.io/domain: email-server	1
+    ...output omitted...
+  name: email-server
+spec:
+  ports:
+  - port: 25	2
+    name: smtp	3
+    protocol: TCP
+    targetPort: 25
+  - port: 587	4
+    name: submission
+    protocol: TCP
+    targetPort: 587
+  - port: 993	5
+    name: imaps
+    protocol: TCP
+    targetPort: 993
+  - port: 995	6
+    name: pop3s
+    protocol: TCP
+    targetPort: 995
+  selector:
+    kubevirt.io/domain: email-server	7
+  type: LoadBalancer	8
+status:
+  loadBalancer: {}</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>kubevirt.io/domain</code> label represents the VM name.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Exposes port 25 for SMTP traffic</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name is optional when only one port is present in the service definition. However, the name is required when adding multiple ports to a service.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Exposes port 587 for SMTP traffic over TLS.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Exposes port 993 for IMAP traffic over SSL.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Exposes port 995 for POP3 traffic over SSL.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/7.svg" alt="7"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The service selector that matches the pod labels.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/8.svg" alt="8"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The service type is set to load balancer.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
