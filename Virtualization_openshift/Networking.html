@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T18:51:31.659Z
+date: 2025-11-18T18:56:28.560Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -220,7 +220,10 @@ spec:
   --service web \ 
   --hostname api.apps.acme.com </code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>When you use network policies in your project, you must add a rule to enable the traffic that comes from the router pods. Otherwise, the <code>route</code> resources do not work, because the router pods cannot reach the destination pods and virtual machines.</p>
+  <p>&nbsp;<code><strong>network.openshift.io/policy-group: ingress</strong></code> &nbsp; &gt; label to be used in the networkpolicy</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
