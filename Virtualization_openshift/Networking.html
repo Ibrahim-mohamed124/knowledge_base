@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T17:14:05.229Z
+date: 2025-11-18T17:29:21.277Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -90,4 +90,58 @@ spec:
 </ul>
 <pre><code class="language-plaintext"> virtctl expose vmi backendvm --name backend \
   --type ClusterIP --port 80 --target-port 8080</code></pre>
+<h4>Headless Service for a Virtual Machine</h4>
+<ul>
+  <li>A headless service creates a DNS entry that ties a DNS name to the IP address of a pod.</li>
+</ul>
+<h4>Set a Cluster-scoped Network Policy</h4>
+<ul>
+  <li><code>AdminNetworkPolicy</code> (ANP) resource: &nbsp;a cluster-scoped network policy that can restrict or enable access<mark class="marker-yellow"> before creating the targeted namespace</mark></li>
+  <li>The ANP resource is similar to a namespace-scoped network policy, with three additional attributes: the <code>subject</code>, the <code>priority</code>, and the <code>action</code> attributes.<ul>
+      <li><code>subject</code> attribute identifies the namespaces or pods that the ANP applies to\</li>
+      <li><code>priority</code> attribute determines the order of evaluation. The lower the value, the higher the precedence. The priority attribute takes a value from 0-99. If two ANP policies have conflicting rules, then <mark class="marker-yellow">the policy with the lower-priority attribute value takes precedence over the other rule.</mark></li>
+      <li><code>action</code> attribute takes a value of <code>Allow</code>, <code>Deny</code>, or <code>Pass</code>.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;"><strong>Action</strong></th>
+        <th style="padding:5px;vertical-align:top;"><strong>Meaning</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Allow</td>
+        <td style="padding:5px;vertical-align:top;">Allow ingress or egress</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Deny</td>
+        <td style="padding:5px;vertical-align:top;">Deny ingress or egress</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Pass</td>
+        <td style="padding:5px;vertical-align:top;">Defer access control to the namespaced network policies</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>Namespaced network policies cannot override an ANP that uses <code>Allow</code> or <code>Deny</code> actions.&nbsp;<br>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
