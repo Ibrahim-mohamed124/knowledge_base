@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T19:18:30.461Z
+date: 2025-11-18T19:23:28.649Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -250,8 +250,10 @@ spec:
       </li>
       <li><strong>Layer 3 (BGP)</strong>
         <ul>
-          <li>The layer 3 mode uses BGP to advertise the routes for the load balancer services to other BGP peers.&nbsp;</li>
-          <li>Requires a Autonomous System (AS) number.</li>
+          <li>The layer 3 mode uses BGP to advertise the routes for the load balancer services to other BGP peers(external routers).&nbsp;</li>
+          <li>Requires a Autonomous System (AS) number (each node of the cluster advertise itself to the external routers as a gateway for this IP)</li>
+          <li>When a router receives traffic for the load balancer service, the router picks one of the nodes that advertised the load balancer IP address.</li>
+          <li>The router sends the traffic to that node, and the service proxy for the CNI network plug-in distributes the traffic to all the pods that match the service selector.</li>
         </ul>
       </li>
     </ul>
