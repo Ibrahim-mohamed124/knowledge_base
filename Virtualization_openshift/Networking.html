@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T19:04:15.977Z
+date: 2025-11-18T19:18:30.461Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -237,10 +237,26 @@ spec:
   </ol>
 </blockquote>
 <p>&nbsp;</p>
+<figure class="image image_resized" style="width:100%;"><img src="/loadbalancer.svg"></figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>The MetalLB Operator</h3>
+<ul>
+  <li>MetalLB operates in two modes: layer 2 by using Address Resolution Protocol (ARP) and layer 3 by using Border Gateway Protocol (BGP).<ul>
+      <li><strong>Layer 2 (ARP)</strong>
+        <ul>
+          <li>set by default when MetalLB is installed and configured with the MetalLB Operator.</li>
+          <li>Layer 2 uses &nbsp;ARP packets to advertise the IP address of the load balancer service.&nbsp;</li>
+        </ul>
+      </li>
+      <li><strong>Layer 3 (BGP)</strong>
+        <ul>
+          <li>The layer 3 mode uses BGP to advertise the routes for the load balancer services to other BGP peers.&nbsp;</li>
+          <li>Requires a Autonomous System (AS) number.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
