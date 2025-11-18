@@ -2,28 +2,29 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T16:45:53.502Z
+date: 2025-11-18T16:53:17.040Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
 -->
 
 <blockquote>
-  <p><i>Software-Defined Network (SDN): E</i>nables Kubernetes to control the network traffic and the network resources programmatically, similar to the VMware vSwitch software program.</p>
+  <p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;"><i>Software-Defined Network (SDN): E</i>nables Kubernetes to control the network traffic and the network resources programmatically, similar to the VMware vSwitch software program.</span></p>
 </blockquote>
-<h1>Cluster Network Operator</h1>
+<h1><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Cluster Network Operator</span></h1>
 <ul>
-  <li>Manages the SDN by calling a <mark class="marker-yellow">plug-in</mark> that adheres to the <mark class="marker-yellow">Container Network Interface</mark> (CNI) specification to configure container network interfaces like:<ul>
-      <li>OVN-Kubernetes</li>
-      <li>Kuryr</li>
+  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Manages the SDN by calling a <mark class="marker-yellow">plug-in</mark> that adheres to the <mark class="marker-yellow">Container Network Interface</mark> (CNI) specification to configure container network interfaces like:</span>
+    <ul>
+      <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">OVN-Kubernetes</span></li>
+      <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Kuryr</span></li>
     </ul>
   </li>
 </ul>
 <blockquote>
-  <p>OVN-Kubernetes provider, which runs the Open <mark class="marker-yellow">vSwitch (OVS) plug-in on each node</mark>, is selected by default during installation.</p>
+  <p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">OVN-Kubernetes provider, which runs the Open <mark class="marker-yellow">vSwitch (OVS) plug-in on each node</mark>, is selected by default during installation.</span></p>
 </blockquote>
 <blockquote>
-  <p><strong>the vswitch plugin does not replace kube‑proxy.</strong> In OpenShift, kube‑proxy is still responsible for implementing Kubernetes Service semantics (cluster IPs, NodePorts, load‑balancing). The vswitch (part of the OpenShift SDN or OVN‑Kubernetes plugin) handles <i>pod‑to‑pod networking and policy enforcement</i></p>
+  <p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;"><strong>the vswitch plugin does not replace kube‑proxy.</strong> In OpenShift, kube‑proxy is still responsible for implementing Kubernetes Service semantics (cluster IPs, NodePorts, load‑balancing). The vswitch (part of the OpenShift SDN or OVN‑Kubernetes plugin) handles <i>pod‑to‑pod networking and policy enforcement</i></span></p>
 </blockquote>
 <figure class="image image_resized" style="width:100%;"><img src="/pod-sdn.svg"></figure>
 <figure class="image image_resized" style="width:100%;"><img src="/pod-service-sdn.svg"></figure>
@@ -43,6 +44,7 @@ spec:
   serviceNetwork:
   - 172.30.0.0/16 2
 ...output omitted...</code></pre>
+<p><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">&nbsp;</span></p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -50,20 +52,25 @@ spec:
         <td style="padding:0px;vertical-align:top;">
           <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
         </td>
-        <td style="padding:0px;vertical-align:top;">The pod network CIDR</td>
+        <td style="padding:0px;vertical-align:top;"><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">The pod network CIDR</span></td>
       </tr>
       <tr>
         <td style="padding:0px;vertical-align:top;">
           <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
         </td>
-        <td style="padding:0px;vertical-align:top;">The service network CIDR</td>
+        <td style="padding:0px;vertical-align:top;"><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">The service network CIDR</span></td>
       </tr>
     </tbody>
   </table>
 </figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">DNS Operator&nbsp;</span></h4>
+<ul>
+  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Deploys and runs a DNS server, which monitors the services to automatically create and update the DNS records.&nbsp;</span></li>
+  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">Manages the <code>svc.cluster.local</code> domain name for services, and creates records in the <code>servicename.namespace.svc.cluster.local</code> format.</span></li>
+  <li><span style="font-family:'Trebuchet MS', Helvetica, sans-serif;">The operator automatically creates the <code>/etc/resolv.conf</code> configuration file inside the pods so that name resolution is immediately available without further configuration.</span></li>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
