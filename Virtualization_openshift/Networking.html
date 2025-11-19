@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-19T09:31:08.412Z
+date: 2025-11-19T10:23:49.966Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -372,6 +372,122 @@ status:
     </tbody>
   </table>
 </figure>
+<p>&nbsp;</p>
+<h2>Advanced Networking with Multus CNI</h2>
+<ul>
+  <li>the Multus CNI plug-in calls other CNI plug-ins for advanced networking functions, such as attaching multiple network interfaces to pods in an OpenShift cluster.</li>
+  <li>With Multus CNI, you can configure additional networks alongside the default pod network during and after your OpenShift cluster installation. Attaching multiple networks to a VM is called <i>multihoming</i>.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/multus-interfaces.svg"></figure>
+<p>&nbsp;</p>
+<ul>
+  <li><mark class="marker-yellow">Cluster Network Addons Operator (CNAO) </mark>manages additional network configurations for VMs that are based on the Multus CNI plug-in.</li>
+  <li>The Multus CNI plug-in is implemented through the <code>NetworkAttachmentDefinition</code> CR. (Network Plumbing Working Group project )</li>
+  <li>A network attachment definition is a namespaced object that exposes existing layer-2 network devices, such as bridges and switches, to VMs and pods.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: bridge-dev  1
+  annotations:
+    k8s.v1.cni.cncf.io/resourceName: bridge.network.kubevirt.io/bridge-dev 2
+spec:
+  config: '{
+    "cniVersion": "0.3.1",
+    "name": "bridge-dev",  3
+    "type": "cnv-bridge",  4
+    "bridge": "dev-bridge", 5
+    "macspoofchk": true, 6
+    "vlan": 0 7
+  }'</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name for the network attachment definition.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;"><strong>Optional</strong>: An annotation key-value pair to determine the node selection for VM scheduling and execution. In this example, the <code>bridge-dev</code> bridge is configured on some cluster nodes. VMs that are attached to this network are scheduled only on a node with the <code>bridge-dev</code> bridge.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name for the configuration, which Red&nbsp;Hat recommends should match the name of the network attachment definition.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the CNI plug-in to use. Change this field only if using a different CNI plug-in.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the Linux bridge that is configured on the node.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;"><strong>Optional</strong>: When set to <code>true</code>, the MAC address of the pod or a guest interface cannot be changed, and only one MAC address exits the pod.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/7.svg" alt="7"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;"><strong>Optional</strong>: The VLAN tag of the network.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>The available CNI plugins:<ul>
+      <li><strong>bridge: &nbsp;</strong>
+        <ul>
+          <li>an additional bridge-based network to enable pods on the same host to communicate with each other and with the host.</li>
+          <li>use a Linux bridge to<mark class="marker-yellow"> connect the network interfaces of VMs and pods to a physical network interface on a host or a node.</mark></li>
+          <li>If the host has access to networks that are external to the OpenShift cluster, then bridge networks enable VMs and pods in the OpenShift cluster to communicate with resources that exist on that external network, such as file shares or databases.</li>
+        </ul>
+      </li>
+      <li><strong>host-device:</strong>
+        <ul>
+          <li>additional host-device network to enable VMs and pods to have exclusive access to a physical Ethernet network device on the host system.</li>
+        </ul>
+      </li>
+      <li><strong>ipvlan:</strong>
+        <ul>
+          <li>enable pods and VMs on a host to have unique IP addresses, but have the same MAC address as the host's physical network.&nbsp;</li>
+          <li><mark class="marker-yellow">IP range of the host's physical device is shared with the pods and VMs that are connected to an IPVLAN-based network.&nbsp;</mark></li>
+        </ul>
+      </li>
+      <li><strong>macvlan:</strong>
+        <ul>
+          <li>pod and VM that are attached to a MACVLAN additional network have a unique MAC address.</li>
+        </ul>
+      </li>
+      <li><strong>SR-IOV:</strong>
+        <ul>
+          <li>Configure an additional SR-IOV network to enable pods to attach to a virtual function interface on SR-IOV-capable hardware on the host system.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get net-attach-def -n multus-test</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
