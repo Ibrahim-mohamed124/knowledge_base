@@ -1,0 +1,166 @@
+<!--
+title: storage
+description: 
+published: true
+date: 2025-11-19T19:47:10.413Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-19T19:47:10.413Z
+-->
+
+<h4>Connection to the Back-end Storage</h4>
+<ul>
+  <li>Configure a connection between the Kubernetes cluster and the back-end storage by using Container Storage Interface (CSI) plug-ins, and then creates storage classes to represent the available storage types in the back-end storage controller.</li>
+  <li><strong>CSI plug-ins: </strong>The Kubernetes cluster plug-ins enable the cluster to interface with the specific storage back end and to provide persistent storage to containers.</li>
+  <li><strong>Storage Classes: </strong>The storage class resources in Kubernetes describe the storage characteristics, such as quality of service, throughput, or technology that the backing data services provide.</li>
+</ul>
+<h4>Storage Class Annotations</h4>
+<ul>
+  <li><strong>storageclass.kubernetes.io​/is-default-class=​true</strong></li>
+  <li><strong>storageclass.kubevirt.io​/is-default-virt-class=​true</strong>
+    <ul>
+      <li>OpenShift Data Foundation creates this storage class when it detects that OpenShift Virtualization is installed on the cluster.</li>
+    </ul>
+  </li>
+</ul>
+<h3>Persistent Storage Configuration for Virtual Machines</h3>
+<ul>
+  <li>A VM disk uses a PV that contains a disk image. For example, the root disk of a VM uses a PV that stores the operating system disk image.</li>
+  <li>With PVCs in <code>Block</code> mode, OpenShift Virtualization transfers the disk image into the volume. The VM disk uses the volume as its back-end device.</li>
+  <li>With PVCs in <code>Filesystem</code> mode, OpenShift Virtualization creates a <code>disk.img</code> file at the root of the PV file system and then copies the disk image into the file. The VM disk uses the <code>disk.img</code> file as its back-end device.</li>
+  <li><strong>Storage profile:</strong>
+    <ul>
+      <li><strong>&nbsp;</strong>For each storage class, a storage profile resource gives default values that are optimized for VM disks. Storage profiles are cluster-wide resources.</li>
+      <li>Storage profiles have the same name as their associated storage classes.</li>
+      <li>The default settings for a storage profile are determined by the order in which the access mode and volume modes are declared.&nbsp;</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: cdi.kubevirt.io/v1beta1
+kind: StorageProfile
+metadata:
+  name: &lt;unknown_provisioner_class&gt;
+# ...
+spec:
+  claimPropertySets:
+  - accessModes:
+    - ReadWriteOnce  1 
+    volumeMode: Filesystem  2 
+status:
+  provisioner: &lt;unknown_provisioner&gt;
+  storageClass: &lt;unknown_provisioner_class&gt;</code></pre>
+<p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/virtualization/storage#CO117-1"><strong>1 </strong></a>Specify the <code>accessModes</code>.</p>
+<p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/virtualization/storage#CO117-2"><strong>2 </strong></a>Specify the <code>volumeMode</code>.</p>
+<blockquote>
+  <p>As a developer, when you use a storage profile to prepare a VM disk, the only parameter that you must provide is the disk size. The storage profile ensures that all the other parameters have an optimal value for VM disk usage.</p>
+</blockquote>
+<ul>
+  <li><strong>Data volume: </strong>A data volume resource describes a VM disk. It groups the PVC definition and the details of the disk image to inject into the PV. Data volumes are namespaced resources.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: vm1	1
+  namespace: storage-intro	2
+  ...output omitted...
+spec:
+  pvc:
+    accessModes:
+    - ReadWriteMany	3
+    resources:
+      requests:
+        storage: 10Gi	4
+    storageClassName: ocs-external-storagecluster-ceph-rbd-​virtualization	5
+    volumeMode: Block	6
+  source:
+    http:
+      url: http://images.example.com/openshift4/images/mariadb-server.qcow2	7</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the data volume resource.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The namespace that contains this data volume resource.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The associated PVC requests a volume with the <code>ReadWriteMany</code> access mode.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The requested volume size for the persistent volume claim.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The requested storage class for the persistent volume claim.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The associated PVC requests a block volume.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/7.svg" alt="7"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Use the disk image from this URL to initialize the persistent volume. OpenShift Virtualization can import the image from this location or by cloning another PVC.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<blockquote>
+  <p>When the PVC to create is in <code>Filesystem</code> mode, the data volume automatically instructs Kubernetes to create the PVC 5.5% larger than requested to account for file system overhead. By doing so, Kubernetes ensures that it can create the disk image file, <code>disk.img</code>, with the requested size.</p>
+</blockquote>
+<blockquote>
+  <p>Deleting a data volume resource triggers the deletion of the associated PVC and PV. However, if the volume is attached to a VM, then the deletion occurs only after you detach the volume</p>
+</blockquote>
+<blockquote>
+  <p>You can attach or remove disks in running VMs. The <code>virtio-scsi</code> controller on each VM eliminates the prior limitations of <code>virtio</code>. The new controller is highly scalable and supports the hot plugging of over four million disks.</p>
+</blockquote>
+<h4>Using Local Node Disk Space for Virtual Machine Disks</h4>
+<ul>
+  <li>Kubernetes <code>hostPath</code> volume</li>
+  <li>Local Storage Operator</li>
+  <li>LVM Storage Operator</li>
+</ul>
+<h4>Cloning Virtual Machine Disks</h4>
+<ul>
+  <li>only users with appropriate access to the <code>datavolumes</code> project can clone disks across multiple namespaces.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: &lt;EXAMPLE-ROLE-NAME&gt;  
+rules:
+- apiGroups: ["cdi.kubevirt.io"]
+  resources: ["datavolumes/source"]
+  verbs: ["*"]</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
