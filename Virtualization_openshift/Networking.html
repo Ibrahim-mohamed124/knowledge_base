@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-18T19:38:38.576Z
+date: 2025-11-19T09:31:08.412Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -65,7 +65,7 @@ spec:
 <p>&nbsp;</p>
 <h4>DNS Operator&nbsp;</h4>
 <ul>
-  <li>Deploys and runs a DNS server, which monitors the services to automatically create and update the DNS records.&nbsp;</li>
+  <li>Deploys and runs a DNS server, which monitors the services to automatically create and update the DNS records.</li>
   <li>Manages the <code>svc.cluster.local</code> domain name for services, and creates records in the <code>servicename.namespace.svc.cluster.local</code> format.</li>
   <li>The operator automatically creates the <code>/etc/resolv.conf</code> configuration file inside the pods so that name resolution is immediately available without further configuration.</li>
 </ul>
@@ -149,6 +149,7 @@ spec:
     - namespaces:
         matchLabels:
           kubernetes.io/metadata.name: monitoring</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -213,6 +214,7 @@ spec:
   --hostname web-production.apps.mycompany.com
  oc expose service/restapi --path=/api \
   --hostname=intranet-prod.apps.mycompany.com</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>the <code>oc expose</code> command can create only unencrypted routes. Use the <code>oc create route</code> command instead to create encrypted routes.</li>
 </ul>
@@ -245,12 +247,12 @@ spec:
       <li><strong>Layer 2 (ARP)</strong>
         <ul>
           <li>set by default when MetalLB is installed and configured with the MetalLB Operator.</li>
-          <li>Layer 2 uses &nbsp;ARP packets to advertise the IP address of the load balancer service.&nbsp;</li>
+          <li>Layer 2 uses &nbsp;ARP packets to advertise the IP address of the load balancer service.</li>
         </ul>
       </li>
       <li><strong>Layer 3 (BGP)</strong>
         <ul>
-          <li>The layer 3 mode uses BGP to advertise the routes for the load balancer services to other BGP peers(external routers).&nbsp;</li>
+          <li>The layer 3 mode uses BGP to advertise the routes for the load balancer services to other BGP peers(external routers).</li>
           <li>Requires a Autonomous System (AS) number (each node of the cluster advertise itself to the external routers as a gateway for this IP)</li>
           <li>When a router receives traffic for the load balancer service, the router picks one of the nodes that advertised the load balancer IP address.</li>
           <li>The router sends the traffic to that node, and the service proxy for the CNI network plug-in distributes the traffic to all the pods that match the service selector.</li>
@@ -261,10 +263,19 @@ spec:
   <li>MetalLB need an IP address range to control the IP addresses that can be assigned for load balancer services.</li>
 </ul>
 <pre><code class="language-plaintext">oc get metallb -n metallb-system</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The IPAddressPool custom resource contains the range of IP addresses that MetalLB can allocate to the load balancer services.</li>
 </ul>
 <pre><code class="language-plaintext"> oc get ipaddresspool -n metallb-system</code></pre>
+<pre><code class="language-plaintext"> apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: cheap
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.10.0/24</code></pre>
 <ul>
   <li>The L2Advertisement custom resource enables advertising the load balancer IP addresses that the selected pools provide with gratuitous ARP packets on layer 2.</li>
 </ul>
@@ -274,7 +285,7 @@ spec:
   <li>The <code>kubevirt.io/domain=vm1</code> label represents the VM name, and it is passed to the VMI and the <code>virt-launcher</code> pod when the VM is started.</li>
   <li>VMs that are created by using instance types, the <code>vm.kubevirt.io/name</code> label is applied to the <code>virt-launcher</code> pod.</li>
   <li>These labels can be used as selectors for the service</li>
-  <li>Pass only one <code>--port</code> parameter when creating the service with the <code>oc expose</code> command. You can edit the Kubernetes load balancer service resource manifest to add more ports, if needed. Because the <code>--port</code> parameter adds a single port, it does not add a name parameter to the port. However, the manifest requires the name parameter when multiple ports are configured.&nbsp;</li>
+  <li>Pass only one <code>--port</code> parameter when creating the service with the <code>oc expose</code> command. You can edit the Kubernetes load balancer service resource manifest to add more ports, if needed. Because the <code>--port</code> parameter adds a single port, it does not add a name parameter to the port. However, the manifest requires the name parameter when multiple ports are configured.</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: v1
 kind: Service
@@ -306,6 +317,7 @@ spec:
   type: LoadBalancer	8
 status:
   loadBalancer: {}</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
