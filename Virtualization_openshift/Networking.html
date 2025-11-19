@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-19T11:58:25.101Z
+date: 2025-11-19T12:59:45.992Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -759,16 +759,233 @@ template:
 <ul>
   <li>The OVS bridge acts as a layer-2 switch that forwards packets between the VM and the physical network interface on the host system.</li>
   <li>The OVS bridge is created on the host system and is connected to the physical network interface. The VM is connected to the OVS bridge through a virtual network interface.</li>
+  <li>OVS bridges offer more tunnel types and contemporary features such as network automation, although they are more challenging to troubleshoot.</li>
 </ul>
+<figure class="table">
+  <table style="border-bottom:solid;border-left:solid;border-right:solid;border-top:solid;">
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;">Feature</th>
+        <th style="padding:5px;vertical-align:top;">Linux bridge</th>
+        <th style="padding:5px;vertical-align:top;">OVS bridge</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">VLAN tagging</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Network isolation</td>
+        <td style="padding:5px;vertical-align:top;">No</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Availability</td>
+        <td style="padding:5px;vertical-align:top;">Default</td>
+        <td style="padding:5px;vertical-align:top;">Optional</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h4>OVN-Kubernetes L2 Overlay Network</h4>
+<ul>
+  <li>OVN supports the concept of multiple overlay networks, which are virtual layer 2 networks.&nbsp;</li>
+  <li>create Multus Network Attachment Definition resources that create additional OVN overlay networks, and connect your pods to those overlay networks as secondary networks.</li>
+  <li>OVN-Kubernetes layer 2 overlay networks support only east-west traffic, and <mark class="marker-yellow">NICs on these networks cannot communicate outside the cluster.</mark></li>
+</ul>
+<blockquote>
+  <p>East‑west traffic is the lateral flow of network packets between systems inside the same datacenter, cluster, or cloud environment (for example, server-to-server or pod-to-pod communications) rather than traffic entering or leaving the environment</p>
+</blockquote>
+<ol>
+  <li>&nbsp;To attach a VM to an OVN-Kubernetes L2 overlay network:</li>
+</ol>
+<pre><code class="language-plaintext">apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: ovn-bridge-network
+spec:
+  config: '{
+    "cniVersion": "0.3.1",
+    "name": "ovn-bridge-network", 1
+    "type": "ovn-kubernetes", 2
+    "bridge": "ovs-br0", 3
+    "isGateway": true, 4
+    "ipam": {  5
+      "type": "host-local", 6
+      "subnet": "10.0.0.0/24", 7
+        {
+          "ip": "10.131.0.26" 8
+        }
+    }
+}'</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the network attachment definition.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The type of connection to create.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The OVS bridge that the network attachment definition connects to.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The gateway for the network attachment definition.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The IP address management (IPAM) configuration for the network attachment definition.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The type of IPAM to use.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/7.svg" alt="7"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The subnet mask for the network attachment definition.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/8.svg" alt="8"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The IP address for the network attachment definition.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<blockquote>
+  <p>The <code>ovn-bridge-network</code> NAD connects the VM to the <code>ovs-br0</code> OVS bridge network.</p>
+</blockquote>
+<p>2. OVS Bridge Network Node Configuration Policy with OVN:</p>
+<ul>
+  <li>To configure an OVS bridge on a node, you must create a node network configuration policy that defines the bridge and the physical interface that connects to the bridge.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: ovs-bridge-policy 1
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/worker: "" 2
+  desiredState:
+    interfaces:
+    - name: ovs-br0 3
+      description: OVS bridge with ens4 as a port 4
+      type: ovs-bridge 5
+      state: up
+      ipv4:
+        dhcp: true
+        enabled: true
+      bridge:
+        options:
+          stp:
+            enabled: false
+        port:
+        - name: ens4 6
+
+    ovn:
+      bridge-mappings:
+      - localnet: br0-bridge-network
+        bridge: ovs-br0
+        state: present</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name for the node network configuration policy.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>nodeSelector</code> parameter specifies that this policy applies to all compute nodes in the cluster. If the <code>nodeSelector</code> parameter is not included, then the policy applies to all nodes in the cluster.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>name</code> parameter specifies the chosen name for the configured interface.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">An optional description for the policy.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>type</code> parameter specifies the type of connection to create.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The physical interface on the node to use in the defined OVS bridge.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>3. Configuring IP Addresses on a VM:</p>
+<ul>
+  <li>A DHCP server must be available on the bridge network to provide a dynamic IP address to the VM.</li>
+  <li>use the <code>cloud-init</code> service to specify a static or dynamic IP address for the secondary interface.</li>
+</ul>
+<pre><code class="language-plaintext">kind: VirtualMachine
+spec:
+...output omitted...
+  volumes:
+  - cloudInitNoCloud:
+      networkData: |
+        version: 2
+        ethernets:
+          eth1: 1
+            addresses:
+            - 192.168.51.150/24 2</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the network interface.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The static IP address.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
