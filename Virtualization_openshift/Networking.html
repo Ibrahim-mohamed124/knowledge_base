@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-19T10:23:49.966Z
+date: 2025-11-19T10:42:15.686Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -374,6 +374,9 @@ status:
 </figure>
 <p>&nbsp;</p>
 <h2>Advanced Networking with Multus CNI</h2>
+<blockquote>
+  <p>Before you configure additional networks for VMs, a Linux bridge must be configured and attached to your VM-workload nodes by applying a configuration manifest to the cluster.</p>
+</blockquote>
 <ul>
   <li>the Multus CNI plug-in calls other CNI plug-ins for advanced networking functions, such as attaching multiple network interfaces to pods in an OpenShift cluster.</li>
   <li>With Multus CNI, you can configure additional networks alongside the default pod network during and after your OpenShift cluster installation. Attaching multiple networks to a VM is called <i>multihoming</i>.</li>
@@ -485,11 +488,27 @@ spec:
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">oc get net-attach-def -n multus-test</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>The Kubernetes NMState Operator</h2>
+<ul>
+  <li>The Kubernetes NMState operator provides a centralized and declarative<mark class="marker-yellow"> host network configuration tool</mark> in a Red&nbsp;Hat OpenShift cluster.</li>
+  <li>The operator reports the node network configuration, validates configuration syntax, and applies network configuration changes without a node reboot.</li>
+  <li>configure additional node network devices, such as Linux bridges, and use them in network attachment definitions.</li>
+</ul>
+<blockquote>
+  <p>Figure 4.2: Creating the NMState instance</p>
+  <p>The NMState operator provides three API resources for managing the network configuration:</p>
+  <ol>
+    <li><code>NodeNetworkState</code></li>
+    <li><code>NodeNetworkConfigurationPolicy</code></li>
+    <li><code>NodeNetworkConfigurationEnactment</code></li>
+  </ol>
+</blockquote>
+<blockquote>
+  <p>The NMState operator manages the network configuration of the host nodes in an OpenShift cluster. Multus-CNI manages the network configuration of pods in a Kubernetes cluster. Multus works better together with the NMState operator, which offers a declarative way of configuring those network devices on cluster nodes.</p>
+</blockquote>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
