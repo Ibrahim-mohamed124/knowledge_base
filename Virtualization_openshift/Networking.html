@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-19T10:58:09.937Z
+date: 2025-11-19T11:03:19.554Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -617,12 +617,22 @@ spec:
 <pre><code class="language-plaintext">oc get nncp</code></pre>
 <p>&nbsp;</p>
 <blockquote>
-  <p>To remove an interface from a node, you must modify or create an NNCP that designates the interface as <code>absent</code> under the <code>state</code> parameter. When setting an interface's state to <code>absent</code>, the network interface that is configured with the bridge or bonding interface is placed in the <code>down</code> state and connectivity is lost.</p>
+  <p><mark class="marker-yellow">To remove an interface from a node,</mark> you must modify or create an NNCP that designates the interface as <code>absent</code> under the <code>state</code> parameter. When setting an interface's state to <code>absent</code>, the network interface that is configured with the bridge or bonding interface is placed in the <code>down</code> state and connectivity is lost.</p>
 </blockquote>
+<ul>
+  <li><strong>Node Network Configuration Enactment:</strong>
+    <ul>
+      <li>NMState operator generates a <code>NodeNetworkConfigurationEnactment</code> (NNCE) object for<mark class="marker-yellow"> each cluster node</mark> that the policy affects.&nbsp;</li>
+      <li>The NNCE object reports the execution status of an applied policy and includes the defined settings that the policy enacts on each node.</li>
+      <li>In the event of a failure, the node rolls back to its prior configuration, and the NNCE provides traceback data to troubleshoot the failure.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get nnce nnce-name -o yaml</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
