@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-19T11:03:19.554Z
+date: 2025-11-19T11:39:56.436Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -630,9 +630,80 @@ spec:
 </ul>
 <pre><code class="language-plaintext">oc get nnce nnce-name -o yaml</code></pre>
 <p>&nbsp;</p>
+<h3>Kubernetes NMState with Multus in OpenShift Virtualization</h3>
 <ul>
-  <li>&nbsp;</li>
+  <li>OpenShift Virtualization uses Multus Container Network Interface (CNI) plug-ins and the Kubernetes NMState Operator resources to create a<mark class="marker-yellow"> Linux bridge that connects VMs to additional networks</mark>. A Linux bridge forwards packets between connected interfaces, similar to the function of a network switch.</li>
+  <li>&nbsp;Open vSwitch (OVS) bridge can be used &nbsp;instead of a Linux bridge to connect VMs to additional networks.</li>
 </ul>
+<p>&nbsp;</p>
+<figure class="image image_resized" style="width:100%;"><img src="/nmstate-multus.svg"></figure>
+<p>&nbsp;</p>
+<blockquote>
+  <p><code><strong>Bonding</strong></code></p>
+  <ul>
+    <li>Configure a bonding interface to aggregate multiple network interfaces into a single logical interface.</li>
+    <li>Bonding interfaces provide fault tolerance and load balancing for network traffic. You can use bonding interfaces to connect VMs to a network by using multiple physical NICs to provide redundancy in the event of network failures.</li>
+  </ul>
+</blockquote>
+<p>&nbsp;</p>
+<h4>Connecting Virtual Machines to a Linux Bridge Network</h4>
+<ol>
+  <li>Linux bridge is configured on nodes through a node network configuration policy.</li>
+  <li>Create a network attachment definition (NAD) in the same namespace of the vms before connecting the VMs to the bridge.<ul>
+      <li>Any NADs that is created in the <code>default</code> namespace are available to all VMs in the cluster.</li>
+    </ul>
+  </li>
+  <li>Use the CNV Linux Bridge CNI plug-in in the network attachment definition to connect a VM to an additional network on the Linux bridge.</li>
+</ol>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;" colspan="2"><strong>Creating a network attachment definition</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Name</td>
+        <td style="padding:5px;vertical-align:top;"><code>br1-bridge-network</code></td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Description</td>
+        <td style="padding:5px;vertical-align:top;">Creating a network attachment definition</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Network type</td>
+        <td style="padding:5px;vertical-align:top;">Linux bridge</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Bridge name</td>
+        <td style="padding:5px;vertical-align:top;"><code>br1</code></td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">VLAN tag number</td>
+        <td style="padding:5px;vertical-align:top;"><code>0</code></td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">MAC spoof check</td>
+        <td style="padding:5px;vertical-align:top;"><i>Checked</i></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
