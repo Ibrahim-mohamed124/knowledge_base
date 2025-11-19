@@ -2,7 +2,7 @@
 title: Networking
 description: 
 published: true
-date: 2025-11-19T11:39:56.436Z
+date: 2025-11-19T11:58:25.101Z
 tags: network
 editor: ckeditor
 dateCreated: 2025-11-18T16:45:53.502Z
@@ -690,16 +690,76 @@ spec:
     </tbody>
   </table>
 </figure>
+<h5>Hot Plugging Secondary Network Interfaces</h5>
+<ul>
+  <li>Add or remove network interfaces in a running VM without stopping the VM</li>
+  <li><mark class="marker-yellow">OpenShift Virtualization provides support for hot plugging secondary interfaces that use the VirtIO device driver.</mark></li>
+</ul>
+<blockquote>
+  <p>To hot plug a secondary network interface to a running VM, you must attach the network attachment definition (NAD) to the VM. The NAD must be in the same namespace as the VM.</p>
+</blockquote>
+<pre><code class="language-plaintext"> oc edit vm rhel8-vm
+
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-fedora
+template:
+  spec:
+    domain:
+      devices:
+        interfaces:
+        - name: defaultnetwork
+          masquerade: {}
+        # new interface
+        - name: &lt;secondary_nic&gt; 1
+          bridge: {}
+    networks:
+    - name: defaultnetwork
+      pod: {}
+    # new network
+    - name: &lt;secondary_nic&gt; 2
+      multus:
+        networkName: &lt;nad_name&gt; 3</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the secondary interface that is connected to the bridge network.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The network name. This value must match the value of the <code>spec.template.spec.domain.devices.interfaces</code> object.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the network attachment definition.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>To attach the network interface to the running VM</li>
+</ul>
 <p>&nbsp;</p>
+<pre><code class="language-plaintext">virtctl migrate vm vm-fedora</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h5>Attaching a Secondary Interface on the Additional Network</h5>
+<ul>
+  <li>Attach the NAD to a new network interface on the VM from the console or cli</li>
+</ul>
+<h4>OVS Bridge Overview</h4>
+<ul>
+  <li>The OVS bridge acts as a layer-2 switch that forwards packets between the VM and the physical network interface on the host system.</li>
+  <li>The OVS bridge is created on the host system and is connected to the physical network interface. The VM is connected to the OVS bridge through a virtual network interface.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
