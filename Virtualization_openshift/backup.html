@@ -2,7 +2,7 @@
 title: backup
 description: 
 published: true
-date: 2025-11-20T11:42:16.843Z
+date: 2025-11-20T11:44:58.516Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-20T11:42:16.843Z
@@ -23,6 +23,7 @@ spec:
     kind: VirtualMachine
     name: fedora-vm 1
   ttlDuration: 1h 2</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -74,6 +75,7 @@ Status:
   Token Secret Ref:      export-token-fedora-export 4
   Ttl Expiration Time:   2024-04-19T14:19:16Z 5
   Virtual Machine Name:  fedora-vm</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -117,6 +119,7 @@ Status:
 <pre><code class="language-plaintext">virtctl vmexport create \
   --vm=fedora-vm \ 1
   fedora-export 2</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -141,6 +144,7 @@ Status:
   --manifest \ 3
   --include-secret \ 4
   --output fedora-vm.yml 5</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -217,6 +221,7 @@ spec:
           - header-secret-fedora-export
           url: https://virt-exportproxy-openshift-cnv.apps.ocp4.example.com/…/volumes/fedora-vm/disk.img.gz  5
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -258,6 +263,7 @@ spec:
   --keep-vme \
   --volume fedora-vm \ 1
   --output fedora-vm-disk.img.gz 2</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -291,7 +297,12 @@ spec:
   fedora-export-snapshot
   
 oc get vmexport</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To import the vm to another cluster apply the manifest bundle file.</li>
+</ul>
+<blockquote>
+  <p>OpenShift Virtualization imports the VM into the same namespace as the source cluster. You must create that namespace on the target cluster before importing the VM.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
