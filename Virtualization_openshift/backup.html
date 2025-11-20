@@ -2,7 +2,7 @@
 title: backup
 description: 
 published: true
-date: 2025-11-20T11:44:58.516Z
+date: 2025-11-20T11:45:39.681Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-20T11:42:16.843Z
@@ -303,8 +303,44 @@ oc get vmexport</code></pre>
 <blockquote>
   <p>OpenShift Virtualization imports the VM into the same namespace as the source cluster. You must create that namespace on the target cluster before importing the VM.</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>to import volumes:</li>
+</ul>
+<pre><code class="language-plaintext">virtctl image-upload dv \
+  fedora-rootdisk \ 1
+  --size 30Gi \ 2
+  --image-path fedora-vm-disk.img.gz \ 3
+  --storage-class ocs-external-storagecluster-ceph-rbd-virtualization 4</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the data volume to create</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Size of the data volume, which must be large enough for the image to import</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Path of the disk image on your local machine to import</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Storage class for the data volume</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
