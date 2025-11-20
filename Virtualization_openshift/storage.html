@@ -2,7 +2,7 @@
 title: storage
 description: 
 published: true
-date: 2025-11-20T13:45:07.783Z
+date: 2025-11-20T13:46:31.902Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-19T19:47:10.413Z
@@ -311,6 +311,14 @@ spec:
           command:
           - /usr/bin/virsh
           - resume  my-vm</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Backing up Volumes with Kopia</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: &lt;backup-name&gt;
+  namespace: openshift-adp
+spec:
+  defaultVolumesToFsBackup: true</code></pre>
 <p>&nbsp;</p>
