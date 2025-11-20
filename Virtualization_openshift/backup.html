@@ -1,0 +1,300 @@
+<!--
+title: backup
+description: 
+published: true
+date: 2025-11-20T11:42:16.843Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-20T11:42:16.843Z
+-->
+
+<p>Exporting and Importing Virtual Machines</p>
+<ul>
+  <li>OpenShift Virtualization provides a <code>VirtualMachineExport</code> custom resource to export a VM and its volumes.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: fedora-export
+  namespace: vms
+spec:
+  source:
+    apiGroup: "kubevirt.io"
+    kind: VirtualMachine
+    name: fedora-vm 1
+  ttlDuration: 1h 2</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the virtual machine to export</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Amount of time before the automatic deletion of the export</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<pre><code class="language-plaintext">oc get vmexport
+oc describe vmexport/fedora-export
+Name:         fedora-export
+Namespace:    vms
+...output omitted...
+Status:
+  Links:
+    External:
+      Manifests: 1
+        Type:  all
+        URL:   https://virt-exportproxy-openshift-cnv.apps.ocp4.example.com/…/external/manifests/all
+      ...output omitted...
+      Volumes: 2
+        Name:      fedora-vm
+        Formats:
+          Format:  gzip
+          URL:     https://virt-exportproxy-openshift-cnv.apps.ocp4.example.com/…/volumes/fedora-vm/disk.img.gz
+    ...output omitted...
+    Internal: 3
+      Manifests:
+        Type:  all
+        URL:   https://virt-export-fedora-export.vms.svc/internal/manifests/all
+      Volumes:
+        Name:     fedora-vm
+        Formats:
+          Format: gzip
+          URL:    https://virt-export-fedora-export.vms.svc/volumes/fedora-vm/disk.img.gz
+  ...output omitted...
+  Phase:                 Ready
+  Service Name:          virt-export-fedora-export
+  Token Secret Ref:      export-token-fedora-export 4
+  Ttl Expiration Time:   2024-04-19T14:19:16Z 5
+  Virtual Machine Name:  fedora-vm</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Download links for the VM manifest bundle.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Download links for each VM volume. VM disks are available in two format types: <code>raw</code> for an unaltered raw disk image, and <code>gzip</code> for a compressed raw disk image.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Internal links for the manifest and volumes. Those links are valid only inside the cluster.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the secret with the export token.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Expiration date and time for the export.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>The download links are protected with an export token that is generated in the <code>export-token-<i>export_name</i></code> secret</li>
+  <li>If the TTL is not specified, then the default value is two hours. After that time, OpenShift Virtualization deletes the <code>VirtualMachineExport</code> resource.</li>
+</ul>
+<pre><code class="language-plaintext">virtctl vmexport create \
+  --vm=fedora-vm \ 1
+  fedora-export 2</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the virtual machine to export</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the <code>VirtualMachineExport</code> resource to create</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<pre><code class="language-plaintext">virtctl vmexport download \
+  fedora-export \ 1
+  --keep-vme \ 2
+  --manifest \ 3
+  --include-secret \ 4
+  --output fedora-vm.yml 5</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the <code>VirtualMachineExport</code> resource.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>virtctl</code> command automatically deletes the <code>VirtualMachineExport</code> resource after the download is complete. Use the <code>--keep-vme</code> option to keep the <code>VirtualMachineExport</code> resource.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Use the <code>--manifest</code> option to download the manifest bundle, and the <code>--volume</code> option to download the VM disk.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Include the export token secret in the manifest bundle.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">File name for the manifest or disk on your local machine.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<blockquote>
+  <p>The manifest bundle contains the VM manifest, the CA certificate, and the required export token secret for downloading the volume image from the OpenShift cluster.&nbsp;</p>
+</blockquote>
+<ul>
+  <li>example of manifest bundle:</li>
+</ul>
+<pre><code class="language-plaintext">---
+apiVersion: v1
+kind: ConfigMap 1
+metadata:
+  name: export-ca-cm-fedora-export
+...output omitted...
+---
+apiVersion: v1
+kind: Secret 2
+metadata:
+  name: header-secret-fedora-export
+...output omitted...
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine 3
+metadata:
+...output omitted...
+  name: fedora-vm
+  namespace: vms
+spec:
+  dataVolumeTemplates:
+  - apiVersion: cdi.kubevirt.io/v1beta1
+    kind: DataVolume 4
+    metadata:
+      creationTimestamp: null
+      name: fedora-vm
+    spec:
+      source:
+        http:
+          certConfigMap: export-ca-cm-fedora-export
+          secretExtraHeaders:
+          - header-secret-fedora-export
+          url: https://virt-exportproxy-openshift-cnv.apps.ocp4.example.com/…/volumes/fedora-vm/disk.img.gz  5
+...output omitted...</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Configuration map with the CA certificate</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Secret with the export token</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Virtual machine definition</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Data volume definition that uses the CA certificate and the export token to download the volume image from the source OpenShift Virtualization cluster</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The source URL, which is a single line.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<pre><code class="language-plaintext"> virtctl vmexport download \
+  fedora-export \
+  --keep-vme \
+  --volume fedora-vm \ 1
+  --output fedora-vm-disk.img.gz 2</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the volume to export.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">File name for the volume image on your local machine. You can use the <code>.img</code> extension for the raw volume image, and the <code>.img.gz</code> extension for the compressed image.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<blockquote>
+  <p>To ensure data consistency, you must stop the VM before exporting it. If the VM is running, then the <code>VirtualMachineExport</code> resource stays in the <code>Pending</code> state until the VM is shut down.</p>
+</blockquote>
+<ul>
+  <li>to export data from a vm:<ol>
+      <li>create a snapshot</li>
+      <li>use the <code>virtctl vmexport</code> command to export the VM from the snapshot</li>
+    </ol>
+  </li>
+</ul>
+<pre><code class="language-plaintext">virtctl vmexport create \
+  --snapshot=fedora-snapshot \
+  fedora-export-snapshot
+  
+oc get vmexport</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
