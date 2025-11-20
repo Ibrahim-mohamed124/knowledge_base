@@ -2,7 +2,7 @@
 title: storage
 description: 
 published: true
-date: 2025-11-20T13:46:31.902Z
+date: 2025-11-20T13:48:11.994Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-19T19:47:10.413Z
@@ -321,4 +321,30 @@ metadata:
   namespace: openshift-adp
 spec:
   defaultVolumesToFsBackup: true</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>annotate the application pod to specify which volumes to back up with Kopia by using the<mark class="marker-yellow"> backup.velero.io/backup-volumes: volume1,volume2,volume3</mark> annotation.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website-mariadb
+  namespace: org-website
+spec:
+  template:
+    metadata:
+      annotations:
+        backup.velero.io/backup-volumes: mariadb 
+    spec:
+      containers:
+        name: db
+        image: registry.access.redhat.com/rhscl/mariadb-105-rhel7
+        ...output omitted...
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mariadb
+      ...output omitted...
+      volumes:
+      - name: mariadb
+        persistentVolumeClaim:
+          claimName: mariadb-data
+...output omitted...</code></pre>
