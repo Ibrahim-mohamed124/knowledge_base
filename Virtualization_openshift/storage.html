@@ -2,7 +2,7 @@
 title: storage
 description: 
 published: true
-date: 2025-11-20T10:36:11.945Z
+date: 2025-11-20T10:49:32.571Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-19T19:47:10.413Z
@@ -205,12 +205,29 @@ rules:
     </ul>
   </li>
 </ol>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Preallocating Disk Space</h4>
+<pre><code class="language-plaintext">apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: datadisk
+spec:
+  preallocation: true
+  storage:
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: ocs-external-storagecluster-ceph-rbd-​virtualization
+  source:
+    blank: {}</code></pre>
+<h4>Resize a Virtual Machine Disk</h4>
+<ul>
+  <li>When you change the size of a PVC, Red&nbsp;Hat OpenShift automatically resizes the associated PV</li>
+</ul>
+<pre><code class="language-plaintext">oc get storageclass \
+  ocs-external-storagecluster-ceph-rbd-​virtualization -o yaml | \
+  grep allowVolumeExpansion
+allowVolumeExpansion: true</code></pre>
+<pre><code class="language-plaintext">oc edit pvc/mariadb-server-my-disk-rbd</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
