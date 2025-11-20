@@ -2,7 +2,7 @@
 title: storage
 description: 
 published: true
-date: 2025-11-20T08:48:28.155Z
+date: 2025-11-20T10:36:11.945Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-19T19:47:10.413Z
@@ -167,8 +167,44 @@ rules:
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Select a Data Volume Source</h4>
+<ol>
+  <li><strong>Ephemeral disk (container image):</strong>
+    <ul>
+      <li>OpenShift Virtualization downloads the container image from a container registry and uses the disk in that container image as the VM disk.</li>
+      <li>intended for read-only file systems and short-lived VMs</li>
+      <li>OpenShift Virtualization pulls that container image into the cluster, mounts the disk file from inside the container, and presents it to the VM as a virtual disk.</li>
+      <li>the data that you write is not persistent. Whenever you restart the VM, OpenShift Virtualization discards your data and restores the disk image to its initial state.</li>
+    </ul>
+  </li>
+  <li><strong>PVC:&nbsp;</strong>
+    <ul>
+      <li>OpenShift Virtualization copies the PVC that you provide and then uses that copy as the VM disk.&nbsp;</li>
+      <li>the source PVC must not be in use for the cloning process to start</li>
+    </ul>
+  </li>
+  <li><strong>Empty disk (blank):&nbsp;</strong>
+    <ul>
+      <li>The new PVC provides an unformatted raw device.</li>
+    </ul>
+  </li>
+  <li><strong>From URL:</strong>
+    <ul>
+      <li>Red&nbsp;Hat OpenShift Virtualization downloads the virtual disk image from the URL that you provide, and then extracts this image to the new volume.</li>
+      <li>The virtual disk image must be in the raw format or in the <i>QEMU copy on write version 2 (</i><code><i>qcow2</i></code><i>)</i> format.</li>
+    </ul>
+  </li>
+  <li><strong>Registry (creates PVC):</strong>
+    <ul>
+      <li>OpenShift Virtualization downloads the container image from a container registry. The container image contains a disk image in the raw or <code>qcow2</code> format in the <code>/disk/</code> directory. OpenShift Virtualization extracts that disk image and copies it to the volume.</li>
+    </ul>
+  </li>
+  <li><strong>Upload:</strong>
+    <ul>
+      <li>upload an existing <code>qcow2</code> disk image to the cluster and use it in a VM</li>
+    </ul>
+  </li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
