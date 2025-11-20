@@ -2,7 +2,7 @@
 title: storage
 description: 
 published: true
-date: 2025-11-20T08:36:24.304Z
+date: 2025-11-20T08:48:28.155Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-19T19:47:10.413Z
@@ -152,8 +152,21 @@ rules:
 - apiGroups: ["cdi.kubevirt.io"]
   resources: ["datavolumes/source"]
   verbs: ["*"]</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Connect a Virtual Machine to Multiple Disks</h3>
+<ul>
+  <li>The VM disks can be imported from a URL or cloned from an existing PVC.&nbsp;</li>
+  <li>Inside the VM, each data volume shows as a disk that you can partition, format, and then mount by using the operating system tools.&nbsp;</li>
+  <li>Disk interfaces:<ul>
+      <li><strong>SCSI: </strong>Linux systems name these disks in the <code>/dev/sd<i>X</i></code> format 👌</li>
+      <li><strong>VirtIO: </strong>Using this interface requires an available <mark class="marker-yellow">PCIe slot </mark>on the VM to mount the device, which limits the number of disks that you can attach in this manner. Linux systems include the driver and name these disks in the <code>/dev/vd<i>X</i></code> format.</li>
+      <li><strong>VirtIO-SCSI: </strong>This interface is available in Red&nbsp;Hat OpenShift 4.16 and later versions for creating<mark class="marker-yellow"> hot pluggable disks.</mark>
+        <ul>
+          <li><code>virtio-scsi</code> interface relies on a VM controller to provide access for the hot pluggable disks to the <code>scsi</code> bus.&nbsp;</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
