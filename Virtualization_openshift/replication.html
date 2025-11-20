@@ -1,0 +1,127 @@
+<!--
+title: Replication
+description: 
+published: true
+date: 2025-11-20T17:40:49.338Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-20T17:40:49.338Z
+-->
+
+<h1>Clone Virtual Machines</h1>
+<ul>
+  <li>To prevent the clones from having these same identifying settings, seal the original VM before using it to create clones.&nbsp;</li>
+</ul>
+<blockquote>
+  <p>Sealing the VM is a process where you clear the machine-specific information.</p>
+</blockquote>
+<ul>
+  <li>For Microsoft Windows systems, use the <code>sysprep.exe</code> command to initiate a System Out-of-Box-Experience (OOBE).</li>
+  <li>For Red&nbsp;Hat Enterprise Linux systems, use the <code>virt-sysprep</code> command.<ul>
+      <li>stop the VM before using the <code>virt-sysprep</code> command.</li>
+      <li>run the command from &nbsp;a Linux system with access to the VM disk block devices.&nbsp;</li>
+    </ul>
+  </li>
+  <li><code>virtctl guestfs</code> command to start a container that includes the <code>libguestfs-tools</code> package.&nbsp;<ul>
+      <li>The <code>virt-sysprep</code> tool modifies the guest or disk image in place. The guest VM must be shut down.</li>
+      <li>This package includes the <code>virt-sysprep</code> utility and other tools for accessing and modifying VM disk images.&nbsp;</li>
+      <li>container also attaches the VM's persistent volume claim (PVC) as the <code>/​dev/​vda</code> block device. The <code>virtctl guestfs</code> command accepts only a single PVC that is attached to the interactive pod.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext"> virtctl guestfs -n namespace disk</code></pre>
+<h6>The <code>virt-sysprep</code> tool&nbsp;</h6>
+<pre><code class="language-plaintext">virt-sysprep --list-operations</code></pre>
+<ul>
+  <li>To execute operations on a specific disk image, add the disk with the <code>-a</code> option</li>
+</ul>
+<pre><code class="language-plaintext">virt-sysprep -a /dev/vda</code></pre>
+<ul>
+  <li>Use the <code>virt-sysprep --enable</code> option to select only some operations.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext"> virt-sysprep -a /dev/vda --enable ca-certificates,user-account \
+  --remove-user-accounts cloud-user</code></pre>
+<h6>The <code>virt-edit</code> command</h6>
+<ul>
+  <li>enables editing any file in the image.</li>
+</ul>
+<h6>The <code>virt-customize</code> command&nbsp;</h6>
+<ul>
+  <li>enables admins to inject SSH keys or to run package manager commands to update an image.&nbsp;</li>
+</ul>
+<blockquote>
+  <p>The first time that the VM boots after sealing, the operating system re-creates many of the items that the sealing tools stripped out.</p>
+  <p>Thus, never start a VM that you sealed. If you accidentally start the VM, then you must repeat the process of sealing the image.</p>
+</blockquote>
+<h4>Clone Virtual Machines by Using the Command Line</h4>
+<pre><code class="language-plaintext">virtctl create clone --source-name golden-vm \
+  --target-name new-vm
+apiVersion: clone.kubevirt.io/v1alpha1
+kind: VirtualMachineClone
+metadata:
+  creationTimestamp: null
+  name: clone-rglbs
+spec:
+  source:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: golden-vm
+  target:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: new-vm
+  template: {}
+status: {}</code></pre>
+<h3>Clone VM Disks by Using Data Volumes</h3>
+<ul>
+  <li>The Containerized Data Importer (CDI) provides a custom resource definition (CRD) for <code>datavolume</code> objects that orchestrate the import, clone, and upload operations that are associated with an underlying PVC.</li>
+  <li>Each <code>virtualmachine</code> resource includes a <code>dataVolumeTemplates</code> section that is used to create a <code>datavolume</code> resource if the volume does not exist. When OpenShift Virtualization clones a VM, it creates a <code>datavolume</code> resource to clone the VM disks.</li>
+  <li>If the back-end storage provides<mark class="marker-yellow"> a cloning feature</mark> and the Container Storage Interface (CSI) driver supports the feature, then OpenShift Virtualization uses that method.&nbsp;<ul>
+      <li>Otherwise, if the back-end storage and its CSI driver <mark class="marker-yellow">support snapshots,</mark> then OpenShift Virtualization uses temporary snapshots for the cloning process.<ul>
+          <li>&nbsp;If the back-end storage does not support snapshots, then OpenShift Virtualization starts <mark class="marker-yellow">Kubernetes pods</mark> to copy the content of the source volume to the destination volume</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The <code>StorageProfile</code> resource that OpenShift Virtualization associates with each storage class uses the <code>cloneStrategy</code> parameter to specify the cloning method:<ul>
+      <li><code><strong>csi-clone:</strong></code>The cloning process relies on the back-end storage cloning feature. This method is also called <i>CSI volume cloning</i>.</li>
+      <li><code><strong>snapshot:</strong></code>The cloning process relies on the back-end storage snapshot feature. This method is also called <i>smart cloning</i>.</li>
+      <li><code><strong>copy:</strong></code>The cloning process does not rely on back-end storage. OpenShift Virtualization starts Kubernetes pods for the copying. This method is also called <i>host-assisted cloning</i>.</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>For CSI and smart cloning, the source and target PVCs must have the same storage class and volume mode, and the source volume must not be in use.&nbsp;</p>
+</blockquote>
+<blockquote>
+  <p>To clone disks across namespaces, a cluster role and corresponding role binding are necessary to provide permissions for all actions for the <code>datavolume</code> resource.</p>
+</blockquote>
+<ul>
+  <li>to clone an individual disk, &nbsp;create a <code>datavolume</code> resource.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: documentroot-clone1
+spec:
+  storage:  1
+    resources:
+      requests:
+        storage: 1Gi
+    storageClassName: ocs-external-storagecluster-ceph-rbd-virtualization
+  source:  2
+    pvc:
+      name: documentroot
+      namespace: golden-vms</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext"> oc get datavolume</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
