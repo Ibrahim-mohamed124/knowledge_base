@@ -2,7 +2,7 @@
 title: storage
 description: 
 published: true
-date: 2025-11-19T19:47:10.413Z
+date: 2025-11-20T08:36:24.304Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-19T19:47:10.413Z
@@ -32,7 +32,7 @@ dateCreated: 2025-11-19T19:47:10.413Z
     <ul>
       <li><strong>&nbsp;</strong>For each storage class, a storage profile resource gives default values that are optimized for VM disks. Storage profiles are cluster-wide resources.</li>
       <li>Storage profiles have the same name as their associated storage classes.</li>
-      <li>The default settings for a storage profile are determined by the order in which the access mode and volume modes are declared.&nbsp;</li>
+      <li>The default settings for a storage profile are determined by the order in which the access mode and volume modes are declared.</li>
     </ul>
   </li>
 </ul>
@@ -53,6 +53,7 @@ status:
 <p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/virtualization/storage#CO117-2"><strong>2 </strong></a>Specify the <code>volumeMode</code>.</p>
 <blockquote>
   <p>As a developer, when you use a storage profile to prepare a VM disk, the only parameter that you must provide is the disk size. The storage profile ensures that all the other parameters have an optimal value for VM disk usage.</p>
+  <p>The <code>StorageProfile</code> acts behind the scenes, tied to the <code>storageClassName</code></p>
 </blockquote>
 <ul>
   <li><strong>Data volume: </strong>A data volume resource describes a VM disk. It groups the PVC definition and the details of the disk image to inject into the PV. Data volumes are namespaced resources.</li>
@@ -75,6 +76,7 @@ spec:
   source:
     http:
       url: http://images.example.com/openshift4/images/mariadb-server.qcow2	7</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -140,7 +142,7 @@ spec:
 </ul>
 <h4>Cloning Virtual Machine Disks</h4>
 <ul>
-  <li>only users with appropriate access to the <code>datavolumes</code> project can clone disks across multiple namespaces.&nbsp;</li>
+  <li>only users with appropriate access to the <code>datavolumes</code> project can clone disks across multiple namespaces.</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
