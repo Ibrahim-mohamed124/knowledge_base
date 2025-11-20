@@ -2,7 +2,7 @@
 title: storage
 description: 
 published: true
-date: 2025-11-20T13:39:25.876Z
+date: 2025-11-20T13:45:07.783Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-19T19:47:10.413Z
@@ -265,10 +265,52 @@ spec:
 <ul>
   <li>VM snapshots rely on Kubernetes volume snapshots. When you take a snapshot of a VM, OpenShift Virtualization creates a Kubernetes volume snapshot for each VM disk.</li>
 </ul>
+<h4>Backing up a Virtual Machine by OADP</h4>
+<ul>
+  <li>OADP can back up virtual machines that are running on the OpenShift cluster. To back up a virtual machine, you must include the <code>kubevirt.io/virtualmachine</code> resource type in the backup definition.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: my-vm-backup
+  namespace: openshift-adp
+spec:
+  includedNamespaces:
+  - my-vm
+  includedResources:
+  - kubevirt.io/virtualmachine
+  hooks:
+    resources:
+    - name: my-vm-pre-backup
+      labelSelector:
+        matchLabels:
+          kubevirt.io/virtualmachine: my-vm
+      pre:
+      - exec:
+          container: my-vm
+          command:
+          - /usr/bin/virsh
+          - suspend</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: my-vm-restore
+  namespace: openshift-adp
+spec:
+  backupName: my-vm-backup
+  hooks:
+    resources:
+    - name: my-vm-post-restore
+      labelSelector:
+        matchLabels:
+          kubevirt.io/virtualmachine: my-vm
+      post:
+      - exec:
+          container: my-vm
+          command:
+          - /usr/bin/virsh
+          - resume  my-vm</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
