@@ -1,0 +1,124 @@
+<!--
+title: Autopilot
+description: 
+published: true
+date: 2025-11-21T18:18:27.986Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-21T18:18:27.986Z
+-->
+
+<h1>Autopilot</h1>
+<p>✔ Autopilot is a rule-based automation engine in Portworx that responds to monitored<mark class="marker-yellow"> changes in a Kubernetes environment</mark>. It enables dynamic cluster management by <mark class="marker-yellow">automatically executing predefined actions when certain conditions are met.</mark></p>
+<p>👉👉 Examples of the actions that can be executed:</p>
+<ul>
+  <li>Autopilot can be used to resize PVCs when they run low on capacity</li>
+  <li>scale Portworx storage pools as usage grows</li>
+  <li>rebalance volumes across storage pools to ensure optimal resource distribution</li>
+</ul>
+<p>💁‍♂️💁‍♂️ As the autopilot depend on runtime changes in Kubernetes, it needs a metrics server.</p>
+<figure class="image"><img src="/autopilot-overview-20cbb7be90d4981984165b911be90f88.gif">
+  <figcaption>Autopilot workflow</figcaption>
+</figure>
+<p>&nbsp;</p>
+<h2><strong>Autopilot Install and Setup</strong></h2>
+<p>😡 Steps:</p>
+<ol>
+  <li>OpenShift Prometheus instance in your cluster from the OCP monitoring stack</li>
+</ol>
+<pre><code class="language-plaintext">oc get route thanos-querier -n openshift-monitoring -o json | jq -r '.spec.host'</code></pre>
+<blockquote>
+  <p><strong>Thanos Querier:</strong> A stateless service that aggregates query requests and retrieves data from the Sidecars (for recent data) and the Store Gateway (for historical data).</p>
+</blockquote>
+<p>&nbsp; 2. ensure that the autopilot is enabled in the StorageCluster specification:</p>
+<pre><code class="language-plaintext">kind: StorageCluster
+spec:
+  autopilot:
+    enabled: true</code></pre>
+<p>&nbsp; 3.<strong> </strong>Customize Autopilot install:</p>
+<ul>
+  <li>modify the spec part of StorageCluster:</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+...
+spec:
+  autopilot:
+    enabled: true
+    image: portworx/autopilot:1.3.14
+    providers:
+    - name: default
+      params:
+        url: https://&lt;THANOS-QUERIER-HOST&gt;   &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; routes from before 
+      type: prometheus
+    args:
+      log-level: debug</code></pre>
+<ul>
+  <li><strong>Here are all the parameters that could be modified:</strong></li>
+</ul>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Parameter</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Default Value</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Description</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>stc.spec.Autopilot.args.log-level</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>info</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Determines the level of logs to be printed in Autopilot pod log. Can be set to <code>trace</code> or <code>debug</code> for troubleshooting.</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>stc.spec.Autopilot.args.min_poll_interval</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>5 (sec)</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Frequency at which Autopilot checks conditions for all rules and proceeds with state changes.</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>stc.spec.Autopilot.providers.name</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>default</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Name of the metrics provider.</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>stc.spec.Autopilot.providers.type</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>prometheus</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Type of the metrics provider, currently only <code>prometheus</code> is supported.</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>stc.spec.Autopilot.providers.params.url</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>http://px-prometheus:9090</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">URL for the metrics provider where Autopilot scrapes volume/pool metrics. Default is the URL for Prometheus shipped with Portworx enterprise.</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>stc.spec.Autopilot.providers.params.ignore_unhealthy_targets</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>true</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Determines whether to ignore unhealthy scraping targets and proceed with Autopilot actions. If set to <code>false</code>, Autopilot won't proceed if there are unhealthy targets.</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><code>stc.spec.Autopilot.resources.limits.memory</code></td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">&nbsp;</td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Maximum memory size that can be claimed by Autopilot</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<h3>⚔ <strong>Autopilot with PX-Security</strong></h3>
+<blockquote>
+  <p>PX-Security refers to the security features of the Portworx platform, providing <mark class="marker-yellow">Role-Based Access Control (RBAC</mark>), <mark class="marker-yellow">authentication</mark>, <mark class="marker-yellow">ownership</mark>, and volume encryption for Kubernetes environments</p>
+</blockquote>
+<ul>
+  <li>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
