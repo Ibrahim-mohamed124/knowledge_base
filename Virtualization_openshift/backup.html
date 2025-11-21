@@ -2,7 +2,7 @@
 title: backup
 description: 
 published: true
-date: 2025-11-20T11:45:39.681Z
+date: 2025-11-21T11:54:46.393Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-20T11:42:16.843Z
@@ -297,6 +297,7 @@ spec:
   fedora-export-snapshot
   
 oc get vmexport</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To import the vm to another cluster apply the manifest bundle file.</li>
 </ul>
@@ -311,6 +312,7 @@ oc get vmexport</code></pre>
   --size 30Gi \ 2
   --image-path fedora-vm-disk.img.gz \ 3
   --storage-class ocs-external-storagecluster-ceph-rbd-virtualization 4</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -342,6 +344,127 @@ oc get vmexport</code></pre>
   </table>
 </figure>
 <p>&nbsp;</p>
+<h3>Take Snapshots of Virtual Machines</h3>
+<ul>
+  <li>Red&nbsp;Hat OpenShift Virtualization can take live snapshots of running VMs, as well as snapshots of stopped VMs.</li>
+  <li>OpenShift Virtualization communicates with the Quick Emulator (QEMU) guest agent that is running inside the VM to quiesce the file systems before taking the snapshot.</li>
+  <li>If one VM disk relies on back-end storage that does not support snapshots, then OpenShift Virtualization displays a warning message when you take a snapshot.</li>
+  <li>Red&nbsp;Hat supports taking a live snapshot of a VM with hot-plugged disks. However, the snapshot includes only the hot-plugged disks in the VM specification. <i>Hot-plugged</i> refers to disks that you attach to a running VM.</li>
+  <li>A VM snapshot also records the VM configuration, such as the number of CPUs or the amount of memory.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: snapshot.kubevirt.io/v1alpha1
+kind: VirtualMachineSnapshot
+metadata:
+  name: mariadb-server-2024-10-23
+spec:
+  source:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: mariadb-server</code></pre>
 <p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get virtualmachinesnapshot</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: snapshot.kubevirt.io/v1alpha1
+kind: VirtualMachineRestore
+metadata:
+  name: restore-db
+spec:
+  target:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: mariadb-server
+  virtualMachineSnapshotName: mariadb-server-2024-10-23</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h3>Copy Kubernetes Volume Snapshots</h3>
+<ul>
+  <li>VM snapshots rely on Kubernetes volume snapshots. When you take a snapshot of a VM, OpenShift Virtualization creates a Kubernetes volume snapshot for each VM disk.</li>
+</ul>
+<h4>Backing up a Virtual Machine by OADP</h4>
+<ul>
+  <li>OADP can back up virtual machines that are running on the OpenShift cluster. To back up a virtual machine, you must include the <code>kubevirt.io/virtualmachine</code> resource type in the backup definition.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: my-vm-backup
+  namespace: openshift-adp
+spec:
+  includedNamespaces:
+  - my-vm
+  includedResources:
+  - kubevirt.io/virtualmachine
+  hooks:
+    resources:
+    - name: my-vm-pre-backup
+      labelSelector:
+        matchLabels:
+          kubevirt.io/virtualmachine: my-vm
+      pre:
+      - exec:
+          container: my-vm
+          command:
+          - /usr/bin/virsh
+          - suspend</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: my-vm-restore
+  namespace: openshift-adp
+spec:
+  backupName: my-vm-backup
+  hooks:
+    resources:
+    - name: my-vm-post-restore
+      labelSelector:
+        matchLabels:
+          kubevirt.io/virtualmachine: my-vm
+      post:
+      - exec:
+          container: my-vm
+          command:
+          - /usr/bin/virsh
+          - resume  my-vm</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>Backing up Volumes with Kopia</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: &lt;backup-name&gt;
+  namespace: openshift-adp
+spec:
+  defaultVolumesToFsBackup: true</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>annotate the application pod to specify which volumes to back up with Kopia by using the<mark class="marker-yellow"> backup.velero.io/backup-volumes: volume1,volume2,volume3</mark> annotation.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website-mariadb
+  namespace: org-website
+spec:
+  template:
+    metadata:
+      annotations:
+        backup.velero.io/backup-volumes: mariadb
+    spec:
+      containers:
+        name: db
+        image: registry.access.redhat.com/rhscl/mariadb-105-rhel7
+        ...output omitted...
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mariadb
+      ...output omitted...
+      volumes:
+      - name: mariadb
+        persistentVolumeClaim:
+          claimName: mariadb-data
+...output omitted...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
