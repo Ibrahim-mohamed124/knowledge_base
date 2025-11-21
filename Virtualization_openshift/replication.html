@@ -2,7 +2,7 @@
 title: Replication
 description: 
 published: true
-date: 2025-11-21T14:18:26.370Z
+date: 2025-11-21T14:27:58.803Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-20T17:40:49.338Z
@@ -183,4 +183,148 @@ spec:
   <li>VMCP and VMP resources contain<mark class="marker-yellow"> optional preferences for the VM</mark>, such as domain devices, machine, and resource settings.&nbsp;</li>
   <li>VMCP and VMP attributes can be overridden when configuring a VM.</li>
 </ul>
-<p>&nbsp;</p>
+<h3>Bootable Volumes</h3>
+<ul>
+  <li>Bootable volumes are sealed golden images that are used as boot sources when creating VMs and that are defined by a <code>datasource</code> resource that is included with OpenShift Virtualization.</li>
+  <li>The <code>datasource</code> metadata includes a recommended default instance type and a virtual machine preference.</li>
+  <li>Set the <code>enableCommonBootImageImport</code> feature gate in the HyperConverged configuration to <code>true</code> to download common bootable images in <code>openshift-virtualization-os-images</code> project.</li>
+</ul>
+<pre><code class="language-plaintext"> oc get datasource -A
+Name:         centos-stream9
+Namespace:    openshift-virtualization-os-images
+...output omitted...
+Labels: instancetype.kubevirt.io/default-instancetype=u1.medium
+        instancetype.kubevirt.io/default-preference=centos.stream9
+...output omitted...
+Spec:
+  Source:
+    Snapshot:
+      Name:       centos-stream9-583318eb5646
+      Namespace:  openshift-virtualization-os-images
+    ...output omitted...</code></pre>
+<ul>
+  <li>The <code>dataimportcron</code> resource defines a cron job for recurring polling or importing disk images as PVCs into a golden image namespace.</li>
+</ul>
+<pre><code class="language-plaintext"> oc describe dataimportcrons rhel9-image-cron \
+  -n openshift-virtualization-os-images
+...output omitted...
+Spec:
+...output omitted...
+  Schedule:             29 11/12 * * *
+  Template:
+    Metadata:
+    Spec:
+      Source:
+        Registry:
+          Image Stream:  rhel9-guest
+          Pull Method:   node
+      Storage:
+        Resources:
+          Requests:
+            Storage:  30Gi
+...output omitted...</code></pre>
+<pre><code class="language-plaintext"> virtctl create vm --name rhel9-instancetype \
+    --instancetype m1.large --infer-preference \
+    --volume-datasource rhel9 &gt; rhel9-instancetype.yaml</code></pre>
+<h3>Initial Run Configuration</h3>
+<ul>
+  <li>The images from Red&nbsp;Hat include the <code>cloud-init</code> utility</li>
+</ul>
+<figure class="table" style="width:1170px;">
+  <table>
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Module name</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Usage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>users</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">This module configures users and groups.</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rh_subscription</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Register a Red&nbsp;Hat system, either by a username and a password, or by an activation key and an organization.</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>yum_repos</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Add <code>yum</code> or <code>dnf</code> repository configuration to <code>/etc/yum.repos.d</code>.</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ca_certs</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Add CA certificates to the system CA store and update any related files by using the appropriate operating system-specific utility.</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rsyslog</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configure remote system logging by using <code>rsyslog</code>.</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>write_files</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Write arbitrary content to files and optionally set permissions.</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>runcmd</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Run arbitrary commands at a <code>rc.local</code>-like time frame with output to the console.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<pre><code class="language-plaintext">#cloud-config
+users:
+  - default   1
+  - name: devops  2
+    gecos: Ansible account
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]  3
+    groups: wheel,adm,systemd-journal
+    ssh_authorized_keys:  4
+      - ssh-rsa AA...vz devops@example.com
+chpasswd:
+  list: |
+    root:password
+    cloud-user:mypassword
+    devops:mypassword2
+  expire: False 5
+locale: es_MX.UTF-8  6</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Create the default <code>cloud-init</code> user.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Create the <code>devops</code> user.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Add <code>sudo</code> privileges.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Add SSH public keys.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Force a password change at login: true or false.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Change the system locale.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
