@@ -2,7 +2,7 @@
 title: Replication
 description: 
 published: true
-date: 2025-11-21T14:37:08.058Z
+date: 2025-11-21T14:46:35.858Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-20T17:40:49.338Z
@@ -427,14 +427,55 @@ parameters:
   </table>
 </figure>
 <h3>Creating Custom Instance Types</h3>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>An instance type can also be cloned. Go to <strong>Virtualization</strong> → <strong>InstanceTypes</strong> and click the vertical ellipsis for the instance type to clone.</li>
+</ul>
+<pre><code class="language-plaintext">virtctl create instancetype --name example-gpu \
+  --cpu 2 --memory 256Mi --gpu name:gpu1,devicename:nvidia
+apiVersion: instancetype.kubevirt.io/v1beta1
+kind: VirtualMachineClusterInstancetype
+metadata:
+  creationTimestamp: null
+  name: example-gpu
+spec:
+  cpu:
+    guest: 2
+  gpus:
+  - deviceName: nvidia
+    name: gpu1
+  memory:
+    guest: 256Mi</code></pre>
+<h3>Creating Custom Virtual Machine Preferences</h3>
+<ul>
+  <li><strong>Virtualization</strong> → <strong>Preferences</strong>. You can edit or clone the preference resources by using the same procedure as for instance types.</li>
+  <li>create preferences with the <code>virtctl</code> command. By default, a <code>virtualmachineclusterpreferences</code> resource is created. Use the <code>--namespaced</code> option to create a <code>virtualmachinepreferences</code> resource that is available only in the current namespace</li>
+</ul>
+<pre><code class="language-plaintext">virtctl create preference --name example-preference \
+  --volume-storage-class ocs-external-storagecluster-ceph-rbd-virtualization
+apiVersion: instancetype.kubevirt.io/v1beta1
+kind: VirtualMachineClusterPreference
+metadata:
+  creationTimestamp: null
+  name: example-preference
+spec:
+  volumes:
+    preferredStorageClassName: ocs-external-storagecluster-ceph-rbd-virtualizati</code></pre>
+<h3>Adding Bootable Volumes</h3>
+<ul>
+  <li>when enabling <mark class="marker-yellow">enableCommonBootImageImport</mark> &nbsp;The installation creates <code>imagestream</code>, <code>datasource</code>, and <code>dataimportcron</code> resources in the <code>openshift-virtualization-os-images</code> namespace.</li>
+  <li>&nbsp;A <code>dataImportCronTemplates</code> section is added to the <code>spec</code> of the <code>hco</code> resource. This section contains a list of <code>dataimportcron</code> resource specifications.&nbsp;</li>
+</ul>
+<blockquote>
+  <p>For disconnected clusters, Red&nbsp;Hat recommends disabling automatic updates. Leaving automatic updates enabled uses resources and fills log files with each attempt to import the images.</p>
+</blockquote>
+<ul>
+  <li>When the <code>enableCommonBootImageImport</code> feature gate is disabled, <code>datasource</code> objects are reset so that they no longer point to the original boot source and any system default <code>dataimportcron</code> resources are deleted.<ul>
+      <li>administrator can manually provide a boot source by creating a new PVC or volume snapshot for the <code>datasource</code> object and then populating it with an operating system image.</li>
+    </ul>
+  </li>
+  <li>For the<mark class="marker-yellow"> custom image to be detected as an available boot source</mark>, the name of the image's <code>managedDataSource</code> <mark class="marker-yellow">must match the name of the template's</mark> <code>DataSource</code>, which is defined in <code>spec.dataVolumeTemplates.spec.sourceRef.name</code> in the VM template YAML file.</li>
+  <li>To add custom bootable volumes in the web console, go to <strong>Virtualization</strong> → <strong>Bootable volumes</strong> and select <strong>Add&nbsp;volume</strong> → <strong>With form</strong>.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
