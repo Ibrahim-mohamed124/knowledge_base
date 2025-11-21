@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-21T18:27:52.180Z
+date: 2025-11-21T18:32:48.548Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -160,7 +160,20 @@ kubectl -n &lt;px-namespace&gt; create configmap px-versions --from-file=version
 <pre><code class="language-plaintext">kind: StorageCluster
 spec:
   autoUpdateComponents: Once </code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2><strong>Working with Autopilot Rules</strong></h2>
+<p>🤔 what is <strong>AutopilotRule?</strong></p>
+<ul>
+  <li>It is <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">CRD</a> to tell Autopilot <mark class="marker-yellow">which </mark>objects to monitor, the <mark class="marker-yellow">conditions </mark>to monitor, and the corresponding <mark class="marker-yellow">actions </mark>to perform when conditions occur.</li>
+  <li>An AutopilotRule has 4 main parts:<ol>
+      <li><strong>Selector</strong> <mark class="marker-yellow">Matches labels on the objects</mark> that the rule should monitor.</li>
+      <li><strong>Namespace Selector</strong> <mark class="marker-yellow">Matches labels on the Kubernetes namespaces the rule should monitor</mark>. This is optional, and the default is all namespaces.</li>
+      <li><strong>Conditions</strong> The <mark class="marker-yellow">metrics for the objects to monitor.</mark></li>
+      <li><strong>Actions</strong> to <mark class="marker-yellow">perform</mark> once the metric conditions are met.</li>
+    </ol>
+  </li>
+</ul>
+<h3><strong>Creating an AutopilotRule&nbsp;</strong></h3>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
