@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-21T18:18:27.986Z
+date: 2025-11-21T18:27:52.180Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -27,6 +27,7 @@ dateCreated: 2025-11-21T18:18:27.986Z
   <li>OpenShift Prometheus instance in your cluster from the OCP monitoring stack</li>
 </ol>
 <pre><code class="language-plaintext">oc get route thanos-querier -n openshift-monitoring -o json | jq -r '.spec.host'</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><strong>Thanos Querier:</strong> A stateless service that aggregates query requests and retrieves data from the Sidecars (for recent data) and the Store Gateway (for historical data).</p>
 </blockquote>
@@ -53,6 +54,7 @@ spec:
       type: prometheus
     args:
       log-level: debug</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Here are all the parameters that could be modified:</strong></li>
 </ul>
@@ -110,14 +112,54 @@ spec:
   <p>PX-Security refers to the security features of the Portworx platform, providing <mark class="marker-yellow">Role-Based Access Control (RBAC</mark>), <mark class="marker-yellow">authentication</mark>, <mark class="marker-yellow">ownership</mark>, and volume encryption for Kubernetes environments</p>
 </blockquote>
 <ul>
-  <li>&nbsp;</li>
+  <li>Add the following PX_SHARED_SECRET env var to the <code>autopilot</code> section:</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">  autopilot:
+...
+    env:
+    - name: PX_SHARED_SECRET
+      valueFrom:
+        secretKeyRef:
+          key: apps-secret
+          name: px-system-secrets</code></pre>
+<h3>🚀 <strong>Upgrade Autopilot</strong></h3>
+<ul>
+  <li>To upgrade Autopilot to a custom image:<ol>
+      <li>Update the <code>configmap/px-versions</code> with the desired custom Autopilot image.</li>
+      <li>Add the <code>autoUpdateComponents</code> field to the storage cluster specification:</li>
+    </ol>
+  </li>
+</ul>
+<pre><code class="language-plaintext">kind: StorageCluster
+spec:
+  autoUpdateComponents: Once</code></pre>
+<ul>
+  <li>With Portworx Upgrade (without configmap):<ol>
+      <li>Delete the <code>configmap/px-versions</code> file.<ul>
+          <li>When Portworx is upgraded, the Operator will <mark class="marker-yellow">automatically upgrade the installed components to the recommended versions.</mark></li>
+        </ul>
+      </li>
+      <li>Upgrade the Portworx image in the storage cluster specification to proceed with the upgrade.</li>
+    </ol>
+  </li>
+  <li>With Portworx Upgrade (with configmap):<ol>
+      <li>Download the latest Portworx version manifest:</li>
+    </ol>
+  </li>
+</ul>
+<pre><code class="language-plaintext">curl -o versions.yaml "https://install.portworx.com/$&lt;portworx-version&gt;/version?kbver=$&lt;kubernetes-version&gt;&amp;opver=$&lt;operator-version&gt;"</code></pre>
+<blockquote>
+  <p><code>&lt;portworx_version&gt;</code> with the Portworx version you want to use.</p>
+  <p><code>&lt;kubernetes-version&gt;</code> with the Kubernetes version you want to use.</p>
+  <p><code>&lt;operator-version&gt;</code> with the Operator version you want to use.</p>
+</blockquote>
+<p>&nbsp; &nbsp; &nbsp;2. &nbsp;Update the px-versions configmap with the downloaded version manifest:</p>
+<pre><code class="language-plaintext">kubectl -n &lt;px-namespace&gt; delete configmap px-versions
+kubectl -n &lt;px-namespace&gt; create configmap px-versions --from-file=versions.yaml</code></pre>
+<p>&nbsp; &nbsp; 3. Add the <code>autoUpdateComponents</code> field to the storage cluster specification:</p>
+<pre><code class="language-plaintext">kind: StorageCluster
+spec:
+  autoUpdateComponents: Once </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
