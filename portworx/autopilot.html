@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-21T18:51:52.372Z
+date: 2025-11-21T19:00:30.547Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -243,5 +243,26 @@ spec:
 </ul>
 <pre><code class="language-plaintext">oc delete actionapproval </code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>😭 <strong>Troubleshooting</strong></h3>
+<p>For each object monitored by Autopilot, it will create a corresponding <code>autopilotruleobject</code> instance in the namespace of the object.</p>
+<ul>
+  <li>For volumes (PVCs), the <code>autopilotruleobject</code> instance will be in the namespace of the PVC.</li>
+  <li>For storage pools, the <code>autopilotruleobject</code> instance will be in the namespace where Portworx is installed.</li>
+</ul>
+<p>The <code>autopilotruleobject</code> is created only if an object's condiitons were atleast triggered once. In other words, you will not see an <code>autopilotruleobject</code> if the object was always in nornal state.</p>
+<pre><code class="language-plaintext">oc get aro --all-namespaces -l rule=rule_name</code></pre>
+<h3><strong>Troubleshooting autopilot</strong></h3>
+<ul>
+  <li>Create a directory (<code>ap-cores</code>) in which to store your support bundle files and send the support signal to the autopilot process:</li>
+</ul>
+<pre><code class="language-plaintext">mkdir ap-cores
+POD=$(oc get pods -n portworx -l name=autopilot | grep -v NAME | awk '{print $1}')
+oc exec -n portworx $POD -- killall -SIGUSR1 autopilot</code></pre>
+<ul>
+  <li>Copy the support bundle files from your Kubernetes cluster to your directory:</li>
+</ul>
+<pre><code class="language-plaintext">oc cp  portworx/$POD:/tmp/aut-diags.zip ap-cores/aut-diags.zipls ap-cores</code></pre>
+<ul>
+  <li>Collect and place your autopilot pod logs into an <code>autopilot-pod.log</code> file within your temporary directory:</li>
+</ul>
+<pre><code class="language-plaintext">oc logs $POD -n portworx --tail=99999 &gt; ap-cores/autopilot-pod.log</code></pre>
