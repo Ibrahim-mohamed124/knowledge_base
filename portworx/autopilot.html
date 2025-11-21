@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-21T18:34:09.026Z
+date: 2025-11-21T18:35:33.196Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -172,7 +172,7 @@ spec:
     </ol>
   </li>
 </ul>
-<h3><strong>Creating an AutopilotRule&nbsp;</strong></h3>
+<h3><a href="https://docs.portworx.com/portworx-enterprise/operations/scale-portworx-cluster/autopilot/reference"><strong>Creating an AutopilotRule&nbsp;</strong></a></h3>
 <pre><code class="language-plaintext">apiVersion: autopilot.libopenstorage.org/v1alpha1
 kind: AutopilotRule
 metadata:
@@ -202,4 +202,16 @@ spec:
       scalepercentage: "100"
       # volume capacity should not exceed 400GiB
       maxsize: "400Gi"</code></pre>
+<ul>
+  <li>To monitor the autopilotRule:</li>
+</ul>
+<pre><code class="language-plaintext">oc get events --field-selector involvedObject.kind=AutopilotRule --all-namespaces</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
