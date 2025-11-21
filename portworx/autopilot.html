@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-21T18:42:17.123Z
+date: 2025-11-21T18:47:19.410Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -213,11 +213,26 @@ spec:
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/aut-workflow-no-approval.png"></figure>
 <ul>
-  <li>&nbsp; This is the workflow of a wuss:</li>
+  <li>&nbsp; This is the workflow of a wuss:<ul>
+      <li>Create an AutopilotRule with <code>enforcement: approvalRequired</code> in the spec</li>
+    </ul>
+  </li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: autopilot.libopenstorage.org/v1alpha1
+kind: AutopilotRule
+metadata:
+  name: volume-resize
+spec:
+  #### enforcement indicates that actions from this rule need approval
+  enforcement: approvalRequired</code></pre>
 <figure class="image image_resized" style="width:100%;"><img src="/aut-workflow-approval.png"></figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>😡😡😡 approving the changes:</p>
+<ol>
+  <li>Once the conditions are met, list of the action approvals in the namespace. Identity the item in the list for the concerned object.</li>
+  <li>Update the <code>approvalState</code> field in the ActionApproval object spec to <code>approved</code> or <code>declined</code>.</li>
+  <li>&nbsp;</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
