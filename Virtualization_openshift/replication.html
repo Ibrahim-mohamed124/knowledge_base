@@ -2,7 +2,7 @@
 title: Replication
 description: 
 published: true
-date: 2025-11-20T17:40:49.338Z
+date: 2025-11-21T14:18:26.370Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-20T17:40:49.338Z
@@ -10,7 +10,7 @@ dateCreated: 2025-11-20T17:40:49.338Z
 
 <h1>Clone Virtual Machines</h1>
 <ul>
-  <li>To prevent the clones from having these same identifying settings, seal the original VM before using it to create clones.&nbsp;</li>
+  <li>To prevent the clones from having these same identifying settings, seal the original VM before using it to create clones.</li>
 </ul>
 <blockquote>
   <p>Sealing the VM is a process where you clear the machine-specific information.</p>
@@ -19,12 +19,12 @@ dateCreated: 2025-11-20T17:40:49.338Z
   <li>For Microsoft Windows systems, use the <code>sysprep.exe</code> command to initiate a System Out-of-Box-Experience (OOBE).</li>
   <li>For Red&nbsp;Hat Enterprise Linux systems, use the <code>virt-sysprep</code> command.<ul>
       <li>stop the VM before using the <code>virt-sysprep</code> command.</li>
-      <li>run the command from &nbsp;a Linux system with access to the VM disk block devices.&nbsp;</li>
+      <li>run the command from &nbsp;a Linux system with access to the VM disk block devices.</li>
     </ul>
   </li>
-  <li><code>virtctl guestfs</code> command to start a container that includes the <code>libguestfs-tools</code> package.&nbsp;<ul>
+  <li><code>virtctl guestfs</code> command to start a container that includes the <code>libguestfs-tools</code> package.<ul>
       <li>The <code>virt-sysprep</code> tool modifies the guest or disk image in place. The guest VM must be shut down.</li>
-      <li>This package includes the <code>virt-sysprep</code> utility and other tools for accessing and modifying VM disk images.&nbsp;</li>
+      <li>This package includes the <code>virt-sysprep</code> utility and other tools for accessing and modifying VM disk images.</li>
       <li>container also attaches the VM's persistent volume claim (PVC) as the <code>/​dev/​vda</code> block device. The <code>virtctl guestfs</code> command accepts only a single PVC that is attached to the interactive pod.</li>
     </ul>
   </li>
@@ -32,12 +32,14 @@ dateCreated: 2025-11-20T17:40:49.338Z
 <pre><code class="language-plaintext"> virtctl guestfs -n namespace disk</code></pre>
 <h6>The <code>virt-sysprep</code> tool&nbsp;</h6>
 <pre><code class="language-plaintext">virt-sysprep --list-operations</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To execute operations on a specific disk image, add the disk with the <code>-a</code> option</li>
 </ul>
 <pre><code class="language-plaintext">virt-sysprep -a /dev/vda</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>Use the <code>virt-sysprep --enable</code> option to select only some operations.&nbsp;</li>
+  <li>Use the <code>virt-sysprep --enable</code> option to select only some operations.</li>
 </ul>
 <pre><code class="language-plaintext"> virt-sysprep -a /dev/vda --enable ca-certificates,user-account \
   --remove-user-accounts cloud-user</code></pre>
@@ -47,7 +49,7 @@ dateCreated: 2025-11-20T17:40:49.338Z
 </ul>
 <h6>The <code>virt-customize</code> command&nbsp;</h6>
 <ul>
-  <li>enables admins to inject SSH keys or to run package manager commands to update an image.&nbsp;</li>
+  <li>enables admins to inject SSH keys or to run package manager commands to update an image.</li>
 </ul>
 <blockquote>
   <p>The first time that the VM boots after sealing, the operating system re-creates many of the items that the sealing tools stripped out.</p>
@@ -76,9 +78,9 @@ status: {}</code></pre>
 <ul>
   <li>The Containerized Data Importer (CDI) provides a custom resource definition (CRD) for <code>datavolume</code> objects that orchestrate the import, clone, and upload operations that are associated with an underlying PVC.</li>
   <li>Each <code>virtualmachine</code> resource includes a <code>dataVolumeTemplates</code> section that is used to create a <code>datavolume</code> resource if the volume does not exist. When OpenShift Virtualization clones a VM, it creates a <code>datavolume</code> resource to clone the VM disks.</li>
-  <li>If the back-end storage provides<mark class="marker-yellow"> a cloning feature</mark> and the Container Storage Interface (CSI) driver supports the feature, then OpenShift Virtualization uses that method.&nbsp;<ul>
+  <li>If the back-end storage provides<mark class="marker-yellow"> a cloning feature</mark> and the Container Storage Interface (CSI) driver supports the feature, then OpenShift Virtualization uses that method.<ul>
       <li>Otherwise, if the back-end storage and its CSI driver <mark class="marker-yellow">support snapshots,</mark> then OpenShift Virtualization uses temporary snapshots for the cloning process.<ul>
-          <li>&nbsp;If the back-end storage does not support snapshots, then OpenShift Virtualization starts <mark class="marker-yellow">Kubernetes pods</mark> to copy the content of the source volume to the destination volume</li>
+          <li>If the back-end storage does not support snapshots, then OpenShift Virtualization starts <mark class="marker-yellow">Kubernetes pods</mark> to copy the content of the source volume to the destination volume</li>
         </ul>
       </li>
     </ul>
@@ -115,13 +117,70 @@ spec:
       namespace: golden-vms</code></pre>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext"> oc get datavolume</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Predefined Virtual Machine Templates and Instance Types</h2>
+<ul>
+  <li>Red&nbsp;Hat OpenShift Virtualization provides a catalog of preconfigured templates to create a virtual machine and its resources.&nbsp;</li>
+  <li>data volumes could be used to clone existing PVC, create new data volumes, or uploading the disk image.&nbsp;</li>
+  <li>The cloning process creates a <code>datavolume</code> resource in the destination project to create and populate the PVC that is used as the VM's bootable disk.</li>
+</ul>
+<h4>Attributes of a Template</h4>
+<ul>
+  <li><strong>Disk Source: </strong>This field indicates the source of the image to create your VM, and includes the following options:<ul>
+      <li><strong>Template default: </strong>Use the default template disk source.</li>
+      <li><strong>PVC (clone PVC): </strong>Clone an existing PVC in the cluster to create a PVC.</li>
+      <li><strong>Registry (creates PVC): </strong>Create a PVC by importing content from a container registry.</li>
+      <li><strong>URL (creates PVC): </strong>Create a PVC by importing content from a URL with an HTTP or an S3 endpoint.</li>
+      <li><strong>Upload (Upload a new file to a PVC): </strong>Create a PVC by uploading a new file to a PVC.</li>
+      <li><strong>Blank: </strong>Create a blank PVC.</li>
+    </ul>
+  </li>
+  <li><strong>CPU | Memory: </strong>This field indicates the size of your VM in terms of CPU and memory. Template names from Red&nbsp;Hat indicate the size of the provisioned VM with the following options:<ul>
+      <li><strong>Tiny: </strong>Create a VM with 1 CPU and 1&nbsp;GiB memory. Recommended for testing VM creation.</li>
+      <li><strong>Small: </strong>Create a VM with 1 CPU and 2&nbsp;GiB memory. This option is the default for any preconfigured template.</li>
+      <li><strong>Medium: </strong>Create a VM with 1 CPU and 4&nbsp;GiB memory. Appropriate for code testing or to store basic application resources.</li>
+      <li><strong>Large: </strong>Create a VM with 2 CPUs and 8&nbsp;GiB memory. Recommended for systems that require heavy resource consumption.</li>
+    </ul>
+  </li>
+  <li><strong>Workload: </strong>This field indicates the workload type for your VM, and includes the following options:<ul>
+      <li><strong>Desktop: </strong>A configuration for a desktop system that prioritizes VM density over VM performance. Red&nbsp;Hat recommends VMs with this configuration.</li>
+      <li><strong>Server: </strong>The default option for any preconfigured template, and compatible with various server workloads. This option balances performance and prioritizes VM density over VM performance.</li>
+      <li><strong>High performance: </strong>Optimized for high-performance or high-consumption workloads. This option prioritizes VM performance over VM density.</li>
+    </ul>
+  </li>
+  <li><strong>Disks: </strong>A preconfigured Linux-based template has two partitions by default, <code>cloud-init</code> and <code>root disk</code>. However, you can configure additional disks. Each field has several available options for customizing your template:<ul>
+      <li><strong>Source: </strong>You can create or import a disk from an existing or blank PVC, from an external source such as a container registry or URL, or by using a container in a registry that is accessible from the cluster.</li>
+      <li><strong>Type: </strong>You can customize the storage type, such as a disk or CD-ROM, according to the needs of your VM.</li>
+      <li><strong>Interface: </strong>You can select the communication interface of your disk based on compatibility standards and the intended performance of your VM. The available options are <i>virtIO</i>, <i>SATA</i>, or <i>SCSI</i>.</li>
+      <li><strong>StorageClass: </strong>Select the storage class for the disk. The storage profile sets the optimized access mode, and the volume mode for the storage class.</li>
+      <li><strong>Access Mode: </strong>You can customize the disk's access mode and override the default storage profile settings. The available access modes are Single user (<code>RWO</code>), Shared access (<code>RWX</code>), or Read only (<code>ROX</code>).</li>
+      <li><strong>Volume Mode: </strong>You can choose between <code>Filesystem</code> and <code>Block</code> storage volume modes for your VM, depending on the selected storage class.</li>
+    </ul>
+  </li>
+  <li><strong>Network interfaces: </strong>Red&nbsp;Hat provides templates with a default network interface that is connected to the pod network. You can configure additional network interfaces for your VM. For each field, you have several options to customize your template:<ul>
+      <li><strong>Interface model: </strong>You can choose either <code>virtio</code> or <code>e1000e</code>, based on your VM's needs and required performance. The <code><mark class="marker-yellow">virtio</mark></code><mark class="marker-yellow"> model is optimized for performance</mark>, and most Linux distributions support it. <mark class="marker-yellow">Additional drivers are needed for Windows VMs</mark>. Although most operating systems, including Windows, support the <code>e1000e</code> model, its performance is slower than the <code>virtio</code> model.</li>
+      <li><strong>Network: </strong>You can select from a list of available network attachment definitions to connect to additional networks. Additional networks must use the <code>bridge</code> binding method.</li>
+      <li><strong>Type: </strong>You can select from a list of binding methods. You must use the <code>masquerade</code> binding method on the default pod network. Additional networks must use the <code>bridge</code> binding method.</li>
+      <li><strong>MAC address: </strong>You can specify a custom MAC address for the network interface. MAC addresses are automatically assigned unless you specify a custom address.</li>
+    </ul>
+  </li>
+  <li><strong>Scripts: </strong>In this field, you configure <code>cloud-init</code> on Linux systems, add authorized SSH keys, or configure Sysprep for Windows machines. Both <code>cloud-init</code> and <code>sysprep</code> install tools and packages, configure users and passwords, and manage system applications.</li>
+</ul>
+<h3>Virtual Machine Instance Types</h3>
+<ul>
+  <li>Instance types define resources and characteristics to apply to new VMs. Instance types must define CPU and memory resources. All other attributes are optional.<ol>
+      <li><code><strong>cx1.~:</strong></code>The <i>CX Series</i> (an abbreviation of <mark class="marker-yellow">"Compute Exclusive</mark>") <mark class="marker-yellow">provides exclusive compute resources for compute-intensive applications</mark>. The exclusive resources are given to the compute threads of the VM. To ensure that these exclusive compute resources are available, some additional cores (depending on the number of disks and NICs) are requested to offload the I/O threading from the cores that are dedicated to the workload. In addition, in this series, the NUMA topology of the used cores is provided to the VM.</li>
+      <li><code><strong>gn1.~:</strong></code>The <i>GN Series</i> (an abbreviation of "GPU NVIDIA") <mark class="marker-yellow">provides instance types for VMs with attached NVIDIA GPU resources</mark>. This series is intended for VMs that consume GPUs from the <a href="https://github.com/NVIDIA/gpu-operator">NVIDIA GPU Operator</a>, which is available on OpenShift via OperatorHub.</li>
+      <li><code><strong>m1.~: </strong></code>The <i>M Series</i> (an abbreviation of "Memory") <mark class="marker-yellow">provides resources for memory-intensive applications.</mark></li>
+      <li><code><strong>n1.~: </strong></code>The <i>N Series</i> (an abbreviation of "Network")<mark class="marker-yellow"> provides resources for network-intensive DPDK applications</mark>, such as VNFs. This series of instance types requires nodes that can run DPDK workloads, and the node must have the <code>node-role.kubevirt.io/worker-dpdk</code> label.</li>
+      <li><code><strong>u1.~: </strong></code>The <i>U Series</i> (an abbreviation of "Universal") <mark class="marker-yellow">provides resources for general-purpose applications.</mark> VMs of instance types share physical CPU cores on a time-slice basis with other VMs.</li>
+    </ol>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get vmclusterinstancetypes</code></pre>
+<h3>Virtual Machine Preferences</h3>
+<ul>
+  <li>OpenShift Virtualization includes custom resource definitions for Virtual Machine Cluster Preferences (VMCP), which is a cluster-wide resource, and Virtual Machine Preferences (VMP), which is a namespaced resource.</li>
+  <li>VMCP and VMP resources contain<mark class="marker-yellow"> optional preferences for the VM</mark>, such as domain devices, machine, and resource settings.&nbsp;</li>
+  <li>VMCP and VMP attributes can be overridden when configuring a VM.</li>
+</ul>
 <p>&nbsp;</p>
