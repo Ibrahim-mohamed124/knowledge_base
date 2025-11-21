@@ -2,10 +2,10 @@
 title: Backup, Restore, and Migration.
 description: 
 published: true
-date: 2025-11-11T10:36:49.369Z
+date: 2025-11-21T13:41:17.328Z
 tags: 
 editor: ckeditor
-dateCreated: 2025-11-07T08:07:57.224Z
+dateCreated: 2025-11-17T09:08:35.415Z
 -->
 
 <h1>Chapter&nbsp;2.&nbsp; Backup, Restore, and Migration of Applications with OADP</h1>
@@ -424,6 +424,9 @@ application data volume.
     </ul>
   </li>
 </ul>
+<blockquote>
+  <p>when the kopia agent is installed on worker nodes they take this label &gt; &nbsp;node-role.kubernetes.io/nodeAgent</p>
+</blockquote>
 <figure class="image image_resized" style="width:100%;"><img src="/oadp-arch.svg"></figure>
 <p>&nbsp;</p>
 <ul>
@@ -698,6 +701,7 @@ aws_secret_access_key=AWS_SECRET_ACCESS_KEY</code></pre>
 </ul>
 <pre><code class="language-plaintext">oc label volumesnapshotclass my-snapshot-storageclass \
   velero.io/csi-volumesnapshot-class="true"</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc label volumesnapshotclass \
   velero.io/csi-volumesnapshot-class="true" --all</code></pre>
 <h3>Verification and Troubleshooting</h3>
