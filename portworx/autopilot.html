@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-21T18:47:19.410Z
+date: 2025-11-21T18:51:52.372Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -231,10 +231,17 @@ spec:
 <ol>
   <li>Once the conditions are met, list of the action approvals in the namespace. Identity the item in the list for the concerned object.</li>
   <li>Update the <code>approvalState</code> field in the ActionApproval object spec to <code>approved</code> or <code>declined</code>.</li>
-  <li>&nbsp;</li>
 </ol>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get events --field-selector involvedObject.kind=AutopilotRule,involvedObject.name=volume-resize -n default -w</code></pre>
+<pre><code class="language-plaintext">oc get actionapproval -n namespace</code></pre>
+<ul>
+  <li>Patch and approve the actionapproval:</li>
+</ul>
+<pre><code class="language-plaintext">oc patch actionapproval -n namespace actionapprovalName --type=merge -p '{"spec":{"approvalState":"approved"}}' </code></pre>
+<ul>
+  <li>Actions for the object will continue to stay in declined state until the <code>actionapproval</code> object is present and has approval state as declined. When you want Autopilot to resume monitoring this object, delete the actionapproval object.</li>
+</ul>
+<pre><code class="language-plaintext">oc delete actionapproval </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
