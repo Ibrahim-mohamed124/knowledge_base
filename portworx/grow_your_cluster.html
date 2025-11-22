@@ -2,7 +2,7 @@
 title: upscaling 
 description: 
 published: true
-date: 2025-11-22T16:28:26.707Z
+date: 2025-11-22T16:45:09.773Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-22T16:08:48.439Z
@@ -45,7 +45,17 @@ pxctl service drive add --drive /dev/sde --operation status</code></pre>
 </ul>
 <pre><code class="language-plaintext">pxctl service pool show</code></pre>
 <pre><code class="language-plaintext">pxctl service pool update --resize &lt;pool-id&gt;</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2><strong>Configure Kubernetes Cluster Autoscaler to Autoscale Storage Nodes</strong></h2>
+<p><strong>🎉🎉🎉🎉🎉 </strong>preconfigure the node template and add the <code>portworx.io/provision-storage-node="true"</code> label.</p>
+<blockquote>
+  <p>Auto-scaling down is not supported. When using <a href="https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/README.md">Kubernetes Cluster Autoscaler</a>, make sure that auto-scaling down is disabled. Otherwise, drivesets might get orphaned and Portworx might lose quorum.</p>
+</blockquote>
+<ul>
+  <li>OpenShift cluster <mark class="marker-yellow">does not require creating separate node pools for autoscaling Portworx storage nodes, </mark>but you must enable the <code>balanceSimilarNodeGroups</code> setting in the Cluster Autoscaler configuration to distribute new nodes evenly across zones so that each zone contains approximately the same number of nodes.</li>
+  <li>To bring up autoscaled nodes as storageless, omit the label from the node pool's template.</li>
+</ul>
+<blockquote>
+  <p>In vSphere Cloud Drive setups, when a node is down (<mark class="marker-yellow">but not marked unhealthy</mark>), any new node added by the Cluster Autoscaler may remain storage-less due to Portworx safety checks. Since<mark class="marker-yellow"> vSphere drives stay attached to the down node, the new node cannot attach those drives and will not convert to a storage node.</mark></p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
