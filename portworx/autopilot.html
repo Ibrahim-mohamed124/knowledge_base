@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-22T10:36:13.422Z
+date: 2025-11-22T15:24:59.104Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -308,6 +308,7 @@ spec:
       scalepercentage: "100"
       # volume capacity should not exceed 400GiB
       maxsize: "400Gi"</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc get events --field-selector involvedObject.kind=AutopilotRule,involvedObject.name=volume-resize \
 --all-namespaces --sort-by .lastTimestamp</code></pre>
 <h2><strong>Expand every Portworx storage pool in your cluster</strong></h2>
@@ -337,6 +338,7 @@ spec:
         scalepercentage: "100"
         # when scaling, add-drive/resize-drive to the pool based on available resources
         scaletype: "auto or add-drive or resize-drive"</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><a href="https://docs.portworx.com/portworx-enterprise/concepts/px-store-v2"><strong>PX-StoreV2</strong></a> supports scaling using only the <code>resize-drive</code> method. The <code>add-drive</code> method is not supported. If you select the <code>auto</code> scaling method, Portworx automatically uses <code>resize-drive</code> to scale the storage pool.</p>
 </blockquote>
@@ -388,4 +390,56 @@ spec:
 <blockquote>
   <p>When you expand your storage pool using the <code>add-drive</code> scale type, Autopilot increases your pool storage capacity by adding new drives to the pool based on the scale percentage. The new drives will match the capacity of the existing ones because the storage pool consists of drives of equal size. For example, if your current pool consists of 100 GiB drive, with <code>add-drive</code> scale type, a 100 GiB drive is added to your pool, thus expanding it by 100%. In such cases, scale percentage represents the minimum percentage by which Portworx will scale up the pool. This note is only applicable if you are not using <a href="https://docs.portworx.com/portworx-enterprise/concepts/px-store-v2"><strong>PX-StoreV2</strong></a> as your backend.</p>
 </blockquote>
+<h2><strong>Automatically rebalance Portworx storage pools</strong></h2>
+<pre><code class="language-plaintext">apiVersion: autopilot.libopenstorage.org/v1alpha1
+kind: AutopilotRule
+metadata:
+  name: pool-rebalance
+spec:
+  conditions:
+    requiredMatches: 1
+    expressions:
+    - keyAlias: PoolProvDeviationPerc
+      operator: NotInRange
+      values:
+        - "-20"
+        - "20"
+    - keyAlias: PoolUsageDeviationPerc
+      operator: NotInRange
+      values:
+        - "-20"
+        - "20"
+  actions:
+    - name: "openstorage.io.action.storagepool/rebalance"</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: autopilot.libopenstorage.org/v1alpha1
+kind: AutopilotRule
+metadata:
+  name: pool-rebalance
+spec:
+  conditions:
+    requiredMatches: 1
+    expressions:
+    - key: 100 * (px_pool_stats_provisioned_bytes/ on (pool) px_pool_stats_total_bytes) 
+      operator: Gt 
+      values:
+        - "120"
+    - key: 100 * (px_pool_stats_used_bytes/ on (pool) px_pool_stats_total_bytes) 
+      operator: Gt 
+      values:
+        - "70"
+  actions:
+    - name: "openstorage.io.action.storagepool/rebalance"</code></pre>
+<p>&nbsp;</p>
+<p><a href="https://docs.portworx.com/portworx-enterprise/operations/scale-portworx-cluster/autopilot/reference"><span class="text-huge" style="font-family:'Lucida Sans Unicode', 'Lucida Grande', sans-serif;"><strong>The reference for the specs, events, and others</strong></span></a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
