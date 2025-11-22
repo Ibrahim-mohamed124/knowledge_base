@@ -1,0 +1,47 @@
+<!--
+title: MiniIO
+description: 
+published: true
+date: 2025-11-22T16:58:33.763Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-22T16:58:33.763Z
+-->
+
+<h3>Installing MiniIO</h3>
+<ul>
+  <li>fetch the license from the official website and apply it in a secret in the aistor namespace:</li>
+</ul>
+<pre><code class="language-plaintext"># license.yaml
+apiVersion: v1
+data:
+   minio.license: &lt;base 64 encoded license here&gt;
+kind: Secret
+metadata:
+   name: minio-license
+   namespace: aistor
+type: Opaque
+</code></pre>
+<ul>
+  <li>Download the operator from the UI or apply this:</li>
+</ul>
+<pre><code class="language-plaintext"># subscription.yaml
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+   name: minio-object-store-operator
+spec:
+   channel: stable
+   installPlanApproval: Automatic
+   name: minio-object-store-operator
+   source: certified-operators
+   sourceNamespace: openshift-marketplace
+   startingCSV: minio-object-store-operator.v2025.7.1011319
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+   name: objectstore-operator-group
+</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
