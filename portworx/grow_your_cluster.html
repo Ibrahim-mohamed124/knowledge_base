@@ -2,7 +2,7 @@
 title: upscaling 
 description: 
 published: true
-date: 2025-11-22T16:11:44.264Z
+date: 2025-11-22T16:17:22.484Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-22T16:08:48.439Z
@@ -24,6 +24,10 @@ dateCreated: 2025-11-22T16:08:48.439Z
   </ul>
 </blockquote>
 <h2><strong>Expand your storage pool size with disks managed by Portworx</strong></h2>
+<pre><code class="language-plaintext">pxctl service pool expand --operation auto --size 1000 --uid &lt;pool-UUID&gt;</code></pre>
 <ul>
-  <li>&nbsp;</li>
+  <li>By default, each pool can have a maximum of 6 drives. If required, you can use the runtime option <code>limit_drives_per_pool</code> to change this value.</li>
+  <li>maximum of 12 disks for vShpere</li>
 </ul>
+<pre><code class="language-plaintext">pxctl service pool show</code></pre>
+<pre><code class="language-plaintext">pxctl cluster provision-status</code></pre>
