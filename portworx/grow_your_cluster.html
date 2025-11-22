@@ -2,7 +2,7 @@
 title: upscaling 
 description: 
 published: true
-date: 2025-11-22T16:17:22.484Z
+date: 2025-11-22T16:28:26.707Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-22T16:08:48.439Z
@@ -31,3 +31,21 @@ dateCreated: 2025-11-22T16:08:48.439Z
 </ul>
 <pre><code class="language-plaintext">pxctl service pool show</code></pre>
 <pre><code class="language-plaintext">pxctl cluster provision-status</code></pre>
+<h2><strong>Expand your storage pool size with disks not managed by Portworx</strong></h2>
+<ul>
+  <li><strong>💀Omg, after adding the drives manually to each storage node do that:</strong></li>
+</ul>
+<pre><code class="language-plaintext">pxctl sv drive add --drive /dev/sde --operation start
+
+
+pxctl service drive add --drive /dev/sde --operation status</code></pre>
+<p>😴😴 When the status shows as <code>Drive /dev/sde already in use by PX.</code>, storage will be brought online automatically when this operation completes.</p>
+<ul>
+  <li><strong>Expand a pool size to consume the added drive capacity:</strong></li>
+</ul>
+<pre><code class="language-plaintext">pxctl service pool show</code></pre>
+<pre><code class="language-plaintext">pxctl service pool update --resize &lt;pool-id&gt;</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
