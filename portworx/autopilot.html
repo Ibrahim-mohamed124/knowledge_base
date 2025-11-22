@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-22T09:55:21.702Z
+date: 2025-11-22T10:36:13.422Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -385,4 +385,7 @@ spec:
   </li>
   <li>These conditions are combined using logical operator <code>AND</code>, meaning all conditions must be true for the rule to trigger.</li>
 </ul>
+<blockquote>
+  <p>When you expand your storage pool using the <code>add-drive</code> scale type, Autopilot increases your pool storage capacity by adding new drives to the pool based on the scale percentage. The new drives will match the capacity of the existing ones because the storage pool consists of drives of equal size. For example, if your current pool consists of 100 GiB drive, with <code>add-drive</code> scale type, a 100 GiB drive is added to your pool, thus expanding it by 100%. In such cases, scale percentage represents the minimum percentage by which Portworx will scale up the pool. This note is only applicable if you are not using <a href="https://docs.portworx.com/portworx-enterprise/concepts/px-store-v2"><strong>PX-StoreV2</strong></a> as your backend.</p>
+</blockquote>
 <p>&nbsp;</p>
