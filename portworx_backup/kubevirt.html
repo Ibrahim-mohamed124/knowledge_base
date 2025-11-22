@@ -1,0 +1,120 @@
+<!--
+title: VMs backup
+description: 
+published: true
+date: 2025-11-22T17:40:29.742Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-22T17:40:29.742Z
+-->
+
+<h1><strong>Virtual Machine backups</strong></h1>
+<ul>
+  <li>Portworx Backup &nbsp;provide end to end data protection for VMs, VM disks, resource configuration, and network configuration data.</li>
+</ul>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Resource types</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Support</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Clusters</td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Backup and restore on OCP, EKS, GKE, and Kubernetes Vanilla clusters</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Backup locations</td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Backup and restore of VMs on S3 compliant object store and NFS backup locations</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Cloud accounts</td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">All the cloud accounts that Portworx Backup currently supports</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Pre-exec and post-exec rules</td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Freeze/thaw (unfreeze) rules for crash consistent backups</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Backup types</td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Manual and scheduled backups</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Backups and restores</td>
+        <td style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li>Data volumes with VolumeMode set to block and file system</li>
+            <li>Portworx Enterprise backed data volumes</li>
+            <li>Non-Portworx Enterprise backed data volumes that support CSI snapshots</li>
+            <li>Cross-region and cross-cloud backups and restores</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>what portworx backup will take and leave ?</li>
+</ul>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <tbody>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>VM resources</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Support</strong></th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">PVCs (CSI-based and non-CSI based)</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Hotplug volumes</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Yes<br>(Supports hotplug volumes with persist enabled)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Kubernetes secrets (used as startup scripts, networkDataSecretRef)</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Yes<br>(Manual selection of these resources are required during creation of backup)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">NetworkAttachmentDefinition</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Network Policy</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;" rowspan="2">No</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Service object</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Data volumes (DV)</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">No<br>(Supports backup and restores of PVCs associated with data volumes only)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Data volume template (serves as a template to create data volume for a VM)</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">No<br>(Supports backup and restores of PVCs associated with data volume templates only)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li>VirtualMachineInstancetype</li>
+            <li>VirtualMachinePreference</li>
+          </ul>
+        </th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li>VirtualMachineInstancePreset</li>
+            <li>Virtual Machine Templates</li>
+          </ul>
+        </th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">No</th>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
