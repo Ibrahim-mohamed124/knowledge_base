@@ -2,7 +2,7 @@
 title: MiniIO
 description: 
 published: true
-date: 2025-11-22T16:58:33.763Z
+date: 2025-11-22T17:04:00.743Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-22T16:58:33.763Z
@@ -42,6 +42,85 @@ apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
    name: objectstore-operator-group
+</code></pre>
+<ul>
+  <li>&nbsp;create aistor-primiary namspace:</li>
+</ul>
+<pre><code class="language-plaintext">oc new-project aistor-primary
+</code></pre>
+<ul>
+  <li>create <strong>a secret for the storage configuration:</strong></li>
+</ul>
+<pre><code class="language-plaintext"># storage-configuration.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+   name: storage-configuration
+type: Opaque
+stringData:
+   config.env: |-
+      export MINIO_ROOT_USER=aistor-admin
+      export MINIO_ROOT_PASSWORD=REPLACEME123      
+</code></pre>
+<ul>
+  <li>create the operator instance called ObjectStore:</li>
+</ul>
+<pre><code class="language-plaintext"># aistor-primary-storage.yaml
+apiVersion: aistor.min.io/v1
+kind: ObjectStore
+metadata:
+  annotations:
+    prometheus.io/path: /minio/v2/metrics/cluster
+    prometheus.io/port: "9000"
+    prometheus.io/scrape: "true"
+  labels:
+    app: minio
+  name: aistor-primary
+  namespace: aistor-primary
+spec:
+  certificates:
+    disableAutoCert: false
+  configuration:
+    name: storage-configuration
+  mountPath: /export
+  podManagementPolicy: Parallel
+  pools:
+    - name: pool-0
+      servers: 8
+      volumeClaimTemplate:
+        apiVersion: v1
+        kind: persistentvolumeclaims
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Ti
+#         storageClassName: directpv-min-io or portworx storageclassname
+      volumesPerServer: 8
+</code></pre>
+<ul>
+  <li>expose MiniIO using routes:</li>
+</ul>
+<pre><code class="language-plaintext">kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: route-object-store-s3-api
+  namespace: aistor-primary
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: openshift-worker-node-01.example.net
+  to:
+    kind: Service
+    name: minio
+    weight: 100
+  port:
+    targetPort: management
+  tls:
+    termination: passthrough
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
 </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
