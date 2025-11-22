@@ -1,0 +1,25 @@
+<!--
+title: upscaling 
+description: 
+published: true
+date: 2025-11-22T16:08:48.439Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-22T16:08:48.439Z
+-->
+
+<h1>S<sup>torage </sup>E<sup>xpansion</sup>&nbsp;</h1>
+<p>😕 Now without autopilot you have to expand the cluster by yourself, and there are two methods to do that.&nbsp;</p>
+<ol>
+  <li>Add new drives: All drives in the pool need to be resized to the same size for this operation.</li>
+  <li>Resize existing drives: The new drive(s) will need to match the existing drives in size and IOPS properties (if available).<ul>
+      <li>a significant amount of data movement to restriped the disks</li>
+      <li>the pool runs in degraded mode during the <code>add-drive</code> operation.</li>
+    </ul>
+  </li>
+</ol>
+<blockquote>
+  <ul>
+    <li>Portworx does not support the <code>add-drive</code> operations with the PX-StoreV2 backend.</li>
+  </ul>
+</blockquote>
