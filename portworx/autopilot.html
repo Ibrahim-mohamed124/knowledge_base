@@ -2,7 +2,7 @@
 title: Autopilot
 description: 
 published: true
-date: 2025-11-21T19:00:30.547Z
+date: 2025-11-22T09:55:21.702Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-21T18:18:27.986Z
@@ -133,6 +133,7 @@ spec:
 <pre><code class="language-plaintext">kind: StorageCluster
 spec:
   autoUpdateComponents: Once</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>With Portworx Upgrade (without configmap):<ol>
       <li>Delete the <code>configmap/px-versions</code> file.<ul>
@@ -148,6 +149,7 @@ spec:
   </li>
 </ul>
 <pre><code class="language-plaintext">curl -o versions.yaml "https://install.portworx.com/$&lt;portworx-version&gt;/version?kbver=$&lt;kubernetes-version&gt;&amp;opver=$&lt;operator-version&gt;"</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><code>&lt;portworx_version&gt;</code> with the Portworx version you want to use.</p>
   <p><code>&lt;kubernetes-version&gt;</code> with the Kubernetes version you want to use.</p>
@@ -202,6 +204,7 @@ spec:
       scalepercentage: "100"
       # volume capacity should not exceed 400GiB
       maxsize: "400Gi"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To monitor the autopilotRule:</li>
 </ul>
@@ -213,7 +216,7 @@ spec:
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/aut-workflow-no-approval.png"></figure>
 <ul>
-  <li>&nbsp; This is the workflow of a wuss:<ul>
+  <li>This is the workflow of a wuss:<ul>
       <li>Create an AutopilotRule with <code>enforcement: approvalRequired</code> in the spec</li>
     </ul>
   </li>
@@ -225,6 +228,7 @@ metadata:
 spec:
   #### enforcement indicates that actions from this rule need approval
   enforcement: approvalRequired</code></pre>
+<p>&nbsp;</p>
 <figure class="image image_resized" style="width:100%;"><img src="/aut-workflow-approval.png"></figure>
 <p>&nbsp;</p>
 <p>😡😡😡 approving the changes:</p>
@@ -233,7 +237,9 @@ spec:
   <li>Update the <code>approvalState</code> field in the ActionApproval object spec to <code>approved</code> or <code>declined</code>.</li>
 </ol>
 <pre><code class="language-plaintext">oc get events --field-selector involvedObject.kind=AutopilotRule,involvedObject.name=volume-resize -n default -w</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc get actionapproval -n namespace</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Patch and approve the actionapproval:</li>
 </ul>
@@ -258,11 +264,125 @@ spec:
 <pre><code class="language-plaintext">mkdir ap-cores
 POD=$(oc get pods -n portworx -l name=autopilot | grep -v NAME | awk '{print $1}')
 oc exec -n portworx $POD -- killall -SIGUSR1 autopilot</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Copy the support bundle files from your Kubernetes cluster to your directory:</li>
 </ul>
 <pre><code class="language-plaintext">oc cp  portworx/$POD:/tmp/aut-diags.zip ap-cores/aut-diags.zipls ap-cores</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Collect and place your autopilot pod logs into an <code>autopilot-pod.log</code> file within your temporary directory:</li>
 </ul>
 <pre><code class="language-plaintext">oc logs $POD -n portworx --tail=99999 &gt; ap-cores/autopilot-pod.log</code></pre>
+<h1>Use Cases</h1>
+<h2>Grow a PVC</h2>
+<blockquote>
+  <p>Autopilot does not support resizing FlashBlade Direct Access (FBDA) volumes. If you are using FBDA volumes, use the <code>kubectl edit pvc &lt;pvc-name&gt;</code> command and update the volume size in the <code>spec.resources.requests.storage</code> field to resize such volumes.</p>
+</blockquote>
+<pre><code class="language-plaintext">apiVersion: autopilot.libopenstorage.org/v1alpha1
+kind: AutopilotRule
+metadata:
+ name: volume-resize
+spec:
+  ##### selector filters the objects affected by this rule given labels
+  selector:
+    matchLabels:
+      app: postgres
+  ##### namespaceSelector selects the namespaces of the objects affected by this rule
+  namespaceSelector:
+    matchLabels:
+      type: db
+  ##### conditions are the symptoms to evaluate. All conditions are AND'ed
+  conditions:
+    # volume usage should be less than 50%
+    expressions:
+    - key: "100 * (px_volume_fs_usage_bytes / px_volume_capacity_bytes)"
+      operator: Gt
+      values:
+        - "50"
+  ##### action to perform when condition is true
+  actions:
+  - name: openstorage.io.action.volume/resize
+    params:
+      # resize volume by scalepercentage of current size
+      scalepercentage: "100"
+      # volume capacity should not exceed 400GiB
+      maxsize: "400Gi"</code></pre>
+<pre><code class="language-plaintext">oc get events --field-selector involvedObject.kind=AutopilotRule,involvedObject.name=volume-resize \
+--all-namespaces --sort-by .lastTimestamp</code></pre>
+<h2><strong>Expand every Portworx storage pool in your cluster</strong></h2>
+<ul>
+  <li><strong>Only VMware is supported right now! And all public clouds as well.</strong></li>
+  <li><strong>Depend on portworx cloud drivers</strong></li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: autopilot.libopenstorage.org/v1alpha1
+kind: AutopilotRule
+metadata:
+  name: pool-expand-till-400
+spec:
+  enforcement: required
+  ##### conditions are the symptoms to evaluate.
+  conditions:
+    expressions:
+    # pool size is less than 400 GiB
+    - key: "px_pool_stats_total_bytes/(1024*1024*1024)"
+      operator: Lt
+      values:
+        - "400"
+  ##### action to perform when condition is true
+  actions:
+    - name: "openstorage.io.action.storagepool/expand"
+      params:
+        # resize pool by scalepercentage of current size. The 100% shown below will double the current pool size.
+        scalepercentage: "100"
+        # when scaling, add-drive/resize-drive to the pool based on available resources
+        scaletype: "auto or add-drive or resize-drive"</code></pre>
+<blockquote>
+  <p><a href="https://docs.portworx.com/portworx-enterprise/concepts/px-store-v2"><strong>PX-StoreV2</strong></a> supports scaling using only the <code>resize-drive</code> method. The <code>add-drive</code> method is not supported. If you select the <code>auto</code> scaling method, Portworx automatically uses <code>resize-drive</code> to scale the storage pool.</p>
+</blockquote>
+<h2><strong>Automatically expand Portworx storage pools</strong></h2>
+<ul>
+  <li><strong>same as above</strong></li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: autopilot.libopenstorage.org/v1alpha1
+kind: AutopilotRule
+metadata:
+  name: pool-expand
+spec:
+  enforcement: required
+  ##### conditions are the symptoms to evaluate. All conditions are AND'ed.
+  conditions:
+    expressions:
+    # Pool available capacity is less than 50%
+    - key: "100 * (px_pool_stats_available_bytes / px_pool_stats_total_bytes)"
+      operator: Lt
+      values:
+        - "50"
+    # Total pool capacity should not exceed 400 GiB
+    - key: "px_pool_stats_total_bytes / (1024 * 1024 * 1024)"
+      operator: Lt
+      values:
+        - "400"
+  ##### action to perform when conditions are true
+  actions:
+    - name: "openstorage.io.action.storagepool/expand"
+      params:
+        # Auto-scale the pool by a percentage of its current size
+        scalepercentage: "50"
+        # When scaling, use auto-scaling logic
+        scaletype: "auto or add-drive or resize-drive"</code></pre>
+<p>The <code>conditions</code> section establishes threshold criteria dictating when the rule must perform its action. In this example, that criteria contains two formulas:</p>
+<ul>
+  <li><code>100 * (px_pool_stats_available_bytes / px_pool_stats_total_bytes)</code>:<ul>
+      <li>This calculates the percentage of available capacity in the pool.</li>
+      <li>The <code>Lt</code> (less than) operator sets a condition that the pool’s available capacity percentage must be less than 50%.</li>
+    </ul>
+  </li>
+  <li><code>px_pool_stats_total_bytes / (1024 * 1024 * 1024)</code>:<ul>
+      <li>This calculates the total pool capacity in GiB.</li>
+      <li>The Lt operator limits the pool size to a maximum of 400 GiB.</li>
+    </ul>
+  </li>
+  <li>These conditions are combined using logical operator <code>AND</code>, meaning all conditions must be true for the rule to trigger.</li>
+</ul>
+<p>&nbsp;</p>
