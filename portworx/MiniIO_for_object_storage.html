@@ -2,7 +2,7 @@
 title: MiniIO
 description: 
 published: true
-date: 2025-11-22T17:04:00.743Z
+date: 2025-11-22T17:26:22.426Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-22T16:58:33.763Z
@@ -44,7 +44,7 @@ metadata:
    name: objectstore-operator-group
 </code></pre>
 <ul>
-  <li>&nbsp;create aistor-primiary namspace:</li>
+  <li>create aistor-primiary namspace:</li>
 </ul>
 <pre><code class="language-plaintext">oc new-project aistor-primary
 </code></pre>
@@ -122,5 +122,23 @@ spec:
     insecureEdgeTerminationPolicy: Redirect
   wildcardPolicy: None
 </code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Create a tenant</h2>
+<ol>
+  <li>create a new project</li>
+</ol>
+<pre><code class="language-plaintext">oc new-project test</code></pre>
+<p>&nbsp; 2. &nbsp;change the security context of the default service account to nonroot</p>
+<pre><code class="language-plaintext">    oc adm policy add-scc-to-user nonroot -z default -n test</code></pre>
+<ul>
+  <li>MiniIO operator deploy pod with this default constrains:</li>
+</ul>
+<pre><code class="language-plaintext">runAsNonRoot: true</code></pre>
+<p>&nbsp; 3. create the tanant:</p>
+<pre><code class="language-plaintext">    oc minio tenant create test1 \
+      --servers 1 \  &gt; number of pods to be deployed for each service
+      --volumes 16 \ &gt; number of PVCa
+      --capacity 16Ti \ &gt; total storage
+      --namespace test \
+      --storage-class px-csi-db \
+      --output &gt; tenant.yaml</code></pre>
+<p>&nbsp; 4. expose the console service using routes</p>
