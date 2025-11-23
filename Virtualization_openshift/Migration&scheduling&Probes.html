@@ -2,7 +2,7 @@
 title: Migration & Scheduling & Probes
 description: 
 published: true
-date: 2025-11-23T10:35:10.989Z
+date: 2025-11-23T10:59:01.463Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T09:00:45.253Z
@@ -206,8 +206,53 @@ spec:
 <h1>Live Migrating a Virtual Machine</h1>
 <ul>
   <li><i>Live migration</i> is the process of moving a running VMI to a different cluster node without disrupting access or the virtual workload, and is similar to the VMware vMotion feature for VMs.&nbsp;</li>
+  <li>the VM must meet the following conditions:<ul>
+      <li>The underlying PVC must use ReadWriteMany (RWX) access mode. If you do not configure the access mode and volume mode parameters in the <code>DataVolume</code> object for a VM, then the defined values in the storage profile for the storage class are applied to the PVC.</li>
+      <li>The pod network must not be configured with the <code>bridge</code> binding type</li>
+      <li>Ports <code>49152</code> and <code>49153</code> must be available in the VM's <code>virt-launcher</code> pod; live migration fails if these ports are specified in a <code>masquerade</code> network interface.</li>
+    </ul>
+  </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Limitations of Live Migrations</h4>
+<ul>
+  <li>adjust the default settings for live migration limits and timeouts by editing the <code>HyperConverged</code> CR<ul>
+      <li><code><strong>parallelMigrationsPerCluster: </strong></code>The maximum number of migrations that can run in parallel in the cluster. <strong>The default value is 5</strong>.</li>
+      <li><code><strong>parallelOutboundMigrationsPerNode: </strong></code>The maximum number of parallel outbound migrations per node. <strong>The default value is 2</strong>.</li>
+      <li><code><strong>bandwidthPerMigration: </strong></code>Limits the bandwidth, in MiB/s, that is used for each migration. <strong>The default value is 0, which is unlimited</strong>.</li>
+      <li><code><strong>completionTimeoutPerGiB: </strong></code>If the migration exceeds the defined time, in seconds per GiB of memory, then the migration is canceled. The size of the migrating disks is included in the calculation if you use the <code>BlockMigration</code> migration method. <strong>The default value is 800</strong>.</li>
+      <li><code><strong>progressTimeout: </strong></code>The migration is canceled if the memory copy fails to make progress in this time (in seconds). <strong>The default value is 150</strong>.</li>
+    </ul>
+  </li>
+</ul>
+<h4>Configuring a Dedicated Network for Live Migrations</h4>
+<ul>
+  <li>To create a dedicated network for live migration, you must first use the Kubernetes NMState operator to configure a bridge network on your cluster nodes. The node NICs that are used for the bridge network must be connected to the same VLAN. You must then create a network attachment definition for the dedicated network in the <code>openshift-cnv</code> project.</li>
+  <li>After you create the network attachment definition for the bridge, edit the live migration configuration in the <code>HyperConverged</code> CR.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+...output omitted...
+spec:
+...output omitted...
+  liveMigrationConfig:
+    completionTimeoutPerGiB: 800
+    network: live-migration-network 1
+    parallelMigrationsPerCluster: 5
+    parallelOutboundMigrationsPerNode: 2
+    progressTimeout: 150
+...output omitted...</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Specify the name of the network attachment definition object to use for live migrations.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
