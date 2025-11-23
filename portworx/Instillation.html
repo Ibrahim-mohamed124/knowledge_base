@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-23T14:21:43.284Z
+date: 2025-11-23T17:36:34.302Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -332,13 +332,14 @@ metadata:
 data:
   config.yaml: |
     enableUserWorkload: true</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>This creates a <code>prometheus-operated</code> service in the <code>openshift-user-workload-monitoring</code> namespace.</p>
 </blockquote>
 <p>&nbsp; &nbsp;2. <strong>Configure Storage DRS settings:</strong></p>
 <ul>
-  <li>Portworx does not support moving VMDK files from the datastores where they were originally created.&nbsp;<ul>
-      <li>From the <strong>Storage DRS automation</strong> tab, choose the <strong>No Automation (Manual Mode)</strong> option for all&nbsp;</li>
+  <li>Portworx does not support moving VMDK files from the datastores where they were originally created.<ul>
+      <li>From the <strong>Storage DRS automation</strong> tab, choose the <strong>No Automation (Manual Mode)</strong> option for all</li>
       <li>From the <strong>Runtime Settings</strong> tab, clear the <strong>Enable I/O metric for SDRS recommendations</strong> checkbox.</li>
       <li>From the <strong>Advanced options</strong> tab, clear the <strong>Keep VMDKs together by default</strong> checkbox.</li>
     </ul>
@@ -378,6 +379,7 @@ data:
 <pre><code class="language-plaintext">
 VSPHERE_USER: echo '&lt;vcenter-server-user&gt;' | base64
 VSPHERE_PASSWORD: echo '&lt;vcenter-server-password&gt;' | base64</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: v1
 kind: Secret
 metadata:
@@ -387,6 +389,152 @@ type: Opaque
 data:
   VSPHERE_USER: XXXX
   VSPHERE_PASSWORD: XXXX</code></pre>
-<p>&nbsp; 5.&nbsp;</p>
+<blockquote>
+  <p>🙅‍♂️ Ensure that the ports 17001-17020 on worker nodes are reachable from the control plane node and other worker nodes.</p>
+</blockquote>
+<p>&nbsp; 5. &nbsp;<strong>Generate Portworx Specification @ </strong><a href="https://central.portworx.com/"><u>https://central.portworx.com/</u></a></p>
+<ul>
+  <li>Spec Customization:<ul>
+      <li><strong>Basic tab:</strong>
+        <ol>
+          <li>To use an existing etcd cluster, do the following:<ol>
+              <li>Select the <strong>Your etcd details</strong> option.</li>
+              <li>In the field provided, enter the host name or IP and port number. For example, <code>http://test.com.net:1234</code>.<br>To add another etcd cluster, click the <strong>+</strong> icon.</li>
+              <li>You can add up to three etcd clusters.</li>
+              <li>Select one of the following authentication methods:<ul>
+                  <li><strong>Disable HTTPS</strong> – To use HTTP for etcd communication.</li>
+                  <li><strong>Certificate Auth</strong> – To use HTTPS with an SSL certificate.<br>For more information, see <a href="https://docs.portworx.com/portworx-enterprise/operations/kvdb-for-portworx/external-kvdb#secure-your-etcd-communication">Secure your etcd communication</a>.</li>
+                  <li><strong>Password Auth</strong> – To use HTTPS with username and password authentication.</li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+          <li>To use an internal Portworx-managed key-value store (kvdb), do the following:<ol>
+              <li>Select the <strong>Built-in</strong> option.</li>
+              <li>To enable TLS encrypted communication among KVDB nodes and between Portworx nodes and the KVDB cluster, select the <strong>Enable TLS for internal kvdb</strong> checkbox.</li>
+              <li>If your cluster does not already have a cert-manager, select the <strong>Deploy Cert-Manager for TLS certificates</strong> checkbox.</li>
+              <li>Select <strong>Next</strong>.</li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li><strong>Storage tab:</strong>
+        <ol>
+          <li>To enable Portworx to provision drives using a specification, do the following:<ol>
+              <li>Select the <strong>Create Using a Spec</strong> option.</li>
+              <li><strong>Select PX-Store Version</strong>: (Optional) To designate <strong>PX-StoreV1</strong> as the datastore, select&nbsp;PX-StoreV1. By <strong>default</strong>, the system selects <strong>PX-StoreV2</strong> as the datastore.</li>
+              <li>To add one or more storage drive types for Portworx to use, click <strong>+ Add Drive</strong> and select one of the following types of drives:<ul>
+                  <li>Lazy-Zeroed Thick</li>
+                  <li>Eager-Zeroed Thick</li>
+                  <li>Thin</li>
+                </ul>
+              </li>
+              <li>Configure the following fields for the drive:<ul>
+                  <li><strong>Size (GB)</strong> - Specify the size of the drive in gigabytes.</li>
+                  <li><strong>Action</strong> - Use the trash icon to remove a drive type from the configuration.</li>
+                </ul>
+              </li>
+              <li>(Optional) To add more storage drives, click one of the following options based on the drive type:<ul>
+                  <li><strong>+ Add Lazy-Zeroed Thick Drives</strong></li>
+                  <li><strong>+ Add Eager-Zeroed Thick Drives</strong></li>
+                  <li><strong>+ Add Thin Drives</strong></li>
+                </ul>
+              </li>
+              <li><strong>Initial Storage Nodes (Optional)</strong>:&nbsp;Enter the number of storage nodes that need to be created across zones and node pools.</li>
+              <li>From the <strong>Default IO Profile</strong> dropdown menu, select <strong>Auto</strong>.<br>This enables Portworx to automatically choose the best I/O profile based on detected workload patterns.</li>
+              <li>From the <strong>Journal Device</strong> dropdown menu, select one of the following:<ul>
+                  <li><strong>None</strong> – To use the default journaling setting.</li>
+                  <li><strong>Auto</strong> – To automatically allocate journal devices.</li>
+                  <li><strong>Custom</strong> – To manually choose a volume type for the journal device.</li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+          <li>To enable Portworx to use all available, unused, and unmounted drives on the node, do the following:<ol>
+              <li>Select the <strong>Consume Unused</strong> option.</li>
+              <li>(Optional) To designate <strong>PX-StoreV1</strong> as the datastore, clear the&nbsp;<strong>PX-StoreV2</strong>&nbsp;checkbox. By default, the system selects <strong>PX-StoreV2</strong> as the datastore.</li>
+              <li>For <strong>PX-StoreV2</strong>, in the <strong>Metadata Path</strong> field, enter a pre-provisioned path for storing the Portworx metadata.<br>The path must be at least 64 GB in size.</li>
+              <li>From the <strong>Journal Device</strong> dropdown menu, select one of the following:<ul>
+                  <li><strong>None</strong> – To use the default journaling setting.</li>
+                  <li><strong>Auto</strong> – To automatically allocate journal devices.</li>
+                  <li><strong>Custom</strong> – To manually enter a journal device path.<br>Enter the path of the journal device in the <strong>Journal Device Path</strong> field.</li>
+                </ul>
+              </li>
+              <li>Select the <strong>Use unmounted disks even if they have a partition or filesystem on it. Portworx will never use a drive or partition that is mounted</strong> checkbox to use unmounted disks, even if they contain a partition or filesystem.<br>Portworx will not use any mounted drive or partition.</li>
+            </ol>
+          </li>
+          <li><mark class="marker-yellow">To enable Portworx to use existing drives on a node, do the following:</mark>
+            <ol>
+              <li>Select the <strong>Use Existing Drives</strong> option.</li>
+              <li>(Optional) To designate <strong>PX-StoreV1</strong> as the datastore, clear the&nbsp;<strong>PX-StoreV2</strong>&nbsp;checkbox. By default, the system selects <strong>PX-StoreV2</strong> as the datastore.</li>
+              <li>For <strong>PX-StoreV2</strong>, in the <strong>Metadata Path</strong> field, enter a pre-provisioned path for storing the Portworx metadata.<br>The path must be at least 64 GB in size.</li>
+              <li>In the <strong>Drive/Device</strong> field, specify the block drive(s) that Portworx uses for data storage.<br>To add another block drive, click the <strong>+</strong> icon.</li>
+              <li>(Optional) In the <strong>Pool Label</strong> field, assign a custom label in key:value format to identify and categorize storage pools.<br>For more information refer to <a href="https://docs.portworx.com/portworx-enterprise/how-to-guides/custom-pool-label">How to assign custom labels to device pools</a>.</li>
+              <li>From the <strong>Journal Device</strong> dropdown menu, select one of the following:<ul>
+                  <li><strong>None</strong> – To use the default journaling setting.</li>
+                  <li><strong>Auto</strong> – To automatically allocate journal devices.</li>
+                  <li><strong>Custom</strong> – To manually enter a journal device path.<br>Enter the path of the journal device in the <strong>Journal Device Path</strong> field.</li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+          <li>Select <strong>Next</strong>.</li>
+        </ol>
+      </li>
+      <li><strong>Network tab:</strong>
+        <ol>
+          <li>In the <strong>Interface(s)</strong> section, do the following:<ol>
+              <li>Enter the <strong>Data Network Interface</strong> to be used for data traffic.</li>
+              <li>Enter the <strong>Management Network Interface</strong> to be used for management traffic.</li>
+            </ol>
+          </li>
+          <li>In the <strong>Advanced Settings</strong> section, do the following:<ol>
+              <li>Enter the <strong>Starting port for Portworx services</strong>.</li>
+            </ol>
+          </li>
+          <li>Select <strong>Next</strong>.</li>
+        </ol>
+      </li>
+      <li><strong>Deployment tab:</strong>
+        <ol>
+          <li>In the <strong>Kubernetes Distribution</strong> section, under <strong>Are you running on either of these?</strong>, select <strong>Openshift 4+</strong>.</li>
+          <li>In the <strong>Component Settings</strong> section:<ol>
+              <li>Select the <strong>Enable Stork</strong> checkbox to enable Stork.</li>
+              <li>Select the <strong>Enable Monitoring</strong> checkbox to enable Prometheus-based monitoring of Portworx components and resources.</li>
+              <li>To configure how Prometheus is deployed and managed in your cluster, choose one of the following:<ul>
+                  <li><strong>Portworx Managed</strong> - To enable Portworx to install and manage Prometheus and Operator automatically.<br>Ensure that no another Prometheus Operator instance already running on the cluster.</li>
+                  <li><strong>User Managed</strong> - To manage your own Prometheus stack.<br>You must enter a valid URL of the Prometheus instance in the <strong>Prometheus URL</strong> field.</li>
+                </ul>
+              </li>
+              <li>Select the <strong>Enable Autopilot</strong> checkbox to enable Portworx Autopilot.<br>For more information on Autopilot, see <a href="https://docs.portworx.com/portworx-enterprise/operations/scale-portworx-cluster/autopilot">Expanding your Storage Pool with Autopilot</a>.</li>
+              <li>Select the <strong>Enable Telemetry</strong> checkbox to enable telemetry in the StorageCluster spec.<br>For more information, see <a href="https://docs.portworx.com/portworx-enterprise/operations/troubleshooting/enable-pure1-upgrades">Enable Pure1 integration for upgrades</a> on a VMware vSphere cluster.</li>
+              <li>Enter the prefix for the Portworx cluster name in the <strong>Cluster Name Prefix</strong> field.</li>
+              <li>Select the <strong>Secrets Store Type</strong> from the dropdown menu to store and manage secure information for features such as CloudSnaps and Encryption.</li>
+            </ol>
+          </li>
+          <li>In the <strong>Environment Variables</strong> section, enter name-value pairs in the respective fields.</li>
+          <li>In the <strong>Registry and Image Settings</strong> section:<ol>
+              <li>Enter the <strong>Custom Container Registry Location</strong> to download the Docker images.</li>
+              <li>Enter the <strong>Kubernetes Docker Registry Secret</strong> that serves as the authentication to access the custom container registry.</li>
+              <li>From the <strong>Image Pull Policy</strong> dropdown menu, select <strong>Default</strong>, <strong>Always</strong>, <strong>IfNotPresent</strong>, or <strong>Never</strong>.<br>This policy influences how images are managed on the node and when updates are applied.</li>
+            </ol>
+          </li>
+          <li>In the <strong>Security Settings</strong> section, select the <strong>Enable Authorization</strong> checkbox to enable Role-Based Access Control (RBAC) and secure access to storage resources in your cluster.</li>
+          <li>Click <strong>Finish</strong>.</li>
+          <li>In the summary page, enter a name for the specification in the <strong>Spec Name</strong> field, and tags in the <strong>Spec Tags</strong> field.</li>
+          <li>Click <strong>Download .yaml</strong> to download the yaml file with the customized specification or <strong>Save Spec</strong> to save the specification.</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ul>
+<ol>
+  <li>Click <strong>Save &amp; Download</strong> to generate the specification.</li>
+</ol>
+<blockquote>
+  <p>By <strong>default</strong>, the system selects <strong>PX-StoreV2</strong> as the datastore.</p>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
