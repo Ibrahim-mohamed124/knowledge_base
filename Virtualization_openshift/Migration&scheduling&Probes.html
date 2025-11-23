@@ -2,7 +2,7 @@
 title: Migration & Scheduling & Probes
 description: 
 published: true
-date: 2025-11-23T09:08:12.098Z
+date: 2025-11-23T09:47:37.090Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T09:00:45.253Z
@@ -11,5 +11,61 @@ dateCreated: 2025-11-23T09:00:45.253Z
 <h1>Migrating Virtual Machines from Foreign Hypervisors</h1>
 <ul>
   <li>With the migration toolkit for virtualization (MTV), multiple VMs cloud be migrated from a compatible hypervisor, such as VMware vSphere or Red&nbsp;Hat Virtualization, to OpenShift Virtualization.</li>
-  <li>&nbsp;</li>
+  <li>MTV operator provide ForkliftController object that has these APIs:</li>
 </ul>
+<figure class="image image_resized" style="width:100%;"><img src="/mtv_resources-v2.svg"></figure>
+<ol>
+  <li><code><strong>Provider:</strong></code>Contains the API endpoint and the credentials to<mark class="marker-yellow"> interact with the source and destination virtualization systems.</mark></li>
+  <li><code><strong>NetworkMap:</strong></code>Declares the source network on the remote virtualization system and the destination network for the imported VMs in OpenShift Virtualization.</li>
+  <li><code><strong>StorageMap:</strong></code>Declares the source datastores on the remote virtualization system and the destination storage class for the imported VMs in OpenShift Virtualization.</li>
+  <li><code><strong>Plan:</strong></code><mark class="marker-yellow">Contains the parameters to migrate the VMs from the source </mark><code>Provider</code> to OpenShift Virtualization.</li>
+  <li><code><strong>Migration:</strong></code><mark class="marker-yellow">Executes the VM migration as defined in the plan CRD</mark>. The migration CRD also tracks the status of each migration phase:<ul>
+      <li><code>Initialize</code>: Initialize migration.</li>
+      <li><code>DiskAllocation</code>: Allocate disks.</li>
+      <li><code>ImageConversion</code>: Convert image to <code>kubevirt</code> format.</li>
+      <li><code>DiskTransferV2v</code>: Copy disks.</li>
+      <li><code>VirtualMachineCreation</code>: Create the VM.</li>
+    </ul>
+  </li>
+</ol>
+<h4>VM Providers</h4>
+<ul>
+  <li>The <code>Provider</code> CR stores attributes that enable MTV to connect to and interact with the source and target VM providers. The MTV can interact with the following hypervisors:<ul>
+      <li>VMware vSphere</li>
+      <li>Red&nbsp;Hat Virtualization (RHV)</li>
+      <li>OpenStack</li>
+      <li>Remote OpenShift Virtualization clusters</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>The MTV automatically creates the <code>host</code> provider for the local OpenShift Virtualization cluster in the <code>openshift-mtv</code> namespace.</p>
+</blockquote>
+<ul>
+  <li><strong>Migration</strong> → <strong>Providers for virtualization</strong> and click <strong>Create Provider</strong>.</li>
+</ul>
+<h4>Migration Plan</h4>
+<ul>
+  <li>The <code>Plan</code> CR defines a migration plan with a list of VMs from the same VM provider and associated infrastructure mappings.&nbsp;</li>
+  <li>The <code>Migration</code> CR runs a migration plan.</li>
+  <li><strong>Migration</strong> → <strong>Plans for virtualization</strong> and click <strong>Create plan</strong></li>
+</ul>
+<h6><strong>Cold migration</strong></h6>
+<ul>
+  <li>The source VM is shut down, and then the data is transferred to the target OpenShift cluster. After the transfer is complete, the VM is powered on, in OpenShift Virtualization.</li>
+</ul>
+<h6><strong>Warm migration</strong></h6>
+<ul>
+  <li>The <i>precopy stage</i> uses changed block tracking (CBT) snapshots on the source VM provider to<mark class="marker-yellow"> copy the VM data while the VM is running</mark>. You must enable CBT for each source VM and each VM disk to use warm migration.</li>
+  <li>The <i>cutover stage</i><mark class="marker-yellow"> shuts down the VM and copies the remaining data to the target cluster</mark>. The VM is then started on OpenShift Virtualization. You can manually start the cutover stage from the web console, or you can schedule a cutover time in the migration plan manifest.</li>
+</ul>
+<h4>MTV worker pods</h4>
+<ul>
+  <li>The importer pod transfers the VM image from the source <code>Provider</code> to a data volume in the target OpenShift cluster.</li>
+  <li>The conversion pod runs the <code>virt-v2v</code> tool to install and configure the required device drivers on the VM root disk for the VM to run on OpenShift Virtualization, and then transfers the disk to a PVC.</li>
+</ul>
+<blockquote>
+  <p>To clean up the temporary resources that the MTV creates during the migration, such as the migration pods and temporary PVCs, you must archive the migration plan.&nbsp;</p>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
