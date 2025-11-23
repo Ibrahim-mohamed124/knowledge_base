@@ -2,7 +2,7 @@
 title: Migration & Scheduling & Probes
 description: 
 published: true
-date: 2025-11-23T10:59:01.463Z
+date: 2025-11-23T11:06:23.985Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T09:00:45.253Z
@@ -255,4 +255,23 @@ spec:
     </tbody>
   </table>
 </figure>
+<h3>Live Migration Strategies</h3>
+<ul>
+  <li>A live migration transfers, or converges, a source VM's state, which is mostly its memory, to a target VM on another node.&nbsp;<ul>
+      <li><code><strong>pre-copy:</strong></code>The default strategy for live migrations. A target VM is created but the guest keeps running on the source VM. The VM state is then copied to the target VM until the entire VM state is transferred. <mark class="marker-yellow">When the VM state is transferred to the target VM, the guest starts running from the target VM and the source VM is deleted.</mark></li>
+      <li><code><strong>post-copy:</strong></code><mark class="marker-yellow">A target VM is created and the guest starts running on the target VM.</mark> The source VM begins to send its state in chunks to the target VM. If the guest that is running on the target VM requests memory that is currently available only on the source VM, then that chunk of memory is copied to the target VM. <mark class="marker-yellow">The source VM is deleted after its state is copied to the target VM. This strategy consumes less bandwith, but is slower than the </mark><code><mark class="marker-yellow">pre-copy</mark></code><mark class="marker-yellow"> method</mark>. This strategy also prevents a single source of truth for the VM state because both the target and source VMs contain parts of the VM's state<mark class="marker-yellow">. If either VM crashes, then the state cannot be recovered.</mark></li>
+      <li><code><strong>auto-converge:</strong></code>This strategy<mark class="marker-yellow"> enhances the </mark><code><mark class="marker-yellow">pre-copy</mark></code><mark class="marker-yellow"> strategy to ensure a successful migration. </mark>Similar to the <code>pre-copy</code> strategy, <mark class="marker-yellow">the guest keeps running on the source VM while the VM state is copied to the target VM. </mark>However, if the migration cannot complete before the source VM mutates or modifies the VM state, then <mark class="marker-yellow">the guest CPU is throttled on the source VM. Guest CPU throttling is gradually increased until the migration is successful.</mark> If the migration can complete fast enough, then the guest CPU is not throttled or is negligibly throttled.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
