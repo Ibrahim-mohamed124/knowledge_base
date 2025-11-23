@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-23T17:41:37.918Z
+date: 2025-11-23T17:48:18.997Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -332,7 +332,8 @@ metadata:
 data:
   config.yaml: |
     enableUserWorkload: true</code></pre>
-<p>&nbsp;</p>
+<p>&nbsp;2. fetch the Thanos host</p>
+<pre><code class="language-plaintext">oc get route thanos-querier -n openshift-monitoring -o json | jq -r '.spec.host'</code></pre>
 <blockquote>
   <p>This creates a <code>prometheus-operated</code> service in the <code>openshift-user-workload-monitoring</code> namespace.</p>
 </blockquote>
