@@ -1,0 +1,122 @@
+<!--
+title: Instillation Environments
+description: 
+published: true
+date: 2025-11-23T13:59:33.710Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-23T13:59:33.710Z
+-->
+
+<h1><strong>System Requirements</strong></h1>
+<ul>
+  <li><strong>Hardware requirements</strong></li>
+</ul>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <tbody>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Hardware</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Requirements</strong></th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">CPU</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Minimum 4 Cores | Recommended 8 Cores X2 for PX-store2</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">RAM</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Minimum 4GB | Recommended 8GB X2 for PX-store2</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Disk</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><code>/var</code> - Recommended 30GB Free</li>
+            <li><code>/opt</code> - Minimum 3.5GB Free</li>
+          </ul>
+        </th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Backing drive</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">8GB (minimum required)<br>128GB (minimum recommended)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Operating system root partition</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
+          <p>64GB is the minimum required size for the root filesystem, which contains the operating system.</p>
+          <p>128GB minimum recommended</p>
+        </th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Storage drives</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Storage drives must be unmounted block storage: raw disks, drive partitions, LVM, or cloud block storage.</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Network connectivity</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
+          <p>Bandwidth:</p>
+          <ul>
+            <li>10 Gbps recommended</li>
+            <li>1 Gbps minimum</li>
+          </ul>
+          <p>Latency requirements for synchronous replication: less than 10ms between nodes in the cluster.</p>
+          <p>&nbsp;</p>
+        </th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Node type</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Bare metal and virtual machine (VM)</th>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li><strong>Software requirements:</strong>
+    <ul>
+      <li>a supported Linux kernel version, container runtime, and key-value store configuration.</li>
+      <li>swap disabled and NTP enabled, to ensure reliable and consistent cluster behavior.</li>
+    </ul>
+  </li>
+</ul>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <tbody>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Software</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Requirements PX-Store1</strong></th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Linux kernel and distro</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Kernel version 4.18 or greater.<br>To check if your Linux distro and kernel are supported, see <a href="https://docs.portworx.com/portworx-enterprise/support-matrix/supported-kernels">Supported Kernels</a>.</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Docker</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Version 1.13.1 or greater.</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Key-value store</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Portworx needs a key-value store to perform its operations. As such, install a clustered key-value database (<code>kvdb</code>) with a three-node cluster.<br><br>You can also use Internal KVDB during installation. In this mode, Portworx will create and manage an internal key-value store (KVDB) cluster.<br><br>If you plan to use your own KVDB, refer to <a href="https://docs.portworx.com/portworx-enterprise/operations/kvdb-for-portworx/external-kvdb">KVDB for Portworx</a> for details on recommendations for installing and configuring a KVDB cluster.</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Disable swap</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Disable swap on all nodes that will run the Portworx software. Ensure that the swap device is not automatically mounted on server reboot.</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Network Time Protocol (NTP)</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">All nodes in the cluster should be in sync with NTP time. Any time drift between nodes can cause unexpected behavior, impacting services.</th>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
