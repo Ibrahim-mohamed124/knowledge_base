@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-23T14:04:22.093Z
+date: 2025-11-23T14:12:14.074Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -291,10 +291,33 @@ dateCreated: 2025-11-23T13:59:33.710Z
   </table>
 </figure>
 <h2><strong>Installation on VMware vSphere</strong></h2>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Notes:<ul>
+      <li>Portworx runs on each Kubernetes<mark class="marker-yellow"> minion/worker.</mark></li>
+      <li>Based on the given spec by the end user, <mark class="marker-yellow">Portworx on each node will create its disk on the configured shared datastores or datastore clusters.</mark></li>
+      <li>Portworx will <mark class="marker-yellow">aggregate all of the disks and form a single storage cluster. </mark>End users can carve PVCs (Persistent Volume Claims), PVs (Persistent Volumes) and Snapshots from this storage cluster.</li>
+      <li>Portworx<mark class="marker-yellow"> tracks and manages the disks that it creates</mark>. In a failure event, if a new VM spins up, Portworx on the new VM will be able to attach to the same disk that was previously created by the node on the failed VM.</li>
+    </ul>
+  </li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/pks-vsphere-shared-1325efc1c1d548f5ab045886f9c5bc4b.png"></figure>
+<h2><strong>Prerequisites</strong></h2>
+<ol>
+  <li>Use one of the following<mark class="marker-yellow"> disk types:</mark>
+    <ul>
+      <li>eagerzeroedthick</li>
+      <li>lazyzeroedthick</li>
+      <li>thin</li>
+    </ul>
+  </li>
+  <li>Allocate<mark class="marker-yellow"> a dedicated disk for KVDB</mark> (internal or external) on<mark class="marker-yellow"> at least three nodes</mark>. Each disk must have<mark class="marker-yellow"> a unique device name across all KVDB nodes.&nbsp;</mark></li>
+  <li>Any underlying nodes used for Portworx in OCP have <mark class="marker-yellow">Secure Boot disabled.</mark></li>
+  <li><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/registry/securing-exposing-registry">For air-gapped installation, your OpenShift cluster must temporarily have its internal registry reachable externally to the cluster</a></li>
+  <li>For air-gapped installation, you must have a Linux host with internet access that has either <a href="https://docs.podman.io/">Podman</a> or Docker installed to run the mirroring script.</li>
+</ol>
+<blockquote>
+  <p><strong>Prevent Accidental Deletion</strong>: If your virtualization software has a feature to prevent accidental deletion, you should enable it for the VMs hosting PX nodes. While PX is designed to handle the loss of some nodes without issue, losing a significant number of storage nodes due to VM deletion can result in a loss of quorum and an outage.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
