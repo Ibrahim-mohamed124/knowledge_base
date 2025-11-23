@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-23T17:48:18.997Z
+date: 2025-11-23T17:53:27.785Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -334,6 +334,14 @@ data:
     enableUserWorkload: true</code></pre>
 <p>&nbsp;2. fetch the Thanos host</p>
 <pre><code class="language-plaintext">oc get route thanos-querier -n openshift-monitoring -o json | jq -r '.spec.host'</code></pre>
+<p>3. This cloud be the configuration of the storageCluster:</p>
+<pre><code class="language-plaintext">spec:
+  monitoring:
+    prometheus:
+      enabled: false
+      exportMetrics: true
+      alertManager:
+        enabled: false</code></pre>
 <blockquote>
   <p>This creates a <code>prometheus-operated</code> service in the <code>openshift-user-workload-monitoring</code> namespace.</p>
 </blockquote>
