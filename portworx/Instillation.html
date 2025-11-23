@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-23T14:12:41.291Z
+date: 2025-11-23T14:20:59.214Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -319,5 +319,74 @@ dateCreated: 2025-11-23T13:59:33.710Z
   <p><strong>Prevent Accidental Deletion</strong>: If your virtualization software has a feature to prevent accidental deletion, you should enable it for the VMs hosting PX nodes. While PX is designed to handle the loss of some nodes without issue, losing a significant number of storage nodes due to VM deletion can result in a loss of quorum and an outage.</p>
 </blockquote>
 <h3><strong>Installation on Non-Air-Gapped vSphere OpenShift Cluster</strong></h3>
+<ol>
+  <li><strong>Create a Monitoring ConfigMap:</strong></li>
+</ol>
+<ul>
+  <li>Enable monitoring for user-defined projects before installing the Portworx Operator</li>
+</ul>
+<pre><code class="language-plaintext">kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true</code></pre>
+<blockquote>
+  <p>This creates a <code>prometheus-operated</code> service in the <code>openshift-user-workload-monitoring</code> namespace.</p>
+</blockquote>
+<p>&nbsp; &nbsp;2. <strong>Configure Storage DRS settings:</strong></p>
+<ul>
+  <li>Portworx does not support moving VMDK files from the datastores where they were originally created.&nbsp;<ul>
+      <li>From the <strong>Storage DRS automation</strong> tab, choose the <strong>No Automation (Manual Mode)</strong> option for all&nbsp;</li>
+      <li>From the <strong>Runtime Settings</strong> tab, clear the <strong>Enable I/O metric for SDRS recommendations</strong> checkbox.</li>
+      <li>From the <strong>Advanced options</strong> tab, clear the <strong>Keep VMDKs together by default</strong> checkbox.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp; 3. <strong>Create a vCenter user account for Portworx:</strong></p>
+<ul>
+  <li>Datastore<ul>
+      <li>Allocate space</li>
+      <li>Browse datastore</li>
+      <li>Low level file operations</li>
+      <li>Remove file</li>
+    </ul>
+  </li>
+  <li>Host<ul>
+      <li>Local operations</li>
+      <li>Reconfigure virtual machine</li>
+      <li>Virtual machine</li>
+    </ul>
+  </li>
+  <li>Change Configuration<ul>
+      <li>Add existing disk</li>
+      <li>Add new disk</li>
+      <li>Add or remove device</li>
+      <li>Advanced configuration</li>
+      <li>Change Settings</li>
+      <li>Extend virtual disk</li>
+      <li>Modify device settings</li>
+      <li>Remove disk</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>In vSphere, resources are organized hierarchically. Select<mark class="marker-yellow"> <strong>Propagate to children</strong></mark> to ensure that the permissions granted to the custom role are automatically applied not just to the targeted object, but also to all objects within its sub-tree. This includes VMs, datastores, networks, and other resources nested under the selected resource.</p>
+</blockquote>
+<p>&nbsp; 4. <strong>Create a secret with your vCenter user credentials:</strong></p>
+<pre><code class="language-plaintext">
+VSPHERE_USER: echo '&lt;vcenter-server-user&gt;' | base64
+VSPHERE_PASSWORD: echo '&lt;vcenter-server-password&gt;' | base64</code></pre>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Secret
+metadata:
+  name: px-vsphere-secret
+  namespace: &lt;px-namespace&gt;
+type: Opaque
+data:
+  VSPHERE_USER: XXXX
+  VSPHERE_PASSWORD: XXXX</code></pre>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
