@@ -2,7 +2,7 @@
 title: Migration & Scheduling & Probes
 description: 
 published: true
-date: 2025-11-23T11:06:23.985Z
+date: 2025-11-23T11:11:38.788Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T09:00:45.253Z
@@ -264,12 +264,64 @@ spec:
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>The <code>pre-copy</code> strategy is appropriate for most situations. However, the <code>pre-copy</code> strategy brings a risk that by the time a VM state chunk is copied from the source VM to the target VM, the guest on the source VM already mutated or modified the chunk.&nbsp;</p>
+</blockquote>
+<ul>
+  <li>To change the migration strategy at the cluster level, you must edit the <code>HyperConverged</code> CR in the <code>openshift-cnv</code> project</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: openshift-cnv
+...output omitted...
+spec:
+...output omitted...
+  liveMigrationConfig:
+    allowAutoConverge: true
+    allowPostCopy: false
+...output omitted...</code></pre>
+<h4>Live Migration Policy</h4>
+<ul>
+  <li>A live migration policy declares the migration configuration to apply to a VM or to a group of VMs.&nbsp;</li>
+  <li>Live migration policies use VM and project labels as selectors for the policy.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+metadata:
+  name: prod-database-policy 1
+spec:
+  allowAutoConverge: true
+  selectors:
+    namespaceSelector: 2
+      database-workloads: "True"
+    virtualMachineInstanceSelector: 3
+      kubevirt.io/environment: "production"</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the migration policy</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The labels for the projects that are impacted by the migration policy</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The labels for the VMs that are impacted by the migration policy</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
