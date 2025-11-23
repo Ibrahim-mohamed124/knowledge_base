@@ -2,7 +2,7 @@
 title: Migration & Scheduling & Probes
 description: 
 published: true
-date: 2025-11-23T11:11:38.788Z
+date: 2025-11-23T11:13:47.247Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T09:00:45.253Z
@@ -322,8 +322,19 @@ spec:
     </tbody>
   </table>
 </figure>
+<ul>
+  <li>To migrate from the command line, you can create a <code>VirtualMachineInstanceMigration</code> manifest for the VMI as shown in the following example:</li>
+</ul>
+<pre><code class="language-plaintext">oc get vmim -n web-servers
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceMigration
+metadata:
+  name: migration-job
+spec:
+  vmiName: VMI name</code></pre>
+<pre><code class="language-plaintext">virtctl migrate vm1 -n web-servers</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>To cancel a live migration from the command line, you can delete the <code>VirtualMachineInstanceMigration</code> object that is associated with the migration by using the <code>oc delete vmim <i>migration-job</i></code> command. You can alternatively use the <code>virtctl migrate-cancel <i>vm-name</i> -n <i>project-name</i></code> command to cancel a live migration.</p>
+</blockquote>
 <p>&nbsp;</p>
