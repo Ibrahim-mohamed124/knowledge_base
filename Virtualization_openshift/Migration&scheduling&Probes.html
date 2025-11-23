@@ -2,7 +2,7 @@
 title: Migration & Scheduling & Probes
 description: 
 published: true
-date: 2025-11-23T09:54:42.019Z
+date: 2025-11-23T10:12:16.538Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T09:00:45.253Z
@@ -46,7 +46,7 @@ dateCreated: 2025-11-23T09:00:45.253Z
 </ul>
 <h4>Migration Plan</h4>
 <ul>
-  <li>The <code>Plan</code> CR defines a migration plan with a list of VMs from the same VM provider and associated infrastructure mappings.&nbsp;</li>
+  <li>The <code>Plan</code> CR defines a migration plan with a list of VMs from the same VM provider and associated infrastructure mappings.</li>
   <li>The <code>Migration</code> CR runs a migration plan.</li>
   <li><strong>Migration</strong> → <strong>Plans for virtualization</strong> and click <strong>Create plan</strong></li>
 </ul>
@@ -69,7 +69,7 @@ dateCreated: 2025-11-23T09:00:45.253Z
 </blockquote>
 <h4>Importing VMs from VMware</h4>
 <ul>
-  <li>The MTV operator uses the VDDK SDK to accelerate transferring virtual disks from VMware vSphere. So, creating VDDK container image is essential.&nbsp;</li>
+  <li>The MTV operator uses the VDDK SDK to accelerate transferring virtual disks from VMware vSphere. So, creating VDDK container image is essential.</li>
 </ul>
 <pre><code class="language-plaintext">mkdir -vp /tmp/vddk
 cd /tmp/vddk
@@ -84,4 +84,70 @@ ENTRYPOINT ["cp", "-vr", "/vmware-vix-disklib-distrib", "/opt"]
 TAG=&lt;registry_route_or_server_path&gt;/vddk:latest
 podman build . -t ${TAG}
 podman push ${TAG}</code></pre>
+<h1>Controlling the Scheduling of Virtual Machines</h1>
+<h4>Configure the Run Strategy</h4>
+<ul>
+  <li>A VM's run strategy <mark class="marker-yellow">determines the behavior of a VMI according to a series of conditions</mark>, which are defined in the <code>.spec.running</code> or the <code>.spec.runStrategy</code> parameter.<ul>
+      <li><code><strong>.spec.running</strong></code>
+        <ul>
+          <li>The <code>.spec.running</code> Boolean value specifies whether the VM is running.<ul>
+              <li><code><strong>true</strong></code>
+                <ul>
+                  <li>When the Boolean is set to <code>true</code>, Red&nbsp;Hat OpenShift Virtualization ensures that the VM is always running. OpenShift Virtualization restarts the VM if it fails. OpenShift Virtualization also restarts the VM when you stop it by gracefully shutting down the operating system or when you delete the VMI resource.</li>
+                </ul>
+              </li>
+              <li><code><strong>false</strong></code>
+                <ul>
+                  <li>When you set the <code>.spec.running</code> Boolean to <code>false</code>, OpenShift Virtualization ensures that the VM is not running.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>OpenShift Virtualization automatically updates the Boolean when you control the VM by using the <code>virtctl</code> command or by using the web console. If you run the <code>virtctl stop</code> command or click <strong>Actions</strong> → <strong>Stop</strong> in the OpenShift web console, then OpenShift Virtualization switches the <code>.spec.running</code> Boolean to <code>false</code>. If you run the <code>virtctl start</code> command or click <strong>Actions</strong> → <strong>Start</strong> in the OpenShift web console, then OpenShift Virtualization switches the <code>.spec.running</code> Boolean to <code>true</code>.<ul>
+      <li><code><strong>.spec.runStrategy</strong></code>
+        <ul>
+          <li>The <code>.spec.runStrategy</code> parameter provides more control over the VM status than the <code>.spec.running</code> Boolean. For example, when the <code>.spec.running</code> Boolean is <code>true</code>, you cannot stop a VM by gracefully shutting down its operating system, because OpenShift Virtualization detects that the VM is not running and then restarts it.</li>
+          <li>The <code>.spec.runStrategy</code> parameter accepts any of the following values:<ul>
+              <li><code><strong>RerunOnFailure</strong></code>
+                <ul>
+                  <li>Restarts the VM when it fails. If you gracefully shut down the operating system from inside the VM, then OpenShift Virtualization does not restart the VM.</li>
+                </ul>
+              </li>
+              <li><code><strong>Always</strong></code>
+                <ul>
+                  <li>Ensures that the VM is always running. Using this value has the same effect as setting the <code>.spec.running</code> Boolean to <code>true</code>.</li>
+                </ul>
+              </li>
+              <li><code><strong>Halted</strong></code>
+                <ul>
+                  <li>Ensures that the VM is not running. Using this value has the same effect as setting the <code>.spec.running</code> Boolean to <code>false</code>.</li>
+                </ul>
+              </li>
+              <li><code><strong>Manual</strong></code>
+                <ul>
+                  <li>Performs no automatic action. If the VM fails, then OpenShift Virtualization does not restart it. You must manage the VM by using the <code>virtctl start</code> or <code>virtctl stop</code> command, or by using the OpenShift web console.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The <code>.spec.running</code> and <code>.spec.runStrategy</code> parameters are mutually exclusive. If you specify both parameters, then OpenShift Virtualization returns an error.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
