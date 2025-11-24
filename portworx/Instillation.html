@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-24T04:53:04.207Z
+date: 2025-11-24T04:53:18.582Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -11,7 +11,9 @@ dateCreated: 2025-11-23T13:59:33.710Z
 <h1>Common commands</h1>
 <pre><code class="language-plaintext">echo "alias pxctl='PX_POD=\$(oc get pods -l name=portworx -n portworx --field-selector=status.phase==Running | grep \"1/1\" | awk \"NR==1{print \$1}\") &amp;&amp; oc exec \$PX_POD -n portworx -- /opt/pwx/bin/pxctl'" &gt;&gt; ~/.bashrc
 
-source ~/.bashrc</code></pre>
+source ~/.bashrc
+
+pxctl status --color</code></pre>
 <h1><strong>System Requirements</strong></h1>
 <ul>
   <li><strong>Hardware requirements</strong></li>
