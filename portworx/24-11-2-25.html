@@ -1,15 +1,50 @@
 <!--
-title: practical installat
-description: 
+title: Egyptian Banks POC
+description: 24-11-2025 With Gemy
 published: true
-date: 2025-11-24T10:27:44.144Z
-tags: 
+date: 2025-11-24T16:46:46.632Z
+tags: implementation, portworx, instillation
 editor: ckeditor
 dateCreated: 2025-11-24T08:29:19.129Z
 -->
 
 <ul>
-  <li>What are the services for portworx in each worker node??? portworx-ostree.service and portworx-reboot.service</li>
+  <li>What are the services for portworx in each worker node??? portworx-ostree.service and portworx-reboot.service<ul>
+      <li>These two services exist to ensure graceful termination of the porworx pods in case of system updates or rebooting</li>
+    </ul>
+  </li>
+  <li>portworx-ostree.service:</li>
+</ul>
+<pre><code class="language-plaintext">[Unit]
+Description=PX Ostree Finalizer service
+DefaultDependencies=no
+After=ostree-finalize-staged.service
+Requires=ostree-finalize-staged.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStop=/var/opt/pwx/bin/px-runc stop-px-set-pxd-timeout 30
+
+[Install]
+WantedBy=ostree-finalize-staged.service
+</code></pre>
+<ul>
+  <li>portworx-reboot.service:</li>
+</ul>
+<pre><code class="language-plaintext">[Unit]
+Description=PX OCI Reboot service
+DefaultDependencies=no
+Before=systemd-reboot.service
+
+[Service]
+Type=forking
+ExecStart=/bin/sh -c 'echo "Shutting down Portworx..."; /var/opt/pwx/bin/runc delete -f portworx; echo "Done shutting down Portworx..."; /var/opt/pwx/bin/px-runc set-pxd-timeout 30'
+
+[Install]
+WantedBy=halt.target reboot.target shutdown.target
+</code></pre>
+<ul>
   <li>what are the files in /opt/pwx and /etc/pwx</li>
   <li>proxy configurations? in openshift.</li>
   <li>when deleting the opertor delete the crd manually? edit something in the labels operation..</li>
