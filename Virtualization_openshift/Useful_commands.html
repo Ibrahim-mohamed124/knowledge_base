@@ -1,0 +1,18 @@
+<!--
+title: Useful Commands
+description: 
+published: true
+date: 2025-11-24T05:04:53.660Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-24T05:04:53.660Z
+-->
+
+<ul>
+  <li>To Download virtctl cli:</li>
+</ul>
+<pre><code class="language-plaintext">wget $(oc get consoleclidownload virtctl-clidownloads-kubevirt-hyperconverged  -o json | jq -r '.spec.links[] | select(.text == "Download virtctl for Linux for x86_64") | .href')
+
+tar -xvf virtctl.tar.gz
+chmod +x virtctl
+sudo mv virtctl /usr/local/bin</code></pre>
