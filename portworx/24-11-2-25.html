@@ -2,7 +2,7 @@
 title: Egyptian Banks POC
 description: 24-11-2025 With Gemy
 published: true
-date: 2025-11-24T17:46:45.139Z
+date: 2025-11-24T20:15:49.765Z
 tags: implementation, portworx, instillation
 editor: ckeditor
 dateCreated: 2025-11-24T08:29:19.129Z
@@ -93,3 +93,10 @@ drwx------.   2 root root   73 Nov  2 14:26 .lic
     </ul>
   </li>
 </ul>
+<h1>Function of deployments in portworx namspace</h1>
+<ol>
+  <li><code>px-csi-ext</code><strong> deployment in Portworx is responsible for running the Kubernetes CSI (Container Storage Interface) external sidecar controllers that extend CSI functionality, such as snapshotting, resizing, attaching volumes, and creating the default storageClasses</strong></li>
+</ol>
+<pre><code class="language-plaintext">  csi:
+    enabled: true</code></pre>
+<p>&nbsp;2. <strong>The </strong><code>px-plugin</code><strong> deployment in Portworx provides the Kubernetes-native CLI plugin (</strong><code>kubectl px</code><strong>) that lets you manage Portworx clusters directly through Kubernetes, without needing SSH access to nodes or running commands inside pods.</strong></p>
