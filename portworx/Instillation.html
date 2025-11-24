@@ -2,12 +2,16 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-23T17:53:27.785Z
+date: 2025-11-24T04:53:04.207Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
 -->
 
+<h1>Common commands</h1>
+<pre><code class="language-plaintext">echo "alias pxctl='PX_POD=\$(oc get pods -l name=portworx -n portworx --field-selector=status.phase==Running | grep \"1/1\" | awk \"NR==1{print \$1}\") &amp;&amp; oc exec \$PX_POD -n portworx -- /opt/pwx/bin/pxctl'" &gt;&gt; ~/.bashrc
+
+source ~/.bashrc</code></pre>
 <h1><strong>System Requirements</strong></h1>
 <ul>
   <li><strong>Hardware requirements</strong></li>
@@ -342,6 +346,7 @@ data:
       exportMetrics: true
       alertManager:
         enabled: false</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>This creates a <code>prometheus-operated</code> service in the <code>openshift-user-workload-monitoring</code> namespace.</p>
 </blockquote>
@@ -398,6 +403,7 @@ type: Opaque
 data:
   VSPHERE_USER: XXXX
   VSPHERE_PASSWORD: XXXX</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>🙅‍♂️ Ensure that the ports 17001-17020 on worker nodes are reachable from the control plane node and other worker nodes.</p>
 </blockquote>
