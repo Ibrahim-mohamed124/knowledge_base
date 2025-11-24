@@ -2,7 +2,7 @@
 title: Useful Commands
 description: 
 published: true
-date: 2025-11-24T05:04:53.660Z
+date: 2025-11-24T05:36:40.619Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-24T05:04:53.660Z
@@ -16,3 +16,10 @@ dateCreated: 2025-11-24T05:04:53.660Z
 tar -xvf virtctl.tar.gz
 chmod +x virtctl
 sudo mv virtctl /usr/local/bin</code></pre>
+<ul>
+  <li>To create a VM and ssh to it</li>
+</ul>
+<pre><code class="language-plaintext">until virtctl ssh cloud-user@centos-stream9-autopilot -i ~/.ssh/id_rsa -t "-o StrictHostKeyChecking=no" -c 'lsblk'; do
+    echo "waiting for VM to boot"
+    sleep 10
+done</code></pre>
