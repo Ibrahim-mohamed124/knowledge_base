@@ -2,7 +2,7 @@
 title: Egyptian Banks POC
 description: 24-11-2025 With Gemy
 published: true
-date: 2025-11-24T16:54:49.462Z
+date: 2025-11-24T17:42:47.272Z
 tags: implementation, portworx, instillation
 editor: ckeditor
 dateCreated: 2025-11-24T08:29:19.129Z
@@ -71,10 +71,21 @@ drwx------.   2 root root   73 Nov  2 14:26 .lic
 -rw-------.   1 root root  130 Nov  2 14:25 px_env
 </code></pre>
 <ul>
-  <li>proxy configurations? in openshift.</li>
-  <li>when deleting the opertor delete the crd manually? edit something in the labels operation..</li>
-  <li>instillation resource annotations in the storage cluster.</li>
-  <li>the configmap on the kube-system??</li>
+  <li><s>when deleting the opertor delete the crd manually? edit something in the labels operation.. </s><mark class="marker-yellow"><s>Still I do not know</s></mark></li>
+  <li>instillation resource annotations in the storage cluster.<ul>
+      <li>only describe some data about the stc</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">
+    portworx.io/health-check: passed
+    portworx.io/install-source: https://install.portworx.com/3.3?operator=true&amp;mc=false&amp;kbver=1.31.10&amp;ns=portworx&amp;b=true&amp;iop=6&amp;j=auto&amp;r=17001&amp;c=px-cluster-ocpv-36653693-7847-4764-89da-cdbb8fc00bd7&amp;osft=true&amp;stork=true&amp;csi=true&amp;tel=true&amp;st=k8s
+    portworx.io/is-openshift: "true"
+    portworx.io/preflight-check: skip
+    portworx.io/service-type: portworx-api:LoadBalancer
+</code></pre>
+<ul>
+  <li><s>the configmap on the kube-system?? </s><mark class="marker-yellow"><s>still I do not know what is this</s></mark></li>
   <li>storage classes rbd?? rgw?? what are these</li>
   <li>POC:<ul>
       <li>postgresql installation and stress test between the odf and portworx</li>
