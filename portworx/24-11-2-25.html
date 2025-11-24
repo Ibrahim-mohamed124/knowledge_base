@@ -2,7 +2,7 @@
 title: Egyptian Banks POC
 description: 24-11-2025 With Gemy
 published: true
-date: 2025-11-24T16:46:46.632Z
+date: 2025-11-24T16:54:49.462Z
 tags: implementation, portworx, instillation
 editor: ckeditor
 dateCreated: 2025-11-24T08:29:19.129Z
@@ -45,7 +45,32 @@ ExecStart=/bin/sh -c 'echo "Shutting down Portworx..."; /var/opt/pwx/bin/runc de
 WantedBy=halt.target reboot.target shutdown.target
 </code></pre>
 <ul>
-  <li>what are the files in /opt/pwx and /etc/pwx</li>
+  <li>what are the files in /opt/pwx and /etc/pwx<ul>
+      <li>These paths include the pxctl binary, environment var file, and other configuration files:</li>
+    </ul>
+  </li>
+</ul>
+<p>/opt/pwx or /var/opt/pwx</p>
+<pre><code class="language-plaintext">drwx------. 4 root root 53 Nov  2 14:25 oci
+drwxr-x---. 2 root root 65 Nov  2 14:25 bin
+drwxr-xr-x. 3 root root 28 Aug  7 15:41 ..
+drwxr-xr-x. 4 root root 28 Nov  2 14:25 .
+</code></pre>
+<p>/etc/pwx</p>
+<pre><code class="language-plaintext">ls -al
+total 40
+drwx------.   3 root root  153 Nov  2 14:25 .
+drwxr-xr-x. 107 root root 8192 Nov 14 19:43 ..
+drwx------.   2 root root   73 Nov  2 14:26 .lic
+-rw-------.   1 root root  266 Aug  7 17:36 .private.json
+-rw-------.   1 root root   37 Oct 26 10:10 .px_fspatch
+-rw-r--r--.   1 root root 1392 Sep 14 08:35 ccm.properties
+-r--r--r--.   1 root root   36 Aug  7 17:36 cluster_uuid
+-rw-------.   1 root root  638 Nov  2 14:25 config.json
+-rw-r--r--.   1 root root  249 Aug  7 17:36 lttng.config
+-rw-------.   1 root root  130 Nov  2 14:25 px_env
+</code></pre>
+<ul>
   <li>proxy configurations? in openshift.</li>
   <li>when deleting the opertor delete the crd manually? edit something in the labels operation..</li>
   <li>instillation resource annotations in the storage cluster.</li>
