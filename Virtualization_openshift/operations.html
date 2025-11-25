@@ -2,7 +2,7 @@
 title: Operations
 description: 
 published: true
-date: 2025-11-25T07:33:50.424Z
+date: 2025-11-25T14:52:29.411Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T13:40:32.886Z
@@ -115,7 +115,7 @@ dateCreated: 2025-11-17T13:40:32.886Z
   <li><strong>Instance types:</strong>
     <ul>
       <li>Instance types must define CPU and memory resources. All other attributes are optional.</li>
-      <li>Cannot override any parameters that are defined in the instance type.&nbsp;</li>
+      <li>Cannot override any parameters that are defined in the instance type.</li>
     </ul>
   </li>
   <li><strong>Declarative files:&nbsp;</strong></li>
@@ -153,6 +153,7 @@ spec:
            name: rhel-9-minimal-volume
          name: rootdisk
 status: {}</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -184,6 +185,7 @@ status: {}</code></pre>
 <pre><code class="language-plaintext">oc edit vm postgresql-rhel9
 oc patch vm postgresql-rhel9 --type merge -p '{"spec":{"template":{"metadata":{"labels":{"servertype":"production"}}}}}'
 virtctl restart postgresql-rhel9</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>Enabling SSH access creates a node port service within the VM's namespace.&nbsp;</p>
 </blockquote>
@@ -240,7 +242,7 @@ virtctl expose vm postgresql-rhel9 --name postgresql-service --type ClusterIP --
 <p>&nbsp;</p>
 <h2>Monitoring and Inspecting Virtual Machines</h2>
 <ul>
-  <li>The QEMU guest agent that is installed in the VM provides information about the VM, users, file systems, and secondary networks.&nbsp;</li>
+  <li>The QEMU guest agent that is installed in the VM provides information about the VM, users, file systems, and secondary networks.</li>
   <li><strong>Virtualization</strong> → <strong>Overview</strong> and select the <strong>Top consumers</strong> tab. This tab lists the VMs that are the top consumers of resources, such as CPU, memory, and storage throughput.</li>
 </ul>
 <pre><code class="language-plaintext"> oc exec -it virt-launcher-pod-name -n namespace -- /bin/bash
@@ -251,6 +253,7 @@ virtctl expose vm postgresql-rhel9 --name postgresql-service --type ClusterIP --
   <li>view a list of file systems that are available to the VMI with the <code>virtctl fslist <i>vmi-name</i></code> command.</li>
 </ul>
 <pre><code class="language-plaintext">virtctl fslist production-mariadb -n production-vms</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>view guest agent information about the VMI's operating system with the <code>virtctl guestosinfo <i>vmi-name</i></code> command.</li>
   <li>Enable monitoring for user-defined projects by setting the <code>enableUserWorkload: true</code> field in the <code>cluster-monitoring-config</code> configuration map in the <code>openshift-monitoring</code> namespace.</li>
@@ -263,7 +266,8 @@ metadata:
 data:
   config.yaml: |
     enableUserWorkload: true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Only cluster administrators have access to all namespaces concurrently in the <strong>Observe</strong> → <strong>Metrics</strong> interface.</li>
-  <li><strong>Observe</strong> → <strong>Metrics</strong> interface to execute <i>Prometheus Query Language (PromQL)</i> queries against an entire Red&nbsp;Hat OpenShift Virtualization environment.&nbsp;</li>
+  <li><strong>Observe</strong> → <strong>Metrics</strong> interface to execute <i>Prometheus Query Language (PromQL)</i> queries against an entire Red&nbsp;Hat OpenShift Virtualization environment.</li>
 </ul>
