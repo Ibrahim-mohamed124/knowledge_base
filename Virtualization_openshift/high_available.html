@@ -1,0 +1,38 @@
+<!--
+title: HA
+description: 
+published: true
+date: 2025-11-25T15:29:40.716Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-25T15:29:40.716Z
+-->
+
+<h4>Fencing Hosts for VM Integrity</h4>
+<ul>
+  <li><i>fencing: is the isolation of &nbsp;misbehaved vm to prevent running the same workload in more than one host , which leads to data corruption, and eventually the service will be down.</i></li>
+  <li><i>remediation: &nbsp; is the creation of new vm after a failure</i></li>
+</ul>
+<blockquote>
+  <p>A traditional hypervisor uses an out-of-band management agent to fence a nonresponsive host. The <mark class="marker-yellow">agent forces a power-off</mark>, which ensures that the host and its virtual machines are down. <mark class="marker-yellow">Only then does the agent start the virtual machine on a new host.</mark></p>
+</blockquote>
+<ul>
+  <li>in OpenShift: Fencing is a remediation method that reboots and deletes <code>Machine</code> custom resource definitions to solve problems with automatically provisioned nodes.</li>
+  <li><strong>Machine health checks:&nbsp;</strong>
+    <ul>
+      <li>Machine health checks<mark class="marker-yellow"> automatically remediate an unhealthy machine (worker nodes)</mark>, which is the host for a node, if the machine exists in a particular machine pool.</li>
+      <li>When the <code>MachineHealthCheck</code> controller detects that a node is in the <code>NotReady</code> state, it removes the associated <code>Machine</code> resource, and the node is deleted from the pool host.</li>
+    </ul>
+  </li>
+  <li><strong>Sticky sessions:</strong>
+    <ul>
+      <li>Sticky sessions enable stateful application traffic by ensuring that all traffic hits the same endpoint.&nbsp;</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    router.openshift.io/cookie_name: "hello"
+...output omitted...</code></pre>
