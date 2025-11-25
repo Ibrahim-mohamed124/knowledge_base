@@ -2,7 +2,7 @@
 title: Configuring certificates
 description: 
 published: true
-date: 2025-11-25T07:14:10.611Z
+date: 2025-11-25T07:14:27.163Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T07:10:29.705Z
@@ -41,4 +41,7 @@ dateCreated: 2025-11-25T07:10:29.705Z
      --key=&lt;/path/to/cert.key&gt; \
      -n openshift-ingress	</code></pre>
 <p>&nbsp; &nbsp; 4. Update the Ingress Controller configuration with the newly created secret:</p>
-<pre><code class="language-plaintext">Update the Ingress Controller configuration with the newly created secret:</code></pre>
+<pre><code class="language-plaintext">oc patch ingresscontroller.operator default \
+     --type=merge -p \
+     '{"spec":{"defaultCertificate": {"name": "&lt;secret&gt;"}}}' \
+     -n openshift-ingress-operator</code></pre>
