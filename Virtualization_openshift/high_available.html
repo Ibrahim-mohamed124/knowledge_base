@@ -2,7 +2,7 @@
 title: HA
 description: 
 published: true
-date: 2025-11-25T17:55:47.377Z
+date: 2025-11-25T18:13:23.297Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T15:29:40.716Z
@@ -101,9 +101,26 @@ metadata:
   <li>It might take up to five minutes for the <code>virt-handler</code> daemon set and Kubernetes to detect the failure.</li>
 </ul>
 <blockquote>
-  <p>If the <code>virt-handler</code> daemon set loses the connection to the cluster's API server, then the node cannot communicate its status. The node enters a failed state, and the remaining VMs cannot migrate to the healthy nodes.</p>
+  <p><mark class="marker-yellow">If the </mark><code><mark class="marker-yellow">virt-handler</mark></code><mark class="marker-yellow"> daemon set loses the connection to the cluster's API server, then the node cannot communicate its status. The node enters a failed state, and the remaining VMs cannot migrate to the healthy nodes.</mark></p>
 </blockquote>
-<p>&nbsp;</p>
+<ul>
+  <li>a watchdog device to verify the state of the VM's guest OS, and act according to the run strategy. The VM's watchdog service monitors only for guest OS failures, and it does not detect application failures.</li>
+  <li><code><strong>poweroff</strong></code>
+    <ul>
+      <li>The VM powers off immediately. If the <code>spec.running</code> Boolean is set to <code>true</code>, or if the <code>spec.runStrategy</code> parameter is not set to <code>manual</code>, then the VM reboots.</li>
+    </ul>
+  </li>
+  <li><code><strong>reset</strong></code>
+    <ul>
+      <li>The VM reboots in place, and the guest OS cannot react.</li>
+    </ul>
+  </li>
+  <li><code><strong>shutdown</strong></code>
+    <ul>
+      <li>The VM gracefully powers off by stopping all services.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
