@@ -2,7 +2,7 @@
 title: Configuring certificates
 description: 
 published: true
-date: 2025-11-25T07:10:29.705Z
+date: 2025-11-25T07:14:10.611Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T07:10:29.705Z
@@ -31,7 +31,14 @@ dateCreated: 2025-11-25T07:10:29.705Z
 <pre><code class="language-plaintext">oc create configmap custom-ca \
      --from-file=ca-bundle.crt=&lt;/path/to/example-ca.crt&gt; \
      -n openshift-config</code></pre>
-<p>&nbsp; &nbsp; &nbsp;2. Update the cluster-wide proxy configuration with the newly created config map:</p>
+<p>&nbsp; &nbsp; &nbsp;2. Update the cluster-wide proxy configuration with the newly created config map: <mark class="marker-pink">Only on proxied clusters</mark></p>
 <pre><code class="language-plaintext">oc patch proxy/cluster \
      --type=merge \
      --patch='{"spec":{"trustedCA":{"name":"custom-ca"}}}'</code></pre>
+<p>&nbsp; &nbsp; 3. Create a secret that contains the wildcard certificate chain and key:</p>
+<pre><code class="language-plaintext">oc create secret tls &lt;secret&gt; \
+     --cert=&lt;/path/to/cert.crt&gt; \
+     --key=&lt;/path/to/cert.key&gt; \
+     -n openshift-ingress	</code></pre>
+<p>&nbsp; &nbsp; 4. Update the Ingress Controller configuration with the newly created secret:</p>
+<pre><code class="language-plaintext">Update the Ingress Controller configuration with the newly created secret:</code></pre>
