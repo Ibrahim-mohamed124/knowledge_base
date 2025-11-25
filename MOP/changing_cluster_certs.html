@@ -1,0 +1,37 @@
+<!--
+title: Configuring certificates
+description: 
+published: true
+date: 2025-11-25T07:10:29.705Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-25T07:10:29.705Z
+-->
+
+<h2>Replacing the default ingress certificate</h2>
+<blockquote>
+  <p>By default, OpenShift Container Platform uses the<mark class="marker-yellow"> Ingress Operator to create an internal CA and issue a wildcard certificate </mark>that is valid for applications under the <code>.apps</code> sub-domain.&nbsp;</p>
+</blockquote>
+<ul>
+  <li><strong>Prerequisites:</strong>
+    <ul>
+      <li>You must have a wildcard certificate for the<mark class="marker-yellow"> fully qualified </mark><code><mark class="marker-yellow">.apps</mark></code><mark class="marker-yellow"> subdomai</mark>n and its corresponding<mark class="marker-yellow"> private key</mark>. Each should be in a separate PEM format file.</li>
+      <li>The <mark class="marker-yellow">private key must be unencrypted</mark>. If your key is encrypted, decrypt it before importing it into OpenShift Container Platform.</li>
+      <li>The certificate must include the <code>subjectAltName</code> extension showing <code>*.apps.&lt;clustername&gt;.&lt;domain&gt;</code>.</li>
+      <li>The certificate file can contain one or more certificates in a chain.<mark class="marker-yellow"> The wildcard certificate must be the first certificate in the file</mark>. It can then be followed with any intermediate certificates, and the file should end with the root CA certificate.</li>
+      <li>Copy the root CA certificate into an additional PEM format file.</li>
+    </ul>
+  </li>
+  <li><strong>Procedure:</strong>
+    <ol>
+      <li>Create a config map that includes only the root CA certificate used to sign the wildcard certificate:</li>
+    </ol>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc create configmap custom-ca \
+     --from-file=ca-bundle.crt=&lt;/path/to/example-ca.crt&gt; \
+     -n openshift-config</code></pre>
+<p>&nbsp; &nbsp; &nbsp;2. Update the cluster-wide proxy configuration with the newly created config map:</p>
+<pre><code class="language-plaintext">oc patch proxy/cluster \
+     --type=merge \
+     --patch='{"spec":{"trustedCA":{"name":"custom-ca"}}}'</code></pre>
