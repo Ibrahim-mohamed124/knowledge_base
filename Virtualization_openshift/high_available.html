@@ -2,7 +2,7 @@
 title: HA
 description: 
 published: true
-date: 2025-11-25T15:37:39.731Z
+date: 2025-11-25T17:55:47.377Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T15:29:40.716Z
@@ -45,3 +45,76 @@ metadata:
   <p>Even though the eviction strategy is set, some VMs might not support live migration. For example, OpenShift Virtualization can live migrate only VMs with storage that supports the <code>ReadWriteMany</code> (RWX) access mode.</p>
   <p>These VMs prevent the drain process from completing. A cluster administrator must manually shut down the VM or disable the live migration.</p>
 </blockquote>
+<h4>Pod disruption budget</h4>
+<ul>
+  <li>&nbsp;<mark class="marker-yellow">A pod disruption budget resource is created and deleted with each VMI </mark>to prevent the <code>virt-launcher</code> pod from being deleted before the live migration process is completed.</li>
+  <li>With a pod disruption budget resource, the node drain is blocked until the replacement pods for the application are scheduled in another node and become ready.</li>
+</ul>
+<h2>Configuring Virtual Machines to Survive Node Failure</h2>
+<h4>Scheduler Profiles</h4>
+<ul>
+  <li>The OpenShift scheduler profile controls how OpenShift schedules pods on nodes. The following scheduler profiles are available:<ul>
+      <li><code><strong>LowNodeUtilization</strong></code>
+        <ul>
+          <li>Attempts to spread pods evenly across nodes for low resource usage per node.</li>
+        </ul>
+      </li>
+      <li><code><strong>HighNodeUtilization</strong></code>
+        <ul>
+          <li>Attempts to place as many pods on as few nodes as possible. This approach minimizes the node count and creates high resource usage per node.</li>
+        </ul>
+      </li>
+      <li><code><strong>NoScoring</strong></code>
+        <ul>
+          <li>A low latency profile that strives for the quickest scheduling cycle by disabling all scoring plug-ins.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<h3>Eviction Strategies</h3>
+<ul>
+  <li>Eviction strategies determine the appropriate actions to take with orphaned resources, such as pods, persistent volumes (PVs), and virtual machines (VMs) when the cluster nodes are not ready.</li>
+  <li>Eviction strategies determine whether OpenShift moves the VMs on the failed node to another node or terminates them.</li>
+  <li><code><strong>LiveMigrate</strong></code>
+    <ul>
+      <li>OpenShift migrates live, to ensure that the VM is not interrupted if you place the node into maintenance or if you drain it. This eviction <mark class="marker-yellow">strategy is the default. Non-migrateable VMs with this eviction strategy might prevent nodes from draining or might block a node upgrade because OpenShift does not evict the VM from the node, and you must shut down manually the VM</mark>.</li>
+    </ul>
+  </li>
+  <li><code><strong>LiveMigrateIfPossible</strong></code>
+    <ul>
+      <li>If users do not request a live migration on VMs, then OpenShift terminates non-migrateable VMs during evictions.</li>
+    </ul>
+  </li>
+  <li><code><strong>None</strong></code>
+    <ul>
+      <li>OpenShift does not migrate the VM, and it restarts or terminates the VM depending on the run strategy.</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>VMs with a live migration strategy must have a persistent volume claim (PVC) with a shared <code>ReadWriteMany</code> (RWX) access mode.</p>
+</blockquote>
+<h3>Node Failures</h3>
+<ul>
+  <li>VMs are scheduled only on nodes from which the control plane received a <code>virt-handler</code> heartbeat.</li>
+  <li>It might take up to five minutes for the <code>virt-handler</code> daemon set and Kubernetes to detect the failure.</li>
+</ul>
+<blockquote>
+  <p>If the <code>virt-handler</code> daemon set loses the connection to the cluster's API server, then the node cannot communicate its status. The node enters a failed state, and the remaining VMs cannot migrate to the healthy nodes.</p>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
