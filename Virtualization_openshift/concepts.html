@@ -2,7 +2,7 @@
 title: concepts
 description: 
 published: true
-date: 2025-11-25T07:33:25.196Z
+date: 2025-11-25T09:53:06.696Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:08.764Z
@@ -14,7 +14,7 @@ dateCreated: 2025-11-17T09:09:08.764Z
   <li>KVM and libvirt are run in <mark class="marker-yellow">a container that can be deployed in Kubernetes and OpenShift platforms</mark> along with containerized applications.</li>
   <li>The <i><mark class="marker-yellow">Quick EMUlator</mark></i><mark class="marker-yellow"> (QEMU) guest agent passes information about a VM to the host.</mark></li>
   <li>OpenShift Virtualization operator offers features for enterprise-grade virtualization, such as live migration, high availability, system scheduling, power management, image management, snapshots, thin provisioning, and monitoring.<ul>
-      <li>Based on the <i>KubeVirt</i> Kubernetes virtualization add-on</li>
+      <li>Based on the <i><mark class="marker-yellow">KubeVirt</mark></i><mark class="marker-yellow"> </mark>Kubernetes virtualization add-on</li>
     </ul>
   </li>
 </ul>
@@ -163,17 +163,17 @@ dateCreated: 2025-11-17T09:09:08.764Z
 <p>&nbsp;</p>
 <h3>Requirements</h3>
 <ol>
-  <li>&nbsp;All CPUs must be supported by Red&nbsp;Hat Enterprise Linux&nbsp;9</li>
+  <li>All CPUs must be supported by Red&nbsp;Hat Enterprise Linux&nbsp;9</li>
   <li>Intel VT or AMD-V hardware virtualization enabled, and have the no-execute (NX) flag enabled.</li>
   <li>For live migration, shared storage is required.</li>
-  <li>&nbsp;create a <mark class="marker-yellow">default OpenShift Virtualization or OpenShift Container Platform storage class</mark> by setting the <code>storageclass.kubevirt.io/is-default-virt-class=true</code> or <code>storageclass.kubernetes.io/is-default-class=true</code> annotation on the storage class.</li>
+  <li>create a <mark class="marker-yellow">default OpenShift Virtualization or OpenShift Container Platform storage class</mark> by setting the <code>storageclass.kubevirt.io/is-default-virt-class=true</code> or <code>storageclass.kubernetes.io/is-default-class=true</code> annotation on the storage class.</li>
 </ol>
 <h4>HyperConverged Configuration</h4>
 <ul>
   <li><strong>Deployment Strategy:</strong>
     <ol>
-      <li><strong>&nbsp;</strong>specify nodes by using node selectors, affinity rules, and tolerations for different virtualization workloads.&nbsp;</li>
-      <li>specify node placement rules for both virtual machines and operators.&nbsp;</li>
+      <li><strong>&nbsp;</strong>specify nodes by using node selectors, affinity rules, and tolerations for different virtualization workloads.</li>
+      <li>specify node placement rules for both virtual machines and operators.</li>
     </ol>
   </li>
   <li><strong>Live Migration Configuration:</strong>
