@@ -2,7 +2,7 @@
 title: HA
 description: 
 published: true
-date: 2025-11-25T15:29:40.716Z
+date: 2025-11-25T15:37:39.731Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T15:29:40.716Z
@@ -26,7 +26,7 @@ dateCreated: 2025-11-25T15:29:40.716Z
   </li>
   <li><strong>Sticky sessions:</strong>
     <ul>
-      <li>Sticky sessions enable stateful application traffic by ensuring that all traffic hits the same endpoint.&nbsp;</li>
+      <li>Sticky sessions enable stateful application traffic by ensuring that all traffic hits the same endpoint.</li>
     </ul>
   </li>
 </ul>
@@ -36,3 +36,12 @@ metadata:
   annotations:
     router.openshift.io/cookie_name: "hello"
 ...output omitted...</code></pre>
+<h4>The Node Maintenance Operator</h4>
+<ul>
+  <li><code>NodeMaintenance</code> custom resource: declaratively place nodes into maintenance</li>
+  <li>During node drain, OpenShift Virtualization migrates VMs &nbsp;with &nbsp;liveMigrate strategy live. For VMs with the eviction strategy of <code>None</code>, OpenShift Virtualization shuts down the VMs, and then restarts them on another node.</li>
+</ul>
+<blockquote>
+  <p>Even though the eviction strategy is set, some VMs might not support live migration. For example, OpenShift Virtualization can live migrate only VMs with storage that supports the <code>ReadWriteMany</code> (RWX) access mode.</p>
+  <p>These VMs prevent the drain process from completing. A cluster administrator must manually shut down the VM or disable the live migration.</p>
+</blockquote>
