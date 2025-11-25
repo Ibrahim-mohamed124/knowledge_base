@@ -2,7 +2,7 @@
 title: Configuring certificates
 description: 
 published: true
-date: 2025-11-25T07:14:27.163Z
+date: 2025-11-25T07:20:26.426Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T07:10:29.705Z
@@ -45,3 +45,19 @@ dateCreated: 2025-11-25T07:10:29.705Z
      --type=merge -p \
      '{"spec":{"defaultCertificate": {"name": "&lt;secret&gt;"}}}' \
      -n openshift-ingress-operator</code></pre>
+<blockquote>
+  <p>The <code>trustedCA</code> field of the <mark class="marker-yellow">Proxy object</mark> is a reference to a config map that contains a user-provided trusted certificate authority (CA) bundle. This bundle is merged with the Red&nbsp;Hat Enterprise Linux CoreOS (RHCOS) trust bundle and injected into the trust store of platform components that make egress HTTPS calls.</p>
+</blockquote>
+<pre><code class="language-plaintext">apiVersion: config.openshift.io/v1
+kind: Proxy
+metadata:
+  creationTimestamp: "2025-08-04T13:21:26Z"
+  generation: 1
+  name: cluster
+  resourceVersion: "554"
+  uid: c3583421-0300-4975-9c11-a5cdffb87049
+spec:
+  trustedCA:
+    name: ""
+status: {}
+</code></pre>
