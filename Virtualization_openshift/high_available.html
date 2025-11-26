@@ -2,7 +2,7 @@
 title: HA
 description: 
 published: true
-date: 2025-11-26T18:40:49.390Z
+date: 2025-11-26T18:41:46.751Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T15:29:40.716Z
@@ -138,9 +138,8 @@ metadata:
 <ul>
   <li>Available in<mark class="marker-yellow"> non-IPI bare metal clusters</mark>, the Self Node Remediation Operator<mark class="marker-yellow"> runs on the cluster nodes</mark> and <mark class="marker-yellow">reboots unhealthy nodes</mark>. This remediation strategy minimizes downtime for stateful applications and <code>ReadWriteOnce</code> (RWO) volumes, and restores compute capacity if <mark class="marker-yellow">transient failures occur.</mark></li>
   <li>The Self Node Remediation Operator creates a <code>SelfNodeRemediationConfig</code> CR in the operator's namespace.If the Self Node Remediation Operator detects a change in the <code>SelfNodeRemediationConfig</code> CR, then it re-creates the Self Node Remediation daemon set.</li>
+  <li>The operator uses the <code><mark class="marker-yellow">MachineHealthCheck</mark></code><mark class="marker-yellow"> controller to detect the health of a node in the cluster.</mark> If an unhealthy node is detected according to the <code>SelfNodeRemediationConfig</code> CR, then the <code>MachineHealthCheck</code> controller creates the <code>SelfNodeRemediation</code> CR to trigger the Self Node Remediation Operator. Then, the operator uses the <code>SelfNodeRemediationTemplate</code> custom resource definition (CRD) to define the remediation strategy for the unhealthy nodes.</li>
 </ul>
-<p>The operator uses the <code>MachineHealthCheck</code> controller to detect the health of a node in the cluster. If an unhealthy node is detected according to the <code>SelfNodeRemediationConfig</code> CR, then the <code>MachineHealthCheck</code> controller creates the <code>SelfNodeRemediation</code> CR to trigger the Self Node Remediation Operator. Then, the operator uses the <code>SelfNodeRemediationTemplate</code> custom resource definition (CRD) to define the remediation strategy for the unhealthy nodes.</p>
-<p>You can install the Self Node Remediation Operator from the command line by creating a subscription in the <code>openshift-operators</code> namespace, or via the web console through the <code>OperatorHub</code> menu.</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
