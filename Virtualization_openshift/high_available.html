@@ -2,7 +2,7 @@
 title: HA
 description: 
 published: true
-date: 2025-11-25T18:13:23.297Z
+date: 2025-11-26T18:40:49.390Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T15:29:40.716Z
@@ -47,7 +47,7 @@ metadata:
 </blockquote>
 <h4>Pod disruption budget</h4>
 <ul>
-  <li>&nbsp;<mark class="marker-yellow">A pod disruption budget resource is created and deleted with each VMI </mark>to prevent the <code>virt-launcher</code> pod from being deleted before the live migration process is completed.</li>
+  <li><mark class="marker-yellow">A pod disruption budget resource is created and deleted with each VMI </mark>to prevent the <code>virt-launcher</code> pod from being deleted before the live migration process is completed.</li>
   <li>With a pod disruption budget resource, the node drain is blocked until the replacement pods for the application are scheduled in another node and become ready.</li>
 </ul>
 <h2>Configuring Virtual Machines to Survive Node Failure</h2>
@@ -121,7 +121,26 @@ metadata:
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<h4>Standard Remediation for Failed Nodes</h4>
+<ul>
+  <li><mark class="marker-yellow">If a host fails the health check,</mark> then the <mark class="marker-yellow">bare metal machine controller drains the remaining VMs on the node and reschedules the workloads to healthy nodes that the machine set owns</mark>.&nbsp;</li>
+  <li>After OpenShift drains all the VMs and<mark class="marker-yellow"> the node registers itself again to the cluster</mark>, <mark class="marker-yellow">the bare metal machine controller restores the annotations and labels from the unhealthy node to the new node</mark>. ????? really?</li>
+  <li>To limit the disruptive impact of the host deletion<mark class="marker-yellow">, the controller drains and deletes one node at a time</mark>. If multiple unhealthy hosts exceed the <code><mark class="marker-yellow">maxUnhealthy</mark></code><mark class="marker-yellow"> specified threshold for the targeted pool of hosts,</mark> then<mark class="marker-yellow"> remediation stops and requires manual intervention.</mark></li>
+  <li>A machine health check remediates a host immediately if the <code>Machine</code> resource enters the <code>Failed</code> status.</li>
+</ul>
+<h4>Power-based Remediation for Failed Bare Metal Nodes</h4>
+<ul>
+  <li>Instead of reprovisioning the nodes, power-based remediation uses <mark class="marker-yellow">a power controller to power off an inoperable node</mark>. This type of remediation is also called <i><mark class="marker-yellow">power fencing</mark></i>. OpenShift uses the <code>MachineHealthCheck</code> controller to detect faulty bare metal nodes.<mark class="marker-yellow"> Power-based remediation is fast and reboots faulty nodes instead of removing them from the cluster.</mark></li>
+  <li>Enables the recovery of control plane nodes.</li>
+  <li>Reduces the risk of data loss in hyperconverged environments.</li>
+</ul>
+<h3>Self Node Remediation Operator</h3>
+<ul>
+  <li>Available in<mark class="marker-yellow"> non-IPI bare metal clusters</mark>, the Self Node Remediation Operator<mark class="marker-yellow"> runs on the cluster nodes</mark> and <mark class="marker-yellow">reboots unhealthy nodes</mark>. This remediation strategy minimizes downtime for stateful applications and <code>ReadWriteOnce</code> (RWO) volumes, and restores compute capacity if <mark class="marker-yellow">transient failures occur.</mark></li>
+  <li>The Self Node Remediation Operator creates a <code>SelfNodeRemediationConfig</code> CR in the operator's namespace.If the Self Node Remediation Operator detects a change in the <code>SelfNodeRemediationConfig</code> CR, then it re-creates the Self Node Remediation daemon set.</li>
+</ul>
+<p>The operator uses the <code>MachineHealthCheck</code> controller to detect the health of a node in the cluster. If an unhealthy node is detected according to the <code>SelfNodeRemediationConfig</code> CR, then the <code>MachineHealthCheck</code> controller creates the <code>SelfNodeRemediation</code> CR to trigger the Self Node Remediation Operator. Then, the operator uses the <code>SelfNodeRemediationTemplate</code> custom resource definition (CRD) to define the remediation strategy for the unhealthy nodes.</p>
+<p>You can install the Self Node Remediation Operator from the command line by creating a subscription in the <code>openshift-operators</code> namespace, or via the web console through the <code>OperatorHub</code> menu.</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
