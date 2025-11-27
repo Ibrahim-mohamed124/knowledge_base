@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T12:30:38.262Z
+date: 2025-11-27T12:59:40.513Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -27,8 +27,35 @@ dateCreated: 2025-11-27T10:08:04.851Z
 <ul>
   <li>based on the open source Tekton project, and can run processes when changes occur to a Git repository.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>The Default Argo CD Instance</h3>
+<ul>
+  <li>By default, the OpenShift GitOps operator creates a default Argo CD instance with the <code>openshift-gitops</code> name for both the instance and the namespace. This default instance has a set of permissions to support cluster administration.&nbsp;</li>
+</ul>
+<h3>Configuring Argo CD RBAC</h3>
+<ul>
+  <li>Argo CD can use both local users that are defined in Argo CD and users from external authentication systems. The OpenShift GitOps operator includes features to automate integration with the OpenShift cluster authentication.</li>
+  <li>Argo CD updates the cluster by using a Kubernetes service account. Even unrestricted users in Argo CD are limited in how they can update the cluster, according to the permissions of the Argo CD service account.</li>
+  <li>The <code>openshift-gitops-cluster</code> secret in the <code>openshift-gitops</code> namespace contains the password for the admin user.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: openshift-gitops
+  namespace: openshift-gitops
+  ...output omitted...
+spec:
+  ...output omitted...
+  rbac:
+    defaultPolicy: ""
+    policy: |
+      g, system:cluster-admins, role:admin
+      g, cluster-admins, role:admin
+    scopes: '[groups]'
+  ...output omitted...
+  sso:
+    dex:
+      openShiftOAuth: true
+...output omitted...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
