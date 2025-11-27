@@ -2,7 +2,7 @@
 title: Chapter 4.  Pod Scheduling
 description: 
 published: true
-date: 2025-11-17T10:35:55.384Z
+date: 2025-11-27T09:21:37.699Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:35:08.089Z
@@ -14,8 +14,15 @@ dateCreated: 2025-11-17T09:35:08.089Z
   <li><mark class="marker-yellow">Pod affinity rules</mark>, to keep sets of pods close to each other, on the same nodes. For example, you can run a REST service and its database on the same node to minimize network latency.</li>
   <li><mark class="marker-yellow">Pod anti-affinity rules</mark>, to keep sets of pods far away from each other, on different nodes. For example, you can run replica pods of the same deployment in different nodes, so that if a node fails, then you do not lose all the pods for the workload.</li>
   <li><mark class="marker-yellow">Node affinity,</mark> to keep sets of pods running on the same group of nodes. For example, you can configure a pod to run on nodes with a specific CPU.</li>
-  <li><mark class="marker-yellow">Node selectors</mark>, to schedule pods to a specific set of nodes. For example, you can schedule a pod to a node that provides special hardware that the pod needs.</li>
+  <li><mark class="marker-yellow">Node selectors</mark>, to schedule pods to a specific set of nodes. For example, you can schedule a pod to a node that provides special hardware that the pod needs.<ul>
+      <li>node selectors has the following levels: pod, project, and cluster-wide.</li>
+      <li><mark class="marker-yellow">Pod node selectors are additive to cluster-wide and project node selectors.&nbsp;</mark></li>
+    </ul>
+  </li>
   <li><mark class="marker-yellow">Taints and tolerations</mark>, to avoid scheduling pods to a specific set of nodes. For example, you can block a pod to run on a node that is reserved for OpenShift cluster services or control plane services.</li>
+</ul>
+<pre><code class="language-plaintext"> oc adm taint nodes node1 key1=value1:NoSchedule</code></pre>
+<ul>
   <li><mark class="marker-yellow">Pod disruption budget resource</mark>, which controls how many instances can be down at the same time during voluntary disruptions, such as when scaling down, updating applications, or draining a node for maintenance.</li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/advanced-scheduler.svg"></figure>
@@ -75,17 +82,76 @@ dateCreated: 2025-11-17T09:35:08.089Z
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Cluster-wide Node Selectors</h4>
+<ul>
+  <li>specify the default node selectors that OpenShift adds to the pods.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">oc edit scheduler cluster
+
+apiVersion: config.openshift.io/v1
+kind: Scheduler
+metadata:
+  name: cluster
+...output omitted...
+spec:
+  defaultNodeSelector: key1=value1,key2=value2
+...output omitted..</code></pre>
+<blockquote>
+  <p><code>openshift-kube-apiserver</code> project will redeploy.</p>
+</blockquote>
+<h4>Project Node Selectors</h4>
+<ul>
+  <li>OpenShift includes those node selectors to any new pods that are created in the project.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Namespace
+metadata:
+  name: myproject
+  annotations:
+    openshift.io/node-selector: key3=value3,key4=value4
+...output omitted...</code></pre>
+<blockquote>
+  <p>Project node selectors take precedence over cluster-wide node selectors. Thus, if you define both project and cluster-wide node selectors, then OpenShift applies only the project node selectors to the new pods but not the cluster-wide node selectors.</p>
+</blockquote>
+<h4>Pod Scheduling and Node Conditions</h4>
+<ul>
+  <li>OpenShift automatically taints nodes under some conditions, such as memory or disk pressure.<ul>
+      <li><code><strong>node.kubernetes.io/not-ready: </strong></code>The node is <mark class="marker-yellow">not ready.</mark> This taint corresponds to the <code>Ready=False</code> node condition.</li>
+      <li><code><strong>node.kubernetes.io/unreachable: </strong></code>The node is<mark class="marker-yellow"> unreachable from the node controller.</mark> This taint corresponds to the <code>Ready=Unknown</code> node condition.</li>
+      <li><code><strong>node.kubernetes.io/memory-pressure: </strong></code>The node has<mark class="marker-yellow"> memory pressure issues</mark>. This taint corresponds to the <code>MemoryPressure=True</code> node condition.</li>
+      <li><code><strong>node.kubernetes.io/disk-pressure: </strong></code>The node has<mark class="marker-yellow"> disk pressure issues</mark>. This taint corresponds to the <code>DiskPressure=True</code> node condition.</li>
+      <li><code><strong>node.kubernetes.io/network-unavailable: </strong></code>The<mark class="marker-yellow"> node network is unavailable.</mark></li>
+      <li><code><strong>node.kubernetes.io/unschedulable: </strong></code>The node is unschedulable.</li>
+      <li><code><strong>node.cloudprovider.kubernetes.io/uninitialized: </strong></code>This taint sets the node as unusable when you <mark class="marker-yellow">start the node controller in an external cloud provider</mark>. After the cloud controller manager initializes the node, the kubelet removes the taint.</li>
+      <li><code><strong>node.kubernetes.io/pid-pressure: </strong></code>The node has <mark class="marker-yellow">process identifier (PID) pressure</mark>. This taint corresponds to the <code>PIDPressure=True</code> node condition.</li>
+    </ul>
+  </li>
+</ul>
+<h4>Project Tolerations</h4>
+<ul>
+  <li>OpenShift includes those tolerations to any new pods that are created in the project.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">kind: Project
+apiVersion: project.openshift.io/v1
+metadata:
+  name: myproject
+  annotations:
+    scheduler.alpha.kubernetes.io/defaultTolerations: &gt;-
+      [{"operator":"Equal","effect":"NoSchedule","key":"key1","value":"value1"}]</code></pre>
+<h4>Tolerating All Taints</h4>
+<ul>
+  <li>You can configure a pod to tolerate all the node taints by using the <code>operator: "Exists"</code> toleration with no key or value parameters.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+
+...output omitted...
+
+spec:
+	tolerations:
+	- operator: "Exists"</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
