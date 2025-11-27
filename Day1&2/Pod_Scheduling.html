@@ -2,7 +2,7 @@
 title: Chapter 4.  Pod Scheduling
 description: 
 published: true
-date: 2025-11-27T09:21:37.699Z
+date: 2025-11-27T09:28:19.210Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:35:08.089Z
@@ -152,6 +152,36 @@ metadata:
 spec:
 	tolerations:
 	- operator: "Exists"</code></pre>
+<h4>Topology Keys</h4>
+<ul>
+  <li>The Kubernetes scheduler can use node labels to indicate the failure domain that each node belongs to.<ul>
+      <li><code><strong>kubernetes.io/hostname: </strong></code>This label is set to match the hostname value of each node in the cluster.</li>
+      <li><code><strong>topology.kubernetes.io/zone: </strong></code>Represents the availability zone of the node. This label is set by the cloud provider and might not be present in on-premise deployments.</li>
+      <li><code><strong>topology.kubernetes.io/region: </strong></code>Represents the region of the node. This label is set by the cloud provider and might not be present in on-premise deployments.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
