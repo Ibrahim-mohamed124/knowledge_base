@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T17:34:38.675Z
+date: 2025-11-27T17:36:13.933Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -224,7 +224,14 @@ spec:
 </ul>
 <h4>Argo CD Resource Hooks</h4>
 <ul>
-  <li>With Argo CD resource hooks, you can define and execute actions during the lifecycle of an application synchronization process.</li>
+  <li>With Argo CD resource hooks, you can define and execute actions during the lifecycle of an application synchronization process.<ul>
+      <li><code><strong>PreSync: </strong></code>Argo CD executes these hooks before applying the manifests.</li>
+      <li><code><strong>Sync: </strong></code>Argo CD executes these hooks only after it successfully completes all the <code>PreSync</code> hooks. These hooks are applied at the same time as applying the manifests.</li>
+      <li><code><strong>Skip: </strong></code>This hook indicates to Argo CD to skip applying the manifests. Use this hook for resources that Argo CD must create, but that other resources modify and that must be out of Argo CD synchronization.</li>
+      <li><code><strong>PostSync: </strong></code>Argo CD executes these hooks only after it successfully completes all the <code>Sync</code> hooks, and the application and its resources are in a healthy state.</li>
+      <li><code><strong>SyncFail: </strong></code>Argo CD executes these hooks whenever the synchronization operation fails.</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
