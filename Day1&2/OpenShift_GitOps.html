@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T13:34:16.179Z
+date: 2025-11-27T13:39:50.210Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -124,9 +124,21 @@ metadata:
   <li>Sync waves are often insufficient when working with complex applications such as operators. If you face issues with deploying applications, then<mark class="marker-yellow"> consider configuring retries in your Argo CD applications for more reliable synchronization.</mark></li>
 </ul>
 <h3>Administrating Clusters with OpenShift GitOps</h3>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Argo CD can use the <i>server-side apply</i> process to edit existing resources. The server-side apply process is an alternative to the client-side apply process that <code>kubectl apply</code> and other processes use by default.</li>
+  <li>client-side apply, commands such as <code>kubectl apply</code> start by retrieving the resource definition from the API server. If the resource exists, then the client compares this retrieved resource definition with the definition that you provide. Then, the client sends a <code>PATCH</code> request to the API server with the updated parts.</li>
+  <li>with server-side apply, your resource definition can include only your changes and exclude parts of the resource that you do not want to update. <mark class="marker-yellow">The client submits this partial resource definition, and the API server updates only the submitted parts. (kube apiserver)</mark></li>
+  <li>For patching, use the <code>ServerSideApply=true</code> sync option. Also, add the <code>Validate=false</code> sync option to disable validation, because the partial resource definition might not be a valid complete resource definition.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: operator.openshift.io/v1
+kind: Console
+metadata:
+  name: cluster
+  annotations:
+    argocd.argoproj.io/sync-options: ServerSideApply=true,Validate=false
+spec:
+  customization:
+    customProductName: Production</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
