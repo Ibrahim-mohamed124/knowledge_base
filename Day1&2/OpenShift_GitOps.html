@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T12:59:40.513Z
+date: 2025-11-27T13:29:19.645Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -29,7 +29,7 @@ dateCreated: 2025-11-27T10:08:04.851Z
 </ul>
 <h3>The Default Argo CD Instance</h3>
 <ul>
-  <li>By default, the OpenShift GitOps operator creates a default Argo CD instance with the <code>openshift-gitops</code> name for both the instance and the namespace. This default instance has a set of permissions to support cluster administration.&nbsp;</li>
+  <li>By default, the OpenShift GitOps operator creates a default Argo CD instance with the <code>openshift-gitops</code> name for both the instance and the namespace. This default instance has a set of permissions to support cluster administration.</li>
 </ul>
 <h3>Configuring Argo CD RBAC</h3>
 <ul>
@@ -56,6 +56,78 @@ spec:
     dex:
       openShiftOAuth: true
 ...output omitted...</code></pre>
+<blockquote>
+  <p>The <code>sso</code> key contains the authentication configuration. In the default Argo CD instance, the <code>openShiftOAuth</code> key is set to the <code>true</code> value. With this configuration, OpenShift users can log in to the Argo CD web console by clicking <strong>LOG IN VIA OPENSHIFT</strong>. By default, OpenShift users have limited privileges.</p>
+</blockquote>
+<h3>Configuring Trusted Certificates for Git Repository Access</h3>
+<ul>
+  <li>The <i>repo server</i> component of Argo CD handles communicating with Git repositories. To change the trusted certificate authorities, modify the certificate bundle in the <code>/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem</code> path of the repo server.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: openshift-gitops
+  namespace: openshift-gitops
+  ...output omitted...
+spec:
+  ...output omitted...
+  repo:
+    volumeMounts:
+    - mountPath: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+      name: volume_name
+      subPath: bundle_name
+    volumes:
+    - configMap:
+        name: configuration_map_name
+      name: volume_name
+...output omitted...</code></pre>
+<h3>Customizing the Argo CD Web Interface Certificate</h3>
+<ul>
+  <li>The default Argo CD instance has its own self-signed HTTPS certificate. The Argo CD resource has a <code>termination</code> key to change the route termination. Use the <code>reencrypt</code> termination so that Argo CD uses the default router certificate.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  ...output omitted...
+spec:
+  ...output omitted...
+  server:
+    ...output omitted...
+    route:
+      enabled: true
+      tls:
+        termination: reencrypt
+...output omitted...</code></pre>
+<h3>Deploying Complex Resources by Using Sync Waves and Retries</h3>
+<ul>
+  <li>use the <code>argocd.argoproj.io/sync-wave</code> annotation on resources to help with dependencies. The annotation value must be a positive or negative integer or zero. Resources without the annotation default to 0.</li>
+  <li>A group of resources with the same annotation is a <i>sync wave</i>. Argo CD synchronizes sync waves in order, starting with sync waves with lower numbers. <mark class="marker-yellow">Argo CD synchronizes a sync</mark> <mark class="marker-yellow">wave only when all lower sync waves are healthy.</mark></li>
+  <li><mark class="marker-yellow">Argo CD performs a dry run before synchronizations</mark>. When deploying custom resources, the synchronization continues only if the corresponding custom resource definitions exist when Argo CD performs the dry run. To prevent this problem, add the <code>argocd.argoproj.io/sync-options</code> annotation to these resources by adding the <code>SkipDryRunOnMissingResource=true</code> option.</li>
+</ul>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: example-operator
+...output omitted...
+---
+kind: ExampleCustomResource
+metadata:
+  name: example
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
+...output omitted...</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
