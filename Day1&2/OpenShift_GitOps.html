@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T13:39:50.210Z
+date: 2025-11-27T13:46:26.091Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -139,8 +139,17 @@ metadata:
 spec:
   customization:
     customProductName: Production</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Argo CD Instances</h4>
+<ul>
+  <li>By default, the new Argo CD instances have permissions to manage resources only in the namespace where they are deployed.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: argocd-name
+  namespace: argocd-ns
+spec:
+...output omitted...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
