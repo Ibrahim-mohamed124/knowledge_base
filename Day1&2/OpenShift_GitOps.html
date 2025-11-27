@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T14:02:54.978Z
+date: 2025-11-27T17:34:38.675Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -57,6 +57,7 @@ spec:
     dex:
       openShiftOAuth: true
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>The <code>sso</code> key contains the authentication configuration. In the default Argo CD instance, the <code>openShiftOAuth</code> key is set to the <code>true</code> value. With this configuration, OpenShift users can log in to the Argo CD web console by clicking <strong>LOG IN VIA OPENSHIFT</strong>. By default, OpenShift users have limited privileges.</p>
 </blockquote>
@@ -120,6 +121,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
     argocd.argoproj.io/sync-wave: "1"
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Because systems that use eventual consistency do not apply updates immediately, updates can take a perceivable amount of time to be effective across the cluster or even in a single node.</li>
   <li>Sync waves are often insufficient when working with complex applications such as operators. If you face issues with deploying applications, then<mark class="marker-yellow"> consider configuring retries in your Argo CD applications for more reliable synchronization.</mark></li>
@@ -151,8 +153,9 @@ metadata:
   namespace: argocd-ns
 spec:
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>allow an Argo CD instance to manage resources in other namespaces than where it is deployed by adding the <code>argocd.argoproj.io/managed-by</code> label to the namespace.&nbsp;</li>
+  <li>allow an Argo CD instance to manage resources in other namespaces than where it is deployed by adding the <code>argocd.argoproj.io/managed-by</code> label to the namespace.</li>
   <li>Argo CD comes with the following predefined roles:<ul>
       <li><code>role:readonly</code> for read access to all the resources.</li>
       <li><code>role:admin</code> for read and write access to all the resources</li>
@@ -175,6 +178,7 @@ spec:
   <li>For all the resources, the Argo CD actions include <code>create</code>, <code>delete</code>, <code>get</code>, and <code>update</code>. For the <code>applications</code> resource, Argo CD also includes the <code>action/<i>group</i>/<i>kind</i>/<i>action-name</i></code>, <code>override</code>, and <code>sync</code> actions.</li>
 </ul>
 <pre><code class="language-plaintext">p, role/user/group, resource, action, target</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The <code><i>target</i></code> field differs between the application resources and the other resources:<ul>
       <li>For the <code>applications</code>, <code>applicationsets</code>, <code>logs</code>, and <code>exec</code> resources, which belong to a project, the <code>target</code> field is <code><i>project</i>/<i>object</i></code>.</li>
@@ -203,4 +207,30 @@ spec:
   <li>When setting up Git workflows for GitOps, you can either create only one repository for all your files, which is called a <i>monorepo environment</i>, or create repositories for different concerns, which is called a <i>polyrepo environment</i>.</li>
   <li>From an Argo CD perspective, you can either treat the entire monorepo as a single application, to deploy changes across various services or components concurrently, or use paths to create several applications from a single repository.</li>
 </ul>
+<h4>Organizing Applications by Environment</h4>
+<ol>
+  <li>One GitOps practice<mark class="marker-yellow"> separates the test and production environments by directory inside a Git repository</mark>, instead of creating different branches for them.<ul>
+      <li>Tools such as <mark class="marker-yellow">Kustomize or Helm create reusable and modular configurations, to separate base manifests and environment-specific adjustments.</mark></li>
+    </ul>
+  </li>
+  <li>Separate the test and production environments by different repos.</li>
+</ol>
+<h3>Managing Sensitive Data in GitOps</h3>
+<ul>
+  <li>Secrets Store CSI Driver operator to manage multiple secrets, keys, and certificates.&nbsp;<ul>
+      <li>enables Kubernetes pods to mount secrets that are stored in external secret management systems such as Azure Key Vault, AWS Secrets Manager, or<mark class="marker-yellow"> HashiCorp Vault as volumes.&nbsp;</mark></li>
+    </ul>
+  </li>
+</ul>
+<h4>Argo CD Resource Hooks</h4>
+<ul>
+  <li>With Argo CD resource hooks, you can define and execute actions during the lifecycle of an application synchronization process.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
