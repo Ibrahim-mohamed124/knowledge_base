@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T17:36:13.933Z
+date: 2025-11-27T17:43:54.248Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -225,19 +225,47 @@ spec:
 <h4>Argo CD Resource Hooks</h4>
 <ul>
   <li>With Argo CD resource hooks, you can define and execute actions during the lifecycle of an application synchronization process.<ul>
-      <li><code><strong>PreSync: </strong></code>Argo CD executes these hooks before applying the manifests.</li>
-      <li><code><strong>Sync: </strong></code>Argo CD executes these hooks only after it successfully completes all the <code>PreSync</code> hooks. These hooks are applied at the same time as applying the manifests.</li>
-      <li><code><strong>Skip: </strong></code>This hook indicates to Argo CD to skip applying the manifests. Use this hook for resources that Argo CD must create, but that other resources modify and that must be out of Argo CD synchronization.</li>
-      <li><code><strong>PostSync: </strong></code>Argo CD executes these hooks only after it successfully completes all the <code>Sync</code> hooks, and the application and its resources are in a healthy state.</li>
-      <li><code><strong>SyncFail: </strong></code>Argo CD executes these hooks whenever the synchronization operation fails.</li>
+      <li><code><strong>PreSync: </strong></code>Argo CD executes these hooks <mark class="marker-yellow">before </mark>applying the manifests.</li>
+      <li><code><strong>Sync: </strong></code>Argo CD executes these hooks only after it successfully completes all the <code>PreSync</code> hooks. These hooks are applied at the <mark class="marker-yellow">same time</mark> as applying the manifests.</li>
+      <li><code><strong>Skip: </strong></code>This hook indicates to <mark class="marker-yellow">Argo CD to skip applying the manifests</mark>. Use this hook for resources that Argo CD must create, but that other resources modify and that must be out of Argo CD synchronization.</li>
+      <li><code><strong>PostSync: </strong></code>Argo CD executes these hooks only <mark class="marker-yellow">after </mark>it successfully completes all the <code>Sync</code> hooks, and the application and its resources are in a healthy state.</li>
+      <li><code><strong>SyncFail: </strong></code>Argo CD executes these hooks whenever the synchronization operation <mark class="marker-yellow">fails</mark>.</li>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>Argo CD resource hooks are Kubernetes resources that include the <code>argocd.argoproj.io/hook</code> annotation. Typically, Argo CD resource hooks are implemented through Kubernetes jobs.</p>
+</blockquote>
+<pre><code class="language-plaintext">apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: schema-migrate-database
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+...output omitted...</code></pre>
+<ul>
+  <li>add the <code>argocd.argoproj.io/hook-delete-policy</code> annotation for your hooks, so Argo CD deletes them automatically according to one of the following policies:<ul>
+      <li><code><strong>HookSucceeded: </strong></code>Delete the hook resource after the hook succeeds.</li>
+      <li><code><strong>HookFailed: </strong></code>Delete the hook resource after the hook fails.</li>
+      <li><code><strong>BeforeHookCreation: </strong></code>Delete any existing hook resource before a new one is created.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: integration-test-app
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+...output omitted...</code></pre>
+<h4>Argo CD Rollbacks And Rollouts</h4>
+<ul>
+  <li>Argo CD can also automate rollbacks in certain conditions, such as for failing resource hooks.</li>
+</ul>
+<blockquote>
+  <p>The Argo CD rollback feature is disabled if you enable automatic synchronization for your application, because Argo CD automatically synchronizes the application to the latest Git commit version.</p>
+</blockquote>
+<ul>
+  <li>integrate Argo Rollouts with ingress controllers and service meshes, to gradually shift the traffic from your previous application version to a new one.</li>
+</ul>
