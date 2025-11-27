@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T13:52:12.951Z
+date: 2025-11-27T13:59:41.578Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -169,11 +169,35 @@ spec:
       g, cluster-admins, role:admin
     scopes: '[groups]'
 ...output omitted...</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Fine-grained RBAC</h4>
+<ul>
+  <li>The resources in Argo CD are <code>accounts</code>, <code>applications</code>, <code>applicationsets</code>, <code>certificates</code>, <code>clusters</code>, <code>exec</code>, <code>extensions</code>, <code>gpgkeys</code>, <code>logs</code>, <code>projects</code>, and <code>repositories</code>.</li>
+  <li>For all the resources, the Argo CD actions include <code>create</code>, <code>delete</code>, <code>get</code>, and <code>update</code>. For the <code>applications</code> resource, Argo CD also includes the <code>action/<i>group</i>/<i>kind</i>/<i>action-name</i></code>, <code>override</code>, and <code>sync</code> actions.</li>
+</ul>
+<pre><code class="language-plaintext">p, role/user/group, resource, action, target</code></pre>
+<ul>
+  <li>The <code><i>target</i></code> field differs between the application resources and the other resources:<ul>
+      <li>For the <code>applications</code>, <code>applicationsets</code>, <code>logs</code>, and <code>exec</code> resources, which belong to a project, the <code>target</code> field is <code><i>project</i>/<i>object</i></code>.</li>
+      <li>For other resources, the <code>target</code> field is <code><i>object</i></code>.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">...output omitted...
+spec:
+  ...output omitted...
+  rbac:
+    defaultPolicy: ''
+    policy: |
+      g, project-devs, role:project-devs      &gt;&gt;&gt;&gt;&gt; group, role:group
+      p, role:project-devs, applications, get, */*, allow  permission &gt;&gt; role?? action on what??
+      p, role:project-devs, projects, get, *, allow
+      p, role:project-devs, clusters, get, *, allow
+      g, project-admins, role:project-admins
+      p, role:project-admins, applications, *, */*, allow
+      p, role:project-admins, projects, get, *, allow
+      p, role:project-admins, clusters, get, *, allow
+    scopes: '[groups]'
+...output omitted...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
