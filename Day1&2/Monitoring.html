@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T08:36:15.749Z
+date: 2025-11-28T08:36:38.029Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -126,6 +126,10 @@ Shows persistent volume claims in the pending state.</code></pre>
     </ul>
   </li>
   <li>The <mark class="marker-yellow">Alertmanager configuration</mark> is saved in the <code>alertmanager-main</code> secret in the <code>openshift-monitoring</code> namespace.</li>
+</ul>
+<pre><code class="language-plaintext">oc extract secret/alertmanager-main -n openshift-monitoring \
+  --to ./ --confirm</code></pre>
+<ul>
   <li>sed script to clean the many quotes in the secret <code><strong>sed -f script.sed alertmanager.yaml</strong></code></li>
 </ul>
 <pre><code class="language-plaintext">#!/usr/bin/sed -f
