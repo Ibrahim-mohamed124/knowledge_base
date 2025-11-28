@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-28T11:57:32.900Z
+date: 2025-11-28T12:25:37.259Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -10,7 +10,7 @@ dateCreated: 2025-11-28T11:57:32.900Z
 
 <h1>OpenShift Logging</h1>
 <ul>
-  <li>OpenShift Logging collects and aggregates the log messages from all the pods and nodes in your cluster.&nbsp;</li>
+  <li>OpenShift Logging collects and aggregates the log messages from all the pods and nodes in your cluster.</li>
   <li>Configure OpenShift Logging to forward the logs to a third-party log aggregator for long-term storage, or to an observability platform for further analysis, and minimize the resource requirement on your cluster.<ul>
       <li>Elasticsearch</li>
       <li>Grafana Loki</li>
@@ -22,15 +22,29 @@ dateCreated: 2025-11-28T11:57:32.900Z
 </ul>
 <h3>OpenShift Logging Components</h3>
 <ul>
-  <li>A collector, a log store, and a visualization console.&nbsp;</li>
+  <li>A collector, a log store, and a visualization console.</li>
 </ul>
 <figure class="image image_resized" style="width:99.05%;"><img src="/openshift_logging_arch.svg"></figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Log Collector</h4>
+<ul>
+  <li>OpenShift Logging uses <mark class="marker-yellow">Vector </mark>to collect logs from all running containers and cluster nodes, and<mark class="marker-yellow"> replaces Fluentd</mark>, which was the collector in earlier versions of OpenShift Logging.</li>
+  <li>, Vector<mark class="marker-yellow"> runs as a daemon set</mark> in the cluster and therefore runs on all nodes.</li>
+  <li>Vector groups logs into:<ul>
+      <li><strong>Infrastructure: </strong>Infrastructure logs include <mark class="marker-yellow">container logs in</mark> the <code>openshift-*</code>, <code>kube*</code>, and <code>default</code> namespaces, and <mark class="marker-yellow">system logs from the cluster nodes.</mark></li>
+      <li><strong>Audit: </strong>Audit logs include both <mark class="marker-yellow">Kubernetes API and OpenShift API audit logs</mark>, as well as the<mark class="marker-yellow"> Linux audit logs from the cluster nodes.</mark> These logs might contain sensitive security details, and OpenShift Logging does not store them by default.</li>
+      <li><strong>Application: </strong><mark class="marker-yellow">Application logs are all container logs from user projects.</mark></li>
+    </ul>
+  </li>
+</ul>
+<h4>Log Store</h4>
+<ul>
+  <li>The log store uses Grafana Loki to aggregate logs from the entire cluster into a central place and provides access control to logs.<mark class="marker-yellow"> Loki replaces Elasticsearch</mark>, which was the log store in earlier versions of the logging subsystem.</li>
+</ul>
+<h4>Visualization</h4>
+<ul>
+  <li>OpenShift Logging provides a native OpenShift Console plug-in to view and query logs in the internal log store. The OpenShift Logging UI component replaces <mark class="marker-yellow">Kibana</mark>, which was the web interface in earlier versions of OpenShift Logging.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
