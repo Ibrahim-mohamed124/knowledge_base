@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T08:36:38.029Z
+date: 2025-11-28T08:37:12.214Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -255,3 +255,5 @@ route:
 </figure>
 <pre><code class="language-plaintext"> oc set data secret/alertmanager-main -n openshift-monitoring \
   --from-file alertmanager.yaml</code></pre>
+<pre><code class="language-plaintext">oc logs -f statefulset.apps/alertmanager-main -c alertmanager \
+  -n openshift-monitoring</code></pre>
