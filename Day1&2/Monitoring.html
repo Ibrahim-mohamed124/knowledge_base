@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T07:54:57.822Z
+date: 2025-11-28T07:55:44.181Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -36,7 +36,7 @@ dateCreated: 2025-11-28T07:44:41.035Z
       </li>
       <li><strong>Prometheus Operator:</strong>
         <ul>
-          <li>The Prometheus operator deploys and configures both Prometheus and Alertmanager. The operator also manages the generation of configuration targets (service monitors and pod monitors).</li>
+          <li>The Prometheus operator deploys and configures both <mark class="marker-yellow">Prometheus </mark>and <mark class="marker-yellow">Alertmanager</mark>. The operator also manages the generation of configuration targets (service monitors and pod monitors).</li>
         </ul>
       </li>
       <li><strong>Prometheus Adapter:</strong>
@@ -76,7 +76,13 @@ dateCreated: 2025-11-28T07:44:41.035Z
       </li>
     </ul>
   </li>
-  <li>The monitoring components for user-defined projects are installed in the <code>openshift-user-workload-monitoring</code> project.</li>
+  <li>The monitoring components for user-defined projects are installed in the <code>openshift-user-workload-monitoring</code> project.<ul>
+      <li>Prometheus Operator</li>
+      <li>Prometheus</li>
+      <li>Thanos Ruler</li>
+      <li>Alertmanager</li>
+    </ul>
+  </li>
 </ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
