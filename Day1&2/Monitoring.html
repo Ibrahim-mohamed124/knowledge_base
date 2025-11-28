@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T07:55:44.181Z
+date: 2025-11-28T08:07:48.365Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -84,10 +84,28 @@ dateCreated: 2025-11-28T07:44:41.035Z
     </ul>
   </li>
 </ol>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Prometheus</h4>
+<ul>
+  <li>Prometheus gathers and <mark class="marker-yellow">stores streams of data from the cluster as </mark><i><mark class="marker-yellow">time-series data</mark></i>. Time-series data consists of a sequence of samples, where <mark class="marker-yellow">each sample contains the following elements:</mark>
+    <ul>
+      <li>A timestamp</li>
+      <li>A numeric value (such as an integer, float, or Boolean)</li>
+      <li>A set of labels in the form of key/value pairs</li>
+    </ul>
+  </li>
+  <li>The <mark class="marker-yellow">key/value pairs isolate groups of related values for filtering.</mark></li>
+  <li>The OpenShift has three monitoring stack components to <mark class="marker-yellow">gather the metrics from the Kubernetes API</mark>: the <code>kube-state-metrics</code>, <code>openshift-state-metrics</code>, and <code>node-exporter</code> agents.</li>
+  <li>Prometheus Query Language provides several <mark class="marker-yellow">operators </mark>to compute new time-series metrics like arithmetic and comparison operators, and also it contains some<mark class="marker-yellow"> built-in functions.</mark></li>
+</ul>
+<pre><code class="language-plaintext">node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes*100&lt;50
+Shows nodes with less than 50% of available memory.
+
+kube_persistentvolumeclaim_status_phase{phase="Pending"} == 1
+Shows persistent volume claims in the pending state.</code></pre>
+<ul>
+  <li>The Red&nbsp;Hat add-on operators can define extra metrics and alerts. For example, the <code>compliance</code> operator exposes additional metrics to Prometheus. You can get a list of exposed metrics by using the following query:</li>
+</ul>
+<pre><code class="language-plaintext">{name=~"compliance.*"}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
