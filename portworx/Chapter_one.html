@@ -2,7 +2,7 @@
 title: Chapter One ~ Air
 description: 
 published: true
-date: 2025-11-28T16:26:43.443Z
+date: 2025-11-28T16:43:23.859Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:18.433Z
@@ -22,7 +22,16 @@ dateCreated: 2025-11-17T09:09:18.433Z
       <li>Asynchronous PX-DR replication ensures reliable data replication between geographically separated StorageClusters. Offer PTO and RPO of 15 min.</li>
     </ul>
   </li>
-  <li>High-Performance Storage with PX-StoreV2 uses block storage for metadata management. This datastore is optimized for IO intensive workloads (NVMe class devices).</li>
+  <li>High-Performance Storage with PX-StoreV2 <mark class="marker-yellow">uses block storage for metadata management for optimized handling</mark>. This datastore is optimized for IO intensive workloads (NVMe class devices).<ul>
+      <li>Unlike the V1, which was responsible for filesystems in the volumes as well, V2 <mark class="marker-yellow">focus purely on volume management.&nbsp;</mark></li>
+    </ul>
+  </li>
+  <li>Portworx offers support for KubeVirt.&nbsp;<ul>
+      <li>Portworx enables live migration of virtual machines (VMs) within Kubernetes without downtime</li>
+    </ul>
+  </li>
+  <li>&nbsp;Portworx Autopilot automates storage management using a rule-based engine that dynamically responds to scaling needs by continuous monitoring.&nbsp;</li>
+  <li>Portworx Stork (Storage Orchestrator Runtime for Kubernetes) enhances Kubernetes with dynamic volume placement and intelligent scheduling based on volume locality</li>
 </ol>
 <h4><strong>Kubernetes Persistent volumes</strong></h4>
 <ul>
