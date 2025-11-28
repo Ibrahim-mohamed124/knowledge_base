@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T08:29:18.807Z
+date: 2025-11-28T08:34:59.126Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -116,7 +116,18 @@ Shows persistent volume claims in the pending state.</code></pre>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Sending Alert Notifications</h3>
+<ul>
+  <li>Alerts <mark class="marker-yellow">are not configured by default to be sent to any notification systems</mark>. You can configure OpenShift Container Platform to send alerts to the following receiver types:<ul>
+      <li>Email</li>
+      <li>PagerDuty</li>
+      <li>Slack</li>
+      <li>Webhook</li>
+    </ul>
+  </li>
+  <li>The <mark class="marker-yellow">Alertmanager configuration</mark> is saved in the <code>alertmanager-main</code> secret in the <code>openshift-monitoring</code> namespace.</li>
+  <li>sed script to clean the many quotes in the secret <code><strong>sed -f script.sed alertmanager.yaml</strong></code></li>
+</ul>
+<pre><code class="language-plaintext">#!/usr/bin/sed -f
+s/"//g  
+s/\&lt;\(null\)\&gt;/'\1'/g  </code></pre>
