@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T08:07:48.365Z
+date: 2025-11-28T08:29:18.807Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -106,8 +106,16 @@ Shows persistent volume claims in the pending state.</code></pre>
   <li>The Red&nbsp;Hat add-on operators can define extra metrics and alerts. For example, the <code>compliance</code> operator exposes additional metrics to Prometheus. You can get a list of exposed metrics by using the following query:</li>
 </ul>
 <pre><code class="language-plaintext">{name=~"compliance.*"}</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Alerts and Notifications</h2>
+<ul>
+  <li>Use the Alerts UI to manage alerts, silences, and alerting rules.<ul>
+      <li><strong>Alerting rules: </strong>Alerting rules contain <mark class="marker-yellow">a set of conditions</mark> that outline a particular state within a cluster. Alerts are triggered when those conditions are true. An alerting rule can be<mark class="marker-yellow"> assigned a severity</mark> that <mark class="marker-yellow">defines how the alerts are routed</mark>.</li>
+      <li><strong>Alerts: </strong>An alert is fired when the<mark class="marker-yellow"> conditions that are defined in an alerting rule are true</mark>. Alerts notify that a set of conditions apply in an OpenShift Container Platform cluster.</li>
+      <li><strong>Alert receivers: </strong>You can configure the alerting system to<mark class="marker-yellow"> route alerts to a receiver and send notifications via email, send pager notifications, or forward them to another system by using a webhook.</mark></li>
+      <li><strong>Silences: </strong>A silence can be<mark class="marker-yellow"> applied to an alert to prevent sending notifications when the conditions for an alert are true</mark>. You can mute an alert after the initial notification, while you work on resolving the underlying issue.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
