@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T07:53:44.395Z
+date: 2025-11-28T07:54:57.822Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -26,56 +26,58 @@ dateCreated: 2025-11-28T07:44:41.035Z
   <li>The OpenShift monitoring stack is based on the Prometheus open source project.</li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/monitoring-architecture.svg"></figure>
-<ul>
-  <li>All components of the default monitoring stack are installed in the <code>openshift-monitoring</code> project and provide monitoring features for core platform components.</li>
-  <li><mark class="marker-yellow">Modifying any existing resource and creating additional </mark><code>ServiceMonitor</code>, <code>PodMonitor</code>, or <code>PrometheusRule</code> <mark class="marker-yellow">resources </mark>in the <code>openshift-monitoring</code> <mark class="marker-yellow">project is not supported</mark>.&nbsp;</li>
-  <li><strong>Cluster Monitoring Operator:</strong>
-    <ul>
-      <li>The cluster monitoring operator controls the deployed monitoring components and ensures that they are always in sync with the latest version of the cluster monitoring operator.</li>
+<ol>
+  <li>All components of the default monitoring stack are installed in the <code>openshift-monitoring</code> project and provide monitoring features for core platform components.<ul>
+      <li><mark class="marker-yellow">Modifying any existing resource and creating additional </mark><code>ServiceMonitor</code>, <code>PodMonitor</code>, or <code>PrometheusRule</code> <mark class="marker-yellow">resources </mark>in the <code>openshift-monitoring</code> <mark class="marker-yellow">project is not supported</mark>.&nbsp;</li>
+      <li><strong>Cluster Monitoring Operator:</strong>
+        <ul>
+          <li>The cluster monitoring operator controls the deployed monitoring components and ensures that they are always in sync with the latest version of the cluster monitoring operator.</li>
+        </ul>
+      </li>
+      <li><strong>Prometheus Operator:</strong>
+        <ul>
+          <li>The Prometheus operator deploys and configures both Prometheus and Alertmanager. The operator also manages the generation of configuration targets (service monitors and pod monitors).</li>
+        </ul>
+      </li>
+      <li><strong>Prometheus Adapter:</strong>
+        <ul>
+          <li><mark class="marker-yellow">The Prometheus adapter exposes cluster resources for Horizontal Pod Autoscaling (HPA).</mark></li>
+        </ul>
+      </li>
+      <li><strong>Kube state metrics:</strong>
+        <ul>
+          <li>The <code>kube-state-metrics</code> converter agent <mark class="marker-yellow">exports Kubernetes objects to metrics that Prometheus can parse.</mark></li>
+        </ul>
+      </li>
+      <li><strong>OpenShift state metrics:</strong>
+        <ul>
+          <li>The <code>openshift-state-metrics</code> agent is based on the <code>kube-state-metrics</code> agent and adds monitoring for OpenShift-specific resources (such as image registry metrics).</li>
+        </ul>
+      </li>
+      <li><strong>Node exporter:</strong>
+        <ul>
+          <li>The <code>node-exporter</code> agent exports <mark class="marker-yellow">low-level metrics for compute nodes.</mark></li>
+        </ul>
+      </li>
+      <li><strong>Thanos Querier:</strong>
+        <ul>
+          <li>Thanos Querier is a single, multitenant interface that enables <mark class="marker-yellow">aggregating and deduplicating cluster and user workload metrics.</mark></li>
+        </ul>
+      </li>
+      <li><strong>Telemeter Client:</strong>
+        <ul>
+          <li>Telemeter Client sends a data portion from Prometheus instances to Red&nbsp;Hat for remote health monitoring.</li>
+        </ul>
+      </li>
+      <li><strong>The monitoring web console:</strong>
+        <ul>
+          <li>The OpenShift Container Platform web console provides the <strong>Observe</strong> section to access and manage monitoring features. In the Observe section, you can access monitoring dashboards, metrics, alerts, and metrics targets.</li>
+        </ul>
+      </li>
     </ul>
   </li>
-  <li><strong>Prometheus Operator:</strong>
-    <ul>
-      <li>The Prometheus operator deploys and configures both Prometheus and Alertmanager. The operator also manages the generation of configuration targets (service monitors and pod monitors).</li>
-    </ul>
-  </li>
-  <li><strong>Prometheus Adapter:</strong>
-    <ul>
-      <li><mark class="marker-yellow">The Prometheus adapter exposes cluster resources for Horizontal Pod Autoscaling (HPA).</mark></li>
-    </ul>
-  </li>
-  <li><strong>Kube state metrics:</strong>
-    <ul>
-      <li>The <code>kube-state-metrics</code> converter agent <mark class="marker-yellow">exports Kubernetes objects to metrics that Prometheus can parse.</mark></li>
-    </ul>
-  </li>
-  <li><strong>OpenShift state metrics:</strong>
-    <ul>
-      <li>The <code>openshift-state-metrics</code> agent is based on the <code>kube-state-metrics</code> agent and adds monitoring for OpenShift-specific resources (such as image registry metrics).</li>
-    </ul>
-  </li>
-  <li><strong>Node exporter:</strong>
-    <ul>
-      <li>The <code>node-exporter</code> agent exports <mark class="marker-yellow">low-level metrics for compute nodes.</mark></li>
-    </ul>
-  </li>
-  <li><strong>Thanos Querier:</strong>
-    <ul>
-      <li>Thanos Querier is a single, multitenant interface that enables <mark class="marker-yellow">aggregating and deduplicating cluster and user workload metrics.</mark></li>
-    </ul>
-  </li>
-  <li><strong>Telemeter Client:</strong>
-    <ul>
-      <li>Telemeter Client sends a data portion from Prometheus instances to Red&nbsp;Hat for remote health monitoring.</li>
-    </ul>
-  </li>
-  <li><strong>The monitoring web console:</strong>
-    <ul>
-      <li>The OpenShift Container Platform web console provides the <strong>Observe</strong> section to access and manage monitoring features. In the Observe section, you can access monitoring dashboards, metrics, alerts, and metrics targets.</li>
-    </ul>
-  </li>
-</ul>
-<p>&nbsp;</p>
+  <li>The monitoring components for user-defined projects are installed in the <code>openshift-user-workload-monitoring</code> project.</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
