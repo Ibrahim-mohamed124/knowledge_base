@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-28T12:25:37.259Z
+date: 2025-11-28T12:37:43.925Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -45,6 +45,64 @@ dateCreated: 2025-11-28T11:57:32.900Z
 <ul>
   <li>OpenShift Logging provides a native OpenShift Console plug-in to view and query logs in the internal log store. The OpenShift Logging UI component replaces <mark class="marker-yellow">Kibana</mark>, which was the web interface in earlier versions of OpenShift Logging.</li>
 </ul>
+<h3>Configure OpenShift Logging Components</h3>
+<ul>
+  <li>The <code>ClusterLogging</code> CR in <mark class="marker-yellow">openshift-logging namespace</mark> configures and manages deploying the OpenShift Logging components.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: logging.openshift.io/v1
+kind: ClusterLogging
+metadata:
+  name: instance 1
+  namespace: openshift-logging
+spec:
+  managementState: Managed 2
+  collection:
+    type: vector 3
+    tolerations: 
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/infra
+      value: reserved
+    - effect: NoExecute
+      key: node-role.kubernetes.io/infra
+      value: reserved</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The resource name must be <code>instance</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The management state must be <code>Managed</code> for the components to receive updates from the OpenShift Logging operator.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The collector type to deploy. It can be either <code>vector</code> or the deprecated <code>fluentd</code> collector.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<blockquote>
+  <p>OpenShift Logging automatically adds the <code>node-role.kubernetes.io/master:NoSchedule</code> toleration to the collector daemon set so the collector can run on both control planes and compute nodes.</p>
+</blockquote>
+<ul>
+  <li><mark class="marker-pink">The log collector pods are deployed only if the internal log store is enabled, or if log forwarding to an external log aggregator is configured.</mark></li>
+</ul>
+<h3>Configure Log Collection and Forwarding</h3>
+<ul>
+  <li>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
