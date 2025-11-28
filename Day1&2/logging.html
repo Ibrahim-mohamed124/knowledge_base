@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-28T12:37:43.925Z
+date: 2025-11-28T12:42:14.687Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -97,10 +97,82 @@ spec:
 </ul>
 <h3>Configure Log Collection and Forwarding</h3>
 <ul>
-  <li>&nbsp;</li>
+  <li>The log collector is configured by default to forward infrastructure and application logs to the internal log store that you define in the cluster logging resource.</li>
+  <li>Vector can forward logs to various log stores, in addition to the internal Loki deployment, such as Splunk, Amazon CloudWatch, or <mark class="marker-yellow">any logging solution that uses the syslog protocol.</mark></li>
+  <li>The ClusterLogForwarder custom resource configures the log collector, and defines which logs to collect and where to send them.&nbsp;</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: logging.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance 1
+  namespace: openshift-logging
+spec:
+  outputs:
+    - name: splunk-receiver 2
+      secret: 3
+        name: splunk-auth-token
+      type: splunk 4
+      url: https://mysplunkserver.example.com:8088/services/collector 5
+  pipelines:
+    - name: to-splunk 6
+      inputRefs:
+        - audit
+        - infrastructure
+      outputRefs:
+        - splunk-receiver</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The resource name must be <code>instance</code> and in the <code>openshift-logging</code> namespace.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the log output. You use that name in the log pipeline to refer to that log destination.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Secret to use for connecting to the log store, if required. In this example, the secret contains the authentication token for the Splunk instance.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Type of the external log store.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">URL of the external log store.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Log pipeline configuration that forwards audit and infrastructure logs to the Splunk instance.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>The cluster log forwarder resource is composed of inputs, outputs, and pipelines.<ol>
+      <li><code><strong>inputs:</strong></code>An input defines the log type to collect. OpenShift Logging provides a predefined input for each log category: <code>infrastructure</code>, <code>audit</code>, and <code>application</code>.</li>
+      <li><code><strong>outputs: </strong></code>An output defines a destination for the logs. You can configure multiple log outputs to one or more external log stores.<ul>
+          <li>If the internal log store is configured, then the <code>default</code> output becomes available to target the internal Loki instance.</li>
+        </ul>
+      </li>
+      <li><code><strong>pipelines: </strong></code>A pipeline<mark class="marker-yellow"> defines a routing from one or more log inputs to one or more log outputs</mark>. You can create several log pipelines and use any combination of log inputs and outputs to forward logs according to your needs.</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
