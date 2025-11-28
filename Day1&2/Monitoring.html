@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T08:34:59.126Z
+date: 2025-11-28T08:36:15.749Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -131,3 +131,123 @@ Shows persistent volume claims in the pending state.</code></pre>
 <pre><code class="language-plaintext">#!/usr/bin/sed -f
 s/"//g  
 s/\&lt;\(null\)\&gt;/'\1'/g  </code></pre>
+<ul>
+  <li>The monitoring stack can send alerts by email through an SMTP server. The following example sends the <code>PersistentVolumeUsageNearFull</code> alerts to the <code>ocp-admins@example.com</code> email address.</li>
+</ul>
+<pre><code class="language-plaintext">global:
+  resolve_timeout: 5m
+  smtp_from: alerts@ocp4.example.com  1
+  smtp_smarthost: '192.168.50.254:25'  2
+  smtp_hello: localhost  3
+  smtp_auth_username: smtp_training  4
+  smtp_auth_password: Red_H4T@!  5
+  smtp_require_tls: false  6
+...output omitted...
+inhibit_rules:
+  ...output omitted...
+receivers:
+  ...output omitted...
+  - name: email  7
+    email_configs:  8
+      - to: ocp-admins@example.com  9
+route:
+  group_by:
+    - namespace
+  group_interval: 2m  10
+  group_wait: 30s
+  receiver: Default
+  repeat_interval: 1m  11
+  routes:
+    ...output omitted...
+    - receiver: email  12
+      match:
+        alertname: PersistentVolumeUsageNearFull  13
+      continue: true  14
+...output omitted...</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The global SMTP host. If you do not define <code>smarthost</code> in the <code>email_configs</code> field for a receiver, then this field is the default host in use.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The global email sender address. If you do not define <code>from</code> in the <code>email_configs</code> field for a receiver, then this field is the default address in use.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The hello parameter for the SMTP connection.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The global SMTP username for optional authentication. If you do not define <code>auth_username</code> in the <code>email_configs</code> field for a receiver, then this field is the default username in use.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The global SMTP password for optional authentication. This password is used if <code>auth_password</code> is not defined in the <code>email_configs</code> field for a receiver. If you do not define <code>auth_password</code> in the <code>email_configs</code> field for a receiver, then this field is the default password in use.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">A global setting to specify whether TLS is required for SMTP. You can override this setting by using <code>require_tls</code> in the <code>email_configs</code> field for a receiver.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/7.svg" alt="7"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">An arbitrary name for the receiver. A route specifies this receiver name for a match.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/8.svg" alt="8"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">This setting indicates that the receiver sends alerts by email.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/9.svg" alt="9"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>to</code> setting must be specified in the <code>email_configs</code> field, and does not have an equivalent global SMTP setting.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/10.svg" alt="10"></figure>
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/11.svg" alt="11"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Configure the <code>group_interval</code> and <code>repeat_interval</code> fields so the alert email notifications are sent more frequently.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/12.svg" alt="12"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The receiver to use if the <code>match</code> evaluates as <code>true</code> for the alert.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/13.svg" alt="13"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The expression to match a specific alert name.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/14.svg" alt="14"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">By default, every alert that enters the routing tree stops after the first matching child. The <code>continue: true</code> parameter permitts the alert to continue through the routing tree matching subsequent routes.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<pre><code class="language-plaintext"> oc set data secret/alertmanager-main -n openshift-monitoring \
+  --from-file alertmanager.yaml</code></pre>
