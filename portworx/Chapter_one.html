@@ -2,7 +2,7 @@
 title: Chapter One ~ Air
 description: 
 published: true
-date: 2025-11-28T16:03:46.223Z
+date: 2025-11-28T16:26:43.443Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:18.433Z
@@ -10,8 +10,20 @@ dateCreated: 2025-11-17T09:09:18.433Z
 
 <h3>Storage Concepts&nbsp;</h3>
 <blockquote>
-  <p>Container Native Storage: Container Native Storage (CNS) is software that includes microservice-based storage controllers that are orchestrated by Kubernetes. These storage controllers can run anywhere that Kubernetes can run which means any cloud or even bare metal server or on top of a traditional shared storage system.</p>
+  <p>Container Native Storage: Container Native Storage (CNS) <mark class="marker-yellow">is software that includes microservice-based storage controllers that are orchestrated by Kubernetes. These storage controllers can run anywhere that Kubernetes</mark> can run which means any cloud or even bare metal server or on top of a traditional shared storage system.</p>
 </blockquote>
+<blockquote>
+  <p><strong>CSI (Container Storage Interface)</strong> is <mark class="marker-yellow">a standard API for connecting</mark> <strong>arbitrary storage systems</strong> to container orchestrators like Kubernetes, while <strong>Container Native Storage (CNS)</strong> refers to storage solutions that are built to run as microservices within the container orchestrator itself.&nbsp;</p>
+</blockquote>
+<h4>Why Portworx ?</h4>
+<ol>
+  <li>Comprehensive disaster recovery suite with sync, near-sync, and async replication.<ul>
+      <li>Synchronous PX-DR replication creates a stretched StorageCluster between Kubernetes clusters for zero RPO.&nbsp;</li>
+      <li>Asynchronous PX-DR replication ensures reliable data replication between geographically separated StorageClusters. Offer PTO and RPO of 15 min.</li>
+    </ul>
+  </li>
+  <li>High-Performance Storage with PX-StoreV2 uses block storage for metadata management. This datastore is optimized for IO intensive workloads (NVMe class devices).</li>
+</ol>
 <h4><strong>Kubernetes Persistent volumes</strong></h4>
 <ul>
   <li>A piece of storage in the cluster that has been provisioned by an administrator.</li>
