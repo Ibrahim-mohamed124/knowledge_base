@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-24T10:12:33.650Z
+date: 2025-11-28T17:28:46.404Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -18,6 +18,7 @@ source ~/.bashrc
 pxctl status --color</code></pre>
 <h1><strong>System Requirements</strong></h1>
 <ul>
+  <li>A Portworx cluster must include <mark class="marker-yellow">at least three nodes</mark>, each meeting specific hardware, software, and network requirements.</li>
   <li><strong>Hardware requirements</strong></li>
 </ul>
 <figure class="table">
@@ -29,18 +30,18 @@ pxctl status --color</code></pre>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">CPU</th>
-        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Minimum 4 Cores | Recommended 8 Cores X2 for PX-store2</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Minimum 8 Cores | Recommended 16 Cores X1/2 for PX-storeV1</th>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">RAM</th>
-        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Minimum 4GB | Recommended 8GB X2 for PX-store2</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Minimum 8 GB | Recommended 16GB X1/2 for PX-storeV1</th>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Disk</th>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
           <ul>
-            <li><code>/var</code> - Recommended 30GB Free</li>
-            <li><code>/opt</code> - Minimum 3.5GB Free</li>
+            <li><code>/var</code> - Recommended 20GB Free</li>
+            <li><code>/opt</code> - Minimum 20GB Free</li>
           </ul>
         </th>
       </tr>
@@ -57,7 +58,7 @@ pxctl status --color</code></pre>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Storage drives</th>
-        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Storage drives must be unmounted block storage: raw disks, drive partitions, LVM, or cloud block storage.</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><mark class="marker-yellow">Storage drives must be unmounted block storage</mark>: raw disks, drive partitions, LVM, or cloud block storage.</th>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Network connectivity</th>
@@ -67,7 +68,7 @@ pxctl status --color</code></pre>
             <li>10 Gbps recommended</li>
             <li>1 Gbps minimum</li>
           </ul>
-          <p>Latency requirements for synchronous replication: less than 10ms between nodes in the cluster.</p>
+          <p>Latency requirements for synchronous replication:<mark class="marker-yellow"> less than 10ms between nodes in the cluster.</mark></p>
           <p>&nbsp;</p>
         </th>
       </tr>
