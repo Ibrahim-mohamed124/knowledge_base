@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-28T17:28:46.404Z
+date: 2025-11-28T17:36:32.863Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -83,7 +83,7 @@ pxctl status --color</code></pre>
   <li><strong>Software requirements:</strong>
     <ul>
       <li>a supported Linux kernel version, container runtime, and key-value store configuration.</li>
-      <li>swap disabled and NTP enabled, to ensure reliable and consistent cluster behavior.</li>
+      <li>Swap disabled and NTP enabled, to ensure reliable and consistent cluster behavior.</li>
     </ul>
   </li>
 </ul>
@@ -92,11 +92,20 @@ pxctl status --color</code></pre>
     <tbody>
       <tr>
         <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Software</strong></th>
-        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Requirements PX-Store1</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Requirements PX-StoreV2</strong></th>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Linux kernel and distro</th>
-        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Kernel version 4.18 or greater.<br>To check if your Linux distro and kernel are supported, see <a href="https://docs.portworx.com/portworx-enterprise/support-matrix/supported-kernels">Supported Kernels</a>.</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">
+          <p>Kernel version 4.20 or greater.<br>To check if your Linux distro and kernel are supported, see <a href="https://docs.portworx.com/portworx-enterprise/support-matrix/supported-kernels">Supported Kernels</a>.</p>
+          <p>During installation, Porworx download <code>dmsetup</code>, <code>mdadm</code>, <code>lvm2</code>, <code>thin-provisioning-tools</code>, <code>augeas-tools</code> package from distribution specific repositories.</p>
+          <blockquote>
+            <p><code>mdadm</code> is a command-line utility for Linux that creates, manages, and monitors software RAID arrays, which combine multiple physical disks into a single logical unit</p>
+          </blockquote>
+          <blockquote>
+            <p>Augeas is a configuration editing tool. It parses configuration files in their native formats and transforms them into a tree. Configuration changes are made by manipulating this tree and saving it back into native config files.</p>
+          </blockquote>
+        </th>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Docker</th>
@@ -122,7 +131,7 @@ pxctl status --color</code></pre>
 <ul>
   <li>Portworx runs as a pod in a Kubernetes cluster and requires specific ports to be open for node communication, storage operations, and telemetry. These vary slightly between Kubernetes and OpenShift environments.</li>
 </ul>
-<h3><strong>East-to-West (Bi-directional)</strong></h3>
+<h3><strong>East-to-West (Bi-directional in the same domain)</strong></h3>
 <figure class="table">
   <table style="background-color:rgb(27, 27, 29);">
     <thead>
