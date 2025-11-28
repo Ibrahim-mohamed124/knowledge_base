@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-28T12:47:14.482Z
+date: 2025-11-28T12:58:34.682Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -235,8 +235,71 @@ spec:
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Each call to the Kubernetes and OpenShift APIs generates an audit event that is forwarded to the log store.</li>
+  <li>Define audit filters that remove unwanted or low-value events from the audit logs, and reduce the data that is sent to the log store.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  filters:
+  - name: unwanted-events 1
+    type: kubeAPIAudit
+    kubeAPIAudit:
+      rules:
+      - level: None 2
+        namespaces:
+        - openshift-*
+        - kube*
+        userGroups:
+        - system:serviceaccounts:openshift-*
+        - system:nodes
+      - level: None 3
+        resources:
+        - group: coordination.k8s.io
+          resources:
+          - leases
+        users:
+        - system:kube*
+        - system:apiserver
+        verbs:
+        - update
+  ...output omitted...
+  pipelines:
+  - name: audit-to-syslog
+    inputRefs:
+    - audit
+    filterRefs: 4
+    - unwanted-events
+    outputRefs:
+    - audit-rsyslog</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Name of the filter. You use that name in the log pipeline to refer to that filter configuration.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The first rule removes all audit events that were created from users in the <code>system:serviceaccounts:openshift-*</code> and <code>system:nodes</code> groups, for resources in the <code>openshift-*</code> and <code>kube*</code> namespaces.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The second rule removes audit events that were generated from the <code>system:kube*</code> and <code>system:apiserver</code> users, who update <code>leases</code> resources in the <code>coordination.k8s.io</code> API group.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>filterRefs</code> field lists all filters to apply to the log pipeline.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
