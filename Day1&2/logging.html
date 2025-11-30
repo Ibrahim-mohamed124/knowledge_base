@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-30T08:49:36.428Z
+date: 2025-11-30T08:54:17.088Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -321,12 +321,38 @@ spec:
       <li>Configure the <code>ClusterLogging</code> CR from OpenShift Logging to use Loki as the log store.</li>
     </ol>
   </li>
-  <li>&nbsp;</li>
+  <li>Creating Object Storage from ODF:</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: loki-bucket-odf
+  namespace: openshift-logging
+spec:
+  generateBucketName: loki-bucket-odf
+  storageClassName: openshift-storage.noobaa.io</code></pre>
+<pre><code class="language-plaintext">oc get configmap/loki-bucket-odf -o yaml
+apiVersion: v1
+data:
+  BUCKET_HOST: s3.openshift-storage.svc
+  BUCKET_NAME: loki-bucket-odf-69d9...ab91
+  BUCKET_PORT: "443"
+  BUCKET_REGION: ""
+  BUCKET_SUBREGION: ""
+kind: ConfigMap
+...output omitted...</code></pre>
+<pre><code class="language-plaintext"> oc extract --to=- secret/loki-bucket-odf -n openshift-logging
+# AWS_ACCESS_KEY_ID
+o0sOY8oaZtPfP18DRjSa
+# AWS_SECRET_ACCESS_KEY
+z1QtDH37lUvLnkjpE3E4aS8yQI56CLPozGJOt31e</code></pre>
+<pre><code class="language-plaintext"> oc create secret generic logging-loki-odf \
+  -n openshift-logging \
+  --from-literal=access_key_id=${ACCESS_KEY_ID} \
+  --from-literal=access_key_secret=${SECRET_ACCESS_KEY} \
+  --from-literal=bucketnames=${BUCKET_NAME} \
+  --from-literal=endpoint=https://${BUCKET_HOST}:${BUCKET_PORT}</code></pre>
+<h4>Create a LokiStack Instance</h4>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
