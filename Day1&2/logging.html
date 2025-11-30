@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-30T08:54:17.088Z
+date: 2025-11-30T09:02:54.008Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -353,12 +353,119 @@ z1QtDH37lUvLnkjpE3E4aS8yQI56CLPozGJOt31e</code></pre>
   --from-literal=bucketnames=${BUCKET_NAME} \
   --from-literal=endpoint=https://${BUCKET_HOST}:${BUCKET_PORT}</code></pre>
 <h4>Create a LokiStack Instance</h4>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: logging-loki
+  namespace: openshift-logging
+spec:
+  limits: 1
+    global:
+      retention: 2
+        days: 20
+        stream: 3
+        - days: 4
+          priority: 1
+          selector: '{kubernetes_namespace_name=~"test.+"}'
+  size: 1x.demo 4
+  storage:
+    secret:
+      name: logging-loki-odf 5
+      type: s3 6
+    tls:
+      caName: openshift-service-ca.crt 7
+  storageClassName: ocs-external-storagecluster-ceph-rbd 8
+  tenants:
+    mode: openshift-logging</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Defines the limits that Loki applies to the log streams. See the references section for more information about the limit types for log streams.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">This limit defines 20 days for log retention.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The retention policy that is based on log streams. Stream-based retention policies are useful if lowering the retention period for a log stream. For example, you might switch to debug mode temporarily in a project to troubleshoot a critical issue. However, debug logs can quickly fill your storage if the retention period is long. Then, you reduce the retention period for that project for a few days. The selector for the stream-based retention policy is specified in the LogQL query language, which is explained later in this section.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The size of the <code>LokiStack</code> instance. You can configure it by using sizes such as <code>1x.small</code> and <code>1x.medium</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name for the secret that contains the bucket credentials.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The corresponding storage type.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/7.svg" alt="7"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Loki must configure the Certificate Authority (CA) for the object storage endpoint if the object storage endpoint certificate is not trusted. For ODF, you can use the OpenShift service CA in the <code>openshift-service-ca.crt</code> configuration map. For other object stores, create a configuration map that contains the CA certificate.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/8.svg" alt="8"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of a storage class for temporary storage. You can list the storage classes for your cluster by using the <code>oc get storageclasses</code> command.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h4>Configure the OpenShift Logging Log Store</h4>
+<ul>
+  <li>To configure OpenShift Logging to use Loki as the log store, you must create a cluster logging resource in the <code>openshift-logging</code> namespace and set <code>lokistack</code> as the log store type. Then, OpenShift Logging uses Loki to store the<mark class="marker-yellow"> infrastructure and application logs.</mark> The Logging operator does not include audit logs, because these logs might contain sensitive security details.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: logging.openshift.io/v1
+kind: ClusterLogging
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  managementState: Managed
+  logStore:
+    type: lokistack 1
+    lokistack:
+      name: logging-loki 2
+  collection:
+    type: vector</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The log store type.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name for the internal <code>LokiStack</code> instance.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
