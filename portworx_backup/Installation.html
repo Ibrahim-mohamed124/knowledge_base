@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-11-30T19:54:52.985Z
+date: 2025-11-30T20:24:11.191Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -484,10 +484,20 @@ dateCreated: 2025-11-30T15:15:48.923Z
   </table>
 </figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>If you are planning to install/upgrade your Stork version to <mark class="marker-pink">25.2.0</mark> on your air-gapped environment, ensure that you pull the following <code>kopiaexecutor</code> and <code>nfsexecutor</code> images from the docker paths and push them to your custom image registry:<br><code>docker.io/openstorage/kopiaexecutor:master-latest</code><br><code>docker.io/openstorage/nfsexecutor:master-latest</code></p>
+</blockquote>
+<blockquote>
+  <p>If you need to initiate KDMP or cross-cloud backups, ensure that you allocate additional buffer storage that is <mark class="marker-yellow">double the size of the original Persistent Volume Claim (PVC) in your application cluster.</mark></p>
+</blockquote>
+<ul>
+  <li>When Prometheus and Alertmanager are in <code>CrashLoopBackOff</code> state, ensure the that the global or cluster wide Prometheus Operator does not interfere with the Prometheus and Alertmanager instances in <code>px-backup</code> namespace. If so, modify the cluster-wide Prometheus operator to exclude the namespace where the Portworx Backup Prometheus stack is installed.</li>
+  <li>Add the following entry under <code>spec.template.spec.containers[0].args</code> in the cluster-wide Prometheus Operator spec to resolve conflicts if any:</li>
+</ul>
+<pre><code class="language-plaintext">--deny-namespaces=&lt;pxb-namespace&gt;</code></pre>
+<ul>
+  <li>Starting from PXB 2.9.0, <mark class="marker-yellow">MongoDB requires all 3 replica set pods to be DNS-resolvable during startup.</mark> PXB will no longer come up if only one MongoDB pod is available after install or upgrade and if the primary pod is unavailable (for example, after a reboot), MongoDB waits for all peers to become reachable before accepting connections</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
