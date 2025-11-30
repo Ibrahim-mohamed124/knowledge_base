@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-11-30T19:48:13.436Z
+date: 2025-11-30T19:54:52.985Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -359,9 +359,130 @@ dateCreated: 2025-11-30T15:15:48.923Z
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>You need to map a VSC (default or non-default) to your storage provisioner while taking a CSI backup in Portworx Backup</li>
+</ul>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Platform</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>VSC Status</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Reference</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Azure</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Default VSC does not exist, you need to create a VSC</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><a href="https://learn.microsoft.com/en-us/azure/aks/azure-disk-csi#volume-snapshots">Create a VSC on Azure</a></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">EKS</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Default VSC does not exist, you need to create a VSC</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><a href="https://aws.amazon.com/blogs/containers/using-ebs-snapshots-for-persistent-storage-with-your-eks-cluster/">Create a VSC on EKS</a></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">GKE</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Default VSC exists</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><a href="https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/volume-snapshots">GKE volume snapshots</a></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">IKS</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Default VSC exists</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><a href="https://cloud.ibm.com/docs/containers?topic=containers-vpc-volume-snapshot#vpc-create-snapshot">IBM volume snapshots</a></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">OCP</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Default VSC is created only if ODF is installed on application cluster</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><a href="https://docs.openshift.com/container-platform/4.8/storage/container_storage_interface/persistent-storage-csi-snapshots.html">OCP volume snapshots</a></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li><strong>Backup Resources State Matrix</strong></li>
+</ul>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>PXB Resource</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>States</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backup location</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><strong>Valid:</strong> suitable for creating manual or scheduled backups</li>
+            <li><strong>Invalid:</strong> validation of the backup location failed, preventing PXB from accessing or restoring backups from it</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Users and user groups</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><strong>Unknown:</strong> user is deleted from Keycloak or user data is not cached due to API way accessing PXB</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Clusters</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><strong>Active:</strong> fully operational and accessible; users can perform all PXB operations such as creating backups, restores, and schedules</li>
+            <li><strong>Disconnected:</strong> issues like incorrect Kubeconfig, missing Stork installation, expired Kubernetes token, or cluster inaccessibility</li>
+            <li><strong>Not Available:</strong> expired Kubeconfig or inaccessible cluster (possibly down)</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Virtual Machines</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><strong>Paused:</strong> pre-exec and post-exec rules fail</li>
+            <li><strong>Running:</strong> virtual machine is operational</li>
+            <li><strong>Stopped:</strong> pre-exec and post-exec rules fail</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backup schedules</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><strong>Active:</strong> scheduler actively creates backups at specified intervals</li>
+            <li><strong>Suspended:</strong> scheduler is paused, and no backups are created</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backups</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><strong>Success:</strong> all associated resources (for example, PVs, PVCs, VMs) are successfully backed up</li>
+            <li><strong>Partial Success:</strong> only some volumes are backed up</li>
+            <li><strong>Failure:</strong> none of the volumes or resources are backed up successfully</li>
+            <li><strong>In-Progress:</strong> backup operation is ongoing</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Restores</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">
+          <ul>
+            <li><strong>Success:</strong> restore operation completed successfully</li>
+            <li><strong>Partial Success:</strong> only some resources were restored</li>
+            <li><strong>Failure:</strong> restore operation failed</li>
+            <li><strong>In-Progress:</strong> restore operation is ongoing</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
