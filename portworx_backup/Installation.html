@@ -2,13 +2,262 @@
 title: Installation
 description: 
 published: true
-date: 2025-11-30T15:15:48.923Z
+date: 2025-11-30T19:38:04.268Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
 -->
 
 <h1><strong>Install Prerequisites</strong></h1>
+<h2><strong>Compatibility Matrices</strong></h2>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Portworx Backup</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Stork</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Portworx Enterprise</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Kubernetes</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.10.0</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">25.5.0<br>25.4.0<br>25.3.2</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">3.5.0<br>3.4.0<br>3.3.1<br>3.3.0<br>3.2.3</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">v1.29.x to v1.33.x</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.9.1</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">25.4.0<br>25.3.2<br>25.3.1<br>25.2.1</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">3.3.1<br>3.3.0<br>3.2.3<br>3.2.1.1</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">v1.29.x to v1.31.x</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.9.0</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">25.3.1<br>25.2.1<br>25.1.0</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">3.3.0<br>3.2.3<br>3.2.1.1</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">v1.29.x to v1.31.x</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.8.4</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">25.2.1<br>25.1.0<br>24.4.0</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">3.2.3<br>3.0.5<br>3.1.8</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">v1.29.x to v1.31.x</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<blockquote>
+  <p>If you have deployed Portworx Enterprise with <a href="https://docs.portworx.com/portworx-enterprise/platform/secure/px-security/">PX-Security enabled</a> on your application cluster, these are the compatible versions of Stork for Portworx Backup:</p>
+  <ul>
+    <li><strong>Portworx Backup 2.9.0:</strong> 25.3.1, 25.2.1</li>
+    <li><strong>Portworx Backup 2.8.4:</strong> 25.2.1</li>
+  </ul>
+</blockquote>
+<h2><strong>Portworx Backup Linux Distro support matrix</strong></h2>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Linux Distros</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;"><strong>Qualified versions for Backup cluster</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;"><strong>Qualified versions for Application cluster</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Amazon Linux 2</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">5.10.230-223.885.amzn2.x86_64</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">5.10.230-223.885.amzn2.x86_64</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Photon</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">5.0</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">5.0</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">RHEL</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">- 9.4<br>- 8.10<br>&nbsp;</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">9.4<br>- 8.10<br>&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Rocky</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">9.2</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">9.2</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">SUSE</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">- SUSE 15.6<br>- Linux Micro 6.1</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">- SUSE 15.6<br>- Linux Micro 6.1</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Ubuntu</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">22.04</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;text-align:center;">22.04</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h2><strong>Portworx Enterprise configuration (Storage provisioner)</strong></h2>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Configuration Type</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Portworx Enterprise Pool</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Portworx Backup version</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">OCP</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">PX-StoreV1</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.4.3 and above</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">PX-StoreV2</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.6.0 and above</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">vSphere</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">PX-StoreV1</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.4.3 and above</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">PX-StoreV2</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.6.0 and above</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">RWX Block (Volume Block)</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">PX-StoreV2</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">2.9.1 and above (Portworx Enterprise 3.4.x and above)</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h2><strong>Role Privileges Matrix</strong></h2>
+<ul>
+  <li>the built-in roles available within Portworx Backup User Management.</li>
+  <li>the Super Administrator, Infrastructure Administrator, Applications Administrator, and Applications User.&nbsp;</li>
+  <li>RBAC resources are governed by user roles and permissions and non-RBAC resources, which are accessible regardless of role.&nbsp;</li>
+  <li>The RBAC &nbsp;resources:<ul>
+      <li>Backup locations</li>
+      <li>Cloud accounts</li>
+      <li>Schedule policies</li>
+      <li>Backup Rules</li>
+      <li>Roles</li>
+      <li>Users and User Groups</li>
+    </ul>
+  </li>
+  <li>Non-RBAC resources:<ul>
+      <li>Clusters</li>
+      <li>Namespaces</li>
+      <li>Virtual machines</li>
+      <li>Backup schedules</li>
+      <li>Backups</li>
+      <li>Restores</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <ol>
+    <li>Infrastructure administrators, application administrator and application users can only view, edit, and delete the RBAC resources owned by them.</li>
+    <li>Owners of Portworx Backup RBAC resources can share their resources with the intended users and groups regardless of the role of the users or groups.</li>
+    <li>Portworx Backup roles can only view the non-owned owned RBAC resources shared with them by other roles.</li>
+  </ol>
+</blockquote>
+<h2><strong>Encryption Matrix</strong></h2>
+<ul>
+  <li>Portworx Backup allows you to enable two types of encryption, one for the backup data at rest in the destination and the other for the backups in transit.</li>
+</ul>
+<ol>
+  <li><strong>Server-side encryption (SSE-S3) only at AWS S3</strong></li>
+  <li><strong>Transit data encryption</strong></li>
+</ol>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <tbody>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Backup Type</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Data Files</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Encryption Support</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Encryption Key</strong></th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="4">Backup to Portworx volumes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Data</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">User-provided</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Resource files</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">User-provided</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="4">KDMP Backup</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Data</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Volume snapshots are encrypted with default encryption key and not with the user-provided encryption key</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Resource files</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">User-provided</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="4">Backup to Cloud providers</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Data</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">No</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">-</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Resource files</th>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">User-provided</th>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h2><strong>Backup Types by Driver Matrix</strong></h2>
+<ul>
+  <li>Portworx Backup uses different drivers to create backups<ul>
+      <li>Portworx cloud snapshot: applies <mark class="marker-yellow">only if Portworx is your storage platform</mark>, utilizes Portworx driver to create a backup</li>
+      <li>Direct KDMP(Kubernetes Data Management Platform): utilizes<mark class="marker-yellow"> KDMP driver to create a backup </mark>and <mark class="marker-pink">holds good for cross-cloud backups and restores</mark></li>
+      <li>CSI snapshot: <mark class="marker-yellow">uses storage providers CSI driver to create a snapshot</mark></li>
+      <li>CSI snapshot + offload snapshot to backup location (KDMP driver): utilizes CSI driver to create a backup and KDMP driver to offload the backup to backup location (S3 or NFS)</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h3>&nbsp;</h3>
 <h3><strong>scc&nbsp;</strong></h3>
 <pre><code class="language-plaintext">oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:default
 oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:pxcentral-apiserver
