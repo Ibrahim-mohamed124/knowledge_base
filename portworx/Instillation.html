@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T11:43:17.047Z
+date: 2025-11-30T11:46:32.743Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -364,7 +364,12 @@ data:
   <li><strong>Console plugin</strong> &gt; <strong>Enable</strong> to manage your Portworx cluster using the Portworx dashboard within the OpenShift console.</li>
 </ul>
 <pre><code class="language-plaintext">oc patch console.operator cluster --type=json -p='[{"op":"add","path":"/spec/plugins/-","value":"portworx"}]'</code></pre>
-<p>&nbsp; 4. create the storageCluster.</p>
+<p>&nbsp; 4. Create the storageCluster.</p>
+<p>&nbsp; 5. Verify Portworx Pod Status</p>
+<pre><code class="language-plaintext">oc get pods -n &lt;px-namespace&gt; -o wide | grep -e portworx -e px</code></pre>
+<blockquote>
+  <p><mark class="marker-yellow">The Portworx Operator </mark>performs a<mark class="marker-yellow"> pre-flight check across the cluster, and the check must pass on each node</mark>. This check determines whether <mark class="marker-yellow">each node in the cluster is compatible with the PX-StoreV2 datastore.</mark></p>
+</blockquote>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
