@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T12:25:23.082Z
+date: 2025-11-30T12:28:12.923Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -395,11 +395,46 @@ oc exec &lt;px-pod&gt; -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl cluster pro
 <ul>
   <li>Run the following command to download a list of the released images:</li>
 </ul>
-<pre><code class="language-plaintext">curl -o images "https://install.portworx.com/$PXVER/images?kbver=$KBVER"</code></pre>
+<pre><code class="language-plaintext">curl -o images "https://install.portworx.com/$PXVER/images?kbver=$KBVER"
+
+docker.io/portworx/px-enterprise:3.5.0
+docker.io/portworx/oci-monitor:3.5.0
+docker.io/openstorage/stork:25.5.0
+docker.io/openstorage/cmdexecutor:25.5.0
+docker.io/portworx/autopilot:1.3.18
+docker.io/portworx/cluster-diags:3.4.2
+docker.io/portworx/ccm-go:1.4.30
+docker.io/portworx/realtime-metrics:1.0.32
+docker.io/portworx/telemetry-envoy:1.1.18
+docker.io/portworx/log-upload:px-1.1.46
+docker.io/portworx/px-operator:25.5.0
+registry.k8s.io/pause:3.1
+registry.k8s.io/kube-scheduler-amd64:v1.31.10
+registry.k8s.io/kube-controller-manager-amd64:v1.31.10
+docker.io/portworx/portworx-dynamic-plugin:2.0.0
+docker.io/nginxinc/nginx-unprivileged:alpine-slim
+registry.k8s.io/kube-scheduler-amd64:v1.21.4
+registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.15.0
+registry.k8s.io/sig-storage/csi-provisioner:v5.3.0
+registry.k8s.io/sig-storage/csi-resizer:v1.14.0
+registry.k8s.io/sig-storage/csi-snapshotter:v8.3.0
+registry.k8s.io/sig-storage/snapshot-controller:v8.3.0
+quay.io/prometheus/prometheus:v3.7.2
+quay.io/prometheus-operator/prometheus-operator:v0.86.1
+quay.io/prometheus-operator/prometheus-config-reloader:v0.86.1
+quay.io/prometheus/alertmanager:v0.28.1
+quay.io/jetstack/cert-manager-controller:v1.17.4
+quay.io/jetstack/cert-manager-webhook:v1.17.4
+quay.io/jetstack/cert-manager-cainjector:v1.17.4
+quay.io/jetstack/cert-manager-acmesolver:v1.17.4
+</code></pre>
 <ul>
   <li>On an internet-connected host that matches the architecture and OS version of the Kubernetes cluster nodes intended for Portworx installation, <mark class="marker-yellow">download the air-gapped installation bootstrap script</mark> for the Kubernetes and Portworx versions:</li>
 </ul>
 <pre><code class="language-plaintext">curl -o px-ag-install.sh -L "https://install.portworx.com/$PXVER/air-gapped?kbver=$KBVER"</code></pre>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
