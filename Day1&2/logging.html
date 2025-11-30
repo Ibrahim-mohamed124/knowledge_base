@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-30T09:04:26.666Z
+date: 2025-11-30T09:11:58.755Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -501,3 +501,34 @@ spec:
     </tbody>
   </table>
 </figure>
+<ul>
+  <li>create a cluster logging resource in the <code>openshift-logging</code> namespace and set <code>ocp-console</code> as the visualization type.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: logging.openshift.io/v1
+kind: ClusterLogging
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+...output omitted...
+  visualization:
+    type: ocp-console</code></pre>
+<h4>LogQL Queries</h4>
+<ul>
+  <li>Loki organizes logs into streams that are called <i>chunks</i>.&nbsp;</li>
+  <li>A <i>chunk</i> is a sequence of log entries that use the same set of labels.</li>
+  <li>Labels are key-value pairs that help identify and filter log entries.</li>
+  <li>A LogQL query consists of the following parameters:<ul>
+      <li>The log stream selector, which accepts the following operators: <code>=</code> equals, <code>!=</code> not equals, <code>=~</code> regex pattern matches, and <code>!~</code> regex pattern does not match.</li>
+      <li>A filter expression, which accepts the following operators: <code>|=</code> equals, <code>!=</code> not equals, <code>|~</code> regex pattern matches, and <code>!~</code> regex pattern does not match.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">log_type="infrastructure" | json
+log_type="audit" | json | file=~".*audit.log" (filter)</code></pre>
+<ul>
+  <li>Adding the <code>| json</code> string to your query extracts all JSON properties as labels for ease of viewing.&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
