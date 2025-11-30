@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T12:28:12.923Z
+date: 2025-11-30T12:30:24.596Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -433,8 +433,17 @@ quay.io/jetstack/cert-manager-acmesolver:v1.17.4
 </ul>
 <pre><code class="language-plaintext">curl -o px-ag-install.sh -L "https://install.portworx.com/$PXVER/air-gapped?kbver=$KBVER"</code></pre>
 <ul>
-  <li>&nbsp;</li>
+  <li>Pull the container images for the Kubernetes and Portworx versions:</li>
 </ul>
+<pre><code class="language-plaintext">sh px-ag-install.sh pull</code></pre>
+<ul>
+  <li>Log in to docker:</li>
+</ul>
+<pre><code class="language-plaintext">docker login &lt;your-private-registry&gt;</code></pre>
+<ul>
+  <li>Push the container images to a private registry that is accessible to your air-gapped nodes.<mark class="marker-yellow"> Do not include </mark><code><mark class="marker-yellow">http://</mark></code><mark class="marker-yellow"> in your private registry path:</mark></li>
+</ul>
+<pre><code class="language-plaintext">sh px-ag-install.sh push &lt;your-registry-path&gt;/repo_name</code></pre>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
