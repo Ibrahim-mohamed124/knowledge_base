@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-28T17:55:18.196Z
+date: 2025-11-30T11:21:04.541Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -16,6 +16,7 @@ or kubectl  exec -it svc/portworx-service to excute the pxctl command ...
 source ~/.bashrc
 
 pxctl status --color</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>Portworx by Pure Storage<mark class="marker-yellow"> recommends upgrading the Portworx version prior to upgrading your OpenShift version. </mark><a href="https://docs.portworx.com/portworx-enterprise/support-matrix/operator-openshift-upgrade-path#portworx-350"><mark class="marker-yellow">url here</mark></a></p>
 </blockquote>
@@ -321,6 +322,15 @@ pxctl status --color</code></pre>
     </tbody>
   </table>
 </figure>
+<h2>Installation on Bare Metal</h2>
+<h4>Requirments</h4>
+<ol>
+  <li>Dedicated disk for KVDB on at least three nodes, and each disk must has a unique device name across all the nodes.<ul>
+      <li>persistent disk names can be obtained by using the sym links that the udev create in /dev/disk/by-id/*. &nbsp;udev uses unique identifiers for each disk like vendor code, provisioner code, and other to create these links.</li>
+    </ul>
+  </li>
+  <li>&nbsp;</li>
+</ol>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
