@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T12:19:27.541Z
+date: 2025-11-30T12:25:23.082Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -382,6 +382,24 @@ data:
 <pre><code class="language-plaintext">oc -n &lt;px-namespace&gt; get storagecluster
 oc -n &lt;px-namespace&gt; get storagenodes
 oc exec &lt;px-pod&gt; -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl cluster provision-status</code></pre>
+<h4>Air Gapped Bare Metal Openshfit</h4>
+<p>&nbsp; 1. Get Portworx Container Images</p>
+<ul>
+  <li>Set an environment variable for your Kubernetes version:</li>
+</ul>
+<pre><code class="language-plaintext">KBVER=$(kubectl version | awk -F'[v+_-]' '/Server/ {print $3}')</code></pre>
+<ul>
+  <li>Set an environment variable to specify the latest major version of Portworx:</li>
+</ul>
+<pre><code class="language-plaintext">PXVER=&lt;portworx-version&gt;</code></pre>
+<ul>
+  <li>Run the following command to download a list of the released images:</li>
+</ul>
+<pre><code class="language-plaintext">curl -o images "https://install.portworx.com/$PXVER/images?kbver=$KBVER"</code></pre>
+<ul>
+  <li>On an internet-connected host that matches the architecture and OS version of the Kubernetes cluster nodes intended for Portworx installation, <mark class="marker-yellow">download the air-gapped installation bootstrap script</mark> for the Kubernetes and Portworx versions:</li>
+</ul>
+<pre><code class="language-plaintext">curl -o px-ag-install.sh -L "https://install.portworx.com/$PXVER/air-gapped?kbver=$KBVER"</code></pre>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
