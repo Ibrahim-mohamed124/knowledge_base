@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T11:21:21.170Z
+date: 2025-11-30T11:29:04.649Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -329,8 +329,31 @@ pxctl status --color</code></pre>
       <li>Persistent disks' names can be obtained by using the sym links that the udev create in /dev/disk/by-id/*. &nbsp;udev uses unique identifiers for each disk like vendor code, provisioner code, and other to create these links.</li>
     </ul>
   </li>
-  <li>&nbsp;</li>
+  <li>For disaggregated setup label the storage nodes and storageless nodes.<ul>
+      <li>portwrox.io/node-type: storage</li>
+      <li>portworx.io/node-type: storageless</li>
+    </ul>
+  </li>
 </ol>
+<h4>Non Air Gapped Bare Metal Openshfit</h4>
+<ol>
+  <li>Enable user workloads monitoring in openshift prometheus.</li>
+</ol>
+<ul>
+  <li>create the <mark class="marker-yellow">cluster-monitoring-config</mark> configmap</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true</code></pre>
+<ul>
+  <li>The enableUserWorkload parameter enables monitoring for user-defined projects in the OpenShift cluster.</li>
+  <li>This creates <mark class="marker-yellow">a prometheus-operated service in the openshift-user-workload-monitoring namespace.</mark></li>
+</ul>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
