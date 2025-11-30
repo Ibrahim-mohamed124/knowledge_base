@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T11:46:32.743Z
+date: 2025-11-30T12:01:33.216Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -357,6 +357,7 @@ data:
 <p>&nbsp; 2. Generate the storageCluster spec:</p>
 <ul>
   <li><mark class="marker-yellow">Platform: DAS/SAN</mark></li>
+  <li>It is possible to use one disk for the data and the metadata in the dev/test environments.</li>
 </ul>
 <p>&nbsp; 3. Install the portworx operator</p>
 <ul>
@@ -370,6 +371,13 @@ data:
 <blockquote>
   <p><mark class="marker-yellow">The Portworx Operator </mark>performs a<mark class="marker-yellow"> pre-flight check across the cluster, and the check must pass on each node</mark>. This check determines whether <mark class="marker-yellow">each node in the cluster is compatible with the PX-StoreV2 datastore.</mark></p>
 </blockquote>
+<p>&nbsp; 6. Verify Portworx Cluster Status</p>
+<pre><code class="language-plaintext">oc exec &lt;px-pod-name&gt;  -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl status</code></pre>
+<blockquote>
+  <p>Status displays <code>PX is operational</code> when the cluster is running as expected. <mark class="marker-yellow">If the cluster is using the PX-StoreV2 datastore,</mark> the <code>StorageNode</code> entries for each node displays <code>Yes(PX-StoreV2)</code>.</p>
+</blockquote>
+<p>&nbsp; 7. Verify portworx pool status PX2</p>
+<pre><code class="language-plaintext">oc exec &lt;px-pod&gt;  -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl service pool show</code></pre>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
