@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T12:38:48.876Z
+date: 2025-11-30T12:41:40.344Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -463,13 +463,19 @@ components:
   <li>Create a configmap from the downloaded or updated version manifest in the namespace <code>&lt;px-namespace&gt;</code>,</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n &lt;px-namespace&gt; create configmap px-versions --from-file=versions.yaml</code></pre>
-<p>&nbsp; 3. install the NFS package:</p>
+<p>&nbsp; 3.<mark class="marker-yellow"> install the NFS package:</mark></p>
 <ul>
   <li>Start the repository container as a standalone service in Docker by running the following command:</li>
 </ul>
 <pre><code class="language-plaintext">docker run -p 8080:8080 docker.io/portworx/px-repo:1.2.0</code></pre>
 <ul>
   <li>navigate to your host IP address where the above docker image is running</li>
+</ul>
+<p>&nbsp; 4. enable monitoring</p>
+<p>&nbsp; 5. generate the StorageCluster spec:</p>
+<ul>
+  <li>Platform: DAS/SAN</li>
+  <li>Enter the <strong>Custom Container Registry Location</strong> to download the Docker images.</li>
 </ul>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
