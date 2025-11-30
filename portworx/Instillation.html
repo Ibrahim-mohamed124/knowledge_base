@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T12:30:24.596Z
+date: 2025-11-30T12:34:27.955Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -444,6 +444,21 @@ quay.io/jetstack/cert-manager-acmesolver:v1.17.4
   <li>Push the container images to a private registry that is accessible to your air-gapped nodes.<mark class="marker-yellow"> Do not include </mark><code><mark class="marker-yellow">http://</mark></code><mark class="marker-yellow"> in your private registry path:</mark></li>
 </ul>
 <pre><code class="language-plaintext">sh px-ag-install.sh push &lt;your-registry-path&gt;/repo_name</code></pre>
+<p>&nbsp; 2. Create a version manifest configmap for the Portworx Operator:</p>
+<ul>
+  <li>Download the Portworx version manifest:</li>
+  <li>Replace <code>&lt;operator-version&gt;</code> with the Operator version you want to use.</li>
+</ul>
+<pre><code class="language-plaintext">curl -o versions.yaml "https://install.portworx.com/$PXVER/version?kbver=$KBVER&amp;opver=&lt;operator-version&gt;"</code></pre>
+<ul>
+  <li>Update the <a href="https://install.portworx.com/2.13/version">version manifest</a> with the custom registry location details.</li>
+</ul>
+<pre><code class="language-plaintext">&lt;dns-host.domain or IPv4 or IPv6&gt;[:&lt;port&gt;]/repository/image:tag</code></pre>
+<pre><code class="language-plaintext">version: 2.13.3
+components:
+  stork: custom-registry.acme.org/portworx/backup/stork:23.2.1
+  autopilot: 192.168.1.2:5433/tools/autopilot:1.3.7
+  nodeWiper: [2001:db8:3333:4444:5555:6666:7777:8888]:5443/portworx/px-node-wiper:2.13.2</code></pre>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
