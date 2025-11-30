@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-30T09:12:32.360Z
+date: 2025-11-30T09:13:50.574Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -529,7 +529,15 @@ log_type="audit" | json | file=~".*audit.log" (filter)
 log_type="audit" | json |= "error" != "warning" |~ "status [45]03" (more than one filter)</code></pre>
 <ul>
   <li>Adding the <code>| json</code> string to your query extracts all JSON properties as labels for ease of viewing.&nbsp;</li>
+  <li>Some fields that you can use in your queries include the following strings:<ul>
+      <li><code><strong>hostname:</strong></code>The hostname of the OpenShift node for the pod that generates the log.</li>
+      <li><code><strong>kubernetes_container_name:</strong></code>The name of the container that generates the log.</li>
+      <li><code><strong>kubernetes_namespace_name:</strong></code>The name of the project that contains the pod that generates the log.</li>
+      <li><code><strong>kubernetes_pod_name:</strong></code>The name of the pod that generates the log.</li>
+      <li><code><strong>level:</strong></code>The log level.</li>
+      <li><code><strong>message:</strong></code>The log message.</li>
+    </ul>
+  </li>
+  <li>&nbsp;</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
