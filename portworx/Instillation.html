@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T12:01:33.216Z
+date: 2025-11-30T12:19:27.541Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -378,6 +378,10 @@ data:
 </blockquote>
 <p>&nbsp; 7. Verify portworx pool status PX2</p>
 <pre><code class="language-plaintext">oc exec &lt;px-pod&gt;  -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl service pool show</code></pre>
+<p>&nbsp; 8. Verify pxctl Cluster Provision Status:</p>
+<pre><code class="language-plaintext">oc -n &lt;px-namespace&gt; get storagecluster
+oc -n &lt;px-namespace&gt; get storagenodes
+oc exec &lt;px-pod&gt; -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl cluster provision-status</code></pre>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
   <li>Notes:<ul>
