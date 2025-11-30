@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-11-30T19:38:04.268Z
+date: 2025-11-30T19:48:13.436Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -254,10 +254,132 @@ dateCreated: 2025-11-30T15:15:48.923Z
     </ul>
   </li>
 </ul>
+<blockquote>
+  <p>CSI snapshots are more faster and efficient compared to backup created by KDMP driver</p>
+</blockquote>
+<ul>
+  <li>The following table explains the type of backup that gets triggered when you choose different options under <strong>Snapshot Class Mapping</strong>&nbsp;</li>
+</ul>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <tbody>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Provisioner</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Volume snapshot class (vsc) option</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Offload to backup location option selected</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Backup type triggered</strong></th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Portworx</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Disabled (always)</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes/No</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Portworx cloud snapshot</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Non-Portworx</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">No vsc (disabled)</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Direct KDMP backup</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">No</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backup creation fails</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Non-Portworx</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Default single vsc (auto-populated)</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI snapshot + offloads snapshot to backup location (KDMP backup)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">No</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI snapshot</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Non-Portworx</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Non-default single vsc (auto-populated)</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI snapshot + offloads snapshot to backup location (KDMP backup)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">No</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI snapshot</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Non-Portworx</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Non-default multiple vscs' (in the drop-down)</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Yes</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI snapshot + offloads snapshot to backup location (KDMP)</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">No</th>
+        <th style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI snapshot</th>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>a comparison of different backup types supported by Portworx Backup, highlighting the drivers used and how resources and volumes are managed for each backup type.&nbsp;</li>
+</ul>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Backup Type</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Driver</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Resources</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;"><strong>Volumes</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Cross-cloud</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">KDMP</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backed up to backup location</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backed up to backup location</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Snapshot class mapping</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backed up to backup location</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Remains locally as local snapshot on the application cluster</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Snapshot class mapping + Offload to backup location</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">CSI+KDMP</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backed up to backup location</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backed up to backup location + Remains locally as local snapshot on the application cluster</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Cloudsnap</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">PXD (Portworx driver)</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backed up to backup location</td>
+        <td style="border-bottom:1px solid rgb(96, 103, 112);border-left:1px solid rgb(96, 103, 112);border-right:1px solid rgb(96, 103, 112);border-top:1px solid rgb(96, 103, 112);padding:12px;">Backed up to backup location</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-<h3>&nbsp;</h3>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <h3><strong>scc&nbsp;</strong></h3>
 <pre><code class="language-plaintext">oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:default
 oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:pxcentral-apiserver
