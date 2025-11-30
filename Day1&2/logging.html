@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-30T09:02:54.008Z
+date: 2025-11-30T09:04:26.666Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -466,6 +466,38 @@ spec:
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>To include<mark class="marker-yellow"> audit logs</mark> in the log store, you must create a <code>ClusterLogForwarder</code> CR to configure the log collector to collect them.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: logging.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  pipelines:
+  - name: all-to-default
+    inputRefs: 1
+    - infrastructure
+    - application
+    - audit
+    outputRefs: 2
+    - default</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The type of logs to collect, which include infrastructure, audit, and application logs.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The destination for the logs, with the internal Loki instance being the default output.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
