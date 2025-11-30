@@ -1,0 +1,48 @@
+<!--
+title: Installation
+description: 
+published: true
+date: 2025-11-30T15:15:48.923Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-11-30T15:15:48.923Z
+-->
+
+<h1><strong>Install Prerequisites</strong></h1>
+<h3><strong>scc&nbsp;</strong></h3>
+<pre><code class="language-plaintext">oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:default
+oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:pxcentral-apiserver
+oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:px-keycloak-account
+oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:px-backup-account</code></pre>
+<h3>&nbsp;</h3>
+<p>&nbsp;</p>
+<figure class="table">
+  <table style="border-bottom:none;border-left:none;border-right:none;border-top:none;">
+    <tbody>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;"><strong>Deploy Portworx Backup and Restore on one cluster</strong></td>
+      </tr>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;">Setup access to main and DR clusters API</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;">Setup cloud account</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;">Setup backup location</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;">Create a VolumeSnapshot Class</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;">Create a Schedule Policy</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;">Deploy production-like application</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 10px;vertical-align:top;">Schedule a Backup and Restore for the deployed application</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
