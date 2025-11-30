@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T12:35:16.902Z
+date: 2025-11-30T12:36:07.641Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -451,7 +451,7 @@ quay.io/jetstack/cert-manager-acmesolver:v1.17.4
 </ul>
 <pre><code class="language-plaintext">curl -o versions.yaml "https://install.portworx.com/$PXVER/version?kbver=$KBVER&amp;opver=&lt;operator-version&gt;"</code></pre>
 <ul>
-  <li>Update the <a href="https://install.portworx.com/2.13/version">version manifest</a> with the custom registry location details. (optional portworx operator will use the custom registry from the storageCluster by defualt)</li>
+  <li>Update the <a href="https://install.portworx.com/2.13/version">version manifest</a> with the custom registry location details. (optional portworx operator will use the custom registry from the storageCluster by defualt). If not ensure that the <strong>Custom Container Registry Location</strong> field in the <strong>Customize</strong> tab of <a href="https://central.portworx.com/">Portworx Central</a> is empty for any specs you generate in the spec generator.</li>
 </ul>
 <pre><code class="language-plaintext">&lt;dns-host.domain or IPv4 or IPv6&gt;[:&lt;port&gt;]/repository/image:tag</code></pre>
 <pre><code class="language-plaintext">version: 2.13.3
