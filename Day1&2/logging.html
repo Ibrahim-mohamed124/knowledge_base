@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-30T09:13:50.574Z
+date: 2025-11-30T09:20:27.474Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -538,6 +538,14 @@ log_type="audit" | json |= "error" != "warning" |~ "status [45]03" (more than on
       <li><code><strong>message:</strong></code>The log message.</li>
     </ul>
   </li>
-  <li>&nbsp;</li>
 </ul>
-<p>&nbsp;</p>
+<h3>Log Access Permissions</h3>
+<ul>
+  <li>By default, the OpenShift Logging operator grants only administrator users access to the logs.&nbsp;</li>
+  <li>The OpenShift Logging operator provides the following cluster roles to simplify RBAC rules:<ul>
+      <li><code><strong>cluster-logging-application-view:</strong></code>Grants read permission to application logs.</li>
+      <li><code><strong>cluster-logging-infrastructure-view:</strong></code>Grants read permission to infrastructure logs.</li>
+      <li><code><strong>cluster-logging-audit-view:</strong></code>Grants read permission to audit logs.</li>
+    </ul>
+  </li>
+</ul>
