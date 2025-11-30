@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-30T08:33:28.201Z
+date: 2025-11-30T08:49:36.428Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -305,5 +305,34 @@ spec:
     </tbody>
   </table>
 </figure>
+<h2>Centralized Logging</h2>
+<ul>
+  <li>By default, Kubernetes stores logs from pods in the local disk on the nodes, and the information is lost when the pod is deleted.</li>
+  <li>Kubernetes also removes the logs when a node is restarted, for example after applying an update.</li>
+</ul>
+<h3>Loki Log Store</h3>
+<ul>
+  <li>Loki indexes <mark class="marker-yellow">only a few fixed labels during ingestion</mark>, and then<mark class="marker-yellow"> compresses and stores the log data in chunks in object stores.&nbsp;</mark></li>
+  <li>The Loki operator includes the <code>LokiStack</code> CR to manage the Loki deployment.</li>
+  <li>The steps for using Loki as the log store for OpenShift Logging are as follows:<ol>
+      <li>Install the Loki operator.</li>
+      <li>Configure the Loki object storage.</li>
+      <li>Create a <code>LokiStack</code> CR with the object storage credentials.</li>
+      <li>Configure the <code>ClusterLogging</code> CR from OpenShift Logging to use Loki as the log store.</li>
+    </ol>
+  </li>
+  <li>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
