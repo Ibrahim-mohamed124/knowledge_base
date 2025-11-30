@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T13:07:46.162Z
+date: 2025-11-30T13:08:33.072Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -480,7 +480,7 @@ components:
 <pre><code class="language-plaintext">oc -n portworx create secret docker-registry px-image-repository \
     --docker-server=image-registry.openshift-image-registry.svc:5000 \
     --docker-username=admin \
-    --docker-password=$(oc whoami -t)</code></pre>
+    --docker-password=$(oc whoami -t) &gt;&gt; to return the token from kubeconfig file</code></pre>
 <p>&nbsp; 6. complete the steps from Non air gapped installation.</p>
 <h2><strong>Installation on VMware vSphere</strong></h2>
 <ul>
