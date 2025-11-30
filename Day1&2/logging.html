@@ -2,7 +2,7 @@
 title: Logging
 description: 
 published: true
-date: 2025-11-28T12:58:34.682Z
+date: 2025-11-30T08:33:28.201Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T11:57:32.900Z
@@ -29,7 +29,7 @@ dateCreated: 2025-11-28T11:57:32.900Z
 <h4>Log Collector</h4>
 <ul>
   <li>OpenShift Logging uses <mark class="marker-yellow">Vector </mark>to collect logs from all running containers and cluster nodes, and<mark class="marker-yellow"> replaces Fluentd</mark>, which was the collector in earlier versions of OpenShift Logging.</li>
-  <li>, Vector<mark class="marker-yellow"> runs as a daemon set</mark> in the cluster and therefore runs on all nodes.</li>
+  <li>Vector<mark class="marker-yellow"> runs as a daemon set</mark> in the cluster and therefore runs on all nodes.</li>
   <li>Vector groups logs into:<ul>
       <li><strong>Infrastructure: </strong>Infrastructure logs include <mark class="marker-yellow">container logs in</mark> the <code>openshift-*</code>, <code>kube*</code>, and <code>default</code> namespaces, and <mark class="marker-yellow">system logs from the cluster nodes.</mark></li>
       <li><strong>Audit: </strong>Audit logs include both <mark class="marker-yellow">Kubernetes API and OpenShift API audit logs</mark>, as well as the<mark class="marker-yellow"> Linux audit logs from the cluster nodes.</mark> These logs might contain sensitive security details, and OpenShift Logging does not store them by default.</li>
@@ -65,6 +65,7 @@ spec:
     - effect: NoExecute
       key: node-role.kubernetes.io/infra
       value: reserved</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -99,7 +100,7 @@ spec:
 <ul>
   <li>The log collector is configured by default to forward infrastructure and application logs to the internal log store that you define in the cluster logging resource.</li>
   <li>Vector can forward logs to various log stores, in addition to the internal Loki deployment, such as Splunk, Amazon CloudWatch, or <mark class="marker-yellow">any logging solution that uses the syslog protocol.</mark></li>
-  <li>The ClusterLogForwarder custom resource configures the log collector, and defines which logs to collect and where to send them.&nbsp;</li>
+  <li>The ClusterLogForwarder custom resource configures the log collector, and defines which logs to collect and where to send them.</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: logging.openshift.io/v1
 kind: ClusterLogForwarder
@@ -120,6 +121,7 @@ spec:
         - infrastructure
       outputRefs:
         - splunk-receiver</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -211,6 +213,7 @@ spec:
       - production-apps
     outputRefs:
       - splunk-receiver</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -237,7 +240,7 @@ spec:
 </figure>
 <ul>
   <li>Each call to the Kubernetes and OpenShift APIs generates an audit event that is forwarded to the log store.</li>
-  <li>Define audit filters that remove unwanted or low-value events from the audit logs, and reduce the data that is sent to the log store.&nbsp;</li>
+  <li>Define audit filters that remove unwanted or low-value events from the audit logs, and reduce the data that is sent to the log store.</li>
 </ul>
 <pre><code class="language-plaintext">spec:
   filters:
@@ -271,6 +274,7 @@ spec:
     - unwanted-events
     outputRefs:
     - audit-rsyslog</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
