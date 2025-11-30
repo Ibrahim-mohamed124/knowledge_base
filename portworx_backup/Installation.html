@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-11-30T20:24:11.191Z
+date: 2025-11-30T20:40:05.064Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -498,19 +498,6 @@ dateCreated: 2025-11-30T15:15:48.923Z
 <ul>
   <li>Starting from PXB 2.9.0, <mark class="marker-yellow">MongoDB requires all 3 replica set pods to be DNS-resolvable during startup.</mark> PXB will no longer come up if only one MongoDB pod is available after install or upgrade and if the primary pod is unavailable (for example, after a reboot), MongoDB waits for all peers to become reachable before accepting connections</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <h3><strong>scc&nbsp;</strong></h3>
 <pre><code class="language-plaintext">oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:default
 oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPACE&gt;:pxcentral-apiserver
