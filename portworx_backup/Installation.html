@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-01T05:00:58.279Z
+date: 2025-12-01T05:09:20.529Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -634,7 +634,23 @@ deletionPolicy: Delete</code></pre>
 <pre><code class="language-plaintext">helm repo add portworx http://charts.portworx.io/ &amp;&amp; helm repo update</code></pre>
 <p>&nbsp; 5. Download vaues.yaml and apply the helm chart</p>
 <pre><code class="language-plaintext">helm install px-central portworx/px-central --namespace central --create-namespace --version 2.9.1 -f values-px-central.yaml</code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">#!/bin/bash
+SERVICE_ACCOUNT=pxbackup-sa
+NAMESPACE=kube-system
+SERVER=https://&lt;SERVER-ADDRESS:PORT&gt;
+
+SERVICE_ACCOUNT_TOKEN_COUNT=$(kubectl -n ${NAMESPACE} get secret -o=jsonpath='{.items[?(@.metadata.annotations.kubernetes\.io/service-account\.name=="'${SERVICE_ACCOUNT}'")].metadata.name}' | wc -w)
+if [ ${SERVICE_ACCOUNT_TOKEN_COUNT} -gt 1 ]
+then
+SERVICE_ACCOUNT_TOKEN_NAME=$(kubectl -n ${NAMESPACE} get secret -o=jsonpath='{.items[?(@.metadata.annotations.kubernetes\.io/service-account\.name=="'${SERVICE_ACCOUNT}'")].metadata.name}' | awk '{for(i=1;i&lt;=NF;i++){ if($i ~ /-token/){print $i} } }' | head -n 1)
+else
+SERVICE_ACCOUNT_TOKEN_NAME=$(kubectl -n ${NAMESPACE} get secret -o=jsonpath='{.items[?(@.metadata.annotations.kubernetes\.io/service-account\.name=="'${SERVICE_ACCOUNT}'")].metadata.name}')
+fi
+
+SERVICE_ACCOUNT_TOKEN=$(kubectl -n ${NAMESPACE} get secret ${SERVICE_ACCOUNT_TOKEN_NAME} -o "jsonpath={.data.token}" | base64 --decode)
+SERVICE_ACCOUNT_CERTIFICATE=$(kubectl -n ${NAMESPACE} get secret ${SERVICE_ACCOUNT_TOKEN_NAME} -o "jsonpath={.data['ca\.crt']}")
+
+cat &lt;&lt;END</code></pre>
 <p>&nbsp;</p>
 <figure class="table">
   <table style="border-bottom:none;border-left:none;border-right:none;border-top:none;">
