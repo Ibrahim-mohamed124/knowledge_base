@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-01T16:39:22.851Z
+date: 2025-12-01T17:04:10.982Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -27,11 +27,21 @@ dateCreated: 2025-12-01T09:52:17.181Z
     </ul>
   </li>
   <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD<ul>
-      <li>192.168.70.200 &gt; host 1</li>
-      <li>192.168.70.201 &gt; host 2</li>
-      <li>192.168.70.202 &gt; host 3</li>
-      <li>192.168.70.203,4 api_apps</li>
+      <li>The ignition file take some minutes to join the central console&nbsp;</li>
+      <li><mark class="marker-yellow">After the node appear ready in the console specific NTP server &nbsp;so the nodes do not fail.</mark>
+        <ul>
+          <li>It is possible to add redhat ntp pools 0.rhel.pool.ntp.org</li>
+        </ul>
+      </li>
       <li>&nbsp;</li>
+      <li>&nbsp;<ul>
+          <li>192.168.70.200 &gt; host 1</li>
+          <li>192.168.70.201 &gt; host 2</li>
+          <li>192.168.70.202 &gt; host 3</li>
+          <li>192.168.70.203,4 api_apps</li>
+          <li>&nbsp;</li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ol>
