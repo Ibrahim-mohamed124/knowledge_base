@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-01T04:54:20.091Z
+date: 2025-12-01T05:00:58.279Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -615,9 +615,25 @@ metadata:
     snapshot.storage.kubernetes.io/is-default-class: "true"
 driver: pxd.portworx.com
 deletionPolicy: Delete</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>&nbsp; 3. create the spec:</p>
+<ul>
+  <li><strong>Release Information</strong>
+    <ul>
+      <li><strong>Backup Version</strong>: select the required version of Portworx Backup from the drop-down list</li>
+      <li><strong>Namespace</strong>: provide the name of the namespace where you want an instance of Portworx Backup to be installed</li>
+      <li><strong>Select your environment</strong>: choose <strong>On-Premises</strong> or <strong>Cloud</strong> based on your storage environment</li>
+    </ul>
+  </li>
+  <li><strong>Configuration</strong>
+    <ul>
+      <li><strong>StorageClass Name</strong>: name of the StorageClass</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp; 4. add the helm repo</p>
+<pre><code class="language-plaintext">helm repo add portworx http://charts.portworx.io/ &amp;&amp; helm repo update</code></pre>
+<p>&nbsp; 5. Download vaues.yaml and apply the helm chart</p>
+<pre><code class="language-plaintext">helm install px-central portworx/px-central --namespace central --create-namespace --version 2.9.1 -f values-px-central.yaml</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <figure class="table">
