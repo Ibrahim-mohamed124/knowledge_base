@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-01T04:50:05.488Z
+date: 2025-12-01T04:54:20.091Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -596,8 +596,25 @@ metadata:
 driver: pxd.portworx.com
 deletionPolicy: Delete</code></pre>
 <h1><strong>Install in Non-Airgapped Environments</strong></h1>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ol>
+  <li>&nbsp;create a storageClass</li>
+</ol>
+<pre><code class="language-plaintext">apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: portworx-sc
+provisioner: pxd.portworx.com
+parameters:
+  repl: "3"</code></pre>
+<p>&nbsp; 2. creae volumeSnapshotClass</p>
+<pre><code class="language-plaintext">apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata:
+  name: px-csi-snapclass
+  annotations:
+    snapshot.storage.kubernetes.io/is-default-class: "true"
+driver: pxd.portworx.com
+deletionPolicy: Delete</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
