@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-01T17:04:10.982Z
+date: 2025-12-01T17:20:15.889Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -27,12 +27,13 @@ dateCreated: 2025-12-01T09:52:17.181Z
     </ul>
   </li>
   <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD<ul>
-      <li>The ignition file take some minutes to join the central console&nbsp;</li>
+      <li>The ignition file take some minutes to join the central console</li>
       <li><mark class="marker-yellow">After the node appear ready in the console specific NTP server &nbsp;so the nodes do not fail.</mark>
         <ul>
           <li>It is possible to add redhat ntp pools 0.rhel.pool.ntp.org</li>
         </ul>
       </li>
+      <li>Use the one time boot to add the iso image after creating virtual media from the discovery image.&nbsp;</li>
       <li>&nbsp;</li>
       <li>&nbsp;<ul>
           <li>192.168.70.200 &gt; host 1</li>
