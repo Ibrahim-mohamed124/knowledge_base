@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-01T05:09:20.529Z
+date: 2025-12-01T05:10:04.349Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -650,7 +650,26 @@ fi
 SERVICE_ACCOUNT_TOKEN=$(kubectl -n ${NAMESPACE} get secret ${SERVICE_ACCOUNT_TOKEN_NAME} -o "jsonpath={.data.token}" | base64 --decode)
 SERVICE_ACCOUNT_CERTIFICATE=$(kubectl -n ${NAMESPACE} get secret ${SERVICE_ACCOUNT_TOKEN_NAME} -o "jsonpath={.data['ca\.crt']}")
 
-cat &lt;&lt;END</code></pre>
+cat &lt;&lt;END
+apiVersion: v1
+kind: Config
+clusters:
+- name: default-cluster
+  cluster:
+    certificate-authority-data: ${SERVICE_ACCOUNT_CERTIFICATE}
+    server: ${SERVER}
+contexts:
+- name: default-context
+  context:
+    cluster: default-cluster
+    namespace: ${NAMESPACE}
+    user: ${SERVICE_ACCOUNT}
+current-context: default-context
+users:
+- name: ${SERVICE_ACCOUNT}
+  user:
+    token: ${SERVICE_ACCOUNT_TOKEN}
+END</code></pre>
 <p>&nbsp;</p>
 <figure class="table">
   <table style="border-bottom:none;border-left:none;border-right:none;border-top:none;">
