@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-01T19:40:07.260Z
+date: 2025-12-01T20:51:09.299Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -24,22 +24,18 @@ dateCreated: 2025-12-01T09:52:17.181Z
       <li>create bond with two MAC addresses that are used for the server not for the ilo(out of band management) &nbsp;(higher bandwidth 10Gb)</li>
       <li>provide public ssh key that will be used to provision the OCP platform from the central console</li>
       <li>Pull the iso image (minimal or full)</li>
-      <li>F11 &gt;&gt;&gt; choose the bootable media &gt;&gt; CD</li>
     </ul>
   </li>
   <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD<ul>
-      <li>The ignition file take some minutes to join the central console&nbsp;</li>
+      <li>The ignition file take some minutes to join the central console</li>
       <li><mark class="marker-yellow">After the node appear ready in the console specific NTP server &nbsp;so the nodes do not fail.</mark>
         <ul>
           <li>It is possible to add redhat ntp pools 0.rhel.pool.ntp.org</li>
         </ul>
       </li>
-    </ul>
-  </li>
-  <li>In the storage tab all the disks will be formated expect the bootable one</li>
-  <li>In the network tab add the API and APPs VIPs</li>
-  <li>add the hosts DNS and IPs to the DNS</li>
-  <li>start the installation.<ul>
+      <li><mark class="marker-yellow">Use the one time boot to add the iso image after creating virtual media from the discovery image.&nbsp;</mark></li>
+      <li>&nbsp;</li>
+      <li>&nbsp;</li>
       <li>&nbsp;<ul>
           <li>192.168.70.200 &gt; host 1</li>
           <li>192.168.70.201 &gt; host 2</li>
