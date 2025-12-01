@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-01T09:52:17.181Z
+date: 2025-12-01T16:39:22.851Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -16,3 +16,22 @@ dateCreated: 2025-12-01T09:52:17.181Z
   </li>
   <li>To determine the most suitable role, the Assisted Installer evaluates each host’s memory, CPU, disk space, and network performance. It assigns an internal <code>suggested_role</code> value to each host, which drives the auto-assignment process when auto-assigned is enabled. Pre-installation validations ensure the resulting role allocation is valid.</li>
 </ul>
+<h1>Installation steps:</h1>
+<ol>
+  <li>Generate the &nbsp;discovery image from the hypered console.<ul>
+      <li>Provide DNS that resolve public ip like api.openshift.com, which is the site that the discovery image &nbsp;pull the coreos image from and join to the cluster after booting.</li>
+      <li>Static provide IPs from a subnet that has access to the internet to connect to the central console and the gateway should reach the internet.</li>
+      <li>create bond with two MAC addresses that are used for the server not for the ilo(out of band management) &nbsp;(higher bandwidth 10Gb)</li>
+      <li>provide public ssh key that will be used to provision the OCP platform from the central console</li>
+      <li>Pull the iso image (minimal or full)</li>
+    </ul>
+  </li>
+  <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD<ul>
+      <li>192.168.70.200 &gt; host 1</li>
+      <li>192.168.70.201 &gt; host 2</li>
+      <li>192.168.70.202 &gt; host 3</li>
+      <li>192.168.70.203,4 api_apps</li>
+      <li>&nbsp;</li>
+    </ul>
+  </li>
+</ol>
