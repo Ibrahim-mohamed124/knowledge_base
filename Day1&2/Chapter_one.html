@@ -2,7 +2,7 @@
 title: Authentication and Identity Management
 description: 
 published: true
-date: 2025-12-04T07:15:58.828Z
+date: 2025-12-04T07:20:12.385Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:40.826Z
@@ -51,18 +51,17 @@ kind: OAuth
 metadata:
   name: cluster
 spec:
-  identityProviders: 1
-  - name: htpasswd-idp-name 2
-    mappingMethod: claim 3
+  identityProviders: 
+  - name: htpasswd-idp-name 
+    mappingMethod: claim 
     type: HTPasswd
     htpasswd:
       fileData:
-        name: htpasswd-secret 4
+        name: htpasswd-secret 
   - name: ldap-idp-name
     mappingMethod: claim
     type: LDAP
-    ldap:
-...output omitted...</code></pre>
+    ldap:</code></pre>
 <h3>Users, Groups, and Identities</h3>
 <h4>System Groups</h4>
 <ul>
