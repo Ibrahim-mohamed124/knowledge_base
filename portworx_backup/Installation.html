@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-01T05:10:04.349Z
+date: 2025-12-04T09:22:54.565Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -531,6 +531,14 @@ oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPAC
     </tbody>
   </table>
 </figure>
+<blockquote>
+  <p>KDMP requires buffer storage to create the local snapshot then move them across cloud, so , in the resourceQouta of the namespace ensure there is at least storage that is double of the PVC size.</p>
+</blockquote>
+<h3>Prometheus configurations</h3>
+<ul>
+  <li>To use the a separate instance of prometheus fo rthe px-backup, ensure that the global prometheus instance does not monitor the namespace in which the backup is installed:</li>
+</ul>
+<pre><code class="language-plaintext">oc label namespace &lt;namespace_name&gt; openshift.io/user-monitoring=false</code></pre>
 <h1><strong>Deploy Portworx Backup</strong></h1>
 <ol>
   <li>Make sure <a href="https://helm.sh/docs/intro/install/">Helm</a> is installed on the client machine</li>
@@ -597,7 +605,7 @@ driver: pxd.portworx.com
 deletionPolicy: Delete</code></pre>
 <h1><strong>Install in Non-Airgapped Environments</strong></h1>
 <ol>
-  <li>&nbsp;create a storageClass</li>
+  <li>create a storageClass</li>
 </ol>
 <pre><code class="language-plaintext">apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -634,6 +642,7 @@ deletionPolicy: Delete</code></pre>
 <pre><code class="language-plaintext">helm repo add portworx http://charts.portworx.io/ &amp;&amp; helm repo update</code></pre>
 <p>&nbsp; 5. Download vaues.yaml and apply the helm chart</p>
 <pre><code class="language-plaintext">helm install px-central portworx/px-central --namespace central --create-namespace --version 2.9.1 -f values-px-central.yaml</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">#!/bin/bash
 SERVICE_ACCOUNT=pxbackup-sa
 NAMESPACE=kube-system
