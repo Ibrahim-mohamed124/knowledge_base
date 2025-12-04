@@ -2,7 +2,7 @@
 title: Authentication and Identity Management
 description: 
 published: true
-date: 2025-12-04T07:40:42.764Z
+date: 2025-12-04T07:49:33.913Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:40.826Z
@@ -317,7 +317,9 @@ rfc2307:
 <p>&nbsp;2. Automatically:</p>
 <pre><code class="language-plaintext">oc new-project ldap-group-sync</code></pre>
 <p>&nbsp;</p>
-<pre><code class="language-plaintext">The client bindPassword secret resource and the configuration map resource that are used during the configuration of the LDAP IdP are also needed for this task.</code></pre>
+<blockquote>
+  <p>The client bindPassword secret resource and the configuration map resource that are used during the configuration of the LDAP IdP are also needed for this task.</p>
+</blockquote>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">kind: ServiceAccount
 apiVersion: v1
