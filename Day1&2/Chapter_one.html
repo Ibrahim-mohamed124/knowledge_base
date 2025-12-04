@@ -2,7 +2,7 @@
 title: Authentication and Identity Management
 description: 
 published: true
-date: 2025-12-04T07:34:05.993Z
+date: 2025-12-04T07:40:42.764Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:40.826Z
@@ -189,7 +189,11 @@ Error from server (MethodNotAllowed): the server does not allow this method on t
   <p>In LDAP, the <strong>Bind Distinguished Name (Bind DN)</strong> and <strong>Bind Password</strong> are used to authenticate a client (like an application or user) to the LDAP server before performing operations like search, add, or modify.</p>
 </blockquote>
 <ul>
-  <li>On a unique match from the search, the <mark class="marker-yellow">provided credentials are submitted to the LDAP server in a second interaction</mark>, and an <mark class="marker-yellow">authentication binding is created</mark> between an <mark class="marker-yellow">OpenShift user resource and the returned LDAP </mark><code><mark class="marker-yellow">id</mark></code><mark class="marker-yellow"> and </mark><code><mark class="marker-yellow">preferredUsername</mark></code><mark class="marker-yellow"> values.</mark></li>
+  <li>On a unique match from the search, the <mark class="marker-yellow">provided credentials are submitted to the LDAP server in a second interaction</mark>, and an <mark class="marker-yellow">authentication binding is created</mark> between an <mark class="marker-yellow">OpenShift user resource and the returned LDAP </mark><code><mark class="marker-yellow">id</mark></code><mark class="marker-yellow"> and </mark><code><mark class="marker-yellow">preferredUsername</mark></code><mark class="marker-yellow"> values.</mark>
+    <ul>
+      <li>Second interaction means that Openshift first search the ldap database by the provided username, then if an entry is located in the database, openshift sends the password to authenticate the user.</li>
+    </ul>
+  </li>
   <li><mark class="marker-yellow">An administrator must synchronize groups from an LDAP server</mark> as an additional cluster-side configuration before a full LDAP IdP configuration is complete. It is <mark class="marker-yellow">necessary to create a cluster cron job to routinely query the LDAP server and to update the OpenShift groups</mark> to ensure consistency within the cluster to any organizational updates to the LDAP group entries</li>
   <li>Useful commands:</li>
 </ul>
