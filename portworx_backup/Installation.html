@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T10:16:28.139Z
+date: 2025-12-04T10:32:31.364Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -724,6 +724,89 @@ users:
   user:
     token: ${SERVICE_ACCOUNT_TOKEN}
 END</code></pre>
+<p>&nbsp; 8. expose the px-backup-ui service via secure route</p>
+<ul>
+  <li>termination <mark class="marker-yellow">none</mark></li>
+  <li>action redirect</li>
+</ul>
+<p>&nbsp;</p>
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <tbody>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;" colspan="6"><strong>Network Port Requirements</strong></th>
+      </tr>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Service</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Source Interface</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Port</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Protocol</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Flow Direction</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><strong>Description</strong></th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Portworx Central UI</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">data</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">6443</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Unidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">To talk to client Kubernetes cluster</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;" rowspan="4">Portworx Backup</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">data</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">6443</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Bidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">To talk to client Kubernetes cluster</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">management</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">443</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Bidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">To talk to S3 endpoint</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">data</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><mark class="marker-yellow">111</mark></th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP and UDP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Bidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">For NFS server access</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">management</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><mark class="marker-yellow">2049</mark></th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP and UDP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Bidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">For NFS server access</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">License server</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">data</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">7070</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Unidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">For communication between License server and Portworx clusters. Traffic source is Portworx cluster, target is license server.</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;" rowspan="2">Keycloak</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">data</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">8080</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Unidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">To talk to external Keycloak/OIDC</th>
+      </tr>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">management</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">8443</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">TCP</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Unidirectional</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">To talk to external Keycloak/OIDC</th>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <figure class="table">
   <table style="border-bottom:none;border-left:none;border-right:none;border-top:none;">
