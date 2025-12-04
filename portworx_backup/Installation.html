@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T09:36:04.964Z
+date: 2025-12-04T09:38:04.265Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -543,6 +543,15 @@ oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPAC
   <p>Starting from PXB 2.9.0, MongoDB requires all 3 replica set pods to be DNS-resolvable during startup.&nbsp;</p>
 </blockquote>
 <h1><strong>Password Policy</strong></h1>
+<ul>
+  <li>MongoDB, PostgreSQL, and MySQL credentials.</li>
+  <li>Why did they introduce this configuration?</li>
+</ul>
+<ol>
+  <li><strong>Provide custom DB passwords at installation</strong> - Configure secure, organization-specific database credentials during initial deployment</li>
+  <li><strong>Rotate or update existing credentials during upgrades</strong> - Maintain security by updating passwords as part of your upgrade process and organization password rotation policies</li>
+  <li><strong>Encrypt sensitive fields in the Portworx MongoDB instance</strong> - Protect critical data with proper encryption key managemen</li>
+</ol>
 <h1><strong>Deploy Portworx Backup</strong></h1>
 <ol>
   <li>Make sure <a href="https://helm.sh/docs/intro/install/">Helm</a> is installed on the client machine</li>
