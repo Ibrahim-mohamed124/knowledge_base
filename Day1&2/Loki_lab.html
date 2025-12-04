@@ -1,0 +1,84 @@
+<!--
+title: Loki_lab
+description: 
+published: true
+date: 2025-12-04T20:19:08.042Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-04T20:19:08.042Z
+-->
+
+<ol>
+  <li>&nbsp;Provide object storage from the odf or minio.</li>
+  <li>&nbsp;create a secret with the following data<ol>
+      <li>ACCESS<i>KEY</i>ID</li>
+      <li>ACCESSKEYSECRET</li>
+      <li>BUCKETNAME</li>
+      <li>THE INTERNAL SERVICE OF THE BUCKET ENDPOINT &gt;&gt;&nbsp;<ul>
+          <li>http://minio-api.minio-ocp.svc.cluster.local:9000</li>
+          <li>or use odf &gt;&gt;&gt;&gt;&gt;&gt;&gt; &nbsp;s3.openshift-storage.svc:443</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
+<blockquote>
+  <p>when using the route of the bucket provider as endpoint some problems come up with the ca.crt</p>
+</blockquote>
+<pre><code class="language-plaintext">oc extract secret/logging-loki-minio -n openshift-logging --to=-
+# access_key_id
+27DZ27VF5lC0k0vycECw
+# access_key_secret
+LbYKvnUJMG4L1FCzsUmxq9ZwB9F6fmtnF7843DYG
+# bucketnames
+loki
+# endpoint
+http://minio-api.minio-ocp.svc.cluster.local:9000
+</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc extract secret/logging-loki-odf -n openshift-logging --to=-
+# access_key_id
+JT7e6tax80DbheYk4607
+# access_key_secret
+9t74zADpfKQBDisylmO770dVTURuV1tmxXBXfY6I
+# bucketnames
+loki-bucket-odf-e7997377-7cb7-4cce-9207-646d6683b685
+# endpoint
+https://s3.openshift-storage.svc:443</code></pre>
+<p>&nbsp; 3. Create a <code>LokiStack</code> resource YAML file for an instance called <code>logging-loki</code> in the <code>openshift-logging</code> namespace.</p>
+<pre><code class="language-plaintext">apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: logging-loki
+  namespace: openshift-logging
+spec:
+  size: 1x.demo
+  storage:
+    secret:
+      name: logging-loki-odf
+      type: s3
+    tls:
+      caName: openshift-service-ca.crt  &gt;&gt; odf
+  storageClassName: ocs-external-storagecluster-ceph-rbd
+  tenants:
+    mode: openshift-logging</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  annotations:
+    loki.grafana.com/rulesDiscoveredAt: '2025-12-04T20:03:32Z'
+
+  name: lokistack
+  namespace: openshift-logging
+
+spec:
+  size: 1x.extra-small
+  storage:
+     secret:
+      name: logging-loki-minio  &gt;&gt; minio
+      type: s3
+  storageClassName: portworx-sc
+  tenants:
+    mode: openshift-logging
+</code></pre>
