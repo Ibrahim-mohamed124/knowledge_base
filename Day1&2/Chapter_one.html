@@ -2,7 +2,7 @@
 title: Authentication and Identity Management
 description: 
 published: true
-date: 2025-11-27T17:08:07.751Z
+date: 2025-12-04T07:15:58.828Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:40.826Z
@@ -11,7 +11,7 @@ dateCreated: 2025-11-17T09:08:40.826Z
 <h1>Authentication and Identity Management</h1>
 <ul>
   <li>Authentication could be via <mark class="marker-yellow">certificates or tokens</mark></li>
-  <li>Kubernetes considers to be authenticated any user that presents<mark class="marker-yellow"> a valid certificate that is signed by a trusted certificate authority (CA).</mark> Kubernetes reads the <code>subject</code> field from the certificate, and assigns the username and the groups with the <code>common name</code> (CN) and the <code>organization</code> (O) fields, respectively.</li>
+  <li>Kubernetes considers users to be authenticated if they presents<mark class="marker-yellow"> a valid certificate that is signed by a trusted certificate authority (CA).</mark> Kubernetes reads the <code>subject</code> field from the certificate, and assigns the username and the groups with the <code>common name</code> (CN) and the <code>organization</code> (O) fields, respectively.</li>
   <li>If the request does not present an access token or certificate, then Kubernetes assigns to the request the <code>system:anonymous</code> system user and the <code>system:unauthenticated</code> system group.</li>
   <li>Kubernetes uses RBAC policies to determine whether the anonymous user has appropriate access to perform the requested action.</li>
 </ul>
