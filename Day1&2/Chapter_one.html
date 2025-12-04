@@ -2,7 +2,7 @@
 title: Authentication and Identity Management
 description: 
 published: true
-date: 2025-12-04T07:24:36.601Z
+date: 2025-12-04T07:25:39.587Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:40.826Z
@@ -110,10 +110,10 @@ groups:
 </ul>
 <h4>Group resources&nbsp;</h4>
 <ul>
-  <li>Defines groups in the cluster.</li>
+  <li>This resource defines groups in the cluster.</li>
   <li>OpenShift supports users as members of one or more groups.</li>
-  <li>OpenShift internal OAuth server automatically creates group resources when users first log in to the cluster through an OpenID Connect (OIDC) IdP.</li>
-  <li>Other supported IdPs should &nbsp;manually manage group resources in OpenShift.</li>
+  <li><mark class="marker-yellow">OpenShift internal OAuth server automatically creates group resources when users first log in to the cluster through an </mark><mark class="marker-pink">OpenID Connect (OIDC) IdP.</mark></li>
+  <li><mark class="marker-pink">Other supported IdPs should &nbsp;manually manage group resources in OpenShift.</mark></li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: user.openshift.io/v1
 kind: Group
