@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T09:43:34.598Z
+date: 2025-12-04T09:45:37.659Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -552,6 +552,14 @@ oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPAC
   <li><strong>Rotate or update existing credentials during upgrades</strong> - <mark class="marker-yellow">Maintain security by updating passwords as part of your upgrade process and organization password rotation policies</mark></li>
   <li><strong>Encrypt sensitive fields in the Portworx MongoDB instance</strong> - <mark class="marker-yellow">Protect critical data with proper encryption key management</mark></li>
 </ol>
+<ul>
+  <li><strong>Generate a CMK from the Command Line</strong>
+    <ul>
+      <li>Use the following command to generate a CMK from a Unix shell</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">echo $(head -c 96 /dev/urandom | base64 | tr -d '\n')</code></pre>
 <ul>
   <li>The spec generator will create a secret with this credentials&nbsp;</li>
 </ul>
