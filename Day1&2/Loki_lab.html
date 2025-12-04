@@ -2,19 +2,19 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-04T20:19:08.042Z
+date: 2025-12-04T20:20:03.988Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
 -->
 
 <ol>
-  <li>&nbsp;Provide object storage from the odf or minio.</li>
-  <li>&nbsp;create a secret with the following data<ol>
+  <li>Provide object storage from the odf or minio.</li>
+  <li>create a secret with the following data<ol>
       <li>ACCESS<i>KEY</i>ID</li>
       <li>ACCESSKEYSECRET</li>
       <li>BUCKETNAME</li>
-      <li>THE INTERNAL SERVICE OF THE BUCKET ENDPOINT &gt;&gt;&nbsp;<ul>
+      <li>THE INTERNAL SERVICE OF THE BUCKET ENDPOINT &gt;&gt;<ul>
           <li>http://minio-api.minio-ocp.svc.cluster.local:9000</li>
           <li>or use odf &gt;&gt;&gt;&gt;&gt;&gt;&gt; &nbsp;s3.openshift-storage.svc:443</li>
         </ul>
@@ -68,10 +68,8 @@ kind: LokiStack
 metadata:
   annotations:
     loki.grafana.com/rulesDiscoveredAt: '2025-12-04T20:03:32Z'
-
   name: lokistack
   namespace: openshift-logging
-
 spec:
   size: 1x.extra-small
   storage:
@@ -80,5 +78,25 @@ spec:
       type: s3
   storageClassName: portworx-sc
   tenants:
-    mode: openshift-logging
+    mode: openshift-logging</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get po
+NAME                                        READY   STATUS    RESTARTS   AGE
+cluster-logging-operator-565f5d5c56-rx2bd   1/1     Running   0          3h28m
+logging-rzqcp                               1/1     Running   0          36m
+logging-ts8mz                               1/1     Running   0          36m
+logging-xmb62                               1/1     Running   0          36m
+lokistack-compactor-0                       1/1     Running   0          38m
+lokistack-distributor-567785dbc-2cmjt       1/1     Running   0          38m
+lokistack-distributor-567785dbc-79cp9       1/1     Running   0          38m
+lokistack-gateway-76fc664c64-z6g9n          2/2     Running   0          38m
+lokistack-gateway-76fc664c64-zmxk2          2/2     Running   0          38m
+lokistack-index-gateway-0                   1/1     Running   0          38m
+lokistack-index-gateway-1                   1/1     Running   0          38m
+lokistack-ingester-0                        1/1     Running   0          38m
+lokistack-ingester-1                        1/1     Running   0          37m
+lokistack-querier-66c4f49475-66z7s          1/1     Running   0          38m
+lokistack-querier-66c4f49475-x4b7t          1/1     Running   0          38m
+lokistack-query-frontend-6db57976d4-cgtr2   1/1     Running   0          38m
+lokistack-query-frontend-6db57976d4-chhb4   1/1     Running   0          38m
 </code></pre>
