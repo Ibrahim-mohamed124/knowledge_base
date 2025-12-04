@@ -2,7 +2,7 @@
 title: Authentication and Identity Management
 description: 
 published: true
-date: 2025-12-04T07:55:38.190Z
+date: 2025-12-04T08:02:47.331Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:40.826Z
@@ -486,7 +486,7 @@ spec:
 </ul>
 <h4>Configuring OIDC IdP</h4>
 <ol>
-  <li>Obtain the client ID and the client secret from the OIDC IdP client for the OpenShift integration.</li>
+  <li>Obtain the <mark class="marker-yellow">client ID</mark> and the <mark class="marker-yellow">client secret</mark> from the OIDC IdP client for the OpenShift integration.</li>
   <li>Create an OpenShift secret object, which contains the client secret that is obtained from the OIDC client configuration, in the <code>openshift-config</code> namespace.</li>
   <li>Create an OpenShift configuration map object, which contains the certificate authority bundle in the <code>ca.crt</code> file parameter, in the <code>openshift-config</code> namespace (required only if the CA certificate is not configured as a system-wide CA).</li>
   <li>Create the OAuth CR YAML file to include the OIDC IdP.</li>
