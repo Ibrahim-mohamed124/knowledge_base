@@ -2,7 +2,7 @@
 title: Cluster Partitioning
 description: 
 published: true
-date: 2025-11-27T17:08:31.663Z
+date: 2025-12-04T08:40:19.783Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:38.152Z
@@ -161,6 +161,7 @@ spec:
     nodeSelector:
         matchLabels:
             node-role.kubernetes.io/custom: "" 3</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -199,12 +200,12 @@ spec:
 <p>&nbsp;</p>
 <h3>Infrastructure Nodes</h3>
 <ul>
-  <li>Infra role for nodes that host only infrastructure components, such as cluster logging, cluster monitoring, router, OAuth services or the integrated container image registry.&nbsp;</li>
+  <li>Infra role for nodes that host only infrastructure components, such as cluster logging, cluster monitoring, router, OAuth services or the integrated container image registry.</li>
   <li>Infrastructure nodes do not count towards the total number of required OpenShift subscriptions to run the environment.</li>
 </ul>
 <h3>Machine Configuration Operator Updates</h3>
 <ul>
-  <li>The MCD reports the state of the node updates by using node annotations.&nbsp;</li>
+  <li>The MCD reports the state of the node updates by using node annotations.</li>
 </ul>
 <pre><code class="language-plaintext">oc describe node worker01
 Name:        worker01
@@ -219,6 +220,7 @@ Annotations: machineconfiguration.openshift.io/currentConfig: rendered-worker-37
              machineconfiguration.openshift.io/state: Done 3
              volumes.kubernetes.io/controller-managed-attach-detach: true
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -265,11 +267,11 @@ Annotations: machineconfiguration.openshift.io/currentConfig: rendered-worker-37
 </blockquote>
 <h3>Remediation actions</h3>
 <ol>
-  <li>Generate:&nbsp;<ul>
+  <li>Generate:<ul>
       <li>Generate a force file on the degraded node to<mark class="marker-yellow"> bypass the configuration drift detection and reapply the current MC.&nbsp;</mark>
         <ul>
           <li>Create<mark class="marker-yellow"> a debug pod on the node with the degraded state</mark> and create the <code>/run/machine-config-daemon-force</code> file.</li>
-          <li>OpenShift skips the MC validation, restarts the node, and applies the current MC to the node.</li>
+          <li><mark class="marker-yellow">OpenShift skips the MC validation, restarts the node, and applies the current MC to the node.</mark></li>
         </ul>
       </li>
     </ul>
@@ -291,7 +293,7 @@ Annotations: machineconfiguration.openshift.io/currentConfig: rendered-worker-37
 <p>&nbsp;</p>
 <h3>Configure MCO-related Custom Resources</h3>
 <ul>
-  <li>The MCO provides the <code>ContainerRuntimeConfig</code> CR to modify CRI-O container runtime settings, and the <code>KubeletConfig</code> CR to manage the Kubelet service.&nbsp;</li>
+  <li>The MCO provides the <code>ContainerRuntimeConfig</code> CR to modify CRI-O container runtime settings, and the <code>KubeletConfig</code> CR to manage the Kubelet service.</li>
   <li>OpenShift provides a <code>kubelet</code> configuration controller to the MCC. You can use the <code>KubeletConfig</code> CR to edit the <code>kubelet</code> parameters.</li>
   <li>The MCO can write the <code>kubelet.conf</code> configuration file and the <code>kubelet.system</code> <code>systemd</code> unit file to Ignition, so Ignition writes these two files to configure the <code>kubelet</code> agent when it starts on a node.</li>
   <li>MCD reboots the nodes to write the new configuration.</li>
@@ -308,7 +310,7 @@ Annotations: machineconfiguration.openshift.io/currentConfig: rendered-worker-37
 <h3>The Node Tuning Operator</h3>
 <ul>
   <li>The Node Tuning Operator is<mark class="marker-yellow"> a cluster operator </mark>that manages node-level optimizations by using the <mark class="marker-yellow">TuneD service</mark> and the <code>tuned</code> daemon.</li>
-  <li>The operator manages the containerized tuned daemon for RHOCP as a Kubernetes daemon set.&nbsp;</li>
+  <li>The operator manages the containerized tuned daemon for RHOCP as a Kubernetes daemon set.</li>
   <li>The Node Tuning Operator is installed by default in RHOCP clusters, and runs in the <code>openshift-cluster-node-tuning-operator</code> namespace.</li>
 </ul>
 <pre><code class="language-plaintext">oc get Tuned/default -o yaml \
@@ -321,6 +323,6 @@ Annotations: machineconfiguration.openshift.io/currentConfig: rendered-worker-37
 </ul>
 <h3>The Kernel Module Management Operator</h3>
 <ul>
-  <li>Manages, builds, signs, and deploys out-of-tree kernel modules and device plug-ins on OpenShift Container Platform clusters.&nbsp;</li>
+  <li>Manages, builds, signs, and deploys out-of-tree kernel modules and device plug-ins on OpenShift Container Platform clusters.</li>
   <li>A <code>Module</code> CRD specifies the kernel that can be added to one or more cluster nodes.</li>
 </ul>
