@@ -2,7 +2,7 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-04T20:57:33.801Z
+date: 2025-12-04T21:09:13.341Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
@@ -216,4 +216,38 @@ metadata:
   annotations:
     observability.openshift.io/log-level: debug
 # ...</code></pre>
+<pre><code class="language-plaintext">apiVersion: observability.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+
+  name: logging
+  namespace: openshift-logging
+
+spec:
+  managementState: Managed
+  outputs:
+  - lokiStack:
+      authentication:
+        token:
+          from: serviceAccount
+      target:
+        name: lokistack
+        namespace: openshift-logging
+    name: logging-loki
+    tls:
+      ca:
+        configMapName: openshift-service-ca.crt
+        key: service-ca.crt
+    type: lokiStack
+  pipelines:
+  - inputRefs:
+    - application
+    - infrastructure
+    name: logs-to-loki
+    outputRefs:
+    - logging-loki
+  serviceAccount:
+    name: collector
+
+</code></pre>
 <p>&nbsp;</p>
