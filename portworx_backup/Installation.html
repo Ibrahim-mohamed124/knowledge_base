@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T09:47:00.183Z
+date: 2025-12-04T10:16:28.139Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -686,7 +686,8 @@ deletionPolicy: Delete</code></pre>
 <pre><code class="language-plaintext">helm repo add portworx http://charts.portworx.io/ &amp;&amp; helm repo update</code></pre>
 <p>&nbsp; 5. Download vaues.yaml and apply the helm chart</p>
 <pre><code class="language-plaintext">helm install px-central portworx/px-central --namespace central --create-namespace --version 2.9.1 -f values-px-central.yaml</code></pre>
-<p>&nbsp;</p>
+<p>&nbsp;6. create the pxbackup-sa service account</p>
+<p>&nbsp;7. Generate the kubeconfig file for pxbackup-sa service account</p>
 <pre><code class="language-plaintext">#!/bin/bash
 SERVICE_ACCOUNT=pxbackup-sa
 NAMESPACE=kube-system
