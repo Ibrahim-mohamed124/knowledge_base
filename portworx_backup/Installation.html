@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T09:45:37.659Z
+date: 2025-12-04T09:47:00.183Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -644,6 +644,9 @@ metadata:
     snapshot.storage.kubernetes.io/is-default-class: "true"
 driver: pxd.portworx.com
 deletionPolicy: Delete</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc annotate route &lt;route_name&gt; \
+    --overwrite haproxy.router.openshift.io/timeout=&lt;timeout&gt;&lt;time_unit&gt;</code></pre>
 <h1><strong>Install in Non-Airgapped Environments</strong></h1>
 <ol>
   <li>create a storageClass</li>
