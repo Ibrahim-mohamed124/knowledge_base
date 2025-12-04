@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-04T09:27:40.117Z
+date: 2025-12-04T09:29:39.812Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -118,6 +118,8 @@ metadata:
 data:
   config.yaml: |
     enableUserWorkload: true </code></pre>
+<h3>Exclude namespaces from the monitoring</h3>
+<pre><code class="language-plaintext">oc label namespace &lt;namespace_name&gt; openshift.io/user-monitoring=false </code></pre>
 <h2>Alerts and Notifications</h2>
 <ul>
   <li>Use the Alerts UI to manage alerts, silences, and alerting rules.<ul>
