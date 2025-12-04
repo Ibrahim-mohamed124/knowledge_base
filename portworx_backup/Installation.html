@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T09:38:59.045Z
+date: 2025-12-04T09:43:34.598Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -552,6 +552,28 @@ oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPAC
   <li><strong>Rotate or update existing credentials during upgrades</strong> - <mark class="marker-yellow">Maintain security by updating passwords as part of your upgrade process and organization password rotation policies</mark></li>
   <li><strong>Encrypt sensitive fields in the Portworx MongoDB instance</strong> - <mark class="marker-yellow">Protect critical data with proper encryption key management</mark></li>
 </ol>
+<ul>
+  <li>The spec generator will create a secret with this credentials&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">kubectl apply -f - &lt;&lt;EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: &lt;pxb-namespace&gt;
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pxc-credentials
+  namespace: &lt;pxb-namespace&gt;
+data:
+  mongodb-px-backup-password: &lt;base64-encoded-mongodb-password&gt;
+  mongodb-root-password: &lt;base64-encoded-mongodb-root-password&gt;
+  mongodb-replica-set-key: &lt;base64-encoded-mongodb-replica-set-key&gt;
+  mongodb-master-encryption-key: &lt;base64-encoded-mongodb-master-encryption-key&gt;
+  postgresql-password: &lt;base64-encoded-postgresql-password&gt;
+  mysql-password: &lt;base64-encoded-mysql-password&gt;
+EOF</code></pre>
 <h1><strong>Deploy Portworx Backup</strong></h1>
 <ol>
   <li>Make sure <a href="https://helm.sh/docs/intro/install/">Helm</a> is installed on the client machine</li>
