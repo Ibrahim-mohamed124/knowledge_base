@@ -2,7 +2,7 @@
 title: Backup, Restore, and Migration.
 description: 
 published: true
-date: 2025-11-21T13:41:17.328Z
+date: 2025-12-04T08:14:56.374Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:35.415Z
@@ -439,11 +439,11 @@ application data volume.
   </li>
   <li>Velero not only exports and imports resources; it also performs <mark class="marker-yellow">additional processing on the resources.&nbsp;</mark>
     <ul>
-      <li>Determine the correct restore order for each resource.</li>
+      <li><mark class="marker-yellow">Determine the correct restore order for each resource.</mark></li>
       <li>Apply any user-provided filters.</li>
       <li>Modify the destination namespace, if it is different from the backup.</li>
-      <li>Remove or alter resource attributes such as auto-assigned node ports, IP addresses, or hostnames.</li>
-      <li>Skip managed resources such as a replica set that deployment owns.</li>
+      <li><mark class="marker-yellow">Remove or alter resource attributes such as auto-assigned node ports, IP addresses, or hostnames</mark>.</li>
+      <li><mark class="marker-yellow">Skip managed resources such as a replica set that deployment owns.</mark></li>
     </ul>
   </li>
   <li>Data Volume Snapshot could be taken by a cloud provider snapshot APIs or by the kubernetes CSI itself. If a volume does not support either of the APIs could use the file-system backup solution FBS that is implemented by Kopia.<ul>
