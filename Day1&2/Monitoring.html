@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-11-28T08:37:12.214Z
+date: 2025-12-04T09:27:40.117Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -28,7 +28,7 @@ dateCreated: 2025-11-28T07:44:41.035Z
 <figure class="image image_resized" style="width:100%;"><img src="/monitoring-architecture.svg"></figure>
 <ol>
   <li>All components of the default monitoring stack are installed in the <code>openshift-monitoring</code> project and provide monitoring features for core platform components.<ul>
-      <li><mark class="marker-yellow">Modifying any existing resource and creating additional </mark><code>ServiceMonitor</code>, <code>PodMonitor</code>, or <code>PrometheusRule</code> <mark class="marker-yellow">resources </mark>in the <code>openshift-monitoring</code> <mark class="marker-yellow">project is not supported</mark>.&nbsp;</li>
+      <li><mark class="marker-yellow">Modifying any existing resource and creating additional </mark><code>ServiceMonitor</code>, <code>PodMonitor</code>, or <code>PrometheusRule</code> <mark class="marker-yellow">resources </mark>in the <code>openshift-monitoring</code> <mark class="marker-yellow">project is not supported</mark>.</li>
       <li><strong>Cluster Monitoring Operator:</strong>
         <ul>
           <li>The cluster monitoring operator controls the deployed monitoring components and ensures that they are always in sync with the latest version of the cluster monitoring operator.</li>
@@ -102,10 +102,22 @@ Shows nodes with less than 50% of available memory.
 
 kube_persistentvolumeclaim_status_phase{phase="Pending"} == 1
 Shows persistent volume claims in the pending state.</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The Red&nbsp;Hat add-on operators can define extra metrics and alerts. For example, the <code>compliance</code> operator exposes additional metrics to Prometheus. You can get a list of exposed metrics by using the following query:</li>
 </ul>
 <pre><code class="language-plaintext">{name=~"compliance.*"}</code></pre>
+<h3>Enabling monitoring for user-defined projects</h3>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc -n openshift-monitoring edit configmap cluster-monitoring-config</code></pre>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true </code></pre>
 <h2>Alerts and Notifications</h2>
 <ul>
   <li>Use the Alerts UI to manage alerts, silences, and alerting rules.<ul>
@@ -129,6 +141,7 @@ Shows persistent volume claims in the pending state.</code></pre>
 </ul>
 <pre><code class="language-plaintext">oc extract secret/alertmanager-main -n openshift-monitoring \
   --to ./ --confirm</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>sed script to clean the many quotes in the secret <code><strong>sed -f script.sed alertmanager.yaml</strong></code></li>
 </ul>
@@ -168,6 +181,7 @@ route:
         alertname: PersistentVolumeUsageNearFull  13
       continue: true  14
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -255,5 +269,6 @@ route:
 </figure>
 <pre><code class="language-plaintext"> oc set data secret/alertmanager-main -n openshift-monitoring \
   --from-file alertmanager.yaml</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc logs -f statefulset.apps/alertmanager-main -c alertmanager \
   -n openshift-monitoring</code></pre>
