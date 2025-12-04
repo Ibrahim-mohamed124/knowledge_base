@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T09:22:54.565Z
+date: 2025-12-04T09:27:07.555Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -539,6 +539,16 @@ oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPAC
   <li>To use the a separate instance of prometheus fo rthe px-backup, ensure that the global prometheus instance does not monitor the namespace in which the backup is installed:</li>
 </ul>
 <pre><code class="language-plaintext">oc label namespace &lt;namespace_name&gt; openshift.io/user-monitoring=false</code></pre>
+<h3>Enabling monitoring for user-defined projects</h3>
+<pre><code class="language-plaintext">oc -n openshift-monitoring edit configmap cluster-monitoring-config</code></pre>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true </code></pre>
 <h1><strong>Deploy Portworx Backup</strong></h1>
 <ol>
   <li>Make sure <a href="https://helm.sh/docs/intro/install/">Helm</a> is installed on the client machine</li>
