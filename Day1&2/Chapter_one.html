@@ -2,7 +2,7 @@
 title: Authentication and Identity Management
 description: 
 published: true
-date: 2025-12-04T07:31:10.810Z
+date: 2025-12-04T07:34:05.993Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:08:40.826Z
@@ -171,7 +171,7 @@ Error from server (MethodNotAllowed): the server does not allow this method on t
       <li>LDAP URI: a string that contains a group of parameters that are essential to the query:<ul>
           <li>ldap: The LDAP protocol designation. For LDAP over SSL, use the <code>ldaps</code> protocol. Red&nbsp;Hat recommends using StartTLS over regular <code>ldap</code>.</li>
           <li>host:port: the hostname and the listening port of the LDAP server, The default for <code>ldap</code> is <code>localhost:389</code>, and for <code>ldaps</code> is <code>localhost:636</code>.</li>
-          <li>basedn: The DN of the directory where a query begins. This directory is used as the root location for the search.</li>
+          <li>basedn: The DN of the directory where a query begins. This directory is used as the <mark class="marker-yellow">root location for the search.</mark></li>
           <li>attributes<mark class="marker-yellow">: The target for the search, with the default as </mark><code><mark class="marker-yellow">uid</mark></code><mark class="marker-yellow">,</mark> which<mark class="marker-yellow"> the LDAP lookup is intended to return</mark>. Multiple attributes are provided by a comma-separated list.</li>
           <li>scope: The scope of the LDAP lookup. The scope is either <code>one</code> or <code>sub</code>. The default is <code>sub</code> if unspecified.</li>
           <li>filter: An LDAP filte<mark class="marker-yellow">r refines the results for the query</mark>. If omitted, the filter defaults to <code>(objectClass=*)</code>.</li>
