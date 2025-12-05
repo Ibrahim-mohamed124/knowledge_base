@@ -2,7 +2,7 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-05T09:18:19.187Z
+date: 2025-12-05T09:29:23.266Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
@@ -77,13 +77,21 @@ metadata:
   name: logging-loki
   namespace: openshift-logging
 spec:
+  managementState: Managed
+  limits:
+    global:
+      retention:
+        days: x 
   size: 1x.demo
   storage:
+    schemas:
+    - version: v13
+      effectiveDate: "&lt;yyyy&gt;-&lt;mm&gt;-&lt;dd&gt;" | the day before the installation
     secret:
       name: logging-loki-odf
       type: s3
     tls:
-      caName: openshift-service-ca.crt  &gt;&gt; odf
+      caName: openshift-service-ca.crt  &gt;&gt; odf or any storage provider ca.crt
   storageClassName: ocs-external-storagecluster-ceph-rbd
   tenants:
     mode: openshift-logging</code></pre>
@@ -94,8 +102,16 @@ metadata:
   name: lokistack
   namespace: openshift-logging
 spec:
+  managementState: Managed
+  limits:
+    global:
+      retention:
+        days: x 
   size: 1x.extra-small
   storage:
+     schemas:
+     - version: v13
+       effectiveDate: "&lt;yyyy&gt;-&lt;mm&gt;-&lt;dd&gt;" | the day before the installation
      secret:
       name: logging-loki-minio  &gt;&gt; minio
       type: s3
