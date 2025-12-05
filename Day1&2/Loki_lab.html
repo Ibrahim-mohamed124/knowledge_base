@@ -2,7 +2,7 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-05T11:25:06.615Z
+date: 2025-12-05T11:33:37.443Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
@@ -170,22 +170,7 @@ metadata:
 type: kubernetes.io/service-account-token
 </code></pre>
 </blockquote>
-<p>&nbsp; 2. Explicitly grant log collection permissions to the service account associated with <strong>ClusterLogForwarder&nbsp;</strong></p>
-<ul>
-  <li>Add this clusterrolebinding to the operator to allow it to manage Kubernetes resources cluster-wide.</li>
-</ul>
-<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: manager-rolebinding
-roleRef:                                           
-  apiGroup: rbac.authorization.k8s.io              
-  kind: ClusterRole                                
-  name: cluster-logging-operator                   
-subjects:                                          
-  - kind: ServiceAccount                           
-    name: cluster-logging-operator                 
-    namespace: openshift-logging   </code></pre>
+<p>&nbsp; 2. Explicitly grant log collection permissions to the service account associated with <strong>ClusterLogForwarder&nbsp;</strong> &nbsp;</p>
 <blockquote>
   <p>collect-application-logs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
   <p>collect-audit-logs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
@@ -199,82 +184,7 @@ subjects:
 <pre><code class="language-plaintext">oc adm policy add-cluster-role-to-user collect-infrastructure-logs -z collector</code></pre>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">oc adm policy add-cluster-role-to-user collect-audit-logs -z collector</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: cluster-logging-write-audit-logs
-rules:                                              
-  - apiGroups:                                      
-      - loki.grafana.com                            
-    resources:                                      
-      - audit                                       
-    resourceNames:                                  
-      - logs                                        
-    verbs:                                          
-      - create                                      </code></pre>
-<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: cluster-logging-write-application-logs
-rules:                                              
-  - apiGroups:                                      
-      - loki.grafana.com                            
-    resources:                                      
-      - application                                 
-    resourceNames:                                  
-      - logs                                        
-    verbs:                                          
-      - create                                      </code></pre>
-<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: cluster-logging-write-infrastructure-logs
-rules:                                              
-  - apiGroups:                                      
-      - loki.grafana.com                            
-    resources:                                      
-      - infrastructure                              
-    resourceNames:                                  
-      - logs                                        
-    verbs:                                          
-      - create                                      </code></pre>
-<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: clusterlogforwarder-editor-role
-rules:                                              
-  - apiGroups:                                      
-      - observability.openshift.io                  
-    resources:                                      
-      - clusterlogforwarders                        
-    verbs:                                          
-      - create                                      
-      - delete                                      
-      - get                                         
-      - list                                        
-      - patch                                       
-      - update                                      
-      - watch                                       </code></pre>
-<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: clusterlogforwarder-editor-role
-rules:                                              
-  - apiGroups:                                      
-      - observability.openshift.io                  
-    resources:                                      
-      - clusterlogforwarders                        
-    verbs:                                          
-      - create                                      
-      - delete                                      
-      - get                                         
-      - list                                        
-      - patch                                       
-      - update                                      
-      - watch                                       </code></pre>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
 <p>&nbsp; 4. modify the log level in the collector, you can set the <code>observability.openshift.io/log-level</code> annotation to <code>trace</code>, <code>debug</code>, <code>info</code>, <code>warn</code>, <code>error</code>, and <code>off</code>.</p>
 <pre><code class="language-plaintext">apiVersion: observability.openshift.io/v1
 kind: ClusterLogForwarder
