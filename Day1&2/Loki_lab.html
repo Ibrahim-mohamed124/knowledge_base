@@ -2,7 +2,7 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-05T08:36:52.329Z
+date: 2025-12-05T08:50:26.359Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
@@ -109,6 +109,32 @@ lokistack-query-frontend-6db57976d4-chhb4   1/1     Running   0          38m
   <li>Create a service account for the collector. If you want to write logs to storage that requires a token for authentication, you must include a token in the service account.</li>
 </ol>
 <pre><code class="language-plaintext">oc create sa colloctor -n openshift-logging</code></pre>
+<blockquote>
+  <p>serviceaccounts can have more than one token that are stored in secrets</p>
+  <pre><code class="language-plaintext">oc describe sa tet
+Name:                tet
+Namespace:           ibrahim
+Labels:              &lt;none&gt;
+Annotations:         &lt;none&gt;
+Image pull secrets:  &lt;none&gt;
+Mountable secrets:   &lt;none&gt;
+Tokens:              test1
+                     test2
+Events:              &lt;none&gt;
+</code></pre>
+  <pre><code class="language-plaintext">apiVersion: v1
+data:
+  token: "echo "token" | based4 -w 0"
+kind: Secret
+metadata:
+  annotations:
+    kubernetes.io/service-account.name: tet
+    kubernetes.io/service-account.uid: bec90966-4769-4cfc-bc5d-58516380e0e9
+  name: test2
+  namespace: ibrahim
+type: kubernetes.io/service-account-token
+</code></pre>
+</blockquote>
 <p>&nbsp; 2. Explicitly grant log collection permissions to the service account associated with <strong>ClusterLogForwarder&nbsp;</strong></p>
 <ul>
   <li>Add this clusterrolebinding to the operator to allow it to manage Kubernetes resources cluster-wide.</li>
