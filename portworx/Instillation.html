@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-12-05T12:07:11.421Z
+date: 2025-12-05T12:11:30.816Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -348,10 +348,71 @@ pxctl status --color</code></pre>
 <h2>Installation on Bare Metal</h2>
 <h4>Requirments</h4>
 <ol>
-  <li>Dedicated disk for KVDB on at least three nodes, and each disk must has a unique device name across all the nodes at least 64 GB in size.<ul>
+  <li>Dedicated disk for KVDB on at least three nodes, and each disk must has a unique device name across all the nodes at least 64 GB in size. <mark class="marker-yellow">This is for the PX2 datastore, the PX1 datastore can use the same disk as the data, but this is not recommended.</mark>
+    <ul>
       <li>Persistent disks' names can be obtained by using the sym links that the udev create in /dev/disk/by-id/*. &nbsp;udev uses unique identifiers for each disk like vendor code, provisioner code, and other to create these links.</li>
+      <li>if the nodes has different pathes to the disks, use a node selector to specify the disk on each node</li>
     </ul>
   </li>
+</ol>
+<pre><code class="language-plaintext"># SOURCE: https://install.portworx.com/3.5?operator=true&amp;mc=false&amp;kbver=1.31.13&amp;ns=portworx&amp;b=true&amp;iop=6&amp;j=auto&amp;r=17001&amp;c=px-cluster-986440bd-d2ed-407a-8ce1-888c9d3177cf&amp;osft=true&amp;stork=true&amp;csi=true&amp;aut=false&amp;tel=false&amp;st=k8s
+kind: StorageCluster
+apiVersion: core.libopenstorage.org/v1
+metadata:
+  name: px-cluster-986440bd-d2ed-407a-8ce1-888c9d3177cf
+  namespace: portworx
+  annotations:
+    portworx.io/install-source: "https://install.portworx.com/3.5?operator=true&amp;mc=false&amp;kbver=1.31.13&amp;ns=portworx&amp;b=true&amp;iop=6&amp;j=auto&amp;r=17001&amp;c=px-cluster-986440bd-d2ed-407a-8ce1-888c9d3177cf&amp;osft=true&amp;stork=true&amp;csi=true&amp;aut=false&amp;tel=false&amp;st=k8s"
+    portworx.io/is-openshift: "true"
+spec:
+  nodes:
+  - selector:
+        labelSelector:
+          matchLabels:
+            kubernetes.io/hostname: "master01.ocp.ea.com"
+            portworx.io/node-type: "storage"
+    storage:
+        devices:
+          - /dev/disk/by-id/wwn-0x600508b1001cf4a69efce12d1bd6da1f
+  - selector:
+        labelSelector:
+          matchLabels:
+            kubernetes.io/hostname: "master02.ocp.ea.com"
+            portworx.io/node-type: "storage"
+    storage:
+        devices:
+          - /dev/disk/by-id/wwn-0x600508b1001c68c5fcc7f282a14837e7
+  - selector:
+        labelSelector:
+          matchLabels:
+            kubernetes.io/hostname: "master03.ocp.ea.com"
+            portworx.io/node-type: "storage"
+    storage:
+        devices:
+          - /dev/disk/by-id/wwn-0x600508b1001c41a07862179c5a97fa43
+  image: portworx/oci-monitor:3.5.0
+  imagePullPolicy: Always
+  kvdb:
+    internal: true
+  storage:
+    useAll: true
+    journalDevice: auto
+  secretsProvider: k8s
+  startPort: 17001
+  stork:
+    enabled: true
+    args:
+      webhook-controller: "true"
+  runtimeOptions:
+    default-io-profile: "6"
+  csi:
+    enabled: true
+  monitoring:
+    telemetry:
+      enabled: false
+    prometheus:
+      exportMetrics: true</code></pre>
+<ol>
   <li>For disaggregated setup label the storage nodes and storageless nodes.<ul>
       <li>portwrox.io/node-type: storage</li>
       <li>portworx.io/node-type: storageless</li>
