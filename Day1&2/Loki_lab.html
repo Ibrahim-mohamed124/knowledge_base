@@ -2,17 +2,25 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-05T08:50:26.359Z
+date: 2025-12-05T09:18:19.187Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
 -->
 
+<h1>Configuring Logging for OpenShift</h1>
+<ul>
+  <li>To get started with logging, you must install the following Operators:<ul>
+      <li><mark class="marker-yellow">Loki Operator </mark>to manage your log store.</li>
+      <li><mark class="marker-yellow">Red Hat OpenShift Logging Operator</mark> to manage log collection and forwarding. (must be installed after configuring the lokistack log store)</li>
+      <li><mark class="marker-yellow">Cluster Observability Operator</mark> (COO) to manage visualization.</li>
+    </ul>
+  </li>
+</ul>
 <h1>Create the LokiStack instance</h1>
 <blockquote>
   <p>Openshift logging &nbsp;does not use ClusterLogging anymore, and it is replaced by only ClusterLogForwarder.</p>
 </blockquote>
-<p>&nbsp;</p>
 <ol>
   <li>Download Loki operator and enable monitoring</li>
   <li>Provide object storage from the odf or minio.</li>
@@ -31,6 +39,17 @@ dateCreated: 2025-12-04T20:19:08.042Z
 <blockquote>
   <p>when using the route of the bucket provider as endpoint some problems come up with the ca.crt</p>
 </blockquote>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Secret
+metadata:
+  name: logging-loki-s3 
+  namespace: openshift-logging
+stringData: 
+  access_key_id: &lt;access_key_id&gt;
+  access_key_secret: &lt;secret_access_key&gt;
+  bucketnames: &lt;s3_bucket_name&gt;
+  endpoint: 
+</code></pre>
 <pre><code class="language-plaintext">oc extract secret/logging-loki-minio -n openshift-logging --to=-
 # access_key_id
 27DZ27VF5lC0k0vycECw
@@ -106,7 +125,7 @@ lokistack-query-frontend-6db57976d4-chhb4   1/1     Running   0          38m
 </code></pre>
 <h1>Create the ClusterLogForwarder</h1>
 <ol>
-  <li>Create a service account for the collector. If you want to write logs to storage that requires a token for authentication, you must include a token in the service account.</li>
+  <li>Create a service account for the collector. If you want to write logs to storage that requires a token for authentication, <mark class="marker-yellow">you must include a token in the service account</mark>.</li>
 </ol>
 <pre><code class="language-plaintext">oc create sa colloctor -n openshift-logging</code></pre>
 <blockquote>
