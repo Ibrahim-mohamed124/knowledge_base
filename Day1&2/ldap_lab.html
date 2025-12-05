@@ -2,7 +2,7 @@
 title: ldap
 description: 
 published: true
-date: 2025-12-05T17:46:25.346Z
+date: 2025-12-05T17:48:07.328Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-05T17:44:55.146Z
@@ -64,5 +64,31 @@ metadata:
 data:
   ca.crt: |
     &lt;CA_certificate_PEM&gt;</code></pre>
-<p>&nbsp;</p>
+<p>4. modify the oauth cluster</p>
+<pre><code class="language-plaintext">apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: ldapidp 
+    mappingMethod: claim 
+    type: LDAP
+    ldap:
+      attributes:
+        id: 
+        - dn
+        email: 
+        - mail
+        name: 
+        - cn
+        preferredUsername: 
+        - uid
+      bindDN: "cn=,dc=,dc=" 
+      bindPassword: 
+        name: ldap-secret
+      ca: 
+        name: ca-config-map
+      insecure: false 
+      url: "ldaps://ldaps.example.com/ou=users,dc=acme,dc=com?uid" </code></pre>
 <p>&nbsp;</p>
