@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-11-30T13:08:33.072Z
+date: 2025-12-05T12:07:11.421Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -16,7 +16,30 @@ or kubectl  exec -it svc/portworx-service to excute the pxctl command ...
 source ~/.bashrc
 
 pxctl status --color</code></pre>
-<p>&nbsp;</p>
+<blockquote>
+  <p>PX-StoreV2 data store is optimized for I/O-intensive workloads that use high-performance NVMe-class devices and does not work with ssd or hdd disks.</p>
+  <figure class="table">
+    <table style="background-color:rgb(27, 27, 29);">
+      <tbody>
+        <tr>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">DAS/SAN</td>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">Anthos</td>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">Preprovisioned SSD or NVMe</td>
+        </tr>
+        <tr>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">&nbsp;</td>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">OpenShift 4+</td>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">Preprovisioned SSD or NVMe</td>
+        </tr>
+        <tr>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">&nbsp;</td>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">Rancher Kubernetes Engine (RKE2)</td>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">Preprovisioned SSD or NVMe</td>
+        </tr>
+      </tbody>
+    </table>
+  </figure>
+</blockquote>
 <blockquote>
   <p>Portworx by Pure Storage<mark class="marker-yellow"> recommends upgrading the Portworx version prior to upgrading your OpenShift version. </mark><a href="https://docs.portworx.com/portworx-enterprise/support-matrix/operator-openshift-upgrade-path#portworx-350"><mark class="marker-yellow">url here</mark></a></p>
 </blockquote>
@@ -350,6 +373,7 @@ metadata:
 data:
   config.yaml: |
     enableUserWorkload: true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The enableUserWorkload parameter enables monitoring for user-defined projects in the OpenShift cluster.</li>
   <li>This creates <mark class="marker-yellow">a prometheus-operated service in the openshift-user-workload-monitoring namespace.</mark></li>
@@ -368,11 +392,13 @@ data:
 <p>&nbsp; 4. Create the storageCluster.</p>
 <p>&nbsp; 5. Verify Portworx Pod Status</p>
 <pre><code class="language-plaintext">oc get pods -n &lt;px-namespace&gt; -o wide | grep -e portworx -e px</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><mark class="marker-yellow">The Portworx Operator </mark>performs a<mark class="marker-yellow"> pre-flight check across the cluster, and the check must pass on each node</mark>. This check determines whether <mark class="marker-yellow">each node in the cluster is compatible with the PX-StoreV2 datastore.</mark></p>
 </blockquote>
 <p>&nbsp; 6. Verify Portworx Cluster Status</p>
 <pre><code class="language-plaintext">oc exec &lt;px-pod-name&gt;  -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl status</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>Status displays <code>PX is operational</code> when the cluster is running as expected. <mark class="marker-yellow">If the cluster is using the PX-StoreV2 datastore,</mark> the <code>StorageNode</code> entries for each node displays <code>Yes(PX-StoreV2)</code>.</p>
 </blockquote>
@@ -388,10 +414,12 @@ oc exec &lt;px-pod&gt; -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl cluster pro
   <li>Set an environment variable for your Kubernetes version:</li>
 </ul>
 <pre><code class="language-plaintext">KBVER=$(kubectl version | awk -F'[v+_-]' '/Server/ {print $3}')</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Set an environment variable to specify the latest major version of Portworx:</li>
 </ul>
 <pre><code class="language-plaintext">PXVER=&lt;portworx-version&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Run the following command to download a list of the released images:</li>
 </ul>
@@ -432,14 +460,17 @@ quay.io/jetstack/cert-manager-acmesolver:v1.17.4
   <li>On an internet-connected host that matches the architecture and OS version of the Kubernetes cluster nodes intended for Portworx installation, <mark class="marker-yellow">download the air-gapped installation bootstrap script</mark> for the Kubernetes and Portworx versions:</li>
 </ul>
 <pre><code class="language-plaintext">curl -o px-ag-install.sh -L "https://install.portworx.com/$PXVER/air-gapped?kbver=$KBVER"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Pull the container images for the Kubernetes and Portworx versions:</li>
 </ul>
 <pre><code class="language-plaintext">sh px-ag-install.sh pull</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Log in to docker:</li>
 </ul>
 <pre><code class="language-plaintext">docker login &lt;your-private-registry&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Push the container images to a private registry that is accessible to your air-gapped nodes.<mark class="marker-yellow"> Do not include </mark><code><mark class="marker-yellow">http://</mark></code><mark class="marker-yellow"> in your private registry path:</mark></li>
 </ul>
@@ -450,15 +481,18 @@ quay.io/jetstack/cert-manager-acmesolver:v1.17.4
   <li>Replace <code>&lt;operator-version&gt;</code> with the Operator version you want to use.</li>
 </ul>
 <pre><code class="language-plaintext">curl -o versions.yaml "https://install.portworx.com/$PXVER/version?kbver=$KBVER&amp;opver=&lt;operator-version&gt;"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Update the <a href="https://install.portworx.com/2.13/version">version manifest</a> with the custom registry location details. (optional portworx operator will use the custom registry from the storageCluster by defualt). If not ensure that the <strong>Custom Container Registry Location</strong> field in the <strong>Customize</strong> tab of <a href="https://central.portworx.com/">Portworx Central</a> is empty for any specs you generate in the spec generator.</li>
 </ul>
 <pre><code class="language-plaintext">&lt;dns-host.domain or IPv4 or IPv6&gt;[:&lt;port&gt;]/repository/image:tag</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">version: 2.13.3
 components:
   stork: custom-registry.acme.org/portworx/backup/stork:23.2.1
   autopilot: 192.168.1.2:5433/tools/autopilot:1.3.7
   nodeWiper: [2001:db8:3333:4444:5555:6666:7777:8888]:5443/portworx/px-node-wiper:2.13.2</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Create a configmap from the downloaded or updated version manifest in the namespace <code>&lt;px-namespace&gt;</code>,</li>
 </ul>
@@ -468,6 +502,7 @@ components:
   <li>Start the repository container as a standalone service in Docker by running the following command:</li>
 </ul>
 <pre><code class="language-plaintext">docker run -p 8080:8080 docker.io/portworx/px-repo:1.2.0</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>navigate to your host IP address where the above docker image is running</li>
 </ul>
