@@ -2,7 +2,7 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-05T11:37:38.120Z
+date: 2025-12-05T11:44:18.162Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
@@ -137,6 +137,7 @@ lokistack-query-frontend-6db57976d4-chhb4   1/1     Running   0          38m
 </code></pre>
 <h1>Create the ClusterLogForwarder</h1>
 <ol>
+  <li>&nbsp;Install the openshift logging operator</li>
   <li>Create a service account for the collector. If you want to write logs to storage that requires a token for authentication, <mark class="marker-yellow">you must include a token in the service account</mark>.</li>
 </ol>
 <pre><code class="language-plaintext">oc create sa colloctor -n openshift-logging</code></pre>
@@ -208,7 +209,7 @@ spec:
     name: logging-loki
     tls:
       ca:
-        configMapName: openshift-service-ca.crt
+        configMapName: openshift-service-ca.crt 
         key: service-ca.crt
     type: lokiStack
   pipelines:
@@ -219,7 +220,26 @@ spec:
     outputRefs:
     - logging-loki
   serviceAccount:
-    name: collector
+    name: collector</code></pre>
+<pre><code class="language-plaintext">oc get po -n openshift-logging
+NAME                                        READY   STATUS    RESTARTS   AGE
+cluster-logging-operator-565f5d5c56-rx2bd   1/1     Running   0          18h
+logging-rzqcp                               1/1     Running   0          16h
+logging-ts8mz                               1/1     Running   0          16h
+logging-xmb62                               1/1     Running   0          16h
+lokistack-compactor-0                       1/1     Running   0          136m
+lokistack-distributor-7c86755544-64cbk      1/1     Running   0          137m
+lokistack-distributor-7c86755544-rsw6s      1/1     Running   0          138m
+lokistack-gateway-76fc664c64-z6g9n          2/2     Running   0          16h
+lokistack-gateway-76fc664c64-zmxk2          2/2     Running   0          16h
+lokistack-index-gateway-0                   1/1     Running   0          135m
+lokistack-index-gateway-1                   1/1     Running   0          137m
+lokistack-ingester-0                        1/1     Running   0          134m
+lokistack-ingester-1                        1/1     Running   0          136m
+lokistack-querier-88dfbc4bb-4q4rb           1/1     Running   0          138m
+lokistack-querier-88dfbc4bb-nhmbw           1/1     Running   0          137m
+lokistack-query-frontend-5ff5945457-gzgj8   1/1     Running   0          138m
+lokistack-query-frontend-5ff5945457-jfkdl   1/1     Running   0          137m
 </code></pre>
 <blockquote>
   <p>the openshift logging operator will create a secret that include a token for the service account that is associated with it.</p>
