@@ -1,0 +1,11 @@
+<!--
+title: ldap
+description: 
+published: true
+date: 2025-12-05T17:44:55.146Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-05T17:44:55.146Z
+-->
+
+<h1>Integrating ldap</h1><ol>  <li>obtain the following data from the ldap server:<ol>      <li>&nbsp;bindPassword&nbsp;</li>      <li>bindDN</li>      <li>DNS name for the ldap host</li>    </ol>  </li></ol><blockquote>  <p>The records in the ldap server must has uid &nbsp; because it is matched to the preferredUsername that is used to create the user and identity resources&nbsp;</p>  <pre><code class="language-plaintext">ldapadd -x -w password -D "cn=admin,dc=example,dc=in" &lt;&lt; EOFdn: cn=ahmed,ou=users,dc=example,dc=inobjectClass: inetOrgPersoncn: ahmedsn: ahmeduid: ahmed  &gt;&gt; importantuserPassword: 123displayName: ahmedEOFadding new entry "cn=ahmed,ou=users,dc=example,dc=in"</code></pre></blockquote><p>&nbsp;2. put the base64 encoded password in a secret in openshift-config namespace</p><pre><code class="language-plaintext">apiVersion: v1kind: Secretmetadata:  name: ldap-secret  namespace: openshift-configtype: Opaquedata:  bindPassword: &lt;base64_encoded_bind_password&gt;</code></pre><blockquote>  <p>it is possible to do ldap queries without authentication by leaving the bindDN empty “” in the oauth object. But anonymous query must be allowed first in the ldap server.</p>  <pre><code class="language-plaintext">ldapmodify -H ldapi:/// -Y EXTERNAL &lt;&lt; EOFdn: olcDatabase={1}mdb,cn=configchangetype: modifyadd: olcAccessolcAccess: {0}to * by anonymous readEOF</code></pre></blockquote>
