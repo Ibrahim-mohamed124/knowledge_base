@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-06T10:08:00.335Z
+date: 2025-12-06T10:19:07.327Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -46,14 +46,21 @@ dateCreated: 2025-12-01T09:52:17.181Z
 </ul>
 <h1>Installation steps:</h1>
 <ol>
-  <li>Generate the &nbsp;discovery image from the hypered console.<ul>
-      <li>Provide DNS that resolve public ip like api.openshift.com, which is the site that the discovery image &nbsp;pull the coreos image from and join to the cluster after booting.</li>
-      <li>Static provide IPs from a subnet that has access to the internet to connect to the central console and the gateway should reach the internet.</li>
-      <li>create bond with two MAC addresses that are used for the server not for the ilo(out of band management) &nbsp;(higher bandwidth 10Gb)</li>
-      <li>provide public ssh key that will be used to provision the OCP platform from the central console</li>
-      <li>Pull the iso image (minimal or full)</li>
-    </ul>
-  </li>
+  <li>Generate the &nbsp;discovery image from the RedHat Hybrid Cloud Console.</li>
+</ol>
+<ul>
+  <li><mark class="marker-yellow">It is possible to add custom yaml files to be applied during the installation</mark> by checking Include custom manifests box</li>
+  <li>It is possible to choose from pervious versions</li>
+</ul>
+<ul class="todo-list">
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Provide DNS &nbsp;IP that resolve public sites like api.openshift.com, which is the site that the discovery image &nbsp;pull the RHCoreOS image &nbsp;from and join to the cluster after booting.</span></label></li>
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Statically provide IPs from a subnet that has access to the internet to connect to the &nbsp;RedHat Hybrid Cloud Console and the gateway should be able to reach the internet.</span></label></li>
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Choose optional user operators to install.</span></label></li>
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">create bond with two MAC addresses that are used for the server not for the ilo(out of band management) &nbsp;(higher bandwidth 10Gb)</span></label></li>
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">provide public ssh key that will be used to provision the OCP platform from the central console</span></label></li>
+  <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Pull the iso image (minimal or full)</span></label></li>
+</ul>
+<ol>
   <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD<ul>
       <li>The ignition file take some minutes to join the central console</li>
       <li><mark class="marker-yellow">After the node appear ready in the console specific NTP server &nbsp;so the nodes do not fail.</mark>
