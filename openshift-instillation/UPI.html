@@ -2,7 +2,7 @@
 title: UPI
 description: 
 published: true
-date: 2025-12-06T14:02:33.234Z
+date: 2025-12-06T14:11:05.735Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-03T21:23:30.240Z
@@ -28,6 +28,30 @@ dateCreated: 2025-12-03T21:23:30.240Z
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: v1
+baseDomain: 
+compute: 
+- hyperthreading: Enabled 
+  name: 
+  replicas: 
+controlPlane: 
+  hyperthreading: Enabled 
+  name: 
+  replicas: 
+metadata:
+  name: 
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14 
+    hostPrefix: 23 
+  networkType: OVNKubernetes 
+  serviceNetwork: 
+  - 172.30.0.0/16
+platform:
+  none: {} &gt;&gt;&gt;&gt;&gt;&gt; empty for baremetal 
+fips: false 
+pullSecret: '' 
+sshKey: '' </code></pre>
 <blockquote>
   <p>😒 Remember to take a backup of the installation directory before each step !!😒</p>
 </blockquote>
