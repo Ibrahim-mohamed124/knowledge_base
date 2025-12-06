@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-06T09:46:21.760Z
+date: 2025-12-06T10:03:07.586Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -13,15 +13,27 @@ dateCreated: 2025-12-01T09:52:17.181Z
   <li>software as a service to install OCP, it provides both apis, and web console.</li>
   <li>Do not need a bootstrap</li>
   <li>The hosts must has connectivity to the internet</li>
-  <li>Require configuring NTP server during the installation ( from the web console )</li>
-  <li>&nbsp;</li>
-  <li><strong>Arbiter</strong>
-    <ul>
-      <li>Arbiter nodes are a more cost-effective alternative to control plane nodes. They function similarly but run only the essential components required to maintain the etcd quorum and prevent a split-brain condition. Because they do not host the full control plane or any workloads, arbiter nodes can use less powerful hardware.</li>
+  <li><mark class="marker-yellow">Require configuring NTP server during the installation ( from the web console )</mark></li>
+  <li>It is possible to assign roles to the hosts from the web console ( master, worker, arbiter)<ul>
+      <li><strong>Arbiter</strong>
+        <ul>
+          <li>Arbiter nodes are <mark class="marker-yellow">a more cost-effective alternative to control plane nodes.</mark> They function similarly but run only the essential components required to<mark class="marker-yellow"> maintain the etcd quorum and prevent a split-brain condition.</mark> Because they do not host the full control plane or any workloads, arbiter nodes can use less powerful hardware.</li>
+        </ul>
+      </li>
+      <li>To determine the most suitable role, the Assisted Installer evaluates each host’s memory, CPU, disk space, and network performance. It assigns an internal <code>suggested_role</code> value to each host, which drives the auto-assignment process when auto-assigned is enabled. Pre-installation validations ensure the resulting role allocation is valid.</li>
     </ul>
   </li>
-  <li>To determine the most suitable role, the Assisted Installer evaluates each host’s memory, CPU, disk space, and network performance. It assigns an internal <code>suggested_role</code> value to each host, which drives the auto-assignment process when auto-assigned is enabled. Pre-installation validations ensure the resulting role allocation is valid.</li>
 </ul>
+<h4>NETWORKING REQUIREMENTS</h4>
+<blockquote>
+  <p>For hosts of type VMware, set<mark class="marker-yellow"> clusterSet disk.EnableUUID to TRUE</mark>, even when the platform is not vSphere</p>
+</blockquote>
+<blockquote>
+  <p><mark class="marker-yellow">You must create a DNS PTR record to boot with a preset hostname if the hostname will not come from another source </mark>(/etc/hosts or DHCP). Otherwise, the Assisted Installer’s automatic node renaming feature will rename the nodes to their network interface MAC address.&nbsp;</p>
+</blockquote>
+<blockquote>
+  <p>Access to an NTP server for time synchronization between the cluster nodes</p>
+</blockquote>
 <h1>Installation steps:</h1>
 <ol>
   <li>Generate the &nbsp;discovery image from the hypered console.<ul>
