@@ -2,21 +2,46 @@
 title: UPI
 description: 
 published: true
-date: 2025-12-06T13:52:57.323Z
+date: 2025-12-06T14:02:33.234Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-03T21:23:30.240Z
 -->
 
 <ul>
-  <li>Preparing the Bastion Host<ul class="todo-list">
-      <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">DNS</span></label></li>
-      <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">HAproxy</span></label></li>
-      <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Apache server</span></label></li>
+  <li>Preparing the Bastion Host<ul>
+      <li>Optional<ul class="todo-list">
+          <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">DNS</span></label></li>
+          <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">HAproxy</span></label></li>
+          <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Apache server</span></label></li>
+        </ul>
+      </li>
+      <li>mandatory<ul>
+          <li>install openshift-install</li>
+          <li>install the oc binary</li>
+          <li>get the pull secret from the hybird console</li>
+          <li>generate ssh</li>
+          <li>make custom butane file for custom configurations</li>
+          <li>get install-config.yaml template</li>
+        </ul>
+      </li>
     </ul>
   </li>
-  <li>bootstrap</li>
-  <li>nodes</li>
+</ul>
+<blockquote>
+  <p>😒 Remember to take a backup of the installation directory before each step !!😒</p>
+</blockquote>
+<ul>
+  <li>bootstrap<ul>
+      <li>boot the machine by using the CoreOS image from the hybird console</li>
+      <li>give the machine <mark class="marker-yellow">a hostname</mark> and static IP, gateway, DNS 👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈</li>
+    </ul>
+  </li>
+  <li>nodes<ul>
+      <li>boot every machine by using the CoreOS</li>
+      <li>give every machine a hostname and static IP, gateway, DNS 👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈</li>
+    </ul>
+  </li>
 </ul>
 <h1>Bastion Host</h1>
 <ul>
