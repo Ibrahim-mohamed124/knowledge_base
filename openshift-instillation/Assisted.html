@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-06T10:22:19.690Z
+date: 2025-12-06T10:26:34.422Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -37,12 +37,12 @@ dateCreated: 2025-12-01T09:52:17.181Z
 <h3>PREFLIGHT VALIDATIONS</h3>
 <ul>
   <li>Ensures network connectivity</li>
-  <li>Ensures sufficient network bandwidth&nbsp;</li>
-  <li>Ensures connectivity to the registry&nbsp;</li>
-  <li>Ensures that any upstream DNS can resolve the required domain name&nbsp;</li>
-  <li>Ensures time synchronization between cluster nodes&nbsp;</li>
-  <li>Verifies that the cluster nodes meet the minimum hardware requirements&nbsp;</li>
-  <li>Validates the installation configuration parameters&nbsp;</li>
+  <li>Ensures sufficient network bandwidth</li>
+  <li>Ensures connectivity to the registry</li>
+  <li>Ensures that any upstream DNS can resolve the required domain name</li>
+  <li>Ensures time synchronization between cluster nodes</li>
+  <li>Verifies that the cluster nodes meet the minimum hardware requirements</li>
+  <li>Validates the installation configuration parameters</li>
 </ul>
 <h1>Installation steps:</h1>
 <ol>
@@ -60,14 +60,12 @@ dateCreated: 2025-12-01T09:52:17.181Z
   <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">provide public ssh key that will be used to provision the OCP platform from the central console</span></label></li>
   <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Pull the iso image (minimal or full)</span></label></li>
 </ul>
-<ol>
-  <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD or<mark class="marker-yellow"> it is better to host the iso image in apache server that has close connectivity to the hosts</mark> ( ethernet wise ) to avoid any networking problems.<ul>
-      <li>The ignition process takes some minutes to join RedHat Hybrid Cloud Console.</li>
-      <li><mark class="marker-yellow">After the node appear ready in the console specific NTP server &nbsp;so the nodes do not fail.</mark>
-        <ul>
-          <li>It is possible to add redhat ntp pools 0.rhel.pool.ntp.org</li>
-        </ul>
-      </li>
+<p>&nbsp; &nbsp;2.0Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD or<mark class="marker-yellow"> it is better to host the &nbsp;&nbsp;</mark> &nbsp; &nbsp; &nbsp;<mark class="marker-yellow">iso image in apache server that has close connectivity to the hosts</mark> ( ethernet wise ) to avoid any networking problems.</p>
+<ul>
+  <li>The ignition process takes some minutes to join RedHat Hybrid Cloud Console.</li>
+  <li><mark class="marker-yellow">After the node appear ready in the console specific NTP server &nbsp;so the nodes do not fail.</mark>
+    <ul>
+      <li>It is possible to add redhat ntp pools 0.rhel.pool.ntp.org</li>
     </ul>
   </li>
-</ol>
+</ul>
