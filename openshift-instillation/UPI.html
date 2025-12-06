@@ -2,7 +2,7 @@
 title: UPI
 description: 
 published: true
-date: 2025-12-06T14:14:32.004Z
+date: 2025-12-06T14:18:30.538Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-03T21:23:30.240Z
@@ -56,18 +56,16 @@ sshKey: '' </code></pre>
   <p>😒 Remember to take a backup of the installation directory before each step !!😒</p>
 </blockquote>
 <ul>
-  <li>bootstrap<ul>
+  <li>bootstrap and nodes<ul>
       <li>boot the machine by using the CoreOS image from the hybird console by any method (usb stick, attache iso, httpd server, ipxe)</li>
       <li>give the machine <mark class="marker-yellow">a hostname</mark> and static IP, gateway, DNS 👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈</li>
     </ul>
   </li>
-  <li>nodes<ul>
-      <li>boot every machine by using the CoreOS</li>
-      <li>give every machine a hostname and static IP, gateway, DNS 👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈👈</li>
-    </ul>
-  </li>
 </ul>
+<pre><code class="language-plaintext">sudo coreos-installer install  --copy-network --ignition-url=http://&lt;HTTP_server&gt;/&lt;node_type&gt;.ign \ 
+--isecure-ignition  dev/sdx</code></pre>
 <h3>Useful Commands</h3>
+<pre><code class="language-plaintext">openshift-install coreos print-stream-json | grep '\.iso[^.]'</code></pre>
 <pre><code class="language-plaintext">./openshift-install wait-for install-complete --log-level debug</code></pre>
 <pre><code class="language-plaintext">./openshift-install create manifests --dir &lt;installation_directory&gt;
 here you but the custom manifests in the openshfit dir or edit the existing ones</code></pre>
