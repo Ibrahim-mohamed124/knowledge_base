@@ -2,7 +2,7 @@
 title: UPI
 description: 
 published: true
-date: 2025-12-06T14:11:05.735Z
+date: 2025-12-06T14:13:28.380Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-03T21:23:30.240Z
@@ -67,6 +67,19 @@ sshKey: '' </code></pre>
     </ul>
   </li>
 </ul>
+<h3>Useful Commands</h3>
+<pre><code class="language-plaintext">./openshift-install wait-for install-complete --log-level debug</code></pre>
+<pre><code class="language-plaintext">./openshift-install create manifests --dir &lt;installation_directory&gt;
+here you but the custom manifests in the openshfit dir or edit the existing ones</code></pre>
+<pre><code class="language-plaintext">./openshift-install create ignition-configs --dir &lt;installation_directory&gt;
+.
+├── auth
+│   ├── kubeadmin-password
+│   └── kubeconfig
+├── bootstrap.ign
+├── master.ign
+├── metadata.json
+└── worker.ign</code></pre>
 <h1>Bastion Host</h1>
 <ul>
   <li>Prepare a DNS server ( provided by the customer )</li>
