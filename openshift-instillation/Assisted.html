@@ -2,13 +2,19 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-01T20:51:11.713Z
+date: 2025-12-06T09:46:21.760Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
 -->
 
+<h1>Overview</h1>
 <ul>
+  <li>software as a service to install OCP, it provides both apis, and web console.</li>
+  <li>Do not need a bootstrap</li>
+  <li>The hosts must has connectivity to the internet</li>
+  <li>Require configuring NTP server during the installation ( from the web console )</li>
+  <li>&nbsp;</li>
   <li><strong>Arbiter</strong>
     <ul>
       <li>Arbiter nodes are a more cost-effective alternative to control plane nodes. They function similarly but run only the essential components required to maintain the etcd quorum and prevent a split-brain condition. Because they do not host the full control plane or any workloads, arbiter nodes can use less powerful hardware.</li>
