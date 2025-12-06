@@ -2,7 +2,7 @@
 title: Assisted
 description: 
 published: true
-date: 2025-12-06T10:19:07.327Z
+date: 2025-12-06T10:22:19.690Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-01T09:52:17.181Z
@@ -61,22 +61,11 @@ dateCreated: 2025-12-01T09:52:17.181Z
   <li><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Pull the iso image (minimal or full)</span></label></li>
 </ul>
 <ol>
-  <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD<ul>
-      <li>The ignition file take some minutes to join the central console</li>
+  <li>Mount the iso image &nbsp;through the ilo interface for each node after changing the boot order to boot from the CD or<mark class="marker-yellow"> it is better to host the iso image in apache server that has close connectivity to the hosts</mark> ( ethernet wise ) to avoid any networking problems.<ul>
+      <li>The ignition process takes some minutes to join RedHat Hybrid Cloud Console.</li>
       <li><mark class="marker-yellow">After the node appear ready in the console specific NTP server &nbsp;so the nodes do not fail.</mark>
         <ul>
           <li>It is possible to add redhat ntp pools 0.rhel.pool.ntp.org</li>
-        </ul>
-      </li>
-      <li><mark class="marker-yellow">Use the one time boot to add the iso image after creating virtual media from the discovery image.&nbsp;</mark></li>
-      <li>&nbsp;</li>
-      <li>&nbsp;</li>
-      <li>&nbsp;<ul>
-          <li>192.168.70.200 &gt; host 1</li>
-          <li>192.168.70.201 &gt; host 2</li>
-          <li>192.168.70.202 &gt; host 3</li>
-          <li>192.168.70.203,4 api_apps</li>
-          <li>&nbsp;</li>
         </ul>
       </li>
     </ul>
