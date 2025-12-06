@@ -2,7 +2,7 @@
 title: UPI
 description: 
 published: true
-date: 2025-12-06T11:13:44.107Z
+date: 2025-12-06T11:17:35.582Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-03T21:23:30.240Z
@@ -101,4 +101,54 @@ zone "100.100.10.in-addr.arpa" IN {  🙄 reverse zone 2 ( different subnet )
 };
 include "/etc/named.rfc1912.zones";
 include "/etc/named.root.key";
+</code></pre>
+<p>&nbsp; 4. Create the DNS zones databases at /var/named/</p>
+<pre><code class="language-plaintext">ls -al /var/named/
+-rw-r--r--.  1 root  root   552 Dec  3 07:05 ea.com.db
+-rw-r--r--.  1 root  root   379 Dec  3 11:33 ea.reverse.db
+-rw-r--r--.  1 root  root   343 Dec  3 11:34 ear.reverse.db</code></pre>
+<pre><code class="language-plaintext">cat ea.com.db
+$TTL  1D
+@     IN  SOA dns.ocp.ea.com. root.ea.com. (
+                2019022400 ; serial
+                3h         ; refresh
+                15         ; retry
+                1w         ; expire
+                3h         ; minimum
+              )
+              IN NS dns.ocp.ea.com.
+dns.ocp      IN A 10.100.100.200
+api.ocp      IN A 10.100.100.200
+api-int.ocp  IN A 10.100.100.200
+*.apps.ocp   IN A 10.100.100.200
+bootstrap.ocp IN A 10.100.100.203
+master01.ocp IN A 192.168.70.200
+master02.ocp IN A 192.168.70.201
+master03.ocp IN A 192.168.70.202
+</code></pre>
+<pre><code class="language-plaintext"> cat ea.reverse.db
+$TTL  1D
+@     IN  SOA dns.ocp.ea.com. root.ea.com. (
+                2019022400 ; serial
+                3h         ; refresh
+                15         ; retry
+                1w         ; expire
+                3h         ; minimum
+              )
+          IN NS dns.ocp.ea.com.
+200 IN PTR master01.ocp.ea.com.
+201 IN PTR master02.ocp.ea.com.
+202 IN PTR master03.ocp.ea.com.</code></pre>
+<pre><code class="language-plaintext">cat ear.reverse.db
+$TTL  1D
+@     IN  SOA dns.ocp.ea.com. root.ea.com. (
+                2019022400 ; serial
+                3h         ; refresh
+                15         ; retry
+                1w         ; expire
+                3h         ; minimum
+              )
+          IN NS dns.ocp.ea.com.
+200 IN PTR api.ocp.ea.com
+203 IN PTR bootstrap.ocp.ea.com.
 </code></pre>
