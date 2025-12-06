@@ -1,0 +1,526 @@
+<!--
+title: installer binary
+description: 
+published: true
+date: 2025-11-17T20:17:31.719Z
+tags: openshift, ocp, installation, implementation
+editor: ckeditor
+dateCreated: 2025-11-17T20:17:27.648Z
+-->
+
+<h1 style="text-align:justify;"><strong>Openshfit-install</strong></h1>
+<blockquote>
+  <p style="text-align:justify;">Starting with OpenShift Container Platform 4.6, a full-stack installation on bare metal uses the OpenShift installer binary <code><strong>openshift-baremetal-install &nbsp;</strong></code>&nbsp;</p>
+</blockquote>
+<blockquote>
+  <p>Install the openshift-installer cli from<a href="https://console.redhat.com/openshift/create/datacenter"> <u>https://console.redhat.com/openshift/create/datacenter</u></a></p>
+  <p><u>wget </u>https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/&lt;version&gt;/openshift-install-linux.tar.gz</p>
+  <p>Install the oc, kubectl from&nbsp;</p>
+  <p>Or from&nbsp;</p>
+  <p>https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/ &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; via web browser</p>
+  <p><u>wget </u>https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/&lt;version&gt;/openshift-client-linux.tar.gz</p>
+  <p>get the pull secret from</p>
+  <p>https://console.redhat.com/openshift/install/metal/user-provisioned</p>
+</blockquote>
+<pre><code class="language-plaintext">[root@utility ~]# tar -xvf openshift-client-linux-4.6.4.tar.gz -C /usr/bin/
+README.md
+oc
+kubectl
+[root@utility ~]# tar -xvf openshift-install-linux-4.6.4.tar.gz -C /usr/bin/
+README.md
+openshift-install
+
+oc completion bash &gt; /etc/bash_completion.d/openshift
+openshift-install completion bash &gt; /etc/bash_completion.d/openshift-install
+
+source /etc/bash_completion.d/openshift
+source /etc/bash_completion.d/openshift-install</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Option</td>
+        <td>Function</td>
+      </tr>
+      <tr>
+        <td>explain</td>
+        <td>explains the fields of InstallConfig APIs</td>
+      </tr>
+      <tr>
+        <td>explain installconfig</td>
+        <td>explains the fields of installconfig resource</td>
+      </tr>
+      <tr>
+        <td>log-level debug</td>
+        <td>enable debugging mode</td>
+      </tr>
+      <tr>
+        <td>dir</td>
+        <td>path to save the generated assets</td>
+      </tr>
+      <tr>
+        <td>create install-config</td>
+        <td>creates install-config.yaml</td>
+      </tr>
+      <tr>
+        <td>create manifests</td>
+        <td>creates k8s manifests out of install-config.yaml</td>
+      </tr>
+      <tr>
+        <td>create ignition-conifgs</td>
+        <td>creates ignition files out of k8s manifests</td>
+      </tr>
+      <tr>
+        <td>create cluster</td>
+        <td>deploy a cluster&nbsp;</td>
+      </tr>
+      <tr>
+        <td>wait-for bootstrap-complete</td>
+        <td>waits until the bootstrap installation phase ends</td>
+      </tr>
+      <tr>
+        <td>wait-for install-complete</td>
+        <td>waits until the cluster instillation ends</td>
+      </tr>
+      <tr>
+        <td>destroy cluster</td>
+        <td>delete the cluster</td>
+      </tr>
+      <tr>
+        <td>gather</td>
+        <td>get logs after kubernetes api is up and running</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ol>
+  <li>Before the installation: <code><strong>ssh-keygen -t rsa -b 4096 -N '' -f ${HOME}/.ssh/ocp4-cluster</strong></code></li>
+  <li>Get pull secret from https://console.redhat.com/openshift/install/metal/user-provisioned</li>
+  <li>When using the <mark class="marker-yellow">pre-existing infrastructure installation method, you must specify the IP addresses of the bootstrap and control plane nodes when running the </mark><code><mark class="marker-yellow">openshift-install gather bootstrap</mark></code><mark class="marker-yellow"> command.</mark></li>
+</ol>
+<h3>The workflow of cluster creation:</h3>
+<ol>
+  <li>complete the general requirements: provide the ocp4-cluster.pub key</li>
+</ol>
+<pre><code class="language-plaintext">ssh-keygen -t rsa -b 4096 -N '' -f ${HOME}/.ssh/ocp4-cluster</code></pre>
+<p>&nbsp;</p>
+<ol>
+  <li>create a directory for the instillation: The OpenShift installer will create the installation directory if it does not exist.</li>
+</ol>
+<pre><code class="language-plaintext"> mkdir ${HOME}/ocp4-cluster</code></pre>
+<p>&nbsp;</p>
+<ol>
+  <li>generate the install-config.yaml</li>
+</ol>
+<pre><code class="language-plaintext">openshift-install create install-config --dir=${HOME}/ocp4-cluster</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">cat ${HOME}/ocp4-cluster/install-config.yaml
+apiVersion: v1
+baseDomain: mydomain.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform: {}
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}
+  replicas: 3
+metadata:
+  creationTimestamp: null
+  name: ocp4
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  aws:
+    region: us-east-2
+publish: External
+pullSecret: |
+  {"auths":...}
+sshKey: |
+  ssh-rsa AA...</code></pre>
+<p>&nbsp;</p>
+<ol>
+  <li>generate the k8s manifests: which contains the <code>MachineConfigs</code> object that is used in ignition files</li>
+</ol>
+<pre><code class="language-plaintext">openshift-install create manifests  --dir=${HOME}/ocp4-cluster</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">cd ${HOME}/ocp4-cluster/manifests/openshift
+
+cat &lt;&lt; EOF &gt; 99-openshift-machineconfig-master-kargs.yaml
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: master
+  name: 99-openshift-machineconfig-master-kargs
+spec:
+  kernelArguments:
+    - 'loglevel=7'
+EOF</code></pre>
+<p>&nbsp;</p>
+<ol>
+  <li>generate the ignition files :<ul>
+      <li>Ignition files are<mark class="marker-yellow"> valid for 24 hours, after which the included certificates expire</mark>. If the cluster installation fails, check the ignition files to see if they are more than 24 hours old. If so, create new ignition files.</li>
+    </ul>
+  </li>
+</ol>
+<pre><code class="language-plaintext">openshift-install create ignition-configs  --dir=${HOME}/ocp4-cluster
+find ${HOME}/ocp4-cluster -name '*.ign' | xargs ls -lrt</code></pre>
+<p>&nbsp; 6. deploy the cluster</p>
+<pre><code class="language-plaintext">openshift-install create cluster --dir=${HOME}/ocp4-cluster --log-level=debug</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>&nbsp;In case of UPI instead for using openshift-install create cluster, use the openshfit-install wait-for commands to moniter the cluster installation.</p>
+  <pre><code class="language-plaintext">openshift-install wait-for bootstrap-complete --dir=${HOME}/ocp4-cluster --log-level=debug
+openshift-install wait-for install-complete  --dir=${HOME}/ocp4-cluster --log-level=debug</code></pre>
+  <p>&nbsp;</p>
+</blockquote>
+<blockquote>
+  <p>In UPI, after the installation of bootstrap, it automatically triggers the installation of ocp on the already booted CoreOS hosts</p>
+</blockquote>
+<blockquote>
+  <p>&nbsp;You can start using the <code>oc</code> command once the bootstrap has the Kubernetes API running on the temporary control plane.</p>
+</blockquote>
+<pre><code class="language-plaintext">export KUBECONFIG=[HOME]/[instillation dir]/auth/kubeconfig
+Or use the password in kubeadmin-password file</code></pre>
+<p>Useful commands:</p>
+<pre><code class="language-plaintext">  - watch 'oc get clusterversion; oc get clusteroperators; oc get pods --all-namespaces | grep -v -E "Running|Completed"; oc get nodes'
+  - oc get events -A -w</code></pre>
+<h1 style="text-align:justify;">Troubleshooting&nbsp;</h1>
+<p style="text-align:center;">Deployment stages &gt; determine the stage by looking at the installation logs</p>
+<figure class="table" style="text-align:center;">
+  <table>
+    <tbody>
+      <tr>
+        <td><code>Stage 1</code></td>
+        <td><code>Stage 2</code></td>
+        <td><code>Stage 3</code></td>
+      </tr>
+      <tr>
+        <td>Bootstrap<br>BootKube&nbsp;</td>
+        <td>Bootstrap<br>Temp control plane</td>
+        <td>Production control plane&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+          <p>After bootstrap deployment by openshfit-installer, two systemd services in the node do some action:</p>
+          <ul>
+            <li style="text-align:justify;"><mark class="marker-yellow">release-images service:</mark> download the required images to start temp control plane</li>
+            <li style="text-align:justify;"><mark class="marker-yellow">bootkube service:</mark> starts the temp control plane</li>
+          </ul>
+        </td>
+        <td>After the control plane nodes boots, the bootstrap creates a ETCD cluster, and schedules the production control plane to the control nodes</td>
+        <td>After complete deployment of production control plane, the <mark class="marker-yellow">clusterversionopeator </mark>finished the cluster deployment</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>Stage 1:</p>
+<ul>
+  <li>ssh by the core user to the bootstrap node using ssh key generated before the installation</li>
+</ul>
+<pre><code class="language-plaintext">ssh -i ${HOME}/.ssh/ocp4-cluster core@IP</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>inspect journal logs of release-images and bootkube services</li>
+</ul>
+<pre><code class="language-plaintext">journalctl -b -f -u release-image.service -u bootkube.service</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>inspect containers logs using crictl cli</li>
+</ul>
+<pre><code class="language-plaintext">sh-4.2# sudo bash
+sh-4.2# crictl ps -a
+sh-4.2# crictl logs &lt;container_id&gt;</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>Typical errors at this stage include:</p>
+  <ul>
+    <li>The bootstrap node cannot download container images from <code>quay.io</code> or the local registry due to authentication or networking issues.</li>
+    <li>The cluster nodes cannot obtain the IP address of the Kubernetes API due to DNS issues.</li>
+  </ul>
+</blockquote>
+<p>Stage 2:</p>
+<ul>
+  <li>use oc or openshift-install to get the logs from the bootstrap <code><strong>export KUBECONFIG=${HOME}/ocp4-cluster/auth/kubeconfig</strong></code></li>
+  <li><code><strong>openshift-install gather bootstrap --dir /path</strong></code> | this command gathers the logs and fetch them as a tarball<ul>
+      <li>the archive contains:<ul>
+          <li>bootstrap/journals/ &nbsp;bootstrap/containers/ &nbsp;control-plane/ &nbsp;failed-units.txt &nbsp;rendered-assets/ resources/ &nbsp;unit-status/</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>When using the pre-existing infrastructure installation method, you must specify the IP addresses of the bootstrap and control plane nodes when running the <code>openshift-install gather bootstrap</code> command.</p>
+  <p>&nbsp;</p>
+  <p><code><strong>openshift-install gather bootstrap --dir=${HOME}/ocp4-cluster \</strong></code></p>
+  <p><code><strong>--bootstrap &lt;bootstrap_address&gt; \</strong></code></p>
+  <p><code><strong>--master &lt;master_1_address&gt; \</strong></code></p>
+  <p><code><strong>--master &lt;master_2_address&gt; \</strong></code></p>
+  <p><code><strong>--master &lt;master_3_address&gt;"</strong></code></p>
+</blockquote>
+<ul>
+  <li>useful commands:</li>
+</ul>
+<pre><code class="language-plaintext">oc adm node-logs -u kubelet|crio master01, oc debug node/master01
+oc get nodes
+oc get clusterversion
+oc get clusteroperators
+oc get events -A -w</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>Typical errors at this stage include:</p>
+  <ul>
+    <li>Control plane nodes installation issues</li>
+    <li>DNS resolution issues</li>
+  </ul>
+</blockquote>
+<p>Stage 3:</p>
+<ul>
+  <li>Typical error is OpenShift<mark class="marker-yellow"> operators installation issues</mark></li>
+  <li>Instillation verification:</li>
+</ul>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1. Verify that all the cluster nodes have their system clock synchronized with a Network Time Protocol (NTP) server. &gt; <code><strong>cat /etc/chrony.conf</strong></code></p>
+<pre><code class="language-plaintext">export KUBECONFIG=${HOME}/ocp4-cluster/auth/kubeconfig
+
+oc debug node/master01
+
+chroot /host
+
+cat /etc/chrony.conf  &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; pool 2.rhel.pool.ntp.org iburst
+
+sudo chronyc tracking
+Reference ID    : 8AEC8070 (time.gac.edu)
+Stratum         : 3
+Ref time (UTC)  : Thu Feb 11 13:06:57 2021
+System time     : 0.000034756 seconds fast of NTP time
+Last offset     : -0.000001187 seconds
+RMS offset      : 0.004707427 seconds
+Frequency       : 28.194 ppm fast
+Residual freq   : -0.000 ppm
+Skew            : 0.136 ppm
+Root delay      : 0.052070152 seconds
+Root dispersion : 0.018801220 seconds
+Update interval : 64.9 seconds
+Leap status     : Normal</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2. Verify that all the cluster nodes are in a <code>Ready</code> status</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;3. Check that all the cluster nodes are reporting usage metrics. &gt; <code><strong>oc adm top node</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;4. Ensure that there are no certificate signing requests (CSRs) pending approval. &gt; &nbsp;<code><strong>oc get csr | grep Pending</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;5. Confirm that the cluster version operator report shows that the OpenShift cluster is available and ready. &gt; &nbsp;<code><strong>oc get clusterversion</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6. Check that all the cluster operators are available and ready. &gt; <code><strong>oc get clusteroperators</strong></code></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7. Verify that there are not any pods with scheduling or execution issues in the cluster. &gt; &nbsp;<code><strong>oc get pods --all-namespaces | grep -v -E 'Running|Completed'</strong></code></p>
+<p>&nbsp;</p>
+<ul>
+  <li>ETCD verification:</li>
+</ul>
+<pre><code class="language-plaintext">oc get pods -n openshift-etcd | grep etcd-master
+oc rsh -n openshift-etcd etcd-master01  &gt;&gt; etcdctl endpoint health --cluster</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">etcdctl check perf --load="s,m,l" | small, medium, large</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>For more detailed etcd storage performance information</li>
+</ul>
+<pre><code class="language-plaintext">podman run --volume /var/lib/etcd:/var/lib/etcd:Z quay.io/openshift-scale/etcd-perf | from any control plane</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>API Health verification:</li>
+</ul>
+<pre><code class="language-plaintext">dig api.ocp4.example.com  | resolve the ip of the api loadbalancer
+curl -k https://api.ocp4.example.com:6443/version  | check the version of api
+curl -kIs  https://console-openshift-console.apps.ocp4.example.com | check the connection of the console</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>Openshift registry health:</li>
+</ul>
+<pre><code class="language-plaintext">oc -n openshift-image-registry get deployment.apps/image-registry
+oc -n openshift-image-registry  get pods -o wide
+oc debug node/master01 ;  curl -Ik https://image-registry.openshift-image-registry.svc:5000/healthz</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>Verify that the internal registry deployment is using persistent storage. Also, ensure that the image registry operator is in the <code>Managed</code> management state.</li>
+</ul>
+<pre><code class="language-plaintext">oc get configs.imageregistry.operator.openshift.io cluster -o yaml</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>Openshift Ingress health:<ul>
+      <li>Verify that the wildcard DNS record for applications, <code>*.apps.ocp4.example.com</code>, is configured to use the external load balancer IP address</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">dig test.apps.ocp4.example.com</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>Check that you can access an application exposed by an OpenShift Ingress route</li>
+  <li>Openshift cluster Network</li>
+</ul>
+<pre><code class="language-plaintext">oc get network.config/cluster -o yaml | to get pods and svc cidrs</code></pre>
+<h4>OpenShift Etcd Storage Performance</h4>
+<p>Verify the etcd storage performance.</p>
+<pre><code class="language-plaintext">oc get pods -n openshift-etcd | grep etcd-master
+etcd-master01  3/3 Running  0  22h
+etcd-master02  3/3 Running  0  22h
+etcd-master03  3/3 Running  0  22h
+
+oc rsh -n openshift-etcd etcd-master01
+
+etcdctl check perf --load="s"
+ 60 / 60 Boooooooooooooooooooooooooooooooooooooooooooooooooo! 100.00% 1m0s
+PASS: Throughput is 150 writes/s
+PASS: Slowest request took 0.220329s
+PASS: Stddev is 0.018010s
+PASS
+
+etcdctl check perf --load="m"
+ 60 / 60 Boooooooooooooooooooooooooooooooooooooooooooooooooo! 100.00% 1m0s
+PASS: Throughput is 964 writes/s
+PASS: Slowest request took 0.379547s
+PASS: Stddev is 0.022218s
+PASS
+
+etcdctl check perf --load="l"
+ 60 / 60 Boooooooooooooooooooooooooooooooooooooooooooooooooo! 100.00% 1m0s
+FAIL: Throughput too low: 4586 writes/s
+PASS: Slowest request took 0.258474s
+PASS: Stddev is 0.032695s
+FAIL</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>From the test result, the etcd cluster performs well for a medium cluster (<code>--load="m"</code>) and fails for a large cluster (<code>--load="l"</code>).</li>
+  <li>For more detailed etcd storage performance information, use the <code>fio</code> tool from the <code>etcd-perf</code> container to run a performance test on the control plane nodes. The performance test output reports whether the disk is fast enough to host etcd by comparing the 99th percentile of the fsync metric captured from the run to see if it is less than <strong>10 ms</strong>.</li>
+</ul>
+<pre><code class="language-plaintext">oc debug node/master01
+
+sh-4.4# chroot /host
+
+sh-4.4# podman run --volume /var/lib/etcd:/var/lib/etcd:Z quay.io/openshift-scale/etcd-perf
+...output omitted...
+{
+  "fio version" : "fio-3.7",
+...output omitted...
+  "global options" : {
+    "rw" : "write",
+    "ioengine" : "sync",
+    "fdatasync" : "1",
+    "directory" : "/var/lib/etcd",
+    "size" : "22m",
+    "bs" : "2300"
+  },
+...output omitted...
+      "write" : {
+        "iops" : 328.808892,
+...output omitted..
+        },
+...output omitted...
+    }
+  ]
+}
+-----------------------------------------------
+99th percentile of fsync is 6193152 ns
+99th percentile of the fsync is within the recommended threshold - 10 ms, the disk can be used to host etcd</code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>The <code>fio</code> performance test produces the following result:<ul>
+      <li>This test writes 22 MiB of data in blocks of 2300 bytes on the <code>/var/lib/etcd</code> directory.</li>
+      <li>The 99th percentile of the fsync is 6193152 ns, which is equivalent to <strong>6 ms</strong> of write latency.</li>
+      <li>The operating system has achieved an average of <strong>328 IOPS</strong> during the test.</li>
+    </ul>
+  </li>
+</ul>
+<h4>OpenShift Machine API</h4>
+<p>The <mark class="marker-yellow">OpenShift Machine API</mark> is the component that defines and manages the OpenShift <code>Machines</code> resource. The OpenShift <code>Machines</code> resource <mark class="marker-yellow">represents the OpenShift cluster nodes</mark>. The OpenShift Machine API:</p>
+<ul>
+  <li>Creates, updates, and deletes <code>Machines</code></li>
+  <li>Creates the infrastructure (instance or VM) for the node</li>
+</ul>
+<p>You can use the OpenShift <code>MachineSets</code> resource to control sets of <code>Machines</code>. A <code>Machineset</code> represents:</p>
+<ul>
+  <li>A set of <code>Machines</code></li>
+  <li>An abstraction of the underlying infrastructure</li>
+</ul>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get machines -n openshift-machine-api
+oc get machinesets -n openshift-machine-api
+oc scale machineset
+
+</code></pre>
+<p>@ to access the cluster metrics from redhat openshfit cluster manager console get the cluster id&nbsp;</p>
+<pre><code class="language-plaintext">oc get clusterversion \ &gt; -o jsonpath='{.items[].spec.clusterID}{"\n"}'
+oc adm must-gather \
+&gt; --image-stream=openshift/must-gather \
+&gt; --image=registry.redhat.io/container-native-virtualization/\
+&gt; cnv-must-gather-rhel8:v2.5.2</code></pre>
+<p>&nbsp;</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Image</td>
+        <td style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Purpose</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">registry.redhat.io/container-native-virtualization/cnv-must-gather-rhel8:v2.5.2</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Data collection for OpenShift Virtualization</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">registry.redhat.io/openshift-serverless-1/svls-must-gather-rhel8</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Data collection for OpenShift Serverless</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">registry.redhat.io/openshift-service-mesh/istio-must-gather-rhel7</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Data collection for Red&nbsp;Hat OpenShift Service Mesh</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">registry.redhat.io/rhcam-1-2/openshift-migration-must-gather-rhel8</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Data collection for migration-related information</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">registry.redhat.io/ocs4/ocs-must-gather-rhel8</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Data collection for Red&nbsp;Hat OpenShift Container Storage</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">registry.redhat.io/openshift4/ose-cluster-logging-operator</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Data collection for Red&nbsp;Hat OpenShift cluster logging</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h4>OpenShift Node Data</h4>
+<pre><code class="language-plaintext">oc debug node/
+sosreport -k crio.all=on -k crio.logs=on  | on the nodes</code></pre>
+<h4>OpenShift Remote Health Monitoring</h4>
+<ul>
+  <li>OpenShift collects anonymized aggregated information about the health, usage, and size of the clusters. With this information, Red&nbsp;Hat can proactively react to issues that can impact customers.</li>
+  <li>The OpenShift cluster reports this information to Red&nbsp;Hat using two components:<ul>
+      <li>Telemetry</li>
+      <li>Insights Operator</li>
+    </ul>
+  </li>
+  <li>The Telemetry component sends a chosen subset of the cluster monitoring metrics to Red&nbsp;Hat. These metrics are sent continuously and describe:<ul>
+      <li>OpenShift cluster size</li>
+      <li>OpenShift components health</li>
+      <li>OpenShift upgrades health</li>
+      <li>Limited OpenShift usage information</li>
+      <li>OpenShift alerts summary info</li>
+    </ul>
+  </li>
+  <li>The Insights Operator periodically gathers the cluster configuration and component failure status and reports that data to Red&nbsp;Hat. Using this information, the Red&nbsp;Hat OpenShift Cluster Manager proactively identifies potential cluster issues and provides solutions and preventive actions.</li>
+</ul>
+<pre><code class="language-plaintext">openshift-install destroy cluster --dir=${HOME}/ocp4-cluster</code></pre>

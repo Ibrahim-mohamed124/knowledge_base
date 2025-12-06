@@ -2,10 +2,10 @@
 title: root
 description: 
 published: true
-date: 2025-10-25T10:39:34.335Z
+date: 2025-11-17T20:15:22.657Z
 tags: 
 editor: markdown
-dateCreated: 2025-09-25T12:53:26.136Z
+dateCreated: 2025-11-17T09:08:11.838Z
 ---
 
 # Header
