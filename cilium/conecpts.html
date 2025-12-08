@@ -2,7 +2,7 @@
 title: concepts
 description: 
 published: true
-date: 2025-12-08T21:05:09.278Z
+date: 2025-12-08T21:14:14.145Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-08T19:18:08.405Z
@@ -130,13 +130,15 @@ dateCreated: 2025-12-08T19:18:08.405Z
 <h4>eBPF</h4>
 <ul>
   <li>Extended Berkeley Packet Filter run save code inside the linux kernel without any changes in the kernel modules ! and user spaces apps can:<ul>
-      <li>Packet filter</li>
+      <li><mark class="marker-yellow">Packet filter by using the XDP framework than runs eBPF program at the Network Interfac Card driver level !!!!!</mark></li>
+      <li>XDP allows the packets to be processed before they reach the kernel stack making it mush faster than iptables and nftables</li>
+      <li>eBPF use per-cpu hash table there is no rule matching in &nbsp;a table like iptables</li>
       <li>observability in real-time in the kernel space</li>
       <li>security and networking</li>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<figure class="image"><img src="/xd1p.png"></figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
