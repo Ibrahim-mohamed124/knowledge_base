@@ -2,7 +2,7 @@
 title: ldap_lab
 description: 
 published: true
-date: 2025-12-05T18:01:30.417Z
+date: 2025-12-08T14:28:22.766Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-05T17:44:55.146Z
@@ -35,6 +35,7 @@ adding new entry "cn=ahmed,ou=users,dc=example,dc=in"</code></pre>
 </blockquote>
 <p>&nbsp;2. put the base64 encoded password in a secret in openshift-config namespace</p>
 <pre><code class="language-plaintext">oc create secret generic ldap-secret --from-literal=bindPassword=&lt;secret&gt; -n openshift-config</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: v1
 kind: Secret
 metadata:
@@ -56,6 +57,7 @@ EOF</code></pre>
 </blockquote>
 <p>3. create a configmap for the custom ca.crt</p>
 <pre><code class="language-plaintext">oc create configmap ca-config-map --from-file=ca.crt=/path/to/ca -n openshift-config</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -91,4 +93,121 @@ spec:
         name: ca-config-map
       insecure: false 
       url: "ldaps://ldaps.example.com/ou=users,dc=acme,dc=com?uid" </code></pre>
-<p>&nbsp;</p>
+<h2>Configuring the LDAP sync groups</h2>
+<ol>
+  <li>create a separate project for the cronjob</li>
+</ol>
+<pre><code class="language-plaintext">oc new-project ldap-sync</code></pre>
+<p>&nbsp; 2. Define a service account:</p>
+<pre><code class="language-plaintext">kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: ldap-group-syncer
+  namespace: ldap-sync</code></pre>
+<p>&nbsp;3. &nbsp;Define a cluster role</p>
+<pre><code class="language-plaintext">apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: ldap-group-syncer
+rules:
+  - apiGroups:
+      - user.openshift.io
+    resources:
+      - groups
+    verbs:
+      - get
+      - list
+      - create
+      - update</code></pre>
+<p>&nbsp; 4. Define a cluster role binding to bind the cluster role to the service account:</p>
+<pre><code class="language-plaintext">kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ldap-group-syncer
+subjects:
+  - kind: ServiceAccount
+    name: ldap-group-syncer              
+    namespace: ldap-sync
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ldap-group-syncer</code></pre>
+<p>&nbsp; 5. configure a configmap to define the configuration file&nbsp;</p>
+<pre><code class="language-plaintext">kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ldap-group-syncer
+  namespace: ldap-sync
+data:
+  sync.yaml: |                                 
+    kind: LDAPSyncConfig
+    apiVersion: v1
+    url: ldaps://10.0.0.0:636                  
+    insecure: false
+    bindDN: cn=admin,dc=example,dc=com         
+    bindPassword:
+      file: "/etc/secrets/bindPassword"  &gt;&gt; from the first step	
+    ca: /etc/ldap-ca/ca.crt    &gt;&gt; from the first step
+    rfc2307:                                   
+      groupsQuery:
+        baseDN: "ou=groups,dc=example,dc=com"  
+        scope: sub
+        filter: "(objectClass=groupOfMembers)"
+        derefAliases: never
+        pageSize: 0
+      groupUIDAttribute: dn
+      groupNameAttributes: [ cn ]
+      groupMembershipAttributes: [ member ]
+      usersQuery:
+        baseDN: "ou=users,dc=example,dc=com"   
+        scope: sub
+        derefAliases: never
+        pageSize: 0
+      userUIDAttribute: dn
+      userNameAttributes: [ uid ]
+      tolerateMemberNotFoundErrors: false
+      tolerateMemberOutOfScopeErrors: false</code></pre>
+<p>&nbsp; 7. create a cronjob</p>
+<pre><code class="language-plaintext">kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: ldap-group-syncer
+  namespace: ldap-sync
+spec:                                                                                
+  schedule: "*/30 * * * *"                                                           
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      ttlSecondsAfterFinished: 1800                                                  
+      template:
+        spec:
+          containers:
+            - name: ldap-group-sync
+              image: "registry.redhat.io/openshift4/ose-cli:latest"
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "oc adm groups sync --sync-config=/etc/config/sync.yaml --confirm" 
+              volumeMounts:
+                - mountPath: "/etc/config"
+                  name: "ldap-sync-volume"
+                - mountPath: "/etc/secrets"
+                  name: "ldap-bind-password"
+                - mountPath: "/etc/ldap-ca"
+                  name: "ldap-ca"
+          volumes:
+            - name: "ldap-sync-volume"
+              configMap:
+                name: "ldap-group-syncer"
+            - name: "ldap-bind-password"
+              secret:
+                secretName: "ldap-secret"                                            
+            - name: "ldap-ca"
+              configMap:
+                name: "ca-config-map"                                                
+          restartPolicy: "Never"
+          terminationGracePeriodSeconds: 30
+          activeDeadlineSeconds: 500
+          dnsPolicy: "ClusterFirst"
+          serviceAccountName: "ldap-group-syncer"</code></pre>
