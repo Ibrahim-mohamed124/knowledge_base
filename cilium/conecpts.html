@@ -2,7 +2,7 @@
 title: concepts
 description: 
 published: true
-date: 2025-12-08T19:18:08.405Z
+date: 2025-12-08T19:48:54.572Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-08T19:18:08.405Z
@@ -11,10 +11,60 @@ dateCreated: 2025-12-08T19:18:08.405Z
 <h1>Overview of cilium</h1>
 <h4>Overview of k8s networking</h4>
 <ul>
-  <li>The user provide POD CIDR that is a pool of addresses for PODs.&nbsp;</li>
+  <li>The user provide POD CIDR that is a pool of addresses for PODs.</li>
   <li>Local Process in the nodes are able to take to the PODs on the same node.</li>
   <li>The IP addresses that come Service CIDR is more persistent than PODs IP addresses and the letter acts as VIPs</li>
   <li>Kube proxy contentiously update the IP tables &nbsp;do forward the traffic from service IPs to the pods IPs</li>
-  <li>&nbsp;</li>
 </ul>
-<p>&nbsp;</p>
+<h4>Overview of cilium</h4>
+<ul>
+  <li>Act as CNI, LoadBalancer, Cluster Mesh, Ingress Controller, API gateway, Egress Gateway</li>
+  <li>Features:<ul>
+      <li>Security:<ul>
+          <li>Network policy (L3 IPs/L4 ports)&nbsp;</li>
+          <li><mark class="marker-yellow">CiliumNetworkPolicy (L7 HTTP path and method based)&nbsp;</mark></li>
+          <li><mark class="marker-yellow">Encryption functionality out of the box</mark></li>
+        </ul>
+      </li>
+      <li>Observability:<ul>
+          <li><mark class="marker-yellow">Hubble: enables real-time traffic flow inspection across the clusters</mark>
+            <ul>
+              <li>what services are communicating with each other?</li>
+              <li>how frequently:</li>
+              <li>what does the service dependency graph look like?</li>
+              <li>what are the HTTPs requests are being made?</li>
+              <li>help in troubleshooting to faster detection of issues like (DNS, TCP, HTTP) issue</li>
+              <li>Visibility to events, errors, timeouts, unanswered TCP SYN requests, and how many response codes(400,500) of HTTP are made&nbsp;</li>
+              <li>Information about latency and access</li>
+            </ul>
+          </li>
+          <li>Gather and export metrics to Promethues and Garafana</li>
+        </ul>
+      </li>
+      <li>Service Mesh<ul>
+          <li>Cilium provide most of service mesh fucntions&nbsp;</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/cilium1.png"></figure>
+<h4>How cilium work?</h4>
+<ul>
+  <li>eBPF:<ul>
+      <li>eBPF allows running sandboxed application on the kernel by directly installing eBFP program as a kernel module ( inside the kernel ) which provide:<ul>
+          <li>Faster processing: no system calls are needed to the user space to the kernel</li>
+          <li>Better Scaling</li>
+          <li>Better visibility</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<figure class="image image_resized" style="width:41.89%;"><img src="/ebpf.png"></figure>
+<ul>
+  <li>Layer 3-7</li>
+  <li>Identity based policies&nbsp;</li>
+  <li>replace kube-proxy</li>
+  <li>bandwidth control</li>
+</ul>
