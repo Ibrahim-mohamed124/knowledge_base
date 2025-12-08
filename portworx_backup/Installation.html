@@ -2,7 +2,7 @@
 title: Installation
 description: 
 published: true
-date: 2025-12-04T10:32:36.172Z
+date: 2025-12-08T19:06:04.971Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-30T15:15:48.923Z
@@ -539,6 +539,7 @@ oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPAC
   <li>To use the a separate instance of prometheus fo rthe px-backup, ensure that the global prometheus instance does not monitor the namespace in which the backup is installed:</li>
 </ul>
 <pre><code class="language-plaintext">oc label namespace &lt;namespace_name&gt; openshift.io/user-monitoring=false</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>Starting from PXB 2.9.0, MongoDB requires all 3 replica set pods to be DNS-resolvable during startup.&nbsp;</p>
 </blockquote>
@@ -560,8 +561,9 @@ oc adm policy add-scc-to-user restricted system:serviceaccount:&lt;YOUR_NAMESPAC
   </li>
 </ul>
 <pre><code class="language-plaintext">echo $(head -c 96 /dev/urandom | base64 | tr -d '\n')</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>The spec generator will create a secret with this credentials&nbsp;</li>
+  <li>The spec generator will create a secret with this credentials</li>
 </ul>
 <pre><code class="language-plaintext">kubectl apply -f - &lt;&lt;EOF
 apiVersion: v1
@@ -582,6 +584,9 @@ data:
   postgresql-password: &lt;base64-encoded-postgresql-password&gt;
   mysql-password: &lt;base64-encoded-mysql-password&gt;
 EOF</code></pre>
+<ul>
+  <li>Creating this secret (pxc-credentials) will create another two secrets <mark class="marker-yellow">pxcentral-mysql-secret and pxc-backup-mongodb which are used to provided values for environment variables that &nbsp;are used in databased connections.</mark></li>
+</ul>
 <h1><strong>Deploy Portworx Backup</strong></h1>
 <ol>
   <li>Make sure <a href="https://helm.sh/docs/intro/install/">Helm</a> is installed on the client machine</li>
