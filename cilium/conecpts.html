@@ -2,7 +2,7 @@
 title: concepts
 description: 
 published: true
-date: 2025-12-08T19:50:44.553Z
+date: 2025-12-08T20:07:06.272Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-08T19:18:08.405Z
@@ -67,4 +67,53 @@ dateCreated: 2025-12-08T19:18:08.405Z
   <li>Identity based policies&nbsp;</li>
   <li>replace kube-proxy</li>
   <li>bandwidth control</li>
+</ul>
+<h4>Architercture</h4>
+<ul>
+  <li>Cilium Agent runs on ever node to listen to k8s events and API calls from the API-server and take actions<ul>
+      <li>Processes the congigurations</li>
+      <li>Determines how &nbsp;Pods and Service communicate</li>
+      <li>Acts as load balancer</li>
+      <li>Enforces network policies&nbsp;</li>
+      <li>Observe and Monitors traffic</li>
+      <li>Events:<ul>
+          <li>new pods are sarted, stopped</li>
+          <li>service endpoints changes</li>
+        </ul>
+      </li>
+      <li>Loads the eBPF programs to the kernel</li>
+    </ul>
+  </li>
+  <li>eBPF programs: L/4 traffic<ul>
+      <li>control ingress and egress network traffic</li>
+      <li>load balancer traffic efficiently&nbsp;</li>
+      <li>enforce security policies&nbsp;</li>
+    </ul>
+  </li>
+  <li>cluster Operator:<ol>
+      <li>Node management</li>
+      <li>cluster wide services</li>
+      <li>Load balancers</li>
+      <li>identity and security&nbsp;</li>
+      <li>CIDR management</li>
+      <li>CRD management&nbsp;</li>
+      <li>Cluster Mesh</li>
+      <li>IPAM</li>
+      <li>cluster wide network policies</li>
+      <li>high availability for cluster mesh</li>
+      <li>hubble relay support</li>
+    </ol>
+  </li>
+  <li>Envoy proxy: L7 traffic filtering and security<ul>
+      <li>One pod per node</li>
+      <li>L7 network policy (Cilium agent forward the traffic to the envoy proxy)</li>
+    </ul>
+  </li>
+  <li>CRDs: used to store data and propagate state between agents</li>
+  <li>Hubble server: &nbsp;One server per cluster<ul>
+      <li>keeping track of all the traffic flows L 3/ 4/ 7</li>
+      <li>DNS queries, packet drops, security policies</li>
+      <li>Prometheus metrics</li>
+    </ul>
+  </li>
 </ul>
