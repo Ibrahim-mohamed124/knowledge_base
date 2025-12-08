@@ -2,7 +2,7 @@
 title: concepts
 description: 
 published: true
-date: 2025-12-08T20:40:29.871Z
+date: 2025-12-08T21:03:21.867Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-08T19:18:08.405Z
@@ -52,7 +52,7 @@ dateCreated: 2025-12-08T19:18:08.405Z
 <h4>How cilium work?</h4>
 <ul>
   <li>eBPF:<ul>
-      <li>eBPF allows running sandboxed application <mark class="marker-yellow">in </mark>the kernel by directly installing eBFP program as a kernel module ( inside the kernel ) which provide:<ul>
+      <li>eBPF allows running sandboxed application <mark class="marker-yellow">in </mark>the kernel by directly installing eBFP program that act as kernel module ( inside the kernel ) which provide:<ul>
           <li>Faster processing: no system calls are needed to the user space to the kernel</li>
           <li>Better Scaling</li>
           <li>Better visibility</li>
@@ -70,7 +70,7 @@ dateCreated: 2025-12-08T19:18:08.405Z
 </ul>
 <h4>Architercture</h4>
 <ul>
-  <li>Cilium Agent runs on ever node to listen to k8s events and API calls from the API-server and take actions<ul>
+  <li><mark class="marker-pink">Cilium Agent</mark> runs on ever node to listen to k8s events and API calls from the API-server and take actions<ul>
       <li>Processes the congigurations</li>
       <li>Determines how &nbsp;Pods and Service communicate</li>
       <li>Acts as load balancer</li>
@@ -84,13 +84,13 @@ dateCreated: 2025-12-08T19:18:08.405Z
       <li>Loads the eBPF programs to the kernel</li>
     </ul>
   </li>
-  <li>eBPF programs: L/4 traffic<ul>
+  <li><mark class="marker-pink">eBPF programs</mark>: L/4 traffic<ul>
       <li>control ingress and egress network traffic</li>
       <li>load balancer traffic efficiently&nbsp;</li>
       <li>enforce security policies&nbsp;</li>
     </ul>
   </li>
-  <li>cluster Operator:<ol>
+  <li><mark class="marker-pink">cluster Operator</mark>:<ol>
       <li>Node management</li>
       <li>cluster wide services</li>
       <li>Load balancers</li>
@@ -104,18 +104,19 @@ dateCreated: 2025-12-08T19:18:08.405Z
       <li>hubble relay support</li>
     </ol>
   </li>
-  <li>Envoy proxy: L7 traffic filtering and security<ul>
+  <li><mark class="marker-pink">Envoy proxy</mark>: L7 traffic filtering and security<ul>
       <li>One pod per node</li>
       <li>L7 network policy (Cilium agent forward the traffic to the envoy proxy)</li>
     </ul>
   </li>
-  <li>CRDs: used to store data and propagate state between agents</li>
-  <li>Hubble server: &nbsp;One server per cluster<ul>
+  <li><mark class="marker-pink">CRDs:</mark> used to store data and propagate state between agents</li>
+  <li><mark class="marker-pink">Hubble server:</mark> &nbsp;One server per node<ul>
       <li>keeping track of all the traffic flows L 3/ 4/ 7</li>
       <li>DNS queries, packet drops, security policies</li>
       <li>Prometheus metrics</li>
     </ul>
   </li>
+  <li><mark class="marker-pink">Hubble Relay</mark>: aggregates flow data from multiple Hubble servers to &nbsp;provide cluster-wide visibility</li>
 </ul>
 <h4>service mesh features</h4>
 <ul>
@@ -126,3 +127,36 @@ dateCreated: 2025-12-08T19:18:08.405Z
   <li>Tansparency &nbsp;&lt; no code changes &gt; by using side cars o<mark class="marker-yellow">r side care less ( by implementing the eBPF program to the kernel &nbsp;L 2/ 3/ 4/) and Envoy proxy for L7 per node</mark></li>
 </ul>
 <figure class="image"><img src="/sm.png"></figure>
+<h4>eBPF</h4>
+<ul>
+  <li>Extended Berkeley Packet Filter run save code inside the linux kernel without any changes in the kernel modules !&nbsp;<ul>
+      <li>Packet filter</li>
+      <li>observability</li>
+      <li>security and networking</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
