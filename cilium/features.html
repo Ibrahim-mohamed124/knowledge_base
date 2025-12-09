@@ -1,0 +1,48 @@
+<!--
+title: features
+description: 
+published: true
+date: 2025-12-09T18:50:53.314Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-09T18:50:53.314Z
+-->
+
+<h2>IPAM</h2>
+<ul>
+  <li>Each node get a slice of the POD CIDR.</li>
+  <li>IPAM modes:<ul>
+      <li>kubernetes host scope: the allocation of node specific CIDR range is assigned by kubernetes control plane (kube-controller-manager). pass the following options in the manifest file:&nbsp;<ul>
+          <li>--allocate-node-cidrs=true&nbsp;</li>
+          <li>--cluster-cidr</li>
+          <li>--node-cidr-mask-size</li>
+          <li>cilium poll the API server to get the Node resource and search for spec.podCIDR range and use it to assign IPs for pods.</li>
+          <li>The Kubernetes host-scope IPAM mode is enabled with <code>ipam: kubernetes.</code> in the configmap</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Node
+metadata:
+  annotations:
+    kubeadm.alpha.kubernetes.io/cri-socket: unix:///var/run/containerd/containerd.sock
+    node.alpha.kubernetes.io/ttl: "0"
+    volumes.kubernetes.io/controller-managed-attach-detach: "true"
+  creationTimestamp: "2025-12-09T14:17:33Z"
+  labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: k8s-worker01
+    kubernetes.io/os: linux
+  name: k8s-worker01
+  resourceVersion: "32821"
+  uid: b3b8a079-7110-472f-9df4-cf91cc8d8b56
+spec:
+  podCIDR: 10.244.1.0/24
+  podCIDRs:
+  - 10.244.1.0/24
+</code></pre>
+<p>&nbsp;</p>
