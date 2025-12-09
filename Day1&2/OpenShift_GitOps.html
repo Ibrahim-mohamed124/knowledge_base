@@ -2,7 +2,7 @@
 title: OpenShift GitOps
 description: 
 published: true
-date: 2025-11-27T17:43:56.637Z
+date: 2025-12-09T10:13:37.221Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-27T10:08:04.851Z
@@ -57,6 +57,9 @@ spec:
     dex:
       openShiftOAuth: true
 ...output omitted...</code></pre>
+<blockquote>
+  <p>The argoCD server will keep restarting if the cluster-admin group does not exit!!!!!</p>
+</blockquote>
 <p>&nbsp;</p>
 <blockquote>
   <p>The <code>sso</code> key contains the authentication configuration. In the default Argo CD instance, the <code>openShiftOAuth</code> key is set to the <code>true</code> value. With this configuration, OpenShift users can log in to the Argo CD web console by clicking <strong>LOG IN VIA OPENSHIFT</strong>. By default, OpenShift users have limited privileges.</p>
@@ -217,7 +220,7 @@ spec:
 </ol>
 <h3>Managing Sensitive Data in GitOps</h3>
 <ul>
-  <li>Secrets Store CSI Driver operator to manage multiple secrets, keys, and certificates.&nbsp;<ul>
+  <li>Secrets Store CSI Driver operator to manage multiple secrets, keys, and certificates.<ul>
       <li>enables Kubernetes pods to mount secrets that are stored in external secret management systems such as Azure Key Vault, AWS Secrets Manager, or<mark class="marker-yellow"> HashiCorp Vault as volumes.&nbsp;</mark></li>
     </ul>
   </li>
@@ -243,6 +246,7 @@ metadata:
   annotations:
     argocd.argoproj.io/hook: PreSync
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>add the <code>argocd.argoproj.io/hook-delete-policy</code> annotation for your hooks, so Argo CD deletes them automatically according to one of the following policies:<ul>
       <li><code><strong>HookSucceeded: </strong></code>Delete the hook resource after the hook succeeds.</li>
