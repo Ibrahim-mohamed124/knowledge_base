@@ -2,7 +2,7 @@
 title: implementation
 description: 
 published: true
-date: 2025-12-09T18:26:49.108Z
+date: 2025-12-09T18:28:11.757Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T14:36:35.973Z
@@ -28,10 +28,18 @@ sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
 rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
 </code></pre>
 <pre><code class="language-plaintext">cilium install --version 1.18.4</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">cilium status --wait</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">cilium connectivity test</code></pre>
 <h3>Installation via helm</h3>
 <pre><code class="language-plaintext">helm repo add cilium https://helm.cilium.io/</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">helm install cilium cilium/cilium --version 1.18.4 \
   --namespace kube-system</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">kubectl get pods --all-namespaces -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,HOSTNETWORK:.spec.hostNetwork --no-headers=true | grep '&lt;none&gt;' | awk '{print "-n "$1" "$2}' | xargs -L 1 -r kubectl delete pod</code></pre>
+<blockquote>
+  <p>The <i>xargs</i> command in Linux is a powerful utility that allows you to build and execute commands from standard input. It is particularly useful when you need to pass the output of one command as arguments to another command.&nbsp;</p>
+  <pre><code class="language-plaintext">xargs [options] [command [initial-arguments]]</code></pre>
+</blockquote>
