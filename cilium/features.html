@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-09T19:00:58.917Z
+date: 2025-12-09T19:07:10.072Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -91,4 +91,43 @@ spec:
     podCIDRs:
     - 10.0.0.0/24
     pools: {}
+</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">kubectl exec cilium-pod -n kube-system -- cilium-dbg status --all-addresses
+
+KVStore:                Disabled
+Kubernetes:             Ok         1.33 (v1.33.6) [linux/amd64]
+Kubernetes APIs:        ["EndpointSliceOrEndpoint", "cilium/v2::CiliumCIDRGroup", "cilium/v2::CiliumClusterwideNetworkPolicy", "cilium/v2::CiliumEndpoint", "cilium/v2::CiliumNetworkPolicy", "cilium/v2::CiliumNode", "core/v1::Pods", "networking.k8s.io/v1::NetworkPolicy"]
+KubeProxyReplacement:   False
+Host firewall:          Disabled
+SRv6:                   Disabled
+CNI Chaining:           none
+CNI Config file:        successfully wrote CNI configuration file to /host/etc/cni/net.d/05-cilium.conflist
+Cilium:                 Ok   1.18.4 (v1.18.4-afda2aa9)
+NodeMonitor:            Listening for events on 2 CPUs with 64x4096 of shared memory
+Cilium health daemon:   Ok
+IPAM:                   IPv4: 7/254 allocated from 10.0.1.0/24,
+Allocated addresses:
+  10.0.1.118 (cilium-test-1/client3-795488bf5-hbnv7)
+  10.0.1.126 (kube-system/hubble-relay-848bdc8547-gwrvs)
+  10.0.1.181 (health)
+  10.0.1.220 (router)
+  10.0.1.243 (cilium-test-1/echo-other-node-6c6fdf86b5-nwk6z)
+  10.0.1.51 (cilium-test-ccnp1/client-ccnp-df44777df-qddrp)
+  10.0.1.62 (default/nginx)
+IPv4 BIG TCP:            Disabled
+IPv6 BIG TCP:            Disabled
+BandwidthManager:        Disabled
+Routing:                 Network: Tunnel [vxlan]   Host: Legacy
+Attach Mode:             TCX
+Device Mode:             veth
+Masquerading:            IPTables [IPv4: Enabled, IPv6: Disabled]
+Controller Status:       42/42 healthy
+Proxy Status:            OK, ip 10.0.1.220, 0 redirects active on ports 10000-20000, Envoy: external
+Global Identity Range:   min 256, max 65535
+Hubble:                  Ok              Current/Max Flows: 4095/4095 (100.00%), Flows/s: 7.32   Metrics: Disabled
+Encryption:              Disabled
+Cluster health:          3/3 reachable   (2025-12-09T19:01:33Z)   (Probe interval: 1m56.754608943s)
+Name                     IP              Node                     Endpoints
+Modules Health:          Stopped(13) Degraded(0) OK(74)
 </code></pre>
