@@ -2,7 +2,7 @@
 title: implementation
 description: 
 published: true
-date: 2025-12-09T17:19:08.420Z
+date: 2025-12-09T17:21:55.254Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T14:36:35.973Z
@@ -30,4 +30,8 @@ rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
 <pre><code class="language-plaintext">cilium install --version 1.18.4</code></pre>
 <pre><code class="language-plaintext">cilium status --wait</code></pre>
 <pre><code class="language-plaintext">cilium connectivity test</code></pre>
-<p>&nbsp;</p>
+<h3>Installation via helm</h3>
+<pre><code class="language-plaintext">helm repo add cilium https://helm.cilium.io/</code></pre>
+<pre><code class="language-plaintext">helm install cilium cilium/cilium --version 1.18.4 \
+  --namespace kube-system</code></pre>
+<pre><code class="language-plaintext">kubectl get pods --all-namespaces -o custom-columns=NAMESPACE:.metadata.namespace,NAME:.metadata.name,HOSTNETWORK:.spec.hostNetwork --no-headers=true | grep '&lt;none&gt;' | awk '{print "-n "$1" "$2}' | xargs -L 1 -r kubectl delete pod</code></pre>
