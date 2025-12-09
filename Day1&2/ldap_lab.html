@@ -2,7 +2,7 @@
 title: ldap_lab
 description: 
 published: true
-date: 2025-12-09T08:53:06.729Z
+date: 2025-12-09T08:56:47.606Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-05T17:44:55.146Z
@@ -214,3 +214,37 @@ spec:
 <blockquote>
   <p>The secret must be created in the same namespace as the cornjob</p>
 </blockquote>
+<pre><code class="language-plaintext">root@8b78fca14396:/# ldapadd -x -w password -D "cn=admin,dc=ea,dc=com" &lt;&lt; EOF
+&gt; dn: ou=groups,dc=ea,dc=com
+&gt; objectClass: organizationalUnit
+&gt; ou: groups
+&gt; EOF
+adding new entry "ou=groups,dc=ea,dc=com"
+
+root@8b78fca14396:/# ldapadd -x -w password -D "cn=admin,dc=ea,dc=com" &lt;&lt; EOF
+dn: ou=users,dc=ea,dc=com
+objectClass: organizationalUnit
+ou: users
+EOF
+adding new entry "ou=users,dc=ea,dc=com"
+
+root@8b78fca14396:/# ldapadd -x -w password -D "cn=admin,dc=ea,dc=com" &lt;&lt; EOF
+&gt; dn: cn=ibrahim,ou=users,dc=ea,dc=com
+&gt; objectClass: inetOrgPerson
+&gt; cn: ibrahim
+&gt; sn: ibrahim
+&gt; uid: ibrahim
+&gt; userPassword: 123
+&gt; EOF
+adding new entry "cn=ibrahim,ou=users,dc=ea,dc=com"
+
+root@8b78fca14396:/# ldapadd -x -w password -D "cn=admin,dc=ea,dc=com" &lt;&lt; EOF
+&gt; dn: cn=admins,ou=groups,dc=ea,dc=com
+&gt; objectClass: top
+&gt; objectClass: groupOfNames
+&gt; cn: admins
+&gt; description: Admins
+&gt; member: cn=ibrahim,ou=users,dc=ea,dc=com
+&gt; EOF
+adding new entry "cn=admins,ou=groups,dc=ea,dc=com"
+</code></pre>
