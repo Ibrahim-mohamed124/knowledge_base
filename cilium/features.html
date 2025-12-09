@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-09T18:50:53.314Z
+date: 2025-12-09T18:53:02.581Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -12,12 +12,12 @@ dateCreated: 2025-12-09T18:50:53.314Z
 <ul>
   <li>Each node get a slice of the POD CIDR.</li>
   <li>IPAM modes:<ul>
-      <li>kubernetes host scope: the allocation of node specific CIDR range is assigned by kubernetes control plane (kube-controller-manager). pass the following options in the manifest file:&nbsp;<ul>
-          <li>--allocate-node-cidrs=true&nbsp;</li>
+      <li>kubernetes host scope: the allocation of node specific CIDR range is assigned by kubernetes control plane (kube-controller-manager). pass the following options in the manifest file:<ul>
+          <li>--allocate-node-cidrs=true</li>
           <li>--cluster-cidr</li>
           <li>--node-cidr-mask-size</li>
           <li>cilium poll the API server to get the Node resource and search for spec.podCIDR range and use it to assign IPs for pods.</li>
-          <li>The Kubernetes host-scope IPAM mode is enabled with <code>ipam: kubernetes.</code> in the configmap</li>
+          <li>The Kubernetes host-scope IPAM mode is enabled with <code>ipam: kubernetes.</code> in the values.yaml</li>
         </ul>
       </li>
     </ul>
