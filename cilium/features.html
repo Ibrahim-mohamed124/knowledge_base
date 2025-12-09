@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-09T18:56:37.043Z
+date: 2025-12-09T19:00:58.917Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -50,8 +50,45 @@ spec:
       <li>Custer Scope (default)<ul>
           <li>Cilium operator allocate POD CIDRs to each node, and cilium use them.</li>
           <li>enabled by ipam.mode: “cluster-pool” and &nbsp;ipam.mode.operator.</li>
+          <li>CiliumNode object stores the podCIDRs to use</li>
         </ul>
       </li>
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: cilium.io/v2
+kind: CiliumNode
+metadata:
+  labels:
+    beta.kubernetes.io/arch: amd64
+    beta.kubernetes.io/os: linux
+    kubernetes.io/arch: amd64
+    kubernetes.io/hostname: k8s-master
+    kubernetes.io/os: linux
+    node-role.kubernetes.io/control-plane: ""
+    node.kubernetes.io/exclude-from-external-load-balancers: ""
+  name: k8s-master
+  ownerReferences:
+  - apiVersion: v1
+    kind: Node
+    name: k8s-master
+
+spec:
+  addresses:
+  - ip: 10.200.130.134
+    type: InternalIP
+  - ip: 10.0.0.244
+    type: CiliumInternalIP
+  alibaba-cloud: {}
+  azure: {}
+  bootid: 5d16ffdf-11fb-4fd6-b762-a47fce3db6ac
+  encryption: {}
+  eni: {}
+  health:
+    ipv4: 10.0.0.148
+  ingress: {}
+  ipam:
+    podCIDRs:
+    - 10.0.0.0/24
+    pools: {}
+</code></pre>
