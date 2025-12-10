@@ -1,0 +1,74 @@
+<!--
+title: StorageCluster
+description: 
+published: true
+date: 2025-12-10T06:00:09.013Z
+tags: portworx
+editor: ckeditor
+dateCreated: 2025-12-10T06:00:09.013Z
+-->
+
+<ul>
+  <li>The StorageCluster object acts as the definition of the Portworx Cluster.</li>
+  <li>To configure portworx to use all the unused devices for storage</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+spec:
+  image: portworx/oci-monitor:3.0
+  kvdb:
+    internal: true
+  storage:
+    useAll: true</code></pre>
+<ul>
+  <li>External ETCD</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+spec:
+  image: portworx/oci-monitor:3.0
+  kvdb:
+    endpoints:
+    - etcd:http://etcd-1.net:2379
+    - etcd:http://etcd-2.net:2379
+    - etcd:http://etcd-3.net:2379
+    authSecret: px-kvdb-auth
+  stork:
+    enabled: true
+    args:
+      health-monitor-interval: "100"
+      webhook-controller: "true"</code></pre>
+<ul>
+  <li>to enable PX-Secure</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+spec:
+  image: portworx/oci-monitor:3.0
+  security:
+    enabled: true</code></pre>
+<ul>
+  <li>To use PX-storeV2 instead of V1 add this annotation <mark class="marker-yellow">portworx.io/misc-args: ' -T px-storev2 '</mark></li>
+  <li>To skip preflight check job add this annotation <mark class="marker-yellow">portworx.io/preflight-check: skip </mark>and add the<mark class="marker-yellow"> cloudStorage.systemMetadataDeviceSpec: size=64 </mark>filed</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+  annotations:
+      portworx.io/misc-args: ' -T px-storev2 '
+      portworx.io/preflight-check: skip
+spec:
+  image: portworx/oci-monitor:3.0
+  cloudStorage:
+      systemMetadataDeviceSpec: size=64</code></pre>
