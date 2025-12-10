@@ -2,7 +2,7 @@
 title: StorageCluster
 description: 
 published: true
-date: 2025-12-10T06:00:09.013Z
+date: 2025-12-10T06:18:04.936Z
 tags: portworx
 editor: ckeditor
 dateCreated: 2025-12-10T06:00:09.013Z
@@ -23,6 +23,7 @@ spec:
     internal: true
   storage:
     useAll: true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>External ETCD</li>
 </ul>
@@ -44,8 +45,9 @@ spec:
     args:
       health-monitor-interval: "100"
       webhook-controller: "true"</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to enable PX-Secure</li>
+  <li>to enable PX-Security and disallow any user to access to portworx volumes unless they have a token</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
 kind: StorageCluster
@@ -55,7 +57,14 @@ metadata:
 spec:
   image: portworx/oci-monitor:3.0
   security:
-    enabled: true</code></pre>
+    enabled: true
+    auth:
+      guestAccess: 'Disabled'
+      selfSigned:
+        issuer: 'openstorage.io'
+        sharedSecret: 'px-shared-secret'
+        tokenLifetime: '5d</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To use PX-storeV2 instead of V1 add this annotation <mark class="marker-yellow">portworx.io/misc-args: ' -T px-storev2 '</mark></li>
   <li>To skip preflight check job add this annotation <mark class="marker-yellow">portworx.io/preflight-check: skip </mark>and add the<mark class="marker-yellow"> cloudStorage.systemMetadataDeviceSpec: size=64 </mark>filed</li>
