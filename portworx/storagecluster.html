@@ -2,7 +2,7 @@
 title: StorageCluster
 description: 
 published: true
-date: 2025-12-10T06:18:04.936Z
+date: 2025-12-10T06:26:24.387Z
 tags: portworx
 editor: ckeditor
 dateCreated: 2025-12-10T06:00:09.013Z
@@ -81,3 +81,67 @@ spec:
   image: portworx/oci-monitor:3.0
   cloudStorage:
       systemMetadataDeviceSpec: size=64</code></pre>
+<ul>
+  <li>update strategy and delete strategy&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+spec:
+  image: portworx/oci-monitor:3.0
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 20%
+  deleteStrategy:
+    type: UninstallAndWipe
+  placement:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: px/enabled
+            operator: NotIn
+            values:
+            - "false"
+          - key: node-role.kubernetes.io/control-plane
+            operator: DoesNotExist
+          - key: node-role.kubernetes.io/worker
+            operator: Exists
+    tolerations:
+    - key: infra/node
+      operator: Equal
+      value: "true"
+      effect: NoExecute</code></pre>
+<ul>
+  <li>Portworx with node specific overrides. Use different devices or no devices on different set of nodes.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+spec:
+  image: portworx/oci-monitor:3.0
+  storage:
+    devices:
+    - /dev/mapper/
+    - /dev/disk/by-id/
+    - /dev/sdb
+  nodes:
+  - selector:
+      labelSelector:
+        matchLabels:
+          &lt;custom-key&gt;:"&lt;custom-value&gt;"
+    storage:
+      devices:
+      - /dev/nvme1
+      - /dev/nvme2
+  - selector:
+      labelSelector:
+        matchLabels:
+          &lt;custom-key&gt;:"&lt;custom-value&gt;"
+    storage:
+      devices: []</code></pre>
