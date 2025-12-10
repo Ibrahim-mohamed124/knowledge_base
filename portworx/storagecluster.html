@@ -2,7 +2,7 @@
 title: StorageCluster
 description: 
 published: true
-date: 2025-12-10T06:27:43.443Z
+date: 2025-12-10T06:29:16.370Z
 tags: portworx
 editor: ckeditor
 dateCreated: 2025-12-10T06:00:09.013Z
@@ -146,7 +146,7 @@ spec:
     storage:
       devices: []</code></pre>
 <ul>
-  <li>To specify the network interfaces, environment variables</li>
+  <li>To specify the network interfaces, environment variables, and a proxy</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
 kind: StorageCluster
@@ -166,4 +166,8 @@ spec:
     num_io_threads: "10"
   env:
   - name: VAULT_ADDRESS
-    value: "http://10.0.0.1:8200"</code></pre>
+    value: "http://10.0.0.1:8200"
+  - name: PX_HTTP_PROXY
+    value: "http://&lt;IP:port&gt;"
+  - name: PX_HTTPS_PROXY
+    value: "http://&lt;IP:port&gt;"</code></pre>
