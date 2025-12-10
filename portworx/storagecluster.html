@@ -2,7 +2,7 @@
 title: StorageCluster
 description: 
 published: true
-date: 2025-12-10T06:26:24.387Z
+date: 2025-12-10T06:27:43.443Z
 tags: portworx
 editor: ckeditor
 dateCreated: 2025-12-10T06:00:09.013Z
@@ -145,3 +145,25 @@ spec:
           &lt;custom-key&gt;:"&lt;custom-value&gt;"
     storage:
       devices: []</code></pre>
+<ul>
+  <li>To specify the network interfaces, environment variables</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+spec:
+  image: portworx/oci-monitor:3.0
+  imagePullPolicy: Always
+  imagePullSecret: regsecret
+  customImageRegistry: docker.private.io/repo
+  network:
+    dataInterface: eth1
+    mgmtInterface: eth2
+  secretsProvider: vault
+  runtimeOptions:
+    num_io_threads: "10"
+  env:
+  - name: VAULT_ADDRESS
+    value: "http://10.0.0.1:8200"</code></pre>
