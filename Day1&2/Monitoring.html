@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-04T09:29:44.239Z
+date: 2025-12-11T22:49:03.152Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -110,6 +110,7 @@ Shows persistent volume claims in the pending state.</code></pre>
 <h3>Enabling monitoring for user-defined projects</h3>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">oc -n openshift-monitoring edit configmap cluster-monitoring-config</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -129,6 +130,7 @@ data:
       <li><strong>Silences: </strong>A silence can be<mark class="marker-yellow"> applied to an alert to prevent sending notifications when the conditions for an alert are true</mark>. You can mute an alert after the initial notification, while you work on resolving the underlying issue.</li>
     </ul>
   </li>
+  <li>Users with <code>user-workload-monitoring-config-edit</code> role in the <code>openshift-user-workload-monitoring</code> project can configure their alerts</li>
 </ul>
 <h3>Sending Alert Notifications</h3>
 <ul>
