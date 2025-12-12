@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T12:27:18.749Z
+date: 2025-12-12T12:37:38.680Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -128,6 +128,37 @@ data:
   user-workload-monitoring-config-edit &lt;user&gt; \
   --role-namespace openshift-user-workload-monitoring</code></pre>
 <h2>Alerts and Notifications</h2>
+<ul>
+  <li>To enable Alertmanager for user-defined workloads&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">oc -n openshift-monitoring edit configmap cluster-monitoring-config</code></pre>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    # ...
+    alertmanagerMain:
+      enableUserAlertmanagerConfig: true 
+    # ...</code></pre>
+<pre><code class="language-plaintext">oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config</code></pre>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-workload-monitoring-config
+  namespace: openshift-user-workload-monitoring
+data:
+  config.yaml: |
+    alertmanager:
+      enabled: true 
+      enableAlertmanagerConfig: true </code></pre>
+<pre><code class="language-plaintext">oc -n openshift-user-workload-monitoring get alertmanager
+NAMESPACE                            NAME            VERSION   REPLICAS   READY   RECONCILED   AVAILABLE   AGE
+openshift-monitoring                 main            0.27.0    2          2       True         True        8d
+openshift-user-workload-monitoring   user-workload   0.27.0    2          2       True         True        41h
+</code></pre>
 <ul>
   <li>Use the Alerts UI to manage alerts, silences, and alerting rules.<ul>
       <li><strong>Alerting rules: </strong>Alerting rules contain <mark class="marker-yellow">a set of conditions</mark> that outline a particular state within a cluster. Alerts are triggered when those conditions are true. An alerting rule can be<mark class="marker-yellow"> assigned a severity</mark> that <mark class="marker-yellow">defines how the alerts are routed</mark>.</li>
