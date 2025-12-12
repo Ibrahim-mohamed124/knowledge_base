@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T10:03:01.572Z
+date: 2025-12-12T10:07:11.821Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -377,8 +377,9 @@ route:
     repeat_interval: 2m
     receiver: watchdog
    - matchers:  
-     - severity = critical
- &gt;  Specify labels to match your alerts.
+     - 'severity=critical
+' &gt;  Specify labels to match your alerts.
+       "service=example-app"
     receiver: &lt;receiver&gt;  
 receivers:
 - name: default
@@ -399,8 +400,16 @@ receivers:
 <p><strong>3. </strong>Specify the SMTP server address used for sending emails, including the port number.</p>
 <p><strong>4. </strong>Specify the authentication credentials that Alertmanager uses to connect to the SMTP server. This example uses username and password.</p>
 <p><strong>5. </strong>Specify the hostname to identify to the SMTP server. If you do not include this parameter, the hostname defaults to <code>localhost</code>.</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>&nbsp; 2. Apply the new configuration in the file:</p>
+<pre><code class="language-plaintext">oc -n openshift-monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml --dry-run=client -o=yaml |  oc -n openshift-monitoring replace secret --filename=-</code></pre>
+<p>&nbsp; 3. verify the routing configuration by:</p>
+<pre><code class="language-plaintext">oc exec alertmanager-main-0 -n openshift-monitoring -- amtool config routes show --alertmanager.url http://localhost:9093</code></pre>
+<pre><code class="language-plaintext">Routing tree:
+.
+└── default-route  receiver: default
+    ├── {alertname="Watchdog"}  receiver: Watchdog
+    └── {service="example-app"}  receiver: default
+        └── {severity="critical"}  receiver: team-frontend-page</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
