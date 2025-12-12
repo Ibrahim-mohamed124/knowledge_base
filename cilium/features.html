@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-12T17:10:27.813Z
+date: 2025-12-12T17:16:34.235Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -232,4 +232,8 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
   <p>&nbsp;Virtual Extensible LAN (VXLAN): &nbsp;provide a <u>Layer 3</u> overlay network to resolve VLANs' inability to be routed and limited range of 4,096 VLANs per switching domain.</p>
 </blockquote>
 <figure class="image image_resized" style="width:100%;"><img src="/how_a_vxlan_works-f.png"></figure>
-<p>&nbsp;</p>
+<p>&nbsp; 2. Native mode:</p>
+<ul>
+  <li>No encapsulation, Pod send its packet to the original namespace on the host, then the original namespace has route table to send traffic to the external routes, which are configured to route packets from the internal pods subnet. This can be achieved statically or dynamically.</li>
+  <li>Statically, you can add routing rules in each router. Or use cilium ability to run routing protocols as BGP peering to dynamically configure connected routers (advertising their route tables)</li>
+</ul>
