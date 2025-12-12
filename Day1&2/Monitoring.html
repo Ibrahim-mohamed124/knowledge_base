@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T12:37:38.680Z
+date: 2025-12-12T12:38:10.472Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -169,6 +169,7 @@ openshift-user-workload-monitoring   user-workload   0.27.0    2          2     
   </li>
   <li>Users with <code>user-workload-monitoring-config-edit</code> role in the <code>openshift-user-workload-monitoring</code> project can configure their alerts</li>
 </ul>
+<pre><code class="language-plaintext">oc -n &lt;namespace&gt; adm policy add-role-to-user alert-routing-edit &lt;user&gt;</code></pre>
 <h3>Sending Alert Notifications</h3>
 <ul>
   <li>Alerts <mark class="marker-yellow">are not configured by default to be sent to any notification systems</mark>. You can configure OpenShift Container Platform to send alerts to the following receiver types:<ul>
