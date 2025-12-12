@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T09:59:46.825Z
+date: 2025-12-12T10:03:01.572Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -376,6 +376,10 @@ route:
     - "alertname=Watchdog"
     repeat_interval: 2m
     receiver: watchdog
+   - matchers:  
+     - severity = critical
+ &gt;  Specify labels to match your alerts.
+    receiver: &lt;receiver&gt;  
 receivers:
 - name: default
 - name: watchdog
