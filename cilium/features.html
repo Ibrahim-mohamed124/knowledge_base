@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-12T16:45:43.810Z
+date: 2025-12-12T17:10:27.813Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -225,4 +225,11 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
   <li>Encapsulation: The network packet from one pod is sent to the interface that is connected to its namespace, and the packet is encapsulated by the nodes IPs.</li>
 </ol>
 <figure class="image"><img src="/encap.png"></figure>
+<ul>
+  <li>Use VXLAN or Geneve protocols to encapsulate the packet, which adds some overhead to the packet.</li>
+</ul>
+<blockquote>
+  <p>&nbsp;Virtual Extensible LAN (VXLAN): &nbsp;provide a <u>Layer 3</u> overlay network to resolve VLANs' inability to be routed and limited range of 4,096 VLANs per switching domain.</p>
+</blockquote>
+<figure class="image image_resized" style="width:100%;"><img src="/how_a_vxlan_works-f.png"></figure>
 <p>&nbsp;</p>
