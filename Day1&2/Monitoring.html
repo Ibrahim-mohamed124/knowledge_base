@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T13:03:51.951Z
+date: 2025-12-12T13:08:11.156Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -490,6 +490,77 @@ spec:
   - name: default
     webhookConfigs:
     - url: https://example.org/post</code></pre>
+<ul>
+  <li>example for portworx</li>
+</ul>
+<pre><code class="language-plaintext"> apiVersion: monitoring.coreos.com/v1beta1
+ kind: AlertmanagerConfig
+ metadata:
+   labels:
+     app: px-backup-alert-configs
+     orgId: default
+     receiver_uid: 706d869c-a059-461f-8a02-33d1473d81b6
+   name: px-backup-9b324756-7116-4f71-85fd-dc058b6e7955
+   namespace: central
+ spec:
+   receivers:
+   - emailConfigs:
+     - from: portworx_backup@mail.ocp.ea.com
+       headers:
+       - key: Subject
+         value: Portworx Backup - {{ if eq .GroupLabels.alertname "BackupAlert" }}Backup
+           Status Alert{{ else if eq .GroupLabels.alertname "RestoreAlert" }}Restore
+           Status Alert{{ else if eq .GroupLabels.alertname "ClusterAlert" }}Cluster
+           Status Alert{{ else if eq .GroupLabels.alertname "BackupLocationAlert"
+           }}Backup Location Status Alert{{ else if eq .GroupLabels.alertname "BackupLocationLimitedAvailabilityAlert"
+           }}Backup Location Limited Availability Alert{{ else if eq .GroupLabels.alertname
+           "PartialBackupAlert" }}Partial Backup Success Alert{{ else if eq .GroupLabels.alertname
+           "BulkOperationFailure" }}Bulk Operation Failure Alert{{ else if eq .GroupLabels.alertname
+           "LicenseExpiryAlert" }}License Expiry Alert{{ else }}Unknown Alert Type{{
+           end }}
+       html: '{{ template "pxc_template.tmpl" . }}'
+       requireTLS: false
+       smarthost: mail.ocp.ea.com:1025
+       tlsConfig:
+         ca: {}
+         cert: {}
+       to: admin@mail.ocp.ea.com
+     name: px-backup-9b324756-7116-4f71-85fd-dc058b6e7955
+   - name: "null"
+   route:
+     matchers:
+     - matchType: =
+       name: user_id
+       value: 64af31d6-c63d-480c-aac1-3710a8024470
+     receiver: "null"
+     routes:
+     - groupBy:
+       - alertname
+       - object_type
+       - operation
+       - user_id
+       groupInterval: 30s
+       groupWait: 30s
+       matchers:
+       - matchType: =
+         name: alertname
+         value: BulkOperationFailure
+       receiver: px-backup-9b324756-7116-4f71-85fd-dc058b6e7955
+       repeatInterval: 87600h
+     - groupBy:
+       - alertname
+       groupInterval: 1m
+       groupWait: 30s
+       matchers:
+       - matchType: '!='
+         name: alertname
+         value: BulkOperationFailure
+       - matchType: =
+         name: backfill
+         value: ""
+       receiver: px-backup-9b324756-7116-4f71-85fd-dc058b6e7955
+       repeatInterval: 2208h
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
