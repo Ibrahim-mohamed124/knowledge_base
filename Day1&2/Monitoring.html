@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-11T22:49:03.152Z
+date: 2025-12-12T09:30:49.106Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -276,3 +276,57 @@ route:
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">oc logs -f statefulset.apps/alertmanager-main -c alertmanager \
   -n openshift-monitoring</code></pre>
+<h3>Alertmanager configuration</h3>
+<h4>Configuring external alertmanager</h4>
+<ol>
+  <li>Edit the cluster-monitoring-config configmap in the openshift-monitoring namespace.</li>
+</ol>
+<pre><code class="language-plaintext">oc -n openshift-monitoring edit configmap cluster-monitoring-config</code></pre>
+<p>&nbsp; 2. Add <code>additionalAlertmanagerConfigs</code> section with configuration details under <code>data/config.yaml/prometheusK8s</code>:</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    prometheusK8s:
+      additionalAlertmanagerConfigs:
+      - scheme: https
+        pathPrefix: /
+        timeout: "30s"
+        apiVersion: v1
+        bearerToken:
+          name: alertmanager-bearer-token
+          key: &lt;token&gt;
+        tlsConfig:
+          key:
+            name: alertmanager-tls
+            key: &lt;key&gt;
+          cert:
+            name: alertmanager-tls
+            key: &lt;crt&gt;
+          ca:
+            name: alertmanager-tls
+            key: &lt;ca.crt&gt;
+        staticConfigs:
+        - &lt;FQDN of the external alertmanager&gt;
+</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
