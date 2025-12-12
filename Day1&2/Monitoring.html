@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T13:16:01.395Z
+date: 2025-12-12T13:17:02.572Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -564,6 +564,7 @@ spec:
 <ul>
   <li>This is from the alertmanager.yaml &gt; instead of the camel case they user underscores&nbsp;</li>
 </ul>
+<pre><code class="language-plaintext">oc -n openshift-user-workload-monitoring get secret alertmanager-user-workload --template='{{ index .data "alertmanager.yaml" }}' | base64 --decode &gt; alertmanager.yaml</code></pre>
 <pre><code class="language-plaintext"> oc extract secret/alertmanager-user-workload -n openshift-user-workload-monitoring --to=-
 # alertmanager.yaml
 "global":
@@ -578,6 +579,7 @@ spec:
 "templates":
 - "/etc/alertmanager/config/*.tmpl"
 </code></pre>
+<pre><code class="language-plaintext">oc -n openshift-user-workload-monitoring create secret generic alertmanager-user-workload --from-file=alertmanager.yaml --dry-run=client -o=yaml |  oc -n openshift-user-workload-monitoring replace secret --filename=-</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
