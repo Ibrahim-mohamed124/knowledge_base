@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T10:11:35.504Z
+date: 2025-12-12T12:27:18.749Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -121,6 +121,12 @@ data:
     enableUserWorkload: true </code></pre>
 <h3>Exclude namespaces from the monitoring</h3>
 <pre><code class="language-plaintext">oc label namespace &lt;namespace_name&gt; openshift.io/user-monitoring=false </code></pre>
+<ul>
+  <li>To allow a user to configure their own monitoring stack for user-defined projects</li>
+</ul>
+<pre><code class="language-plaintext">oc -n openshift-user-workload-monitoring adm policy add-role-to-user \
+  user-workload-monitoring-config-edit &lt;user&gt; \
+  --role-namespace openshift-user-workload-monitoring</code></pre>
 <h2>Alerts and Notifications</h2>
 <ul>
   <li>Use the Alerts UI to manage alerts, silences, and alerting rules.<ul>
@@ -339,6 +345,7 @@ data:
       secrets: 
       - test-secret-basic-auth
       - test-secret-api-token</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>The secrets must be in the same namespace as the Alertmanager object</p>
 </blockquote>
@@ -362,6 +369,7 @@ data:
   <li>Extract the currently active Alertmanager configuration from the <code>alertmanager-main</code> secret and save it as a local <code>alertmanager.yaml</code> file:</li>
 </ol>
 <pre><code class="language-plaintext">oc -n openshift-monitoring get secret alertmanager-main --template='{{ index .data "alertmanager.yaml" }}' | base64 --decode &gt; alertmanager.yaml</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext"> global:
   resolve_timeout: 5m
   http_config:
@@ -392,6 +400,7 @@ receivers:
       auth_username: alertmanager@example.com   4 
       auth_password: password
       hello: alertmanager  5</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>The supported receivers are PagerDuty, webhook, email, Slack, and Microsoft Teams.</p>
 </blockquote>
@@ -404,12 +413,14 @@ receivers:
 <pre><code class="language-plaintext">oc -n openshift-monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml --dry-run=client -o=yaml |  oc -n openshift-monitoring replace secret --filename=-</code></pre>
 <p>&nbsp; 3. verify the routing configuration by:</p>
 <pre><code class="language-plaintext">oc exec alertmanager-main-0 -n openshift-monitoring -- amtool config routes show --alertmanager.url http://localhost:9093</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">Routing tree:
 .
 └── default-route  receiver: default
     ├── {alertname="Watchdog"}  receiver: Watchdog
     └── {service="example-app"}  receiver: default
         └── {severity="critical"}  receiver: team-frontend-page</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>You canconfigure different alert receivers for default platform alerts and user-defined alerts by using the <code>openshift_io_alert_source="platform"</code> label that is added by the Cluster Monitoring Operator to all platform alerts:<ul>
       <li>Use the <code>openshift_io_alert_source="platform"</code> matcher to match default platform alerts.</li>
