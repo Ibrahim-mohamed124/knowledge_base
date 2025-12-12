@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T12:49:33.263Z
+date: 2025-12-12T13:03:51.951Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -471,7 +471,25 @@ receivers:
   <p>user-defined &gt;&gt; AlertmanagerConfig object in the user namespace</p>
   <p>There is syntax difference&nbsp;</p>
 </blockquote>
-<p>&nbsp;</p>
+<ul>
+  <li>The user must have the <code>alert-routing-edit</code> cluster role.</li>
+</ul>
+<ol>
+  <li>&nbsp;Create the AlertmanagerConfig</li>
+</ol>
+<pre><code class="language-plaintext">apiVersion: monitoring.coreos.com/v1beta1
+kind: AlertmanagerConfig
+metadata:
+  name: example-routing
+  namespace: ns1
+spec:
+  route:
+    receiver: default
+    groupBy: [job]
+  receivers:
+  - name: default
+    webhookConfigs:
+    - url: https://example.org/post</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
