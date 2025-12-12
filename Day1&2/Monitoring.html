@@ -2,7 +2,7 @@
 title: Monitoiring
 description: 
 published: true
-date: 2025-12-12T09:37:54.157Z
+date: 2025-12-12T09:58:00.290Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-28T07:44:41.035Z
@@ -342,8 +342,49 @@ data:
 <blockquote>
   <p>The secrets must be in the same namespace as the Alertmanager object</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Adding labels to alerts</h3>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    prometheusK8s:
+      externalLabels:
+        region: eu
+        environment: prod</code></pre>
+<h4>Configuring alert routing for default platform alerts</h4>
+<ul>
+  <li>Editing the default configuration in the <code>alertmanager-main</code> secret in the <code>openshift-monitoring</code> namespace.</li>
+</ul>
+<ol>
+  <li>Extract the currently active Alertmanager configuration from the <code>alertmanager-main</code> secret and save it as a local <code>alertmanager.yaml</code> file:</li>
+</ol>
+<pre><code class="language-plaintext">oc -n openshift-monitoring get secret alertmanager-main --template='{{ index .data "alertmanager.yaml" }}' | base64 --decode &gt; alertmanager.yaml</code></pre>
+<pre><code class="language-plaintext"> global:
+  resolve_timeout: 5m
+  http_config:
+    proxy_from_environment: true &gt; to the the cluster wide proxy
+route:
+  group_wait: 30s  &gt; the period of alerts collecting
+  group_interval: 5m &gt; the amount of time to wait before sending new group of alerts
+  repeat_interval: 12h  &gt; it is recommended to be less than group_interval to make alerts repeat at each group interval
+  receiver: default
+  routes:
+  - matchers:
+    - "alertname=Watchdog"
+    repeat_interval: 2m
+    receiver: watchdog
+receivers:
+- name: default
+- name: watchdog
+- name: &lt;receiver&gt;
+  email_config:
+   - to: &lt;email&gt;</code></pre>
+<blockquote>
+  <p>The supported receivers are PagerDuty, webhook, email, Slack, and Microsoft Teams.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
