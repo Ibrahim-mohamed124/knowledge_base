@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-12-14T11:51:41.599Z
+date: 2025-12-14T11:58:16.159Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -627,7 +627,7 @@ components:
       <li>thin</li>
     </ul>
   </li>
-  <li>Allocate<mark class="marker-yellow"> a dedicated disk for KVDB</mark> (internal or external) on<mark class="marker-yellow"> at least three nodes</mark>. Each disk must have<mark class="marker-yellow"> a unique device name across all KVDB nodes.&nbsp;</mark></li>
+  <li>Allocate<mark class="marker-yellow"> a dedicated disk for KVDB</mark> (internal or external) on<mark class="marker-yellow"> at least three nodes</mark>. Each disk must have<mark class="marker-yellow"> a unique device name across all KVDB nodes. &nbsp;for PX2</mark></li>
   <li>Any underlying nodes used for Portworx in OCP have <mark class="marker-yellow">Secure Boot disabled.</mark></li>
   <li><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/registry/securing-exposing-registry">For air-gapped installation, your OpenShift cluster must temporarily have its internal registry reachable externally to the cluster</a></li>
   <li>For air-gapped installation, you must have a Linux host with internet access that has either <a href="https://docs.podman.io/">Podman</a> or Docker installed to run the mirroring script.</li>
@@ -702,7 +702,7 @@ data:
 <blockquote>
   <p>In vSphere, resources are organized hierarchically. Select<mark class="marker-yellow"> <strong>Propagate to children</strong></mark> to ensure that the permissions granted to the custom role are automatically applied not just to the targeted object, but also to all objects within its sub-tree. This includes VMs, datastores, networks, and other resources nested under the selected resource.</p>
 </blockquote>
-<p>&nbsp; 4. <strong>Create a secret with your vCenter user credentials:</strong></p>
+<p>&nbsp; 4. <strong>Create a secret with your vCenter user credentials and add the vshpere ca.crt to the trusted bundle</strong></p>
 <pre><code class="language-plaintext">
 VSPHERE_USER: echo '&lt;vcenter-server-user&gt;' | base64
 VSPHERE_PASSWORD: echo '&lt;vcenter-server-password&gt;' | base64</code></pre>
