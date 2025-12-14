@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-12-14T11:58:16.159Z
+date: 2025-12-14T12:00:25.688Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -559,7 +559,7 @@ quay.io/jetstack/cert-manager-acmesolver:v1.17.4
 <ul>
   <li>Log in to docker:</li>
 </ul>
-<pre><code class="language-plaintext">docker login &lt;your-private-registry&gt;</code></pre>
+<pre><code class="language-plaintext">podman login -u admin -p $(oc whoami -t) default-route-openshift-image-registry.apps.lab.ocp.lan</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>Push the container images to a private registry that is accessible to your air-gapped nodes.<mark class="marker-yellow"> Do not include </mark><code><mark class="marker-yellow">http://</mark></code><mark class="marker-yellow"> in your private registry path:</mark></li>
