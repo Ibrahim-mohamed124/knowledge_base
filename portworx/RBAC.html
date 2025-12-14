@@ -2,7 +2,7 @@
 title: RBAC
 description: 
 published: true
-date: 2025-12-14T13:22:43.617Z
+date: 2025-12-14T13:51:19.701Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T13:18:30.230Z
@@ -49,6 +49,19 @@ PX_POD=$(oc -n &lt;px-namespace&gt; get pods -l name=portworx -o jsonpath="{.ite
         secret px-shared-secret -o json \
     | jq -r '.data."shared-secret"' \
     | base64 -d)</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>&nbsp;4. copy the pxctl command from any worker node to the bastion host</p>
+<p>&nbsp;5. Create a file called <code>admin.yaml</code> with the the following:</p>
+<pre><code class="language-plaintext">name: Storage Administrator
+email: the email of the storage admin
+sub: ${uuid} or email of the storage admin
+roles: ["system.admin"]
+groups: ["*"]</code></pre>
+<p>&nbsp; 6. Create a token for the storage administrator using <code>admin.yaml</code>.</p>
+<pre><code class="language-plaintext">ADMIN_TOKEN=$(./pxctl auth token generate \
+        --auth-config=admin.yaml \
+        --issuer=portworx.com \
+        --shared-secret=$PORTWORX_AUTH_SHARED_SECRET \
+        --token-duration=1y)</code></pre>
+<p>&nbsp; 7. add the token to the pxctl context on worker nodes</p>
+<pre><code class="language-plaintext">/pxctl context create admin --token=$ADMIN_TOKEN</code></pre>
 <p>&nbsp;</p>
