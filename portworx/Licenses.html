@@ -1,0 +1,53 @@
+<!--
+title: Set up Portworx Licenses
+description: 
+published: true
+date: 2025-12-14T12:12:25.019Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-14T12:12:25.019Z
+-->
+
+<figure class="table">
+  <table style="background-color:rgb(27, 27, 29);">
+    <thead>
+      <tr>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;"><strong>License type</strong></th>
+        <th style="background-color:rgba(0, 0, 0, 0);border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;"><strong>Description</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Trial</td>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Same as the Portworx Enterprise license. It is a default license installed with 30 days trial period for full Portworx Enterprise functionality</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Portworx Enterprise VM</td>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Enterprise license, suitable for Virtual Machine (VM) installs on-prem and in cloud</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Portworx Enterprise Metal</td>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Enterprise license, suitable for installs on any bare metal hardware</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Portworx for Modern Virtualization</td>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Portworx license limited running VMs on Kubernetes with Kubevirt. Suitable for installs on bare metal hardware. Does not include storage for containers</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Portworx CSI for FA/FB</td>
+        <td style="border-bottom:0.727273px solid rgb(96, 103, 112);border-left:0.727273px solid rgb(96, 103, 112);border-right:0.727273px solid rgb(96, 103, 112);border-top:0.727273px solid rgb(96, 103, 112);padding:12px;">Included at no additional cost with every FlashArray &amp; FlashBlade. This license provides essential container storage capabilities for Portworx on FlashArray and FlashBlade. This license allows only Direct Access volumes up to the cluster limit. No license activation required when using FlashArray or FlashBlade.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>To complete setting up the Portworx Enterprise licensing and billing in your environment, you need to:<ul>
+      <li>You can apply an enterprise license on your cluster using an activation ID for connected clusters or a license file for disconnected clusters.</li>
+      <li>Once applied, the Portworx Enterprise license is locked to a single Portworx cluster via the unique UUID identifier of the cluster.</li>
+      <li><mark class="marker-yellow">you can also transfer a valid enterprise license between two Portworx clusters.</mark></li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">pxctl status</code></pre>
+<pre><code class="language-plaintext">pxctl license list</code></pre>
+<pre><code class="language-plaintext">&nbsp;</code></pre>
