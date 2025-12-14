@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-14T09:47:18.869Z
+date: 2025-12-14T09:50:26.026Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -275,7 +275,10 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
   <li>&nbsp;to show all the services in a cluster</li>
 </ul>
 <pre><code class="language-plaintext">kubectl exec cilium-x -n kube-system cilium-dbg service list</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>&nbsp;To get endpoint info</li>
+</ul>
+<pre><code class="language-plaintext">k exec -n kube-system cilium-x -- cilium endpoint get ID</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
