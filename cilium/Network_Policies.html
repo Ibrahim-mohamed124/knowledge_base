@@ -1,0 +1,28 @@
+<!--
+title: Network Policies
+description: 
+published: true
+date: 2025-12-14T10:26:09.443Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-14T10:26:09.443Z
+-->
+
+<h2>The advantages of cilium network polices</h2>
+<ul>
+  <li>Cilium is able to control traffic at the layer 7 unlike the simple network policies that work on later 2 and 3 only</li>
+  <li>Cilium is able to match endpoints by &nbsp;(ICMP, DNS)&nbsp;<ul>
+      <li>spec.ingress[].from.fwdn.matchDNS &nbsp;&gt; allow only traffic to the IPs that came from resolving this DNS name unlike other networkpolicies that need specific IPs.</li>
+    </ul>
+  </li>
+  <li>Cilium is able to match pods by their service accounts</li>
+  <li>Multi-Cluster policy:<ul>
+      <li>podSelector.matchLabels.cluster</li>
+    </ul>
+  </li>
+  <li>Deny policies&nbsp;<ul>
+      <li>spec.ingressDeny</li>
+    </ul>
+  </li>
+  <li>Cluster-wide policies</li>
+</ul>
