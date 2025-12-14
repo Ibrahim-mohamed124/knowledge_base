@@ -2,7 +2,7 @@
 title: Set up Portworx Licenses
 description: 
 published: true
-date: 2025-12-14T12:12:25.019Z
+date: 2025-12-14T12:17:20.523Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T12:12:25.019Z
@@ -49,5 +49,16 @@ dateCreated: 2025-12-14T12:12:25.019Z
   </li>
 </ul>
 <pre><code class="language-plaintext">pxctl status</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">pxctl license list</code></pre>
-<pre><code class="language-plaintext">&nbsp;</code></pre>
+<h3>&nbsp;<strong>Activate your license using an Activation ID</strong></h3>
+<ul>
+  <li>The process automatically registers the cluster UUID, and generates and installs the license on the cluster. Upon activating the license on one Portworx node, all the remaining Portworx nodes automatically update to the new license.</li>
+</ul>
+<pre><code class="language-plaintext">&nbsp;pxctl license activate &lt;your-activation-id&gt;</code></pre>
+<pre><code class="language-plaintext">PX_POD=$(kubectl get pods -l name=portworx -n &lt;px-namespace&gt; -o jsonpath='{.items[0].metadata.name}')
+kubectl exec $PX_POD -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl license activate &lt;activation-id&gt;</code></pre>
+<pre><code class="language-plaintext">pxctl status</code></pre>
+<h3><strong>Activate your license using a license file for an air-gapped cluster</strong></h3>
+<pre><code class="language-plaintext">pxctl cluster list</code></pre>
+<pre><code class="language-plaintext">pxctl license add license_file.bin</code></pre>
