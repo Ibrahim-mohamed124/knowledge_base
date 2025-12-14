@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-14T09:08:26.080Z
+date: 2025-12-14T09:10:10.947Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -248,11 +248,12 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
 <pre><code class="language-plaintext">kubectl -n kube-system exec ds/cilium -- cilium-dbg status | grep KubeProxyReplacement</code></pre>
 <ul>
   <li>To delete the kubeproxy<ul>
-      <li>delete the kubeproxy daemonset</li>
+      <li>delete the kubeproxy daemonset, kube-proxy configmap</li>
       <li>delete the ip tables that it made</li>
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">iptables-save | grep -v KUBE | iptables-restore</code></pre>
 <pre><code class="language-plaintext">kubectl -n kube-system exec ds/cilium -- cilium-dbg status --verbose</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
