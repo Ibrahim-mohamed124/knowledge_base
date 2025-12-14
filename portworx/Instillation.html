@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-12-14T11:33:27.892Z
+date: 2025-12-14T11:41:54.383Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -16,7 +16,11 @@ or kubectl  exec -it svc/portworx-service to excute the pxctl command ...
 source ~/.bashrc
 
 pxctl status --color</code></pre>
-<p>&nbsp;</p>
+<blockquote>
+  <p>&nbsp;There is a difference between the metadata device and the journal device.</p>
+  <p>&nbsp;metadata device: KVDB need a separate device on PX2 or same device on PX1</p>
+  <p>journal device: needs a path on any disk&nbsp;</p>
+</blockquote>
 <blockquote>
   <p>PX-StoreV2 data store is optimized for I/O-intensive workloads that use high-performance NVMe/ssd-class devices and <mark class="marker-yellow">does not work with hdd disks.</mark></p>
   <figure class="table">
