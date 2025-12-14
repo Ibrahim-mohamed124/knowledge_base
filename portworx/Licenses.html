@@ -2,7 +2,7 @@
 title: Set up Portworx Licenses
 description: 
 published: true
-date: 2025-12-14T12:17:20.523Z
+date: 2025-12-14T12:18:21.609Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T12:12:25.019Z
@@ -51,7 +51,8 @@ dateCreated: 2025-12-14T12:12:25.019Z
 <pre><code class="language-plaintext">pxctl status</code></pre>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">pxctl license list</code></pre>
-<h3>&nbsp;<strong>Activate your license using an Activation ID</strong></h3>
+<h3>&nbsp;<strong>Activate your license using a</strong></h3>
+<h3><strong>n Activation ID</strong></h3>
 <ul>
   <li>The process automatically registers the cluster UUID, and generates and installs the license on the cluster. Upon activating the license on one Portworx node, all the remaining Portworx nodes automatically update to the new license.</li>
 </ul>
@@ -62,3 +63,8 @@ kubectl exec $PX_POD -n &lt;px-namespace&gt; -- /opt/pwx/bin/pxctl license activ
 <h3><strong>Activate your license using a license file for an air-gapped cluster</strong></h3>
 <pre><code class="language-plaintext">pxctl cluster list</code></pre>
 <pre><code class="language-plaintext">pxctl license add license_file.bin</code></pre>
+<h3><strong>Transfer licenses</strong></h3>
+<ul>
+  <li>Both Portworx clusters need to be operational at the time of license transfer. The source cluster must have a valid Portworx Enterprise license, while the destination cluster can have either a valid or expired Trial license or expired Portworx Enterprise license.</li>
+</ul>
+<pre><code class="language-plaintext">pxctl license transfer -h</code></pre>
