@@ -2,7 +2,7 @@
 title: Deployment_Options
 description: 
 published: true
-date: 2025-12-14T10:54:53.347Z
+date: 2025-12-14T10:57:15.990Z
 tags: ocp, portworx, storage, day 2
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:26.044Z
@@ -13,10 +13,20 @@ dateCreated: 2025-11-17T09:09:26.044Z
   <li><strong>Type of Installation Environment</strong> – <strong>Air-gapped or Non-air-gapped</strong>:<ul>
       <li>In air-gapped mode, you’ll need to mirror all container images and Helm charts into a private registry and pre-stage any CRDs or operator bundles.</li>
       <li>In non-air-gapped mode, Portworx Enterprise automatically pulls the necessary images and updates from public registries</li>
-      <li><strong>Type of deployment - Disaggregated or Converged:</strong>&nbsp;<ul>
-          <li>Portworx is converged by default to sperate storage from compute designate your nodes as storage and storage less (for compute) before installation by adding necessary labels to make sure Portworx identifies the disaggregated setup.&nbsp;</li>
+    </ul>
+  </li>
+  <li><strong>Type of deployment - Disaggregated or Converged:</strong>&nbsp;<ul>
+      <li>Portworx is converged by default to sperate storage from compute designate your nodes as storage and storage less (for compute) before installation by adding necessary labels to make sure Portworx identifies the disaggregated setup.&nbsp;</li>
+    </ul>
+  </li>
+  <li><strong>Type of storage management - PX-StoreV1 or PX-StoreV2:</strong>
+    <ul>
+      <li>PX-StoreV1 that operates as a full filesystem, suitable for general-purpose storage needs.</li>
+      <li>PX-StoreV2 focuses on high-performance volume management with optimized metadata handling and performance tracking<ul>
+          <li>It includes PX-Fast, a feature that provides an accelerated I/O path for volumes.</li>
         </ul>
       </li>
     </ul>
   </li>
+  <li><strong>Type of Disaster Recovery (DR):</strong>&nbsp;</li>
 </ul>
