@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-12-14T11:06:17.400Z
+date: 2025-12-14T11:11:03.472Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -30,7 +30,7 @@ pxctl status --color</code></pre>
         <tr>
           <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">&nbsp;</td>
           <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">OpenShift 4+</td>
-          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">Preprovisioned SSD or NVMe</td>
+          <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;"><mark class="marker-yellow">Preprovisioned SSD or NVMe</mark></td>
         </tr>
         <tr>
           <td style="border-bottom:0.909091px solid rgb(96, 103, 112);border-left:0.909091px solid rgb(96, 103, 112);border-right:0.909091px solid rgb(96, 103, 112);border-top:0.909091px solid rgb(96, 103, 112);padding:12px;">&nbsp;</td>
@@ -87,7 +87,7 @@ pxctl status --color</code></pre>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Storage drives</th>
-        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><mark class="marker-yellow">Storage drives must be unmounted block storage</mark>: raw disks, drive partitions, LVM, or cloud block storage.</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;"><mark class="marker-yellow">Storage drives must be unmounted block storage</mark>: raw disks, drive partitions, LVM, multipath, or cloud block storage. &nbsp;&gt;&gt; <mark class="marker-yellow">use /dev/mapper or /dev/disk/by-id/</mark></th>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Network connectivity</th>
@@ -112,7 +112,7 @@ pxctl status --color</code></pre>
   <li><strong>Software requirements:</strong>
     <ul>
       <li>a supported Linux kernel version, container runtime, and key-value store configuration.</li>
-      <li>Swap disabled and NTP enabled, to ensure reliable and consistent cluster behavior.</li>
+      <li><mark class="marker-yellow">Swap disabled and NTP enabled</mark>, to ensure reliable and consistent cluster behavior.</li>
     </ul>
   </li>
 </ul>
@@ -142,7 +142,7 @@ pxctl status --color</code></pre>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Key-value store</th>
-        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Portworx needs a key-value store to perform its operations. As such, install a clustered key-value database (<code>kvdb</code>) with a three-node cluster.<br><br>You can also use Internal KVDB during installation. In this mode, Portworx will create and manage an internal key-value store (KVDB) cluster.<br><br>If you plan to use your own KVDB, refer to <a href="https://docs.portworx.com/portworx-enterprise/operations/kvdb-for-portworx/external-kvdb">KVDB for Portworx</a> for details on recommendations for installing and configuring a KVDB cluster.</th>
+        <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Portworx needs a key-value store to perform its operations. As such, install a clustered key-value database (<code>kvdb</code>) with<mark class="marker-yellow"> a three-node cluster.</mark><br><br>You can also use Internal KVDB during installation. In this mode, Portworx will create and manage an internal key-value store (KVDB) cluster.<br>&nbsp;</th>
       </tr>
       <tr>
         <th style="border-bottom:0.8px solid rgb(96, 103, 112);border-left:0.8px solid rgb(96, 103, 112);border-right:0.8px solid rgb(96, 103, 112);border-top:0.8px solid rgb(96, 103, 112);padding:12px;">Disable swap</th>
