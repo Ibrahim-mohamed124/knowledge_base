@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-14T09:10:10.947Z
+date: 2025-12-14T09:13:01.492Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -243,7 +243,7 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
 <ul>
   <li>Cilium replaces the functionality of the kubeproxy by implementing eBPF programs.</li>
   <li>eBPF uses hash table to search for rules</li>
-  <li>kubeProxyReplacement: “true”, k8sServiceHost: “api server IP”, k8sServicePort: “6443”</li>
+  <li>kubeProxyReplacement: “true”, k8sServiceHost: “api server IP”, k8sServicePort: “6443” and upgrading the helm chart, restarting the deployments</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n kube-system exec ds/cilium -- cilium-dbg status | grep KubeProxyReplacement</code></pre>
 <ul>
