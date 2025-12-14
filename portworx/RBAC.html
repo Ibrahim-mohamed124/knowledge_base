@@ -1,0 +1,44 @@
+<!--
+title: RBAC
+description: 
+published: true
+date: 2025-12-14T13:18:30.230Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-14T13:18:30.230Z
+-->
+
+<ul>
+  <li>PX-Security provides a method to protect against malicious requests, further providing deployers with a more secured system.</li>
+</ul>
+<ol>
+  <li>&nbsp;Enable PX-security in the storagecluster spec to make the portworx operator deploy:<ul>
+      <li>Shared Secret stored under the secret px-shared-secret</li>
+      <li>Admin token stored under the secret px-admin-token</li>
+      <li>User token stored under the secret px-user-token</li>
+    </ul>
+  </li>
+</ol>
+<pre><code class="language-plaintext">apiVersion: core.libopenstorage.org/v1
+kind: StorageCluster
+metadata:
+  name: portworx
+  namespace: &lt;px-namespace&gt;
+spec:
+  image: portworx/oci-monitor:2.6.0.1
+  security:
+    enabled: true</code></pre>
+<p>&nbsp; 2. Use pxctl with security enabled:</p>
+<ul>
+  <li>Retrieve the admin token from the namespace in which Portworx was installed and store it in the <code>ADMIN_TOKEN</code> variable:</li>
+</ul>
+<pre><code class="language-plaintext">ADMIN_TOKEN=$(oc -n &lt;px-namespace&gt; get secret px-admin-token --template='{{index .data "auth-token" | base64decode}}')</code></pre>
+<ul>
+  <li>Find the Portworx pod that is running on the node in which the admin wants to interact with and label it:</li>
+</ul>
+<pre><code class="language-plaintext">K8_NODE_NAME=kubernetes-worker-3.mylab.lan
+PX_POD=$(oc -n &lt;px-namespace&gt; get pods -l name=portworx -o jsonpath="{.items[?(@.spec.nodeName == '$K8_NODE_NAME')].metadata.name}")</code></pre>
+<ul>
+  <li>add the admin token to the pxctl context on that node</li>
+</ul>
+<pre><code class="language-plaintext">kubectl -n &lt;px-namespace&gt; exec -ti $PX_POD -- /opt/pwx/bin/pxctl context create admin --token=$ADMIN_TOKEN</code></pre>
