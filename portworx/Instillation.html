@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2025-12-14T11:27:05.423Z
+date: 2025-12-14T11:33:27.892Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -368,8 +368,8 @@ pxctl status --color</code></pre>
 <ol>
   <li>Dedicated disk for KVDB on at least three nodes, and each disk must has a unique device name across all the nodes at least 64 GB in size. <mark class="marker-yellow">This is for the PX2 datastore, the PX1 datastore can use the same disk as the data, but this is not recommended.</mark>
     <ul>
-      <li>Persistent disks' names can be obtained by using the sym links that the <mark class="marker-yellow">udev create in /dev/disk/by-id/*</mark>. &nbsp;udev uses unique identifiers for each disk like vendor code, provisioner code, and other to create these links. or use /dev/mapper/ links to logical volumes.</li>
-      <li>if the nodes has different pathes to the disks, use a node selector to specify the disk on each node</li>
+      <li>Persistent disks' names can be obtained by using the sym links that the <mark class="marker-yellow">udev create in /dev/disk/by-id/*</mark>. &nbsp;udev uses unique identifiers for each disk like vendor code, provisioner code, and other to create these links. or use <mark class="marker-yellow">/dev/mapper/ links to logical volumes.</mark></li>
+      <li>if the nodes has different paths to the disks, use <mark class="marker-yellow">a node selector to specify the disk on each node</mark></li>
     </ul>
   </li>
 </ol>
@@ -462,6 +462,7 @@ data:
 <ul>
   <li><mark class="marker-yellow">Platform: DAS/SAN</mark></li>
   <li><mark class="marker-yellow">It is possible to use one disk for the data and the metadata in the dev/test environments in the PX-StoreV1 by choosing the Auto option in the Journal device and check the Skip KVDB device box</mark></li>
+  <li>To use TLS, portworx can deploy cert-manager if there is no default one.</li>
 </ul>
 <p>&nbsp; 3. Install the portworx operator</p>
 <ul>
