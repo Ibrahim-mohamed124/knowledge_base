@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-14T09:13:01.492Z
+date: 2025-12-14T09:35:24.376Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -255,7 +255,14 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
 </ul>
 <pre><code class="language-plaintext">iptables-save | grep -v KUBE | iptables-restore</code></pre>
 <pre><code class="language-plaintext">kubectl -n kube-system exec ds/cilium -- cilium-dbg status --verbose</code></pre>
-<p>&nbsp;</p>
+<h3>Cilium Endpoints&nbsp;</h3>
+<ul>
+  <li>Every pod is an endpoint and cilium give each endpoint and ID to identify it.</li>
+  <li>Cilium uses ID based network policies instead of IP based network policies.<ul>
+      <li>all the labels are prefixed according to the source they came from.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
