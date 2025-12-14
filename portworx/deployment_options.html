@@ -2,7 +2,7 @@
 title: Deployment_Options
 description: 
 published: true
-date: 2025-12-14T10:57:15.990Z
+date: 2025-12-14T11:01:20.767Z
 tags: ocp, portworx, storage, day 2
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:26.044Z
@@ -17,6 +17,7 @@ dateCreated: 2025-11-17T09:09:26.044Z
   </li>
   <li><strong>Type of deployment - Disaggregated or Converged:</strong>&nbsp;<ul>
       <li>Portworx is converged by default to sperate storage from compute designate your nodes as storage and storage less (for compute) before installation by adding necessary labels to make sure Portworx identifies the disaggregated setup.&nbsp;</li>
+      <li>choose to deploy using a disaggregated model if you have a very dynamic compute environment, where the number of compute nodes can elastically increase or decrease based on workload demand</li>
     </ul>
   </li>
   <li><strong>Type of storage management - PX-StoreV1 or PX-StoreV2:</strong>
@@ -28,5 +29,9 @@ dateCreated: 2025-11-17T09:09:26.044Z
       </li>
     </ul>
   </li>
-  <li><strong>Type of Disaster Recovery (DR):</strong>&nbsp;</li>
+  <li><strong>Type of Disaster Recovery (DR):</strong>&nbsp;<ul>
+      <li>Synchronous DR ensures zero recovery point objectives (RPO) with real-time replication but requires a shared external KVDB and a stretched cluster.&nbsp;</li>
+      <li>Asynchronous DR uses scheduled snapshots, supports independent clusters, can tolerate higher latencies.&nbsp;</li>
+    </ul>
+  </li>
 </ul>
