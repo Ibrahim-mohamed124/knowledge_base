@@ -2,7 +2,7 @@
 title: Asynchronous Disaster Recovery
 description: 
 published: true
-date: 2025-12-15T14:42:49.497Z
+date: 2025-12-15T14:43:41.217Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-15T12:41:07.628Z
@@ -27,7 +27,7 @@ dateCreated: 2025-12-15T12:41:07.628Z
 <ul>
   <li><strong>Install storkctl</strong></li>
 </ul>
-<pre><code class="language-plaintext">STORK_POD=$(oc get pods -n &lt;namespace&gt; -l name=stork -o jsonpath='{.items[0].metadata.name}') &amp;&amp;
-oc cp -n &lt;px-namespace&gt; $STORK_POD:/storkctl/linux/storkctl ./storkctl
+<pre><code class="language-plaintext">STORK_POD=$(oc get pods -n portworx -l name=stork -o jsonpath='{.items[0].metadata.name}') &amp;&amp;
+oc cp -n portworx $STORK_POD:/storkctl/linux/storkctl ./storkctl
 sudo mv storkctl /usr/local/bin &amp;&amp;
 sudo chmod +x /usr/local/bin/storkctl</code></pre>
