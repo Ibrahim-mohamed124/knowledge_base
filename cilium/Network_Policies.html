@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-15T17:47:44.768Z
+date: 2025-12-15T17:52:12.500Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -44,3 +44,19 @@ spec:
    - toEndpoints:
     - matchLabels:
        key: value</code></pre>
+<ul>
+  <li>to match endpoints to services</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+	egress:
+	- toServices:
+	  - k8sService:
+	      serviceName: test
+	      namespace: test
+     - k8sServiceSelector:
+         selector:
+           matchlabels:
+             test: test2
+         namespace: test2</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
