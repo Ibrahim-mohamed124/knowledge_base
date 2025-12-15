@@ -2,7 +2,7 @@
 title: Asynchronous Disaster Recovery
 description: 
 published: true
-date: 2025-12-15T14:43:41.217Z
+date: 2025-12-15T14:52:42.454Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-15T12:41:07.628Z
@@ -31,3 +31,70 @@ dateCreated: 2025-12-15T12:41:07.628Z
 oc cp -n portworx $STORK_POD:/storkctl/linux/storkctl ./storkctl
 sudo mv storkctl /usr/local/bin &amp;&amp;
 sudo chmod +x /usr/local/bin/storkctl</code></pre>
+<ul>
+  <li><strong>Create &nbsp;Service accounts&nbsp;</strong></li>
+</ul>
+<pre><code class="language-plaintext"> apiVersion: v1
+ kind: ServiceAccount
+ metadata:
+   name: migration
+   namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: migration-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: migration
+  namespace: default
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: migration
+  namespace: default
+  annotations: 
+    kubernetes.io/service-account.name: migration
+type: kubernetes.io/service-account-token</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">SERVICE_ACCOUNT=migration
+NAMESPACE=&lt;namespace&gt;
+SERVER=https://&lt;SERVER-ADDRESS:PORT&gt;
+
+SERVICE_ACCOUNT_TOKEN_COUNT=$(kubectl -n ${NAMESPACE} get secret -o=jsonpath='{.items[?(@.metadata.annotations.kubernetes\.io/service-account\.name=="'${SERVICE_ACCOUNT}'")].metadata.name}' | wc -w)
+if [ ${SERVICE_ACCOUNT_TOKEN_COUNT} -gt 1 ]
+then
+  SERVICE_ACCOUNT_TOKEN_NAME=$(kubectl -n ${NAMESPACE} get secret -o=jsonpath='{.items[?(@.metadata.annotations.kubernetes\.io/service-account\.name=="'${SERVICE_ACCOUNT}'")].metadata.name}' | awk '{for(i=1;i&lt;=NF;i++){ if($i ~ /-token/){print $i} } }' | head -n 1)
+else
+  SERVICE_ACCOUNT_TOKEN_NAME=$(kubectl -n ${NAMESPACE} get secret -o=jsonpath='{.items[?(@.metadata.annotations.kubernetes\.io/service-account\.name=="'${SERVICE_ACCOUNT}'")].metadata.name}')
+fi
+SERVICE_ACCOUNT_TOKEN=$(kubectl -n ${NAMESPACE} get secret ${SERVICE_ACCOUNT_TOKEN_NAME} -o "jsonpath={.data.token}" | base64 --decode)
+SERVICE_ACCOUNT_CERTIFICATE=$(kubectl -n ${NAMESPACE} get secret ${SERVICE_ACCOUNT_TOKEN_NAME} -o "jsonpath={.data['ca\.crt']}")
+
+cat &lt;&lt;END
+apiVersion: v1
+kind: Config
+clusters:
+- name: default-cluster
+  cluster:
+    certificate-authority-data: ${SERVICE_ACCOUNT_CERTIFICATE}
+    server: ${SERVER}
+contexts:
+- name: default-context
+  context:
+    cluster: default-cluster
+    namespace: ${NAMESPACE}
+    user: ${SERVICE_ACCOUNT}
+current-context: default-context
+users:
+- name: ${SERVICE_ACCOUNT}
+  user:
+    token: ${SERVICE_ACCOUNT_TOKEN}
+END</code></pre>
+<pre><code class="language-plaintext">chmod +x create-migration-config.sh &amp;&amp; ./create-migration-config.sh &gt; ~/.kube/migration-config.conf</code></pre>
+<p>&nbsp;</p>
