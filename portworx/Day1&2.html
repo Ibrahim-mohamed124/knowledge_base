@@ -2,7 +2,7 @@
 title: Operations
 description: 
 published: true
-date: 2025-12-15T12:05:08.659Z
+date: 2025-12-15T12:09:44.249Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:20.895Z
@@ -23,9 +23,10 @@ dateCreated: 2025-11-17T09:09:20.895Z
       exportMetrics: true
       alertManager:
         enabled: false</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>&nbsp;<ul>
-      <li>Enable user workloads monitoring&nbsp;</li>
+      <li>Enable user workloads monitoring</li>
     </ul>
   </li>
 </ul>
@@ -37,6 +38,7 @@ metadata:
 data:
   config.yaml: |
     enableUserWorkload: true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>&nbsp;<ul>
       <li>Fetch the Thanos host, which is part of the OpenShift monitoring stack:</li>
@@ -51,4 +53,11 @@ curl -O https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/grafana-da
 oc  -n portworx apply -f https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/grafana-service-account.yaml
 oc -n portworx adm policy add-cluster-role-to-user cluster-monitoring-view -z grafana
 oc -n portworx create token grafana --duration=8760h</code></pre>
+<ul>
+  <li>Modify the <code>grafana-datasource-ocp.yaml</code> file:<ul>
+      <li>On the <code>url: https://&lt;THANOS_QUERIER_HOST&gt;</code> line, replace <code>&lt;THANOS_QUERIER_HOST&gt;</code>&nbsp;</li>
+      <li>On the <code>httpHeaderValue1: 'Bearer &lt;BEARER_TOKEN&gt;'</code> line</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
