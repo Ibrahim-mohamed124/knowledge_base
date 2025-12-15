@@ -2,7 +2,7 @@
 title: Asynchronous Disaster Recovery
 description: 
 published: true
-date: 2025-12-15T12:41:07.628Z
+date: 2025-12-15T14:35:19.428Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-15T12:41:07.628Z
@@ -17,4 +17,8 @@ dateCreated: 2025-12-15T12:41:07.628Z
 <figure class="image"><img src="/async-dr-detailed-c92b337de0ad41724209827cc94310ad.png"></figure>
 <blockquote>
   <p>Incremental changes from Kubernetes or OpenShift applications and Portworx data are continuously sent to the destination cluster</p>
+</blockquote>
+<blockquote>
+  <p>All worker nodes in the source and destination clusters must be able to access the Kubernetes API endpoints (port 6443)</p>
+  <p>For an OpenShift based distribution, the source and destination clusters must be able to access ports in the 17001–17020 range to enable communication between Portworx worker nodes.</p>
 </blockquote>
