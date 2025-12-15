@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-15T17:46:51.278Z
+date: 2025-12-15T17:47:44.768Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -39,4 +39,8 @@ spec:
        key: value
   ingress:
    - fromEndpoints:
-   	  - {}</code></pre>
+   	  - {}
+  egress:
+   - toEndpoints:
+    - matchLabels:
+       key: value</code></pre>
