@@ -2,7 +2,7 @@
 title: Operations
 description: 
 published: true
-date: 2025-12-15T12:10:41.543Z
+date: 2025-12-15T12:12:06.645Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:20.895Z
@@ -63,4 +63,20 @@ oc -n portworx create token grafana --duration=8760h</code></pre>
 </ul>
 <pre><code class="language-plaintext">oc -n portworx create configmap grafana-dashboard-config --from-file=grafana-dashboard-config.yaml
 oc -n portworx create configmap grafana-source-config --from-file=grafana-datasource-ocp.yaml</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Download the dashboards</li>
+</ul>
+<pre><code class="language-plaintext">curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/portworx-cluster-dashboard.json" -o portworx-cluster-dashboard.json &amp;&amp; \
+curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/portworx-node-dashboard.json" -o portworx-node-dashboard.json &amp;&amp; \
+curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/portworx-volume-dashboard.json" -o portworx-volume-dashboard.json &amp;&amp; \
+curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/portworx-performance-dashboard.json" -o portworx-performance-dashboard.json &amp;&amp; \
+curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/portworx-etcd-dashboard.json" -o portworx-etcd-dashboard.json &amp;&amp; \
+# Optional: Following files are required only if you need to monitor API requests sent to FlashArray.
+curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/fa-apis-dashboard1.json" -o fa-apis-dashboard1.json &amp;&amp; \
+curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/fa-apis-dashboard2.json" -o fa-apis-dashboard2.json &amp;&amp; \
+# Optional: Following file is required only if you use Stork for DR/migrations
+curl "https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/portworx-dr-dashboard.json" -o portworx-dr-dashboard.json</code></pre>
+<ul>
+  <li>Deploy Garfana</li>
+</ul>
+<pre><code class="language-plaintext">oc -n portworx apply -f https://docs.portworx.com/portworx-enterprise/samples/k8s/pxc/grafana-ocp.yaml</code></pre>
