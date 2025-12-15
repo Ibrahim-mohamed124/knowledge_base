@@ -2,19 +2,46 @@
 title: Operations
 description: 
 published: true
-date: 2025-11-17T20:17:39.535Z
+date: 2025-12-15T11:48:19.535Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:20.895Z
 -->
 
-<h1><strong>Create Snapshots in Portworx</strong></h1>
+<h1>Observability</h1>
 <ul>
-  <li>The Snapshots feature in Portworx protects your data by creating point-in-time copies of persistent volumes (PVs).</li>
-  <li>Portworx supports local and cloud snapshots.</li>
+  <li>In 3.5 Portworx uses OpenShift’s Prometheus deployment for monitoring, rather than deploying its own.</li>
+  <li>To export Portworx Prometheus metrics to Openshift:<ul>
+      <li>Disable the Portworx Prometheus deployment in the Portworx StorageCluster spec:</li>
+    </ul>
+  </li>
 </ul>
-<h3>Local snapshots</h3>
+<pre><code class="language-plaintext">spec:
+  monitoring:
+    prometheus:
+      enabled: false
+      exportMetrics: true
+      alertManager:
+        enabled: false</code></pre>
 <ul>
-  <li>Portworx stores the local snapshot on the same physical node or storage backend as the source data.</li>
-  <li>&nbsp;</li>
+  <li>&nbsp;<ul>
+      <li>Enable user workloads monitoring&nbsp;</li>
+    </ul>
+  </li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    enableUserWorkload: true</code></pre>
+<ul>
+  <li>&nbsp;<ul>
+      <li>Fetch the Thanos host, which is part of the OpenShift monitoring stack:</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get route thanos-querier -n openshift-monitoring -o json | jq -r '.spec.host'</code></pre>
+<p>&nbsp;</p>
