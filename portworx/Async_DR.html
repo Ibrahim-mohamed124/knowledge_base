@@ -2,7 +2,7 @@
 title: Asynchronous Disaster Recovery
 description: 
 published: true
-date: 2025-12-15T14:38:20.865Z
+date: 2025-12-15T14:42:49.497Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-15T12:41:07.628Z
@@ -24,3 +24,10 @@ dateCreated: 2025-12-15T12:41:07.628Z
   <p>A <mark class="marker-yellow">maximum of one StorageClass object is configured as the default</mark>. Having multiple default StorageClasses causes PVC migrations to fail.</p>
   <p><mark class="marker-yellow">Make sure the custom images are available from a registry that is accessible to both the source and destination clusters.</mark></p>
 </blockquote>
+<ul>
+  <li><strong>Install storkctl</strong></li>
+</ul>
+<pre><code class="language-plaintext">STORK_POD=$(oc get pods -n &lt;namespace&gt; -l name=stork -o jsonpath='{.items[0].metadata.name}') &amp;&amp;
+oc cp -n &lt;px-namespace&gt; $STORK_POD:/storkctl/linux/storkctl ./storkctl
+sudo mv storkctl /usr/local/bin &amp;&amp;
+sudo chmod +x /usr/local/bin/storkctl</code></pre>
