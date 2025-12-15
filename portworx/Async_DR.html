@@ -2,7 +2,7 @@
 title: Asynchronous Disaster Recovery
 description: 
 published: true
-date: 2025-12-15T15:01:19.938Z
+date: 2025-12-15T15:03:08.620Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-15T12:41:07.628Z
@@ -118,3 +118,19 @@ END</code></pre>
   # --src-ep &lt;host.fqdn:port&gt; \
   # Starting from Stork version 25.4.1, You can skip the credentials vadiation using the --skip-validation flag 
   # --skip-validation</code></pre>
+<pre><code class="language-plaintext">storkctl create clusterpair migration-cluster-pair \
+  --src-kube-file &lt;/tmp/kubeconfig&gt; \
+  --dest-kube-file &lt;/tmp/kubeconfig2&gt; \
+  --provider nfs \
+  --nfs-server &lt;nfs-server-address&gt; \
+  --nfs-export-path &lt;nfs-export-path&gt; \
+  --nfs-sub-path &lt;nfs-sub-path&gt; \
+  --nfs-mount-opts &lt;mount-options&gt; \
+  --nfs-timeout-seconds &lt;timeout-seconds&gt; \
+  --unidirectional
+  # Use --dest-ep and --src-ep when configuring asynchronous disaster recovery in cloud platforms.
+  # --dest-ep &lt;host.fqdn:port&gt; \
+  # --src-ep &lt;shost.fqdn:port&gt; \
+  # Starting from Stork version 25.4.1, You can skip the credentials vadiation using the --skip-validation flag 
+  # --skip-validation</code></pre>
+<pre><code class="language-plaintext">storkctl get clusterpair -n &lt;migrationnamespace&gt;</code></pre>
