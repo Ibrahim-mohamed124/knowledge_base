@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-15T17:52:12.500Z
+date: 2025-12-15T17:54:12.511Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -58,5 +58,15 @@ spec:
            matchlabels:
              test: test2
          namespace: test2</code></pre>
+<ul>
+  <li>to match on DIDR</li>
+</ul>
+<pre><code class="language-plaintext">egress:
+- toCIDR:
+  - 0.0.0.0/0
+- toCIDRSet:
+  - cidr: 0.0.0.0/0
+    except:
+     - 0.0.0.0/0</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
