@@ -2,7 +2,7 @@
 title: Operations
 description: 
 published: true
-date: 2025-12-15T12:09:44.249Z
+date: 2025-12-15T12:10:41.543Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:20.895Z
@@ -59,5 +59,8 @@ oc -n portworx create token grafana --duration=8760h</code></pre>
       <li>On the <code>httpHeaderValue1: 'Bearer &lt;BEARER_TOKEN&gt;'</code> line</li>
     </ul>
   </li>
+  <li>Create a configmap for the dashboard</li>
 </ul>
+<pre><code class="language-plaintext">oc -n portworx create configmap grafana-dashboard-config --from-file=grafana-dashboard-config.yaml
+oc -n portworx create configmap grafana-source-config --from-file=grafana-datasource-ocp.yaml</code></pre>
 <p>&nbsp;</p>
