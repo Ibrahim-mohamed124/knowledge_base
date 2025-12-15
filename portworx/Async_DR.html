@@ -2,7 +2,7 @@
 title: Asynchronous Disaster Recovery
 description: 
 published: true
-date: 2025-12-15T14:52:42.454Z
+date: 2025-12-15T15:00:45.923Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-15T12:41:07.628Z
@@ -24,6 +24,7 @@ dateCreated: 2025-12-15T12:41:07.628Z
   <p>A <mark class="marker-yellow">maximum of one StorageClass object is configured as the default</mark>. Having multiple default StorageClasses causes PVC migrations to fail.</p>
   <p><mark class="marker-yellow">Make sure the custom images are available from a registry that is accessible to both the source and destination clusters.</mark></p>
 </blockquote>
+<h2>Prepare</h2>
 <ul>
   <li><strong>Install storkctl</strong></li>
 </ul>
@@ -97,4 +98,23 @@ users:
     token: ${SERVICE_ACCOUNT_TOKEN}
 END</code></pre>
 <pre><code class="language-plaintext">chmod +x create-migration-config.sh &amp;&amp; ./create-migration-config.sh &gt; ~/.kube/migration-config.conf</code></pre>
-<p>&nbsp;</p>
+<h3><strong>Unidirectional ClusterPair</strong></h3>
+<ul>
+  <li>​A unidirectional ClusterPair establishes authentication from the source cluster to the destination cluster so resources and data can be migrated in one direction.</li>
+</ul>
+<pre><code class="language-plaintext">storkctl create clusterpair migration-cluster-pair \
+  --namespace &lt;migrationnamespace&gt; \ # To create an admin ClusterPair, specify the admin namespace
+  --dest-kube-file &lt;destination-kubeconfig-file&gt; \
+  --src-kube-file &lt;source-kubeconfig-file&gt; \
+  --provider s3 \
+  --s3-endpoint s3.amazonaws.com \
+  --s3-access-key &lt;s3-access-key&gt; \
+  --s3-secret-key &lt;s3-secret-key&gt; \
+  --s3-region &lt;s3-region&gt; \
+  --unidirectional \ 
+  --bucket &lt;source-cluster-bucket&gt;
+  # Use --dest-ep and --src-ep when configuring asynchronous disaster recovery in cloud platforms.
+  # --dest-ep &lt;host.fqdn:port&gt; \
+  # --src-ep &lt;host.fqdn:port&gt; \
+  # Starting from Stork version 25.4.1, You can skip the credentials vadiation using the --skip-validation flag 
+  # --skip-validation</code></pre>
