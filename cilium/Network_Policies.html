@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-15T18:09:45.183Z
+date: 2025-12-16T08:36:12.005Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -44,6 +44,7 @@ spec:
    - toEndpoints:
     - matchLabels:
        key: value</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to match endpoints to services</li>
 </ul>
@@ -58,6 +59,7 @@ spec:
            matchlabels:
              test: test2
          namespace: test2</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to match on DIDR</li>
 </ul>
@@ -68,6 +70,7 @@ spec:
   - cidr: 0.0.0.0/0
     except:
      - 0.0.0.0/0</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>layer 4 matching</li>
 </ul>
@@ -86,6 +89,7 @@ spec:
        - port: 80
          endPort: 100
          protocol: TCP</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>the rules are complied using AND (same item in the list) or OR (two separate items on the list)</li>
   <li>Layer 7 http</li>
@@ -111,6 +115,7 @@ spec:
         http:
         - method: "GET"
           path: "/products"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>layer 7 DNS</li>
 </ul>
@@ -127,15 +132,16 @@ spec:
   - toEndpoints:
     - matchLabels:
        k8s:io.kubernetes.pod.namespace: kube-system
-       k8s:k8s-app:kube-dns
+       k8s:k8s-app: kube-dns
     toPorts:
      - ports:
-        - port: 53
+        - port: "53"
           protocol: ANY
        rules:
         dns:
           - matchName: "google.com"
           - matchPattern: "*.google.com"</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
