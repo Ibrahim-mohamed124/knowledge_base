@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-16T10:36:48.171Z
+date: 2025-12-16T10:52:45.769Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -167,6 +167,31 @@ spec:
      - ports:
         - port: "80"
           protocol: TCP </code></pre>
+<ul>
+  <li>Entities:<ul>
+      <li>preserved keywords for certain endpoints<ul>
+          <li>ex: kube-apiserver target the kube-apiserver endpoints</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">egress:
+  - toEntities:
+  		- kube-apiserver</code></pre>
+<ul>
+  <li>&nbsp;<ul>
+      <li>&nbsp;<ul>
+          <li>localhost: control if host process can access the pods that are running on the same node</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">ingress:
+  - fromEntites:
+    - host
+    - remote-node</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
