@@ -2,7 +2,7 @@
 title: RBAC
 description: 
 published: true
-date: 2025-12-17T18:45:08.463Z
+date: 2025-12-17T19:21:21.326Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T13:18:30.230Z
@@ -59,7 +59,7 @@ groups: ["*"]</code></pre>
 <p>&nbsp; 6. Create a token for the storage administrator using <code>admin.yaml</code>.</p>
 <pre><code class="language-plaintext">ADMIN_TOKEN=$(./pxctl auth token generate \
         --auth-config=admin.yaml \
-        --issuer=portworx.com \
+        --issuer=operator.portworx.io \  &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; from the stc
         --shared-secret=$PORTWORX_AUTH_SHARED_SECRET \
         --token-duration=1y)</code></pre>
 <p>&nbsp; 7. add the token to the pxctl context on worker nodes</p>
