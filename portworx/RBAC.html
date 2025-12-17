@@ -2,7 +2,7 @@
 title: RBAC
 description: 
 published: true
-date: 2025-12-14T13:51:19.701Z
+date: 2025-12-17T18:45:08.463Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T13:18:30.230Z
@@ -23,7 +23,7 @@ dateCreated: 2025-12-14T13:18:30.230Z
 kind: StorageCluster
 metadata:
   name: portworx
-  namespace: &lt;px-namespace&gt;
+  namespace: portworx
 spec:
   image: portworx/oci-monitor:2.6.0.1
   security:
@@ -32,20 +32,20 @@ spec:
 <ul>
   <li>Retrieve the admin token from the namespace in which Portworx was installed and store it in the <code>ADMIN_TOKEN</code> variable:</li>
 </ul>
-<pre><code class="language-plaintext">ADMIN_TOKEN=$(oc -n &lt;px-namespace&gt; get secret px-admin-token --template='{{index .data "auth-token" | base64decode}}')</code></pre>
+<pre><code class="language-plaintext">ADMIN_TOKEN=$(oc -n portworx get secret px-admin-token --template='{{index .data "auth-token" | base64decode}}')</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>Find the Portworx pod that is running on the node in which the admin wants to interact with and label it:</li>
 </ul>
 <pre><code class="language-plaintext">K8_NODE_NAME=kubernetes-worker-3.mylab.lan
-PX_POD=$(oc -n &lt;px-namespace&gt; get pods -l name=portworx -o jsonpath="{.items[?(@.spec.nodeName == '$K8_NODE_NAME')].metadata.name}")</code></pre>
+PX_POD=$(oc -n portworx get pods -l name=portworx -o jsonpath="{.items[?(@.spec.nodeName == '$K8_NODE_NAME')].metadata.name}")</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>add the admin token to the pxctl context on that node</li>
 </ul>
-<pre><code class="language-plaintext">kubectl -n &lt;px-namespace&gt; exec -ti $PX_POD -- /opt/pwx/bin/pxctl context create admin --token=$ADMIN_TOKEN</code></pre>
+<pre><code class="language-plaintext">kubectl -n portworx exec -ti $PX_POD -- /opt/pwx/bin/pxctl context create admin --token=$ADMIN_TOKEN</code></pre>
 <p>&nbsp; 3. Fetching the shared secret</p>
-<pre><code class="language-plaintext">PORTWORX_AUTH_SHARED_SECRET=$(oc -n kube-system get \
+<pre><code class="language-plaintext">PORTWORX_AUTH_SHARED_SECRET=$(oc -n portworx get \
         secret px-shared-secret -o json \
     | jq -r '.data."shared-secret"' \
     | base64 -d)</code></pre>
