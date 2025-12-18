@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-16T13:13:02.824Z
+date: 2025-12-18T12:18:04.753Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -234,16 +234,39 @@ spec:
 	    protocol: UDP
 	  - port: "53"
 	    protocol: TCP</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>deny all</li>
 </ul>
 <pre><code class="language-plaintext">spec:
  ingrss: {}</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>allow all</li>
 </ul>
 <pre><code class="language-plaintext">spec:
   ingress:
    - fromEndpoints: {}</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>specifying namespaces</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "db"
+  namespace: staging
+spec:
+  endpointSelector:
+    matchLabels:
+      role: backend
+  ingress:
+   - fromEndpoints:
+     - matchLabels:
+        role: frontend
+       matchExpressions:
+       - key: k8s:io.kubernetes.pod.namespace
+         operator: In
+         values:
+           - staging
+           - prod</code></pre>
 <p>&nbsp;</p>
