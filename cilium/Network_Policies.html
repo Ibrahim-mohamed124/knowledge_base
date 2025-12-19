@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-19T18:54:44.936Z
+date: 2025-12-19T19:38:37.341Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -270,6 +270,7 @@ spec:
          values:
            - staging
            - prod</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>cluster wide DNS policy to all FQDNs</li>
 </ul>
@@ -291,4 +292,8 @@ spec:
       rules:
         dns:
         - matchPattern: "*"</code></pre>
+<h4>policy audit mode</h4>
+<ul>
+  <li>Do not drop any traffic only logs events when not allowed traffic arrives.&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
