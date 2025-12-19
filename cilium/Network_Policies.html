@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-19T19:38:37.341Z
+date: 2025-12-19T19:42:05.728Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -294,6 +294,11 @@ spec:
         - matchPattern: "*"</code></pre>
 <h4>policy audit mode</h4>
 <ul>
-  <li>Do not drop any traffic only logs events when not allowed traffic arrives.&nbsp;</li>
+  <li>Do not drop any traffic only logs events when not allowed traffic arrives.&nbsp;<ul>
+      <li>Enable it for all endpoints &gt; policyAuditMode: true in the values.yaml for cilium helm chart</li>
+      <li>for specific endpoints connect to one pod of the cilium deployment&nbsp;</li>
+    </ul>
+  </li>
 </ul>
+<pre><code class="language-plaintext">kubectl -n kube-system exec cilium-pod -c cilium-agent -- cilium-dbg endpoint config endpoint-name policyAuditMode=Enabled</code></pre>
 <p>&nbsp;</p>
