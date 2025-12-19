@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-18T12:18:04.753Z
+date: 2025-12-19T18:54:44.936Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -247,6 +247,7 @@ spec:
 <pre><code class="language-plaintext">spec:
   ingress:
    - fromEndpoints: {}</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>specifying namespaces</li>
 </ul>
@@ -269,4 +270,25 @@ spec:
          values:
            - staging
            - prod</code></pre>
+<ul>
+  <li>cluster wide DNS policy to all FQDNs</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: allow-dns-clusterwide
+spec:
+  endpointSelector: {}
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s:k8s-app: kube-dns
+    toPorts:
+    - ports:
+      - port: "53"
+        protocol: ANY
+      rules:
+        dns:
+        - matchPattern: "*"</code></pre>
 <p>&nbsp;</p>
