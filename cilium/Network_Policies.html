@@ -2,7 +2,7 @@
 title: Network Policies
 description: 
 published: true
-date: 2025-12-19T19:42:05.728Z
+date: 2025-12-19T19:43:10.683Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-14T10:26:09.443Z
@@ -301,4 +301,5 @@ spec:
   </li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n kube-system exec cilium-pod -c cilium-agent -- cilium-dbg endpoint config endpoint-name policyAuditMode=Enabled</code></pre>
+<pre><code class="language-plaintext">kubectl -n kube-system exec cilium-pod -- hubble observe flows -t policy-verdict --last 1</code></pre>
 <p>&nbsp;</p>
