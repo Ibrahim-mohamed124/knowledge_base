@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-19T20:02:20.604Z
+date: 2025-12-20T06:57:11.661Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -23,5 +23,11 @@ dateCreated: 2025-12-19T20:00:13.689Z
     </ul>
   </li>
   <li>Cilium work by a sidecar-less strategy only for layer 3 and 4 (eBPF), layer 7 features use only one sidecar server for all the pods ( one extra hop )</li>
-  <li>&nbsp;</li>
 </ul>
+<h3>cilium ingress</h3>
+<ul>
+  <li>Ingress is implemented by eBPF programs and envoy</li>
+  <li>in the values.yaml change ingressController.enabled to true and ingressController.default to true. Then, just set nodePort.enabled to ture if cilium replaced kubeproxy</li>
+  <li>loadbalancerMode: shared or dedicated</li>
+</ul>
+<pre><code class="language-plaintext">&nbsp;</code></pre>
