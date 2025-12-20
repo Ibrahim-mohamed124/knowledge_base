@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-20T08:16:05.974Z
+date: 2025-12-20T08:20:53.277Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -135,6 +135,9 @@ spec:
        headers:
         - name: Host
           value: "test1.com"   || either this or use the hostname above
-   - backendRefs:
+     backendRefs:
+     - name: svc
+       port: 80
+   - backendRefs:   | the default backend
      - name: svc
        port: 80</code></pre>
