@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-20T07:09:15.180Z
+date: 2025-12-20T07:54:47.825Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -74,4 +74,23 @@ spec:
             name: test
             port:
               number: </code></pre>
-<p>&nbsp;</p>
+<h3>Gateway API</h3>
+<h6>Limitations of Ingress Controller</h6>
+<ul>
+  <li>Only match on the host and path</li>
+  <li>No traffic splitting</li>
+  <li>ONLY support HTTP/S</li>
+  <li>No RateLimiting</li>
+  <li>All the configuration is in the ingress object</li>
+  <li>Cannot change the headers of a request/respone</li>
+</ul>
+<h6>Gateway API</h6>
+<ul>
+  <li>&nbsp; Separation of Concerns:<ul>
+      <li>GatewayClass: what type of gateway controller will be used?? Nginx, others?? built by the infra team</li>
+      <li>Gateway: configure an instance of the gateway controller &nbsp;built by platform operator&nbsp;</li>
+      <li>HTTPRoute, TCPRoute, GRCPRoute: is the configuration for a specific endpoint built by the developer</li>
+    </ul>
+  </li>
+  <li>Cross namespaces: Gateway API is able to route traffic to different specific namespaces and prevent other namespaces to attach endpoints to the gatgeway</li>
+</ul>
