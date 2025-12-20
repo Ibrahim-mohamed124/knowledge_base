@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-20T06:58:34.932Z
+date: 2025-12-20T07:04:20.610Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -31,4 +31,38 @@ dateCreated: 2025-12-19T20:00:13.689Z
   <li>loadbalancerMode: shared or dedicated</li>
   <li>cilium creates an ingressClass and use it as the default one</li>
 </ul>
-<pre><code class="language-plaintext">&nbsp;</code></pre>
+<pre><code class="language-plaintext">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  ingressClassName: cilium
+  rules:
+  - host: "example.com"
+    http:
+     paths:
+     - pathType: Prefix
+       path: "/"
+       backend:
+         service:
+           name: svc
+           port:
+             number: 80
+     - pathType: Prefix
+       path: "/test"
+       backend:
+         service:
+           name: svc
+           port:
+             number: 80
+  - host: "example2.com"
+    http:
+     paths:
+     - pathType: Prefix
+       path: "/"
+       backend:
+         service:
+           name: svc-3
+           port:
+             number: 8080</code></pre>
+<p>&nbsp;</p>
