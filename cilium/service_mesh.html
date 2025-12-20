@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-20T07:04:20.610Z
+date: 2025-12-20T07:05:08.503Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -38,31 +38,31 @@ metadata:
 spec:
   ingressClassName: cilium
   rules:
-  - host: "example.com"
+  - host: ""
     http:
      paths:
      - pathType: Prefix
        path: "/"
        backend:
          service:
-           name: svc
+           name: 
            port:
-             number: 80
+             number: 
      - pathType: Prefix
-       path: "/test"
+       path: ""
        backend:
          service:
-           name: svc
+           name: 
            port:
-             number: 80
-  - host: "example2.com"
+             number: 
+  - host: ""
     http:
      paths:
      - pathType: Prefix
-       path: "/"
+       path: ""
        backend:
          service:
-           name: svc-3
+           name: 
            port:
-             number: 8080</code></pre>
+             number: </code></pre>
 <p>&nbsp;</p>
