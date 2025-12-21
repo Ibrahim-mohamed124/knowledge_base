@@ -2,7 +2,7 @@
 title: Asynchronous Disaster Recovery
 description: 
 published: true
-date: 2025-12-15T15:03:08.620Z
+date: 2025-12-21T11:03:01.843Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-15T12:41:07.628Z
@@ -32,12 +32,13 @@ dateCreated: 2025-12-15T12:41:07.628Z
 oc cp -n portworx $STORK_POD:/storkctl/linux/storkctl ./storkctl
 sudo mv storkctl /usr/local/bin &amp;&amp;
 sudo chmod +x /usr/local/bin/storkctl</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Create &nbsp;Service accounts&nbsp;</strong></li>
 </ul>
-<pre><code class="language-plaintext"> apiVersion: v1
- kind: ServiceAccount
- metadata:
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ServiceAccount
+metadata:
    name: migration
    namespace: default
 ---
@@ -97,6 +98,7 @@ users:
   user:
     token: ${SERVICE_ACCOUNT_TOKEN}
 END</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">chmod +x create-migration-config.sh &amp;&amp; ./create-migration-config.sh &gt; ~/.kube/migration-config.conf</code></pre>
 <h3><strong>Unidirectional ClusterPair</strong></h3>
 <ul>
@@ -118,6 +120,7 @@ END</code></pre>
   # --src-ep &lt;host.fqdn:port&gt; \
   # Starting from Stork version 25.4.1, You can skip the credentials vadiation using the --skip-validation flag 
   # --skip-validation</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">storkctl create clusterpair migration-cluster-pair \
   --src-kube-file &lt;/tmp/kubeconfig&gt; \
   --dest-kube-file &lt;/tmp/kubeconfig2&gt; \
@@ -133,4 +136,5 @@ END</code></pre>
   # --src-ep &lt;shost.fqdn:port&gt; \
   # Starting from Stork version 25.4.1, You can skip the credentials vadiation using the --skip-validation flag 
   # --skip-validation</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">storkctl get clusterpair -n &lt;migrationnamespace&gt;</code></pre>
