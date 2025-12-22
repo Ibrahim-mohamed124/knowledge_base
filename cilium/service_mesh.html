@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-20T08:20:53.277Z
+date: 2025-12-22T09:52:57.557Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -86,10 +86,10 @@ spec:
 </ul>
 <h6>Gateway API</h6>
 <ul>
-  <li>Enable it by setting gatewayAPI.enabled to true in the values.yaml file and installing the API gateway CRDs from its documentation&nbsp;</li>
-  <li>&nbsp; Separation of Concerns:<ul>
+  <li>Enable it by setting gatewayAPI.enabled to true in the values.yaml file and installing the API gateway CRDs from its documentation the experimental channel not the standard one</li>
+  <li>Separation of Concerns:<ul>
       <li>GatewayClass: what type of gateway controller will be used?? Nginx, others?? built by the infra team</li>
-      <li>Gateway: configure an instance of the gateway controller &nbsp;built by platform operator&nbsp;</li>
+      <li>Gateway: configure an instance of the gateway controller &nbsp;built by platform operator</li>
       <li>HTTPRoute, TCPRoute, GRCPRoute: is the configuration for a specific endpoint built by the developer</li>
     </ul>
   </li>
@@ -101,6 +101,7 @@ metadata:
   name: cluster-gateway
 spec:
  controllerName: "cilium"</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata: 
@@ -115,6 +116,7 @@ spec:
  	  allowedRoutes:
  	  	 namespace:
  	  	   from: Same</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>This will create a gateway instance in that namespace and a load balancer service that listen on port 80</li>
 </ul>
