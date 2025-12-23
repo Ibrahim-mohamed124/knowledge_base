@@ -2,7 +2,7 @@
 title:   Branching Strategies in Git
 description: 
 published: true
-date: 2025-12-23T18:16:50.470Z
+date: 2025-12-23T18:21:41.092Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-23T17:50:05.330Z
@@ -75,8 +75,33 @@ dateCreated: 2025-12-23T17:50:05.330Z
   <p>If a<u> merge conflict </u>arises, developers are required to resolve it prior to finalizing the merge.</p>
 </blockquote>
 <figure class="image image_resized" style="width:100%;"><img src="/image-257.webp"></figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Pros</td>
+        <td>Cons</td>
+      </tr>
+      <tr>
+        <td>fast, streamlined branching, short production cycles and frequent releases, aligning well with Agile methodologies.</td>
+        <td>GitHub Flow is not ideal for managing multiple versions of the codebase.</td>
+      </tr>
+      <tr>
+        <td>quickly identify and resolve issues due to the strategy's focus on fast feedback loops.</td>
+        <td>The lack of development branches can lead to unstable production code if changes are not properly tested before merging.</td>
+      </tr>
+      <tr>
+        <td>Testing and automating changes to a single branch enable quick and continuous deployment.</td>
+        <td>Without separate development branches, the master branch can become cluttered, serving both production and development purposes.</td>
+      </tr>
+      <tr>
+        <td>GitHub Flow is particularly well-suited for small teams and web applications,&nbsp;</td>
+        <td>merge conflicts may occur more frequently due to everyone merges into the same branch.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h3>GitLab Flow</h3>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
