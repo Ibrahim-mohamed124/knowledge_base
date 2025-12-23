@@ -1,0 +1,30 @@
+<!--
+title: Tekton
+description: 
+published: true
+date: 2025-12-23T19:38:29.112Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-23T19:38:29.112Z
+-->
+
+<h2>What is Tekton?</h2>
+<ul>
+  <li>Tekton is a cloud-native solution for building CI/CD pipelines. It consists of Tekton Pipelines, which provides the building blocks, and of supporting components, such as Tekton CLI and Tekton Catalog, that make Tekton a complete ecosystem.&nbsp;</li>
+  <li>a set of Kubernetes Custom Resources that define the building blocks you can create and reuse for your pipelines.</li>
+</ul>
+<h2>What are the components of Tekton?</h2>
+<ul>
+  <li><a href="https://github.com/tektoncd/pipeline/blob/main/docs/README.md"><strong>Tekton Pipelines</strong></a> is the foundation of Tekton. It defines a set of Kubernetes <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resources</a> that act as building blocks from which you can assemble CI/CD pipelines.</li>
+  <li><a href="https://github.com/tektoncd/triggers/blob/main/README.md"><strong>Tekton Triggers</strong></a> allows you to instantiate pipelines based on events. For example, you can trigger the instantiation and execution of a pipeline every time a PR is merged against a GitHub repository. You can also build a user interface that launches specific Tekton triggers.</li>
+  <li><a href="https://github.com/tektoncd/cli/blob/main/README.md"><strong>Tekton CLI</strong></a> provides a command-line interface called <code>tkn</code>, built on top of the Kubernetes CLI, that allows you to interact with Tekton.</li>
+  <li><a href="https://github.com/tektoncd/dashboard/blob/main/docs/README.md"><strong>Tekton Dashboard</strong></a> is a Web-based graphical interface for Tekton Pipelines that displays information about the execution of your pipelines. It is currently a work-in-progress.</li>
+  <li><a href="https://github.com/tektoncd/catalog/blob/v1beta1/README.md"><strong>Tekton Catalog</strong></a> is a repository of high-quality, community-contributed Tekton building blocks - <code>Tasks</code>, <code>Pipelines</code>, and so on - that are ready for use in your own pipelines.</li>
+  <li><a href="https://github.com/tektoncd/hub/blob/main/README.md"><strong>Tekton Hub</strong></a> is a Web-based graphical interface for accessing the Tekton Catalog.</li>
+  <li><a href="https://github.com/tektoncd/operator/blob/main/README.md"><strong>Tekton Operator</strong></a> is a Kubernetes <a href="https://operatorhub.io/what-is-an-operator">Operator pattern</a> that allows you to install, update, and remove Tekton projects on your Kubernetes cluster.</li>
+  <li><a href="https://github.com/tektoncd/chains/blob/main/README.md"><strong>Tekton Chain</strong></a> provides tools to generate, store, and sign provenance for artifacts built with Tekton Pipelines</li>
+  <li><a href="https://github.com/tektoncd/pipeline/blob/main/docs/tasks.md"><code>Task</code></a> - defines a series of ordered <code>Steps</code>, and each <code>Step</code> invokes a specific build tool on a specific set of inputs and produces a specific set of outputs, which can be used as inputs in the next <code>Step</code>.</li>
+  <li><a href="https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md"><code>Pipeline</code></a> - defines a series of ordered <code>Tasks</code>, and just like <code>Steps</code> in a <code>Task</code>, a <code>Task</code> in a <code>Pipeline</code> can use the output of a previously executed <code>Task</code> as its input.</li>
+  <li><a href="https://github.com/tektoncd/pipeline/blob/main/docs/taskruns.md"><code>TaskRun</code></a> - instantiates a specific <code>Task</code> to execute on a particular set of inputs and produce a particular set of outputs. In other words, the <code>Task</code> tells Tekton what to do, and a <code>TaskRun</code> tells Tekton what to do it <strong>on</strong>, as well as any additional details on how to exactly do it, such as build flags.</li>
+  <li><a href="https://github.com/tektoncd/pipeline/blob/main/docs/pipelineruns.md"><code>PipelineRun</code></a> - instantiates a specific <code>Pipeline</code> to execute on a particular set of inputs and produce a particular set of outputs to particular destinations.</li>
+</ul>
