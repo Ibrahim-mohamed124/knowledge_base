@@ -2,7 +2,7 @@
 title:   Branching Strategies in Git
 description: 
 published: true
-date: 2025-12-23T19:12:25.460Z
+date: 2025-12-23T19:19:50.919Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-23T17:50:05.330Z
@@ -142,4 +142,29 @@ dateCreated: 2025-12-23T17:50:05.330Z
 <blockquote>
   <p>Feature flags are conditional statements in the codebase that control the visibility and behavior of features in an application. They enable developers to separate code deployment from feature release, allowing for more flexible and controlled software development processes</p>
 </blockquote>
-<p>&nbsp;</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Pros</td>
+        <td>Cons</td>
+      </tr>
+      <tr>
+        <td>keeps the trunk consistently updated, enabling continuous integration of code changes.</td>
+        <td>Requires high autonomy from developers, making it suitable for experienced teams.</td>
+      </tr>
+      <tr>
+        <td>Developers have better visibility into each other's changes as commits are made directly to the trunk</td>
+        <td>It demands a considerable level of discipline and effective communication among developers to prevent conflicts and ensure proper isolation of new features.</td>
+      </tr>
+      <tr>
+        <td>Without the need for branches, there is less likelihood of <a href="https://www.geeksforgeeks.org/git/merge-conflicts-and-how-to-handle-them/"><u>encountering merge conflicts </u></a>or “merge hell”</td>
+        <td>Difficult to manage with large teams.</td>
+      </tr>
+      <tr>
+        <td>The shared trunk remains in a constant releasable state, allowing for faster and more stable releases due to the continuous integration of work.</td>
+        <td>Maintaining backward compatibility with older releases can be challenging.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
