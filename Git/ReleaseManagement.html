@@ -1,0 +1,43 @@
+<!--
+title: Release management, versioning, and environment promotion strategies.
+description: 
+published: true
+date: 2025-12-24T11:50:22.405Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-24T11:50:22.405Z
+-->
+
+<h1>Release Management</h1>
+<ul>
+  <li>Release management is the <strong>process of planning, coordinating, and controlling</strong> how software changes move from development into production <strong>safely and predictably</strong>.&nbsp;<ul>
+      <li>In this process you have to balance speed with stability!!!</li>
+    </ul>
+  </li>
+</ul>
+<h3>Release Types&nbsp;</h3>
+<h4>1. Scheduled Releases</h4>
+<ul>
+  <li>Fixed release windows (e.g., bi-weekly, monthly)</li>
+  <li>Common in enterprises and regulated environments</li>
+</ul>
+<h4>2. On-Demand Releases</h4>
+<ul>
+  <li>Released when features are ready</li>
+  <li>Enabled by CI/CD and automation</li>
+</ul>
+<h4>3. Emergency / Hotfix Releases</h4>
+<ul>
+  <li>Minimal scope</li>
+  <li>Bypass some gates but still auditable</li>
+</ul>
+<blockquote>
+  <p>Release Gates (Quality Controls):</p>
+  <p>Common gates:</p>
+  <ul>
+    <li>Automated tests</li>
+    <li>Code quality (SonarQube)</li>
+    <li>Security scans</li>
+    <li>Manual approval (CAB, product owner)</li>
+  </ul>
+</blockquote>
