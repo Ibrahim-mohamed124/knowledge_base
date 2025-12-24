@@ -2,7 +2,7 @@
 title: Artifactory
 description: 
 published: true
-date: 2025-12-24T08:51:48.390Z
+date: 2025-12-24T09:04:04.856Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-24T08:43:20.701Z
@@ -32,9 +32,46 @@ dateCreated: 2025-12-24T08:43:20.701Z
 <ul>
   <li><strong>Problems Before Artifactory:</strong><br>• Version Confusion — Developers didn’t know if they were using the latest version.<br>• Slow Development — Every team stored files differently, leading to inconsistencies.<br>• Security Issues — No centralized control over what gets stored and used.</li>
   <li><strong>How Artifactory Solves These Issues:</strong><br>• Acts as a central storage for software artifacts.<br>• Keeps versions organized (like a library for software packages).<br>• Makes sharing and retrieving packages easy and fast.<br>• Ensures security and access control over stored artifacts.</li>
-  <li><i><strong>Key Features of Artifactory</strong></i></li>
+  <li><i><strong>Key Features of Artifactory</strong></i>
+    <ul>
+      <li>Single source of truth for binaries</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp; &nbsp; &nbsp; • Artifact Repository — Stores binaries like Docker images, JAR files, etc.<br>&nbsp; &nbsp; &nbsp; • CI/CD Integration — Works with Jenkins, GitHub Actions, etc.<br>&nbsp; &nbsp; &nbsp; • Security &amp; Permissions — Restricts access to packages.<br>&nbsp; &nbsp; &nbsp; • Multi-Format Support — Docker, Maven, NPM, PyPi, etc.<br>&nbsp; &nbsp; &nbsp; • High Availability — Ensures redundancy.</p>
 <ul>
   <li><strong>Popular Artifactory Tools in the Industry</strong><br>1. JFrog Artifactory — Most widely used, supports all package formats.<br>2. Sonatype Nexus — Popular for Java-based projects.<br>3. AWS CodeArtifact — Cloud-based, works with AWS services.<br>4. Google Artifact Registry — Integrated with Google Cloud.<br>5. Harbor — Best for storing and scanning container images.</li>
 </ul>
+<h2>Supported Package Types&nbsp;</h2>
+<ul>
+  <li>Artifactory is <strong>universal</strong>, meaning it supports <strong>multiple ecosystems</strong>:<ul>
+      <li><strong>Docker</strong> (images)</li>
+      <li><strong>Maven / Gradle</strong></li>
+      <li><strong>npm</strong></li>
+      <li><strong>PyPI</strong></li>
+      <li><strong>Helm charts</strong></li>
+      <li><strong>Terraform providers/modules</strong></li>
+      <li><strong>RPM / APT</strong></li>
+      <li><strong>Generic binaries</strong></li>
+    </ul>
+  </li>
+</ul>
+<h2>Repository Types (Very Important)</h2>
+<p>1. Local Repository</p>
+<ul>
+  <li>Stores artifacts <strong>you build</strong></li>
+  <li>Example: internal Docker images, internal Helm charts</li>
+</ul>
+<p>2. Remote Repository</p>
+<ul>
+  <li>Proxies external repos (e.g., Docker Hub, Maven Central)</li>
+  <li>Caches artifacts locally</li>
+  <li><mark class="marker-yellow">Improves speed and security</mark></li>
+</ul>
+<p>3. Virtual Repository</p>
+<ul>
+  <li>Logical aggregation of local + remote repos</li>
+  <li>Developers use <strong>one endpoint</strong></li>
+  <li>Hides complexity</li>
+</ul>
+<p>&nbsp;</p>
