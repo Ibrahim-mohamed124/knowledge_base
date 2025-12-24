@@ -2,7 +2,7 @@
 title: Release management, versioning, and environment promotion strategies.
 description: 
 published: true
-date: 2025-12-24T11:50:22.405Z
+date: 2025-12-24T12:47:56.735Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-24T11:50:22.405Z
@@ -10,7 +10,7 @@ dateCreated: 2025-12-24T11:50:22.405Z
 
 <h1>Release Management</h1>
 <ul>
-  <li>Release management is the <strong>process of planning, coordinating, and controlling</strong> how software changes move from development into production <strong>safely and predictably</strong>.&nbsp;<ul>
+  <li>Release management is the <strong>process of planning, coordinating, and controlling</strong> how software changes move from development into production <strong>safely and predictably</strong>.<ul>
       <li>In this process you have to balance speed with stability!!!</li>
     </ul>
   </li>
@@ -41,3 +41,63 @@ dateCreated: 2025-12-24T11:50:22.405Z
     <li>Manual approval (CAB, product owner)</li>
   </ul>
 </blockquote>
+<h1>Versioning Strategies</h1>
+<h3>Semantic Versioning&nbsp;</h3>
+<ul>
+  <li><strong>Format:</strong> <code>MAJOR.MINOR.PATCH</code>
+    <ul>
+      <li><strong>MAJOR</strong> – Breaking changes</li>
+      <li><strong>MINOR</strong> – Backward-compatible features</li>
+      <li><strong>PATCH</strong> – Backward-compatible fixes</li>
+    </ul>
+  </li>
+</ul>
+<h1>Environment Promotion Strategies</h1>
+<ul>
+  <li>Core Principle: &nbsp;<strong>Build once, promote many times.</strong></li>
+  <li>You never rebuild the artifact per environment.</li>
+  <li>Typical Environment Flow<ul>
+      <li><code>DEV → QA / SIT → UAT → STAGING → PROD
+        </code></li>
+    </ul>
+  </li>
+  <li>Each promotion:<ul>
+      <li>Uses the same artifact</li>
+      <li>Adds approvals and validations</li>
+      <li><mark class="marker-yellow">Changes configuration, not code</mark></li>
+    </ul>
+  </li>
+</ul>
+<h2>Promotion Models</h2>
+<h3>1. Artifact Promotion (Best Practice)</h3>
+<ul>
+  <li>Artifact stored once (Artifactory)</li>
+  <li>Promoted via metadata or repo move</li>
+  <li>Guarantees immutability</li>
+  <li>Example:<ul>
+      <li><code>docker-dev</code> → <code>docker-prod</code></li>
+      <li><code>libs-snapshot</code> → <code>libs-release</code></li>
+    </ul>
+  </li>
+</ul>
+<h3>2. Pipeline-Driven Promotion</h3>
+<ul>
+  <li>Same artifact reference passed between pipeline stages</li>
+  <li>Promotion controlled by pipeline logic</li>
+  <li>Used when:<ul>
+      <li>Artifactory promotion features are unavailable</li>
+      <li>Simpler setups</li>
+    </ul>
+  </li>
+</ul>
+<h3>3. GitOps Promotion (Modern)</h3>
+<ul>
+  <li>Artifact version referenced in Git</li>
+  <li>Promotion = Git commit/PR</li>
+  <li>Argo CD / Flux syncs environment</li>
+  <li>Example:<ul>
+      <li>Update Helm values with new image tag</li>
+      <li>PR approval = promotion</li>
+    </ul>
+  </li>
+</ul>
