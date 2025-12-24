@@ -2,7 +2,7 @@
 title: Artifactory
 description: 
 published: true
-date: 2025-12-24T09:04:04.856Z
+date: 2025-12-24T09:13:59.140Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-24T08:43:20.701Z
@@ -74,4 +74,34 @@ dateCreated: 2025-12-24T08:43:20.701Z
   <li>Developers use <strong>one endpoint</strong></li>
   <li>Hides complexity</li>
 </ul>
-<p>&nbsp;</p>
+<h2>Security &amp; Supply Chain&nbsp;</h2>
+<ul>
+  <li>Artifactory plays a key role in <strong>software supply chain security</strong>.<ul>
+      <li>Core security features:</li>
+      <li><strong>Checksum-based immutability</strong></li>
+      <li><strong>Access control (RBAC)</strong></li>
+      <li><strong>API keys / tokens</strong></li>
+      <li><strong>Repository-level permissions</strong></li>
+      <li>JFrog Xray:<ul>
+          <li>Vulnerability scanning (CVE)</li>
+          <li>License compliance</li>
+          <li>Dependency graph analysis</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<h2>Docker + Artifactory&nbsp;</h2>
+<ul>
+  <li>Artifactory can act as a <strong>private Docker registry</strong></li>
+  <li>Supports:<ul>
+      <li>Pull-through cache from Docker Hub</li>
+      <li>Image promotion</li>
+      <li>Tag immutability</li>
+      <li>Used with Kubernetes, OpenShift, ECS</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>“We use Artifactory as a pull-through Docker cache to reduce external dependency risk.”</p>
+</blockquote>
