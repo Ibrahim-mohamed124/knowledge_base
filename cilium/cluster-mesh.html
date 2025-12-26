@@ -2,7 +2,7 @@
 title: Cluster-mesh
 description: 
 published: true
-date: 2025-12-26T20:42:57.191Z
+date: 2025-12-26T20:45:29.359Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-26T12:17:46.508Z
@@ -38,6 +38,14 @@ dateCreated: 2025-12-26T12:17:46.508Z
   <li>add this annotation to both</li>
 </ul>
 <pre><code class="language-plaintext">service.cilium.io/global: true</code></pre>
+<ul>
+  <li>To control which services cloud be shared to other clusters use this annotation</li>
+</ul>
+<pre><code class="language-plaintext">service.cilium.io/shared: false</code></pre>
+<ul>
+  <li>to prioritize the local pods for traffic</li>
+</ul>
+<pre><code class="language-plaintext">service.cilium.io/affinity: "local" </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
