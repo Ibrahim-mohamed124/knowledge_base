@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-26T09:58:19.326Z
+date: 2025-12-26T10:04:01.349Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -145,15 +145,15 @@ spec:
          - kind: Secret
            name: my-cert
            namespace: default
-       allowedRoutes:
-         namespace:
-           form: same
-  - name: http
-    protocol: HTTP
-    port: 80
-    allowedRoutes:
-      namespaces:
-        from: Same</code></pre>
+     allowedRoutes:
+       namespaces:
+         from: Same
+   - name: http
+     protocol: HTTP
+     port: 80
+     allowedRoutes:
+       namespaces:
+         from: Same</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>This will create a gateway instance in that namespace and a load balancer service that listen on port 80</li>
