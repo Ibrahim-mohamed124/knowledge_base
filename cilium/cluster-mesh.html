@@ -2,7 +2,7 @@
 title: Cluster-mesh
 description: 
 published: true
-date: 2025-12-26T12:27:03.280Z
+date: 2025-12-26T20:42:57.191Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-26T12:17:46.508Z
@@ -23,6 +23,7 @@ dateCreated: 2025-12-26T12:17:46.508Z
   </li>
 </ul>
 <pre><code class="language-plaintext">cilium clustermesh enalbe --context $cluster  --serivce-type=LoadBalancer</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">cilium clustermesh connect  --context $cluster1 --destination-context $cluster2 &gt; on one of the clusters </code></pre>
 <pre><code class="language-plaintext">cilium clustermesh status</code></pre>
 <h3>KVStoreMesh</h3>
@@ -30,3 +31,30 @@ dateCreated: 2025-12-26T12:17:46.508Z
   <li>reduce the load on etcd</li>
 </ul>
 <figure class="image"><img src="/captssssssssssure.png"></figure>
+<h4>Global Services</h4>
+<ul>
+  <li>Inter cluster load balancing&nbsp;</li>
+  <li>The same svc must be configured in the two clusters in the same namespace and name</li>
+  <li>add this annotation to both</li>
+</ul>
+<pre><code class="language-plaintext">service.cilium.io/global: true</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
