@@ -2,7 +2,7 @@
 title: Cluster-mesh
 description: 
 published: true
-date: 2025-12-26T20:45:29.359Z
+date: 2025-12-26T21:12:47.483Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-26T12:17:46.508Z
@@ -45,8 +45,13 @@ dateCreated: 2025-12-26T12:17:46.508Z
 <ul>
   <li>to prioritize the local pods for traffic</li>
 </ul>
-<pre><code class="language-plaintext">service.cilium.io/affinity: "local" </code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">service.cilium.io/affinity: "local or remote" </code></pre>
+<ul>
+  <li>cluster mesh network policy</li>
+  <li>apply network policies on each cluster manually</li>
+  <li>to match on specific clusters</li>
+</ul>
+<pre><code class="language-plaintext">io.cilium.k8s.policy.cluster: clustername</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
