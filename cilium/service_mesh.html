@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-26T12:00:07.358Z
+date: 2025-12-26T17:53:37.905Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -183,13 +183,13 @@ spec:
        port: 80</code></pre>
 <h3>Data Encryption</h3>
 <ul>
-  <li>encryption:&nbsp;<ul>
+  <li>encryption:<ul>
       <li>Create a cilium-ipsec-keys secret in the kube-system namespace for ipsec type</li>
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">kubectl create secret -n kube-system secret generic cilium-ipsec-keys \
-  --from-literal=key="3+ rfc4106(gcm(aes)) $(echo $(dd if =/dev/urandom count=20 bs=1 2&gt; /dev/null | xxd -p -c 64)) 128"</code></pre>
+<pre><code class="language-plaintext">kubectl create -n kube-system secret generic cilium-ipsec-keys     --from-literal=keys="3+ rfc4106(gcm(aes)) $(dd if=/dev/urandom count=20 bs=1 2&gt; /dev/null | xxd -p -c 64) 128"</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>&nbsp; &nbsp; &nbsp; &nbsp; Enable encryption by changing the encryption.enabled to ture and type to ipsec or wiregaurd&nbsp;</p>
 </blockquote>
@@ -197,15 +197,16 @@ spec:
   <li>Encryption behavior: traffic between pods on different nodes is encrypted but traffic between pods on the same node is not encrypted</li>
 </ul>
 <pre><code class="language-plaintext">kubectl exec -it  cilium-pod -- cilium-dbg encrypt status</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>The payload of the packets does not appear because it is encapsulated by ESP(encapsulating security payload) protocol&nbsp;</li>
+  <li>The payload of the packets does not appear because it is encapsulated by ESP(encapsulating security payload) protocol</li>
 </ul>
 <h3>Mutual TLS</h3>
 <ul>
   <li>Ensure the data authenticity, integrity, and confidentiality between the client and server</li>
   <li>Unlike Conventional TLS where only the server authenticates with the client, mTLS is a two way authentication between client and server</li>
   <li>Cilium depend on Spiffe framework and Spire server implementation to achieve this framework</li>
-  <li>Spire is deployed as daemonset&nbsp;</li>
+  <li>Spire is deployed as daemonset</li>
   <li>workflow:<ul>
       <li>eBPF programs checks if a policy requires authentication and checks the Auth table to see if this client is authenticated before</li>
       <li>If the client is not authenticated before the first packet is dropped, which triggers eBPF program to notify the cilium-agent</li>
@@ -223,6 +224,7 @@ spec:
       protocol: TCP
   authentication:
     mode: required</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">cililum config set debug true</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
