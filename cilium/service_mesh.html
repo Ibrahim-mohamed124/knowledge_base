@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-22T09:52:57.557Z
+date: 2025-12-26T09:40:34.893Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -28,6 +28,32 @@ dateCreated: 2025-12-19T20:00:13.689Z
 <ul>
   <li>Ingress is implemented by eBPF programs and envoy</li>
   <li>in the values.yaml change ingressController.enabled to true and ingressController.default to true. Then, just set nodePort.enabled to ture if cilium replaced kubeproxy</li>
+</ul>
+<pre><code class="language-plaintext">helm show values cilium/cilium &gt;&gt; values.yaml
+
+vim values.yaml
+nodePort:
+  # -- Enable the Cilium NodePort service implementation.
+  enabled: true
+ingressController:
+  # -- Enable Cilium ingress controller.
+  # This will automatically set enable-envoy-config as well.
+  enabled: true
+  # -- Designate the Cilium ingress controller as the default ingress controller.
+  # This will allow the Cilium ingress controller to route entries without an ingress class specified.
+  default: true
+  # -- Specify the default ingress load balancer mode.
+  # Possible values are "ingress.cilium.io/loadbalancer-mode: dedicated" or "shared".
+  loadbalancerMode: shared
+  
+  
+helm upgrade cilium cilium/cilium -n kube-system -f values.yaml
+
+
+kubectl -n kube-system rollout restart deployment/cilium-operator
+kubectl -n kube-system rollout restart daemonset/cilium</code></pre>
+<p>&nbsp;</p>
+<ul>
   <li>loadbalancerMode: shared or dedicated</li>
   <li>cilium creates an ingressClass and use it as the default one</li>
 </ul>
@@ -86,7 +112,7 @@ spec:
 </ul>
 <h6>Gateway API</h6>
 <ul>
-  <li>Enable it by setting gatewayAPI.enabled to true in the values.yaml file and installing the API gateway CRDs from its documentation the experimental channel not the standard one</li>
+  <li>Enable it by setting gatewayAPI.enabled to true in the values.yaml file and installing the API gateway CRDs from its documentation the<mark class="marker-yellow"> experimental channel not the standard one</mark></li>
   <li>Separation of Concerns:<ul>
       <li>GatewayClass: what type of gateway controller will be used?? Nginx, others?? built by the infra team</li>
       <li>Gateway: configure an instance of the gateway controller &nbsp;built by platform operator</li>
