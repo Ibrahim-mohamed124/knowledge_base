@@ -2,7 +2,7 @@
 title: Cluster-mesh
 description: 
 published: true
-date: 2025-12-26T12:17:46.508Z
+date: 2025-12-26T12:18:42.123Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-26T12:17:46.508Z
@@ -17,9 +17,10 @@ dateCreated: 2025-12-26T12:17:46.508Z
   <li>Prerequists:<ul>
       <li>all the cluster must match in the data path mode (encapsulation or native)</li>
       <li>Non-overlapping pod CIDRS between clusters</li>
-      <li>full node to node connectivity&nbsp;</li>
-      <li>&nbsp;each cluster has a special name and id</li>
+      <li>full node to node connectivity</li>
+      <li>each cluster has a special name and id</li>
     </ul>
   </li>
 </ul>
 <pre><code class="language-plaintext">cilium clustermesh enalbe --context $cluster  --serivce-type=LoadBalancer</code></pre>
+<pre><code class="language-plaintext">cilium clustermesh connect  --context $cluster1 --destination-context $cluster2</code></pre>
