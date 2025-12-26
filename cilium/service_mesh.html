@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-26T09:40:34.893Z
+date: 2025-12-26T09:58:19.326Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -130,18 +130,30 @@ spec:
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
-metadata: 
-  name: cluster-gateway
-  namespace: test
+metadata:
+  name: my-gateway
+  namespace: default
 spec:
- gatewayClassName: cluser-gateway
+ gatewayClassName: cilium
  listeners:
- 	- protocol: HTTP
- 	  port: 80
- 	  name: test
- 	  allowedRoutes:
- 	  	 namespace:
- 	  	   from: Same</code></pre>
+   - protocol: HTTPS
+     port: 443
+     name: https
+     tls:
+       mode: Terminate
+       certificateRefs:
+         - kind: Secret
+           name: my-cert
+           namespace: default
+       allowedRoutes:
+         namespace:
+           form: same
+  - name: http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      namespaces:
+        from: Same</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>This will create a gateway instance in that namespace and a load balancer service that listen on port 80</li>
