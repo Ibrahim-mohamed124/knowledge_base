@@ -1,0 +1,25 @@
+<!--
+title: Cluster-mesh
+description: 
+published: true
+date: 2025-12-26T12:17:46.508Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-26T12:17:46.508Z
+-->
+
+<h1>Cluster-mesh</h1>
+<ul>
+  <li>cluster-mesh enable network connectivity between different k8s clusters, and handle load balancing and security between them</li>
+  <li>All the pods in the cluster can talk to each other without any extra configs</li>
+  <li>Can load balance traffic to applications across clusters</li>
+  <li>cilium cluster policy can control the traffic between clusters</li>
+  <li>Prerequists:<ul>
+      <li>all the cluster must match in the data path mode (encapsulation or native)</li>
+      <li>Non-overlapping pod CIDRS between clusters</li>
+      <li>full node to node connectivity&nbsp;</li>
+      <li>&nbsp;each cluster has a special name and id</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">cilium clustermesh enalbe --context $cluster  --serivce-type=LoadBalancer</code></pre>
