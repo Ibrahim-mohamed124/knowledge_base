@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-26T17:53:37.905Z
+date: 2025-12-28T11:40:36.208Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -202,6 +202,10 @@ spec:
   <li>The payload of the packets does not appear because it is encapsulated by ESP(encapsulating security payload) protocol</li>
 </ul>
 <h3>Mutual TLS</h3>
+<blockquote>
+  <p>The spire server can run in memory by setting authentication.mutual.spire.install.server.dataStorage.enabled=false</p>
+  <p>and setting the security context to run as root user and group</p>
+</blockquote>
 <ul>
   <li>Ensure the data authenticity, integrity, and confidentiality between the client and server</li>
   <li>Unlike Conventional TLS where only the server authenticates with the client, mTLS is a two way authentication between client and server</li>
