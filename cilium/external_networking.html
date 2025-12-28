@@ -2,7 +2,7 @@
 title: External_networking
 description: 
 published: true
-date: 2025-12-28T09:15:42.563Z
+date: 2025-12-28T09:18:38.908Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-27T20:31:47.506Z
@@ -119,5 +119,23 @@ cilium bgp routes -h</code></pre>
 <h4>L2 announcements&nbsp;</h4>
 <ul>
   <li>Utilize ARP response to advertise the services IPs by the nodes of the cluster</li>
-  <li>&nbsp;</li>
+  <li>kubeProxyRelacement: true, l2announcements.enalbed: true</li>
+  <li>create a policy</li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: "cilium.io/v2alpha1"
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: policy1
+spec:
+  serviceSelector:
+    matchLabels:
+      color: blue
+  nodeSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/control-plane
+        operator: DoesNotExist
+  interfaces:
+  - ^eth[0-9]+
+  externalIPs: true
+  loadBalancerIPs: true
+</code></pre>
