@@ -2,7 +2,7 @@
 title: Open Virtual Networking - Kubernetes
 description: 
 published: true
-date: 2025-12-28T12:15:17.954Z
+date: 2025-12-28T12:58:06.978Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-28T12:03:56.739Z
@@ -30,6 +30,86 @@ dateCreated: 2025-12-28T12:03:56.739Z
           <li>Provides ability to send egress traffic from cluster workloads using an admin-configured source IP (EgressIP) to outside the cluster using OVN Logical Router Policies and Network Address Translations.</li>
           <li>Provides ability to send egress traffic from cluster workloads using the service load balancer IP (EgressService) to outside the cluster using OVN Logical Router Policies and Network Address Translations</li>
           <li>Provides the ability to restrict egress traffic from cluster workloads (Egress Firewall) using OVN Access Control Lists.</li>
+        </ul>
+      </li>
+      <li>Advanced Networking Features:<ul>
+          <li>Implements Hybrid Networking to provide support for mixed Windows/Linux clusters using VXLAN tunnels.</li>
+          <li>Provides IP Multicast using OVN IGMP snooping and relays.</li>
+          <li><mark class="marker-yellow">Provides ability to offload networking tasks from CPU to NIC using OVS Hardware Offload thus providing increased data-plane performance.</mark></li>
+          <li><mark class="marker-yellow">Adds support for creating secondary and local networks in addition to the default primary networks</mark></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<h3>Interconnect installation mode Architecture</h3>
+<ul>
+  <li>OVN Interconnection is a feature that allows connecting<mark class="marker-yellow"> multiple OVN deployments with OVN managed GENEVE tunnels.</mark>&nbsp;</li>
+  <li>OVN interconnection controller, that is a <mark class="marker-yellow">centralized daemon</mark> which communicates with<mark class="marker-yellow"> global interaction databases</mark> (IC_NB/IC_SB) to configure and exchange data with<mark class="marker-yellow"> local NB/SB databases </mark>for interconnecting with <mark class="marker-yellow">other OVN deployments</mark>.&nbsp;</li>
+</ul>
+<figure class="image"><img src="/ovnkube-distributed-components.png"></figure>
+<ul>
+  <li>The control plane has the <code>ovnkube-control-plane</code> pod in the <code>ovn-kubernetes</code> namespace</li>
+  <li>ovnkube-control-plane pod<ul>
+      <li>ovnkube-cluster-manager container:<ul>
+          <li>OVN-Kubernetes component</li>
+          <li>Watches K8s API for objects - nodes mainly</li>
+          <li>Allocates pod subnet to each node</li>
+          <li>Allocates join subnet IP to each node</li>
+          <li>Allocates transit subnet IP to each node</li>
+          <li>Consolidates zone statuses across all nodes for features like EgressFirewall and EgressQoS</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>The data plane includes the <code>ovnkube-node</code> and <code>ovs-node</code> pods in the <code>ovn-kubernetes</code> namespace</li>
+  <li>ovnkube-node pod<ul>
+      <li>ovnkube-controller container:<ul>
+          <li>OVN-Kubernetes component</li>
+          <li>Allocates podIP from the podSubnet to each pod in its zone (IPAM)</li>
+          <li>Watches K8s API for objects - nodes, namespaces, pods, services, endpoints, network policies, CRs</li>
+          <li>Translates K8s objects into OVN logical entities - stores them in OVN databases</li>
+          <li>Stores OVN entities in NorthBound Database (NBDB)</li>
+          <li>Manages pod subnet allocation to nodes (pod IPAM)</li>
+          <li>Runs the CNI executable (CNI ADD/DEL)</li>
+          <li>Digests the IPAM annotation set on pod</li>
+          <li>Creates the veth pair for the pod</li>
+          <li>Creates the ovs port on bridge</li>
+          <li>Programs the necessary iptables and gateway service flows</li>
+        </ul>
+      </li>
+      <li>nbdb container:<ul>
+          <li>Native OVN component</li>
+          <li>Runs the OVN NBDB database</li>
+          <li>Stores the logical elements created by ovnkube-controller</li>
+          <li>runs only 1 replica, contains information local to this node</li>
+        </ul>
+      </li>
+      <li>northd container:<ul>
+          <li>Native OVN component</li>
+          <li>Converts the OVN logical elements from NBDB to OVN logical flows in SBDB</li>
+        </ul>
+      </li>
+      <li>sbdb container:<ul>
+          <li>Native OVN component</li>
+          <li>Stores the logical flows created by northd</li>
+          <li>runs only 1 replica, contains information local to this node</li>
+        </ul>
+      </li>
+      <li>ovn-controller container:<ul>
+          <li>Native OVN component</li>
+          <li>Connects to SBDB running in control plane using TLS</li>
+          <li>Converts SBDB logical flows into openflows</li>
+          <li>Write them to OVS</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>ovs-node pod<ul>
+      <li>ovs-daemons container:<ul>
+          <li>OVS Native component</li>
+          <li>OVS daemon and database running as a container</li>
+          <li>virtual switch that pushes the network plumbing to the edge on the node</li>
         </ul>
       </li>
     </ul>
