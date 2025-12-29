@@ -1,0 +1,24 @@
+<!--
+title: Concepts
+description: 
+published: true
+date: 2025-12-29T09:23:18.217Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-29T09:23:18.217Z
+-->
+
+<h1>What is GitOps</h1>
+<ul>
+  <li>Without GitOps operations that done manually in clusters will lead to a configuration drift, which could lead to down time in the service.</li>
+  <li>GitOps is a framework where the entire code deliver process is controlled by git allowing to do rollbacks, operations, and releases seamlessly</li>
+  <li>It extends the IaCs to use Git as a control system with the source code of the applications</li>
+  <li>GitOps operator like ArgoCD continuously compare the actual state to the state exist in Git</li>
+</ul>
+<h4>Principles&nbsp;</h4>
+<ol>
+  <li>Declarative vs imperative.</li>
+  <li>Git as source of the truth</li>
+  <li>Software agents (GitOps operators) pull the state from Git and apply it to the target platform</li>
+  <li>Reconciliation loops for self-healing (observe-diff-act)</li>
+</ol>
