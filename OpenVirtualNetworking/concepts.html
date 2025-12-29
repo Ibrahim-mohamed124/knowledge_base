@@ -2,7 +2,7 @@
 title: Open Virtual Networking - Kubernetes
 description: 
 published: true
-date: 2025-12-28T13:08:45.286Z
+date: 2025-12-29T13:59:32.439Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-28T12:03:56.739Z
@@ -10,6 +10,9 @@ dateCreated: 2025-12-28T12:03:56.739Z
 
 <blockquote>
   <p>an open-source project that provides a robust networking solution for Kubernetes clusters with OVN (Open Virtual Networking) and Open vSwitch (Open Virtual Switch) at its core. It is a Kubernetes networking conformant plugin written according to the CNI (Container Network Interface) specifications. OVN is an abstraction on top of Open vSwitch</p>
+</blockquote>
+<blockquote>
+  <p>OpenFlow enables network controllers to determine the path of network packets across a network of switches. The controllers are distinct from the switches. This separation of the control from the forwarding allows for more sophisticated traffic management than is feasible using access control lists (ACLs) and routing protocols.</p>
 </blockquote>
 <h1>What is OVN</h1>
 <ul>
@@ -44,8 +47,8 @@ dateCreated: 2025-12-28T12:03:56.739Z
 </ul>
 <h3>Interconnect installation mode Architecture</h3>
 <ul>
-  <li>OVN Interconnection is a feature that allows connecting<mark class="marker-yellow"> multiple OVN deployments with OVN managed GENEVE tunnels.</mark>&nbsp;</li>
-  <li>OVN interconnection controller is a <mark class="marker-yellow">centralized daemon</mark> which communicates with<mark class="marker-yellow"> global interaction databases</mark> (IC_NB/IC_SB) to configure and exchange data with<mark class="marker-yellow"> local NB/SB databases </mark>for interconnecting with <mark class="marker-yellow">other OVN deployments</mark>.&nbsp;</li>
+  <li>OVN Interconnection is a feature that allows connecting<mark class="marker-yellow"> multiple OVN deployments with OVN managed GENEVE tunnels.</mark></li>
+  <li>OVN interconnection controller is a <mark class="marker-yellow">centralized daemon</mark> which communicates with<mark class="marker-yellow"> global interaction databases</mark> (IC_NB/IC_SB) to configure and exchange data with<mark class="marker-yellow"> local NB/SB databases </mark>for interconnecting with <mark class="marker-yellow">other OVN deployments</mark>.</li>
 </ul>
 <figure class="image"><img src="/ovnkube-distributed-components.png"></figure>
 <ul>
