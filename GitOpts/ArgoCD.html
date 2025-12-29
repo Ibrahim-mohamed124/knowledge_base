@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2025-12-29T09:28:53.354Z
+date: 2025-12-29T09:29:38.184Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -24,7 +24,7 @@ dateCreated: 2025-12-29T09:23:18.217Z
 </ol>
 <h4>DevOps vs GitOps</h4>
 <ul>
-  <li>DevOps works with any application, but GitOps works best with containerized applications</li>
+  <li>DevOps works with any application, but GitOps works best with containerized applications. DevOps push the changes to the target platform unlike the GitOps operator that usually &nbsp;pulls the state.</li>
   <li>GitOps usually has two repos &nbsp;one for source code and another for the IaC files.&nbsp;</li>
   <li>The DevOps pipeline will build the container image, pulls the manifests from the IaC repo, and then it modified the manifests with the tag of the created image and push the modified files to the Iac repo.</li>
   <li>The GitOps operator will pull the state from the IaC repo and apply them to the target platform.&nbsp;</li>
