@@ -2,7 +2,7 @@
 title: Open Virtual Networking - Kubernetes
 description: 
 published: true
-date: 2025-12-29T14:35:46.316Z
+date: 2025-12-29T14:44:46.126Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-28T12:03:56.739Z
@@ -177,4 +177,11 @@ dateCreated: 2025-12-28T12:03:56.739Z
 </blockquote>
 <ul>
   <li>The <code>ovnkube-config</code> config map has the OpenShift Container Platform<mark class="marker-yellow"> OVN-Kubernetes configurations.</mark></li>
+  <li>OVN-Kubernetes:<ul>
+      <li>Uses <strong>OVN logical load balancers</strong></li>
+      <li>Programs flows into <strong>Open vSwitch (OVS)</strong></li>
+      <li>Implements Service routing and load balancing <strong>without kube-proxy</strong></li>
+      <li>Does <strong>not rely on iptables</strong> for ClusterIP Service</li>
+    </ul>
+  </li>
 </ul>
