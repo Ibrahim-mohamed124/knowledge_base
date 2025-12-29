@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2025-12-29T09:48:48.557Z
+date: 2025-12-29T09:58:24.363Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -40,6 +40,27 @@ dateCreated: 2025-12-29T09:23:18.217Z
   <li>Atlantis for terraform</li>
   <li>Helm operator</li>
   <li>ignite for vitraul machines management</li>
+</ul>
+<h1>ArgoCD</h1>
+<ul>
+  <li>It works with kustomize, Helm charts, ksonnet applications, Jsonnet files, Yaml / Json manfiests</li>
+</ul>
+<h4>Terminology</h4>
+<ul>
+  <li>Applications: is a crd that create when ArgoCd is deployed, and groups some kubernetes resources defined by a manifest&nbsp;</li>
+  <li>Application source type: The tool that is used to build the applications (helm, kustomize…)</li>
+  <li>Project: logical grouping of applications</li>
+  <li>States:<ul>
+      <li>Target state: &nbsp;the desired state</li>
+      <li>Live state: &nbsp;the actual one</li>
+    </ul>
+  </li>
+  <li>Sync terms:<ul>
+      <li>sync status: Does the target state matches the live state?</li>
+      <li>sync: the process of making an application move to its target state</li>
+      <li>sync operation status: &nbsp;whether the sync succeeded or not</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
