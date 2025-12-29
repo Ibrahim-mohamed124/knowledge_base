@@ -2,7 +2,7 @@
 title: Open Virtual Networking - Kubernetes
 description: 
 published: true
-date: 2025-12-29T14:26:58.613Z
+date: 2025-12-29T14:31:14.828Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-28T12:03:56.739Z
@@ -68,6 +68,11 @@ dateCreated: 2025-12-28T12:03:56.739Z
       </li>
     </ul>
   </li>
+</ul>
+<blockquote>
+  <p>The Kubernetes control plane nodes contain two <code>ovnkube-control-plane</code> pods on separate nodes, which perform the central IP address management (IPAM) allocation for each node in the cluster. At any given time, a single <code>ovnkube-control-plane</code> pod is the leader.</p>
+</blockquote>
+<ul>
   <li>The data plane includes the <code>ovnkube-node</code> and <code>ovs-node</code> pods in the <code>ovn-kubernetes</code> namespace</li>
   <li>ovnkube-node pod<ul>
       <li>ovnkube-controller container:<ul>
