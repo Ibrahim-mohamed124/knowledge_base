@@ -2,7 +2,7 @@
 title: Open Virtual Networking - Kubernetes
 description: 
 published: true
-date: 2025-12-29T14:13:58.199Z
+date: 2025-12-29T14:17:12.650Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-28T12:03:56.739Z
@@ -143,6 +143,25 @@ dateCreated: 2025-12-28T12:03:56.739Z
   <ul>
     <li><strong>Hardware offloading in OVN-Kubernetes</strong> means moving some networking work from the host CPU to the network interface card (NIC) hardware, so packet processing is faster and more efficient.'</li>
     <li><strong>Hybrid networking in OVN-Kubernetes</strong> is a mode that allows Kubernetes pods to communicate with <strong>external (non-Kubernetes) networks</strong> using the node’s physical network (NATTING), while still using OVN for pod-to-pod networking inside the cluster.</li>
+    <li><strong>Multicast in OVN-Kubernetes</strong> allows a pod to send <strong>one packet to many pods at the same time</strong>, instead of sending separate copies to each destination.</li>
   </ul>
 </blockquote>
-<p>&nbsp;</p>
+<ul>
+  <li>The OVN-Kubernetes network plugin uses the following technologies:<ul>
+      <li>OVN to manage network traffic flows.</li>
+      <li>Kubernetes network policy support and logs, including ingress and egress rules.</li>
+      <li>The Generic Network Virtualization Encapsulation (Geneve) protocol, rather than Virtual Extensible LAN (VXLAN), to create an overlay network between nodes.</li>
+    </ul>
+  </li>
+  <li>The OVN-Kubernetes network plugin supports the following capabilities:<ul>
+      <li>Hybrid clusters that can run both Linux and Microsoft Windows workloads. This environment is known as <i>hybrid networking</i>.</li>
+      <li>Offloading of network data processing from the host central processing unit (CPU) to compatible network cards and data processing units (DPUs). This is known as <i>hardware offloading</i>.</li>
+      <li>IPv4-primary dual-stack networking on bare-metal, VMware vSphere, IBM Power®, IBM Z®, and Red Hat OpenStack Platform (RHOSP) platforms.</li>
+      <li>IPv6 single-stack networking on RHOSP and bare metal platforms.</li>
+      <li>IPv6-primary dual-stack networking for a cluster running on a bare-metal, a VMware vSphere, or an RHOSP platform.</li>
+      <li>Egress firewall devices and egress IP addresses.</li>
+      <li>Egress router devices that operate in redirect mode.</li>
+      <li>IPsec encryption of intracluster communications.</li>
+    </ul>
+  </li>
+</ul>
