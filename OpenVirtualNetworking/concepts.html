@@ -2,7 +2,7 @@
 title: Open Virtual Networking - Kubernetes
 description: 
 published: true
-date: 2025-12-29T14:01:09.942Z
+date: 2025-12-29T14:13:58.199Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-28T12:03:56.739Z
@@ -120,3 +120,29 @@ dateCreated: 2025-12-28T12:03:56.739Z
     </ul>
   </li>
 </ul>
+<h3>OVN-Kubernetes</h3>
+<ul>
+  <li>OVN supports distributed virtual routing, distributed logical switches, access control, Dynamic Host Configuration Protocol (DHCP), and DNS, which is not provided by basic openflow functionality.<ul>
+      <li>For example, OVN-Kubernetes has built-in logic rules that recognize the types of request and handle it internally like pods sending requests to get ip address. The OVN recognize the request and acts as DHCP server and respond to the client pods.</li>
+    </ul>
+  </li>
+  <li>OVN-Kubernetes runs a daemon on each node. There are daemon sets for the databases and for the OVN controller that run on every node. The OVN controller programs the Open vSwitch daemon on the nodes to support the following network provider features:<ul>
+      <li>Egress IPs</li>
+      <li>Firewalls</li>
+      <li>Hardware offloading</li>
+      <li>Hybrid networking</li>
+      <li>Internet Protocol Security (IPsec) encryption</li>
+      <li>IPv6</li>
+      <li>Multicast.</li>
+      <li>Network policy and network policy logs</li>
+      <li>Routers</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <ul>
+    <li><strong>Hardware offloading in OVN-Kubernetes</strong> means moving some networking work from the host CPU to the network interface card (NIC) hardware, so packet processing is faster and more efficient.'</li>
+    <li><strong>Hybrid networking in OVN-Kubernetes</strong> is a mode that allows Kubernetes pods to communicate with <strong>external (non-Kubernetes) networks</strong> using the node’s physical network (NATTING), while still using OVN for pod-to-pod networking inside the cluster.</li>
+  </ul>
+</blockquote>
+<p>&nbsp;</p>
