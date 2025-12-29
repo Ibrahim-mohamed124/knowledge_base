@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2025-12-29T10:16:38.623Z
+date: 2025-12-29T10:28:31.680Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -71,7 +71,15 @@ dateCreated: 2025-12-29T09:23:18.217Z
   <li>Refresh: compares the target with the live</li>
   <li>Health: &nbsp;the application is up and running?</li>
 </ul>
-<p>&nbsp;</p>
+<h3>Installation options</h3>
+<ol>
+  <li>core: &nbsp;minimal installation no api-server and UI</li>
+  <li>Multi-Tenant:<ol>
+      <li>HA: &nbsp;for Production, ha/install.yaml and ha/namespace-install.yaml</li>
+      <li>Non HA: &nbsp;for POC, install.yaml cluster admin access and namespace-install.yaml for access to only one namespace.</li>
+    </ol>
+  </li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
