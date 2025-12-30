@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T17:39:17.284Z
+date: 2025-12-30T17:46:11.198Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -114,7 +114,7 @@ spec:
       selfHeal: true</code></pre>
 <h3>Helm Charts</h3>
 <ul>
-  <li>Add helm repos to argocd and the applications managed by argocd not helm</li>
+  <li>using helm chart in a git repo and the applications managed by argocd not helm</li>
 </ul>
 <pre><code class="language-plaintext">argocd login http://10.200.130.134:32000/ --username admin --password P@ssw0rd --insecure</code></pre>
 <pre><code class="language-plaintext"> argocd app create helm-random-shapes \
@@ -125,5 +125,11 @@ spec:
 &gt; --helm-set color.square=black \
 &gt; --helm-set service.type=NodePort \
 &gt; --dest-namespace default \
-&gt; --dest-cluster https://kubernetes.default.svc
-</code></pre>
+&gt; --dest-cluster https://kubernetes.default.svc</code></pre>
+<ul>
+  <li>using the helm repos&nbsp;<ul>
+      <li>create a helm repo in argocd&nbsp;</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
