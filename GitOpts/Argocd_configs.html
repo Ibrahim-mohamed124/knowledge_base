@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T16:50:42.574Z
+date: 2025-12-30T17:02:36.539Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -94,5 +94,23 @@ spec:
   <li>Root Argocd application that point to a folder that contain a collection of application resources, which in turn point to the application manifests (deployment,svc….)&nbsp;</li>
 </ul>
 <figure class="image"><img src="/appsofapps.png"></figure>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: http://165.22.209.118:3000/siddharth/gitops-argocd.git
+    targetRevision: HEAD
+    path: ./declarative/app-of-apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+</code></pre>
 <p>&nbsp;</p>
