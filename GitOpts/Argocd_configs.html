@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T18:41:11.711Z
+date: 2025-12-30T18:42:18.136Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -143,4 +143,7 @@ spec:
 <pre><code class="language-plaintext">kuectl config set-cluster name --server=apiserver --certificate-authority=file or use insecure-skip-tls-verify: true without the --certificate-authority=file</code></pre>
 <pre><code class="language-plaintext">kubectl config set-context name --cluster= --user= --namespace</code></pre>
 <pre><code class="language-plaintext">argocd cluster add context</code></pre>
+<blockquote>
+  <p>the credentials are stored in argocd namespace as secret&nbsp;</p>
+</blockquote>
 <p>&nbsp;</p>
