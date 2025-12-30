@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T18:17:29.879Z
+date: 2025-12-30T18:40:49.614Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -130,10 +130,16 @@ spec:
 <p>&nbsp;</p>
 <ul>
   <li>using the helm repos<ul>
-      <li>create a helm repo in argocd &nbsp;from settings</li>
+      <li>create a helm repo in argocd&nbsp;</li>
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">argocd repo add https://charts.bitnami.com/bitnami   --type helm   --name bitnami
-</code></pre>
+<pre><code class="language-plaintext">argocd repo add https://charts.bitnami.com/bitnami   --type helm   --name bitnami</code></pre>
+<h3>Adding clusters to Argocd</h3>
+<ul>
+  <li>Argocd takes data from the .kube/config file to add new clusters, so create a new context with a user that can create sa and grant cluster-admin clusterrole because argocd will create them using this user.</li>
+</ul>
+<pre><code class="language-plaintext">kubectl config set-credentials name --token or --client-certificate --client-key</code></pre>
+<pre><code class="language-plaintext">kuectl config set-cluster name --server=apiserver --certificate-authority=file or use insecure-skip-tls-verify: true without the --certificate-authority=file</code></pre>
+<pre><code class="language-plaintext">kubectl config set-context name --cluster= --user= --namespace</code></pre>
 <p>&nbsp;</p>
