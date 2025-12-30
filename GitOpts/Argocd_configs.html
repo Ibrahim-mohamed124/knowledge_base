@@ -1,0 +1,19 @@
+<!--
+title: Argocd Configs
+description: 
+published: true
+date: 2025-12-30T13:45:21.307Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-12-30T13:45:21.307Z
+-->
+
+<h3>Reconciliation loop and Webbooks configurations&nbsp;</h3>
+<ul>
+  <li>Reconciliation loop is how often does argocd sync with the git server &gt; by default every 3 min, and can be configured via argocd-cm configmap timeout.reconciliation":"300s" parameter&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cm --patch='{"data":{"timeout.reconciliation":"300s"}}'
+kubectl -n argocd rollout restart deploy argocd-repo-server</code></pre>
+<ul>
+  <li>&nbsp;</li>
+</ul>
