@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T14:18:38.398Z
+date: 2025-12-30T15:04:07.309Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -15,8 +15,16 @@ dateCreated: 2025-12-30T13:45:21.307Z
 </ul>
 <pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cmd-params-cm --patch='{"data":{"server.repo.server.timeout.seconds":"300s"}}'
 kubectl -n argocd rollout restart deploy argocd-repo-server</code></pre>
-<h3>&nbsp;Webbooks configurations&nbsp;</h3>
+<h6>&nbsp;Webbooks configurations&nbsp;</h6>
 <ul>
   <li>Configuring the git server to sent evets to the argocd server by http://IP/api/webhook for the insecure mode</li>
-  <li>&nbsp;</li>
+</ul>
+<h3>Application Health&nbsp;</h3>
+<ul>
+  <li>Healthy: all the resources are healthy</li>
+  <li>Progressing: Resource is unhealthy but needs time</li>
+  <li>Degraded: Resource is unhealthy</li>
+  <li>Missing: Resource is not present in the cluster</li>
+  <li>Suspended: The resource deployment is paused or suspended.</li>
+  <li>Unknown: No data</li>
 </ul>
