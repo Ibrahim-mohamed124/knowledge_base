@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T15:07:54.661Z
+date: 2025-12-30T15:19:41.382Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -34,3 +34,26 @@ kubectl -n argocd rollout restart deploy argocd-repo-server</code></pre>
 <ul>
   <li>Argocd support custom health checks that are written in LUA language scripts that are defined in the argocd-cm configmap</li>
 </ul>
+<pre><code class="language-plaintext">data:
+  resource.customizations.health.group(do not exist for core"."kind": |
+    hs = {}
+    if obj.status ~= nil then
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          if condition.type == "Ready" and condition.status == "False" then
+            hs.status = "Degraded"
+            hs.message = condition.message
+            return hs
+          end
+          if condition.type == "Ready" and condition.status == "True" then
+            hs.status = "Healthy"
+            hs.message = condition.message
+            return hs
+          end
+        end
+      end
+    end
+
+    hs.status = "Progressing"
+    hs.message = "Waiting for certificate"
+    return hs</code></pre>
