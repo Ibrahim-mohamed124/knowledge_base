@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T13:57:07.891Z
+date: 2025-12-30T14:00:01.623Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -10,7 +10,7 @@ dateCreated: 2025-12-30T13:45:21.307Z
 
 <h3>Reconciliation loop &nbsp;</h3>
 <ul>
-  <li>Reconciliation loop is how often does argocd sync with the git server &gt; by default every 3 min, and can be configured via <code>argocd-cmd-params-cm</code> configmap</li>
+  <li>Reconciliation loop is how often does argocd sync with the git server &gt; by default every 1 min, and can be configured via <code>argocd-cmd-params-cm</code> configmap</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cmd-params-cm --patch='{"data":{"server.repo.server.timeout.seconds":"300s"}}'
 kubectl -n argocd rollout restart deploy argocd-repo-server</code></pre>
