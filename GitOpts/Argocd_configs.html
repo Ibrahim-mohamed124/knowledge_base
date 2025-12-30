@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T16:27:21.013Z
+date: 2025-12-30T16:40:49.333Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -89,4 +89,8 @@ spec:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
   revisionHistoryLimit: 5</code></pre>
+<h3>Apps of Apps</h3>
+<ul>
+  <li>Root Argocd application that point to a folder that contain a collection of application resources, which in turn point to the application manifests (deployment,svc….)</li>
+</ul>
 <p>&nbsp;</p>
