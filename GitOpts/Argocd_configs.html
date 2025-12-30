@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T16:43:55.839Z
+date: 2025-12-30T16:49:59.773Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -91,7 +91,37 @@ spec:
   revisionHistoryLimit: 5</code></pre>
 <h3>Apps of Apps</h3>
 <ul>
-  <li>Root Argocd application that point to a folder that contain a collection of application resources, which in turn point to the application manifests (deployment,svc….)</li>
+  <li>Root Argocd application that point to a folder that contain a collection of application resources, which in turn point to the application manifests (deployment,svc….) Applicationset</li>
 </ul>
 <figure class="image"><img src="/appsofapps.png"></figure>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps-from-git
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/your-org/your-repo.git
+        revision: main
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/your-org/your-repo.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true</code></pre>
 <p>&nbsp;</p>
