@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T15:32:24.227Z
+date: 2025-12-30T16:26:04.749Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -59,7 +59,34 @@ kubectl -n argocd rollout restart deploy argocd-repo-server</code></pre>
     return hs</code></pre>
 <h3>Sync strategies</h3>
 <ul>
-  <li>Manual or Automatic&nbsp;</li>
+  <li>Manual or Automatic</li>
   <li>Auto-pruning of resources: Auto-pruning feature describes what happens when files are deleted or removed from Git</li>
   <li>self-healing from actual state to the desired state to revert imperative changes in the cluster</li>
 </ul>
+<h3>Declarative setup of argocd components&nbsp;</h3>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-app
+  namespace: argocd   # Namespace where Argo CD is installed
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/your-org/your-repo.git
+    targetRevision: main
+    path: manifests   # Directory containing Kubernetes manifests
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sample-app
+
+  syncPolicy:
+    automated:
+      prune: true        # Delete resources removed from Git
+      selfHeal: true     # Revert out-of-band changes
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+  revisionHistoryLimit: 5
+</code></pre>
