@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T15:19:41.382Z
+date: 2025-12-30T15:32:24.227Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -57,3 +57,9 @@ kubectl -n argocd rollout restart deploy argocd-repo-server</code></pre>
     hs.status = "Progressing"
     hs.message = "Waiting for certificate"
     return hs</code></pre>
+<h3>Sync strategies</h3>
+<ul>
+  <li>Manual or Automatic&nbsp;</li>
+  <li>Auto-pruning of resources: Auto-pruning feature describes what happens when files are deleted or removed from Git</li>
+  <li>self-healing from actual state to the desired state to revert imperative changes in the cluster</li>
+</ul>
