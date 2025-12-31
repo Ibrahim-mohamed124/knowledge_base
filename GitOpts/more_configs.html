@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T11:58:53.786Z
+date: 2025-12-31T12:08:33.701Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -80,10 +80,11 @@ metadata:
 <pre><code class="language-plaintext">kubectl -n argocd patch cm argocd-rbac-cm --patch='{"data": {"policy.default": "role: readonly"}}'</code></pre>
 <h3>Bitnami Sealed secrets</h3>
 <ul>
-  <li>Only the controller running in the target cluster can decrypt the sealed secret&nbsp;</li>
-  <li>kubeseal client can be used to encrypt secrets&nbsp;</li>
+  <li>Only the controller running in the target cluster can decrypt the sealed secret</li>
+  <li>kubeseal client can be used to encrypt secrets</li>
 </ul>
 <pre><code class="language-plaintext">kubeseal -o yaml --scope cluster-wide --cert sealedsecret.crt &lt; secret.yaml &gt; sealedsecret.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Installation via helm chart https://bitnami-labs.github.io/sealed-secrets in the kube-system namespace</li>
   <li>Install the cli</li>
@@ -100,14 +101,17 @@ fi
 curl -OL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz"
 tar -xvzf kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz kubeseal
 sudo install -m 755 kubeseal /usr/local/bin/kubeseal</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>fetch the controller public certificates</li>
 </ul>
 <pre><code class="language-plaintext"> k get secret -n kube-system sealed-secrets-keyvtnbm -ojson | jq .data'."tls.crt"' -r | base64 -d  &gt; cert.crt</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>seal the secret</li>
 </ul>
 <pre><code class="language-plaintext">kubeseal -o yaml --cert cert.crt --scope cluster-wide &lt; secret.yaml  &gt; sealedsecret.yaml</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
@@ -127,15 +131,27 @@ spec:
 <ul>
   <li>Custom argocd plugin that inject secrets into &nbsp;k8s resources after retrieving them from vault.</li>
   <li>vault stores the secrets as plain text, so in the k8s secrets use stringData instead of data key word.</li>
-  <li>the plugin uses avp.kubernetes.io/path: path annotation to retrieve the secrets from vault after authentication &nbsp;</li>
+  <li>the plugin uses avp.kubernetes.io/path: path annotation to retrieve the secrets from vault after authentication</li>
   <li>The authentication can be done by putting the credentials in valut.env file</li>
 </ul>
 <pre><code class="language-plaintext">VAULT_ADDR=
 VAULT_TOKEN=
 AVP_TYPE=vault
 AVP_AUTH_TYPE=token</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>There are two ways to add plugins to argocd&nbsp;</p>
+  <ol>
+    <li>configMaps</li>
+    <li>sidecar plugin</li>
+  </ol>
+</blockquote>
+<ul>
+  <li>Adding plugins using ConfigMaps<ul>
+      <li>add empty dir volume to the argocd-server deployment, and mount in to <mark class="marker-yellow">custom-tools</mark> dir</li>
+      <li>use initcontainer to download and install the plugin into the custom-tools dir</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
