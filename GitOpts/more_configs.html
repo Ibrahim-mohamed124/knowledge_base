@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T04:41:57.852Z
+date: 2025-12-31T04:52:31.178Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -30,5 +30,24 @@ dateCreated: 2025-12-31T04:37:31.808Z
   <li>Add RBAC policies to the argocd-rbac-cm&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-rbac-cm \
---patch='{"data": {"policy.csv": "p, role:create-cluster, clusters, create, *, allow\ng, jai, role: create-cluster"}}' </code></pre>
+--patch='{"data": {"policy.csv": "p, role:create-cluster, clusters, create, *, allow\ng, username, role: create-cluster"}}' </code></pre>
 <pre><code class="language-plaintext">argocd account can-i create clusters '*'</code></pre>
+<blockquote>
+  <p>the \n is for new line</p>
+  <p>g(<strong>Group)</strong>: Allows to assign authenticated users/groups to internal roles.</p>
+</blockquote>
+<pre><code class="language-plaintext">
+apiVersion: v1
+data:
+  policy.csv: |-
+    p, role:create-cluster, clusters, create, *, allow
+    g, test, role: create-cluster
+kind: ConfigMap
+metadata:
+
+  labels:
+    app.kubernetes.io/name: argocd-rbac-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-rbac-cm
+  namespace: argocd
+</code></pre>
