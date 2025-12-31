@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T13:37:05.835Z
+date: 2025-12-31T13:39:15.996Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -174,10 +174,10 @@ mv argocd-vault-plugin_1.18.1_linux_amd64 argocd-vault-plugin
 chmod +x argocd-vault-plugin
 mv argocd-vault-plugin /usr/local/bin</code></pre>
 <ul>
-  <li>create a cofnig file with vault address and credentials&nbsp;</li>
+  <li>create a cofnig file with vault address and credentials in &nbsp;<mark class="marker-yellow">vault.env</mark> file</li>
 </ul>
-<pre><code class="language-plaintext">VAULT_ADDR=
-VAULT_TOKEN=
+<pre><code class="language-plaintext">VAULT_ADDR=http://10.200.130.134:32001
+VAULT_TOKEN=hvs.Nnr1UPPHPVppHd430vr1HZXd
 AVP_TYPE=vault
 AVP_AUTH_TYPE=token</code></pre>
 <p>&nbsp;</p>
