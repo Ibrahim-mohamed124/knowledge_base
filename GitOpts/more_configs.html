@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T11:35:30.356Z
+date: 2025-12-31T11:37:37.043Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -104,7 +104,10 @@ sudo install -m 755 kubeseal /usr/local/bin/kubeseal</code></pre>
   <li>fetch the controller certificates</li>
 </ul>
 <pre><code class="language-plaintext"> k get secret -n kube-system sealed-secrets-keyvtnbm -ojson | jq .data'."tls.crt"' -r | base64 -d  &gt; cert.crt</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>seal the secret</li>
+</ul>
+<pre><code class="language-plaintext">kubeseal -o yaml --cert cert.crt --scope cluster-wide &lt; secret.yaml  &gt; sealedsecret.yaml</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
