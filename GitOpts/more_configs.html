@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T12:08:33.701Z
+date: 2025-12-31T12:10:03.323Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -149,6 +149,9 @@ AVP_AUTH_TYPE=token</code></pre>
   <li>Adding plugins using ConfigMaps<ul>
       <li>add empty dir volume to the argocd-server deployment, and mount in to <mark class="marker-yellow">custom-tools</mark> dir</li>
       <li>use initcontainer to download and install the plugin into the custom-tools dir</li>
+      <li>register the plugin to argocd &nbsp;in the argocd-cm</li>
+      <li>restart the argocd server</li>
+      <li>create a secret with valut.env for authentication</li>
     </ul>
   </li>
 </ul>
