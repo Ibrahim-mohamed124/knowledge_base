@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T18:45:53.273Z
+date: 2025-12-31T18:54:38.158Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -241,3 +241,17 @@ spec:
       generate:
         command: ["argocd-vault-plugin"]
         args: ["generate", "./"]</code></pre>
+<ul>
+  <li>create the <code>argocd-vault-plugin-credentials&nbsp;</code> secret</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Secret
+metadata:
+ name:  argocd-vault-plugin-credentials
+type: Opaque
+stringData:
+  VAULT_ADDR: http://10.200.130.134:32001
+  VAULT_TOKEN: hvs.Nnr1UPPHPVppHd430vr1HZXd
+  AVP_TYPE: vault
+  AVP_AUTH_TYPE: token
+</code></pre>
