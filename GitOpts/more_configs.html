@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T04:54:34.024Z
+date: 2025-12-31T05:00:22.228Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -29,27 +29,30 @@ dateCreated: 2025-12-31T04:37:31.808Z
   </table>
 </figure>
 <ul>
-  <li>Add RBAC policies to the argocd-rbac-cm&nbsp;</li>
+  <li>Add RBAC policies to the argocd-rbac-cm</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-rbac-cm \
 --patch='{"data": {"policy.csv": "p, role:create-cluster, clusters, create, *, allow\ng, username, role: create-cluster"}}' </code></pre>
 <pre><code class="language-plaintext">argocd account can-i create clusters '*'</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>the \n is for new line</p>
   <p>g(<strong>Group)</strong>: Allows to assign authenticated users/groups to internal roles.</p>
 </blockquote>
-<pre><code class="language-plaintext">
-apiVersion: v1
+<pre><code class="language-plaintext">apiVersion: v1
 data:
   policy.csv: |-
     p, role:create-cluster, clusters, create, *, allow
     g, test, role: create-cluster
 kind: ConfigMap
 metadata:
-
   labels:
     app.kubernetes.io/name: argocd-rbac-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-rbac-cm
-  namespace: argocd
-</code></pre>
+  namespace: argocd</code></pre>
+<ul>
+  <li>Argocd supports local users and SSO using dex okta connector</li>
+  <li>Local users are stored in argocd-cm by accounts.username: apikey, login and accouts.SID.enabled: “false”</li>
+</ul>
+<p>&nbsp;</p>
