@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T10:17:24.198Z
+date: 2025-12-31T10:25:52.319Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -33,7 +33,7 @@ dateCreated: 2025-12-31T04:37:31.808Z
   <li>argocd has two built in policies admin, readonly</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-rbac-cm \
---patch='{"data": {"policy.csv": "p, role:create-cluster, clusters, create, *, allow\ng, username, role: create-cluster"}}' </code></pre>
+--patch='{"data": {"policy.csv": "p, role:create-cluster, clusters, create, *, allow\ng, username, role:create-cluster"}}' </code></pre>
 <pre><code class="language-plaintext">argocd account can-i create clusters '*'</code></pre>
 <p>&nbsp;</p>
 <blockquote>
