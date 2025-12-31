@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T05:05:16.162Z
+date: 2025-12-31T05:07:01.165Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -66,4 +66,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
   name: argocd-cm
   namespace: argocd</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>use argocd account to update a password</li>
+</ul>
+<pre><code class="language-plaintext">argocd account update-passowrd --account test --new-passowrd --current-password</code></pre>
