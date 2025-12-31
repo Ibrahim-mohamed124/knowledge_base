@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T05:00:22.228Z
+date: 2025-12-31T05:05:16.162Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -55,4 +55,15 @@ metadata:
   <li>Argocd supports local users and SSO using dex okta connector</li>
   <li>Local users are stored in argocd-cm by accounts.username: apikey, login and accouts.SID.enabled: “false”</li>
 </ul>
+<pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cm --patch='{"data": {"account.username": "apiKey, login"}}' </code></pre>
+<pre><code class="language-plaintext">apiVersion: v1
+data:
+  account.test: apiKey, login
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+  namespace: argocd</code></pre>
 <p>&nbsp;</p>
