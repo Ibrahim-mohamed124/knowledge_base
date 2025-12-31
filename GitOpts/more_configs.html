@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T13:51:18.819Z
+date: 2025-12-31T18:45:53.273Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -141,6 +141,7 @@ metadata:
 type: Opaque
 stringData:
  name: &lt;name&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>the plugin uses<mark class="marker-yellow"> avp.kubernetes.io/path: path</mark> annotation to retrieve the secrets from vault after authentication</li>
   <li>The authentication can be done by putting the credentials in valut.env file</li>
@@ -173,6 +174,7 @@ AVP_AUTH_TYPE=token</code></pre>
 mv argocd-vault-plugin_1.18.1_linux_amd64 argocd-vault-plugin
 chmod +x argocd-vault-plugin
 mv argocd-vault-plugin /usr/local/bin</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>create a cofnig file with vault address and credentials in &nbsp;<mark class="marker-yellow">vault.env</mark> file</li>
 </ul>
@@ -180,8 +182,62 @@ mv argocd-vault-plugin /usr/local/bin</code></pre>
 VAULT_TOKEN=hvs.Nnr1UPPHPVppHd430vr1HZXd
 AVP_TYPE=vault
 AVP_AUTH_TYPE=token</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>generate the yaml file</li>
 </ul>
 <pre><code class="language-plaintext">argocd-vault-plugin generate -c  vault.env - &lt; secret.yaml</code></pre>
 <h3>Installing vault plugin in argocd</h3>
+<ul>
+  <li>There are many options to add vault plugin to argocd one of them is using initcontainers</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+spec:
+  template:
+    spec:
+      containers:
+      - name: argocd-repo-server
+        volumeMounts:
+        - name: custom-tools
+          mountPath: /usr/local/bin/argocd-vault-plugin
+          subPath: argocd-vault-plugin
+        # Note: AVP config (for the secret manager, etc) can be passed in several ways. This is just one example
+        # https://argocd-vault-plugin.readthedocs.io/en/stable/config/
+        envFrom:
+          - secretRef:
+              name: argocd-vault-plugin-credentials
+      volumes:
+      - name: custom-tools
+        emptyDir: {}
+      initContainers:
+      - name: download-tools
+        image: alpine:3.8
+        command: [sh, -c]
+        # Don't forget to update this to whatever the stable release version is
+        # Note the lack of the `v` prefix unlike the git tag
+        env:
+          - name: AVP_VERSION
+            value: "1.18.1"
+        args:
+          - &gt;-
+            wget -O argocd-vault-plugin
+            https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &amp;&amp;
+            chmod +x argocd-vault-plugin &amp;&amp;
+            mv argocd-vault-plugin /custom-tools/
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
+      # Not strictly necessary, but required for passing AVP configuration from a secret and for using Kubernetes auth to Hashicorp Vault
+      automountServiceAccountToken: true</code></pre>
+<ul>
+  <li>register the plugin in argocd-cm</li>
+</ul>
+<pre><code class="language-plaintext">data:
+  configManagementPlugins: |-
+    - name: argocd-vault-plugin
+      generate:
+        command: ["argocd-vault-plugin"]
+        args: ["generate", "./"]</code></pre>
