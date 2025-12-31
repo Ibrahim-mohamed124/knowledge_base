@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T04:37:31.808Z
+date: 2025-12-31T04:40:58.837Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -26,3 +26,8 @@ dateCreated: 2025-12-31T04:37:31.808Z
     </tbody>
   </table>
 </figure>
+<ul>
+  <li>Add RBAC policies to the argocd-rbac-cm&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-rbac-cm \
+--patch='{"data": {"policy.csv": "p, role:create-cluster, clusters, create, *, allow\ng, jai, role: create-cluster"}}' </code></pre>
