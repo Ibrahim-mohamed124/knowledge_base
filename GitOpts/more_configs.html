@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T11:37:57.489Z
+date: 2025-12-31T11:48:26.552Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -101,7 +101,7 @@ curl -OL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KU
 tar -xvzf kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz kubeseal
 sudo install -m 755 kubeseal /usr/local/bin/kubeseal</code></pre>
 <ul>
-  <li>fetch the controller certificates</li>
+  <li>fetch the controller public certificates</li>
 </ul>
 <pre><code class="language-plaintext"> k get secret -n kube-system sealed-secrets-keyvtnbm -ojson | jq .data'."tls.crt"' -r | base64 -d  &gt; cert.crt</code></pre>
 <ul>
