@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T13:19:38.599Z
+date: 2025-12-31T13:35:55.334Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -168,5 +168,10 @@ AVP_AUTH_TYPE=token</code></pre>
   </li>
 </ul>
 <p>&nbsp;</p>
+<h4>install the argocd-vault plugin on the bastion</h4>
+<pre><code class="language-plaintext">wget https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v1.18.1/argocd-vault-plugin_1.18.1_linux_amd64
+mv argocd-vault-plugin_1.18.1_linux_amd64 argocd-vault-plugin
+chmod +x argocd-vault-plugin
+mv argocd-vault-plugin /usr/local/bin</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
