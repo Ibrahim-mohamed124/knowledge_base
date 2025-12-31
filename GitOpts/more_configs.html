@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T05:07:55.189Z
+date: 2025-12-31T05:10:05.833Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -71,4 +71,8 @@ metadata:
   <li>use argocd account to update a password</li>
 </ul>
 <pre><code class="language-plaintext">argocd account update-passowrd --account test --new-passowrd --current-password=admin passowrd</code></pre>
+<ul>
+  <li>To set a default role for any user who is not mapped to another roles</li>
+</ul>
+<pre><code class="language-plaintext">kubbectl -n argocd patch cm argocd-rbac-cm --patch='{"data": {"policy.default": "role: readonly"}}'</code></pre>
 <p>&nbsp;</p>
