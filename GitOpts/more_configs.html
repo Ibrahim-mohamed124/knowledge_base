@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-01T21:56:19.093Z
+date: 2026-01-01T22:07:40.803Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -455,17 +455,17 @@ data:
 <ul>
   <li>The init container that will install the binary&nbsp;</li>
 </ul>
-<pre><code class="language-plaintext">    - name: download-tools
-      image: alpine:3.8
-      env:
+<pre><code class="language-plaintext">      - name: download-tools
+        image: alpine:3.8
+        env:
         - name: AVP_VERSION
           value: 1.18.1
-      command: [sh, -c]
-      args:
-  wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &amp;&amp;chmod +x argocd-vault-plugin &amp;&amp; mv argocd-vault-plugin /custom-tools/
-      volumeMounts:
+        command: [sh, -c]
+        args: wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &amp;&amp;chmod +x argocd-vault-plugin &amp;&amp; mv argocd-vault-plugin /custom-tools/
+        volumeMounts:
         - mountPath: /custom-tools
-          name: custom-tools</code></pre>
+          name: custom-tools
+</code></pre>
 <ul>
   <li>the volumes needed&nbsp;</li>
 </ul>
