@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-01T22:07:40.803Z
+date: 2026-01-01T22:10:07.799Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -469,11 +469,12 @@ data:
 <ul>
   <li>the volumes needed&nbsp;</li>
 </ul>
-<pre><code class="language-plaintext">    - configMap:
+<pre><code class="language-plaintext">      - configMap:
+          name: cmp-plugin
         name: cmp-plugin
-      name: cmp-plugin
-    - name: custom-tools
-      emptyDir: {}</code></pre>
+      - name: custom-tools
+        emptyDir: {}
+</code></pre>
 <ul>
   <li>the sidecar container</li>
 </ul>
