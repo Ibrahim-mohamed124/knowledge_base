@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-01T21:09:06.461Z
+date: 2026-01-01T21:41:06.376Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -354,7 +354,7 @@ spec:
   # should ensure these credentials are appropriately protected during execution
   provideGitCreds: false</code></pre>
 <ul>
-  <li>Add the ConfigManagementPlugin file to the sidecar</li>
+  <li>mount the ConfigManagementPlugin file to the sidecar</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: v1
 kind: ConfigMap
@@ -374,8 +374,105 @@ data:
         command: [sh, -c, 'echo "{\"kind\": \"ConfigMap\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"$ARGOCD_APP_NAME\", \"namespace\": \"$ARGOCD_APP_NAMESPACE\", \"annotations\": {\"Foo\": \"$ARGOCD_ENV_FOO\", \"KubeVersion\": \"$KUBE_VERSION\", \"KubeApiVersion\": \"$KUBE_API_VERSIONS\",\"Bar\": \"baz\"}}}"']
       discover:
         fileName: "./subdir/s*.yaml"</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Register the plugin sidecar</li>
+</ul>
+<pre><code class="language-plaintext">containers:
+- name: my-plugin
+  command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
+  image: ubuntu # This can be off-the-shelf or custom-built image
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 999
+  volumeMounts:
+    - mountPath: /var/run/argocd
+      name: var-files
+    - mountPath: /home/argocd/cmp-server/plugins
+      name: plugins
+    # Remove this volumeMount if you've chosen to bake the config file into the sidecar image.
+    - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+      subPath: plugin.yaml
+      name: my-plugin-config
+    # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps 
+    # mitigate path traversal attacks.
+    - mountPath: /tmp
+      name: cmp-tmp
+volumes:
+- configMap:
+    name: my-plugin-config
+  name: my-plugin-config
+- emptyDir: {}
+  name: cmp-tmp</code></pre>
+<h3>CMP for vault (in-house)</h3>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+   name: cmp-plugin
+   namespace: argocd
+data:
+   avp.yaml: |
+        apiVersion: argoproj.io/v1alpha1
+        kind: ConfigManagementPlugin
+        metadata:
+          name: argocd-vault-plugin
+          namespace: argocd
+        spec:
+          allowConcurrency: true
+          discover:
+            find:
+              command:
+                - sh
+                - "-c"
+                - "find . -name '*.yaml' ! -name '*values.yaml' | xargs -I {} grep \"&lt;path\\|avp\\.kubernetes\\.io\" {} | grep ."
+          generate:
+            command:
+              - sh
+              - "-c"
+              - "for file in $(find . -type f -name '*.yaml' ! -name 'values.yaml' ! -path '*/statics/*'); do argocd-vault-plugin generate --verbose-sensitive-output \"$file\"; done"
+          lockRepo: false
+   avp-helm.yaml: |
+        apiVersion: argoproj.io/v1alpha1
+        kind: ConfigManagementPlugin
+        metadata:
+          name: argocd-vault-plugin-helm
+        spec:
+          allowConcurrency: true
+          discover:
+            find:
+              command:
+                - sh
+                - "-c"
+                - "find . -name 'Chart.yaml' | grep -qz . &amp;&amp; find . -name 'values.yaml'"
+          generate:
+            command:
+              - sh
+              - "-c"
+              - |
+                helm template $ARGOCD_APP_NAME --include-crds . |
+                argocd-vault-plugin generate -
+          lockRepo: fals</code></pre>
+<ul>
+  <li>The init container that will install the binary&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">    - name: download-tools
+      image: alpine:3.8
+      env:
+        - name: AVP_VERSION
+          value: 1.18.1
+      command: [sh, -c]
+      args:
+  wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &amp;&amp;chmod +x argocd-vault-plugin &amp;&amp; mv argocd-vault-plugin /custom-tools/
+      volumeMounts:
+        - mountPath: /custom-tools
+          name: custom-tools</code></pre>
+<ul>
+  <li>the volumes needed&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">    - configMap:
+        name: cmp-plugin
+      name: cmp-plugin
+    - name: custom-tools
+      emptyDir: {}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
