@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-01T21:41:06.376Z
+date: 2026-01-01T21:46:14.472Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -473,6 +473,41 @@ data:
       name: cmp-plugin
     - name: custom-tools
       emptyDir: {}</code></pre>
+<ul>
+  <li>the sidecar container</li>
+</ul>
+<pre><code class="language-plaintext">    - name: avp
+      command: [/var/run/argocd/argocd-cmp-server]
+      image: ubuntu
+      env:
+        - name: ARGOCD_ENV_VAULT_ADDR
+          value: "http://10.200.130.134:32001"
+        - name: ARGOCD_ENV_VAULT_TOKEN
+          value: "hvs.Nnr1UPPHPVppHd430vr1HZXd"
+        - name: ARGOCD_ENV_AVP_AUTH_TYPE
+          value: "token"
+
+
+        - name: ARGOCD_ENV_AVP_TYPE
+          value : vault
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      volumeMounts:
+        - mountPath: /var/run/argocd
+          name: var-files
+        - mountPath: /home/argocd/cmp-server/plugins
+          name: plugins
+        - mountPath: /tmp
+          name: tmp
+        # Register plugins into sidecar
+        - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: avp.yaml
+          name: cmp-plugin
+        # Important: Mount tools into $PATH
+        - name: custom-tools
+          subPath: argocd-vault-plugin
+          mountPath: /usr/local/bin/argocd-vault-plugin</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
