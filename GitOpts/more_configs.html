@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-01T23:09:36.618Z
+date: 2026-01-01T23:40:39.432Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -541,7 +541,17 @@ data:
             subPath: argocd-vault-plugin
             mountPath: /usr/local/bin/argocd-vault-plugin
 </code></pre>
-<p>&nbsp;</p>
+<h3>Prometheus &amp; Garfana monitoring</h3>
+<ul>
+  <li>&nbsp;Argocd exposed metrics in these serveries:<ul>
+      <li>argocd-metrics</li>
+      <li>argocd-server-metrics</li>
+      <li>argocd-applicationset-controller</li>
+      <li>argocd-repo-server&nbsp;</li>
+    </ul>
+  </li>
+  <li>promethues uses service monitor resource to monitor service based on labels and selectors</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
