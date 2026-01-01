@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2025-12-31T20:15:33.260Z
+date: 2026-01-01T20:57:31.872Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -191,6 +191,9 @@ AVP_AUTH_TYPE=token</code></pre>
 <ul>
   <li>There are many options to add vault plugin to argocd one of them is using initcontainers to the&nbsp;<code> argocd-repo-server deployment</code></li>
 </ul>
+<blockquote>
+  <p><code>Old method and did not work at all because it is deprecated in 2.7 and removed in 2.8</code></p>
+</blockquote>
 <pre><code class="language-plaintext">apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -232,6 +235,7 @@ spec:
             name: custom-tools
       # Not strictly necessary, but required for passing AVP configuration from a secret and for using Kubernetes auth to Hashicorp Vault
       automountServiceAccountToken: true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>register the plugin in argocd-cm</li>
 </ul>
@@ -241,6 +245,7 @@ spec:
       generate:
         command: ["argocd-vault-plugin"]
         args: ["generate", "./"]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>create the <code>argocd-vault-plugin-credentials&nbsp;</code> secret</li>
 </ul>
@@ -253,5 +258,6 @@ stringData:
   VAULT_ADDR: http://10.200.130.134:32001
   VAULT_TOKEN: hvs.Nnr1UPPHPVppHd430vr1HZXd
   AVP_TYPE: vault
-  AVP_AUTH_TYPE: token
-</code></pre>
+  AVP_AUTH_TYPE: token</code></pre>
+<h4>Config Management plugins</h4>
+<p>&nbsp;</p>
