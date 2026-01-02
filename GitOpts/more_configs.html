@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-02T13:39:16.008Z
+date: 2026-01-02T13:43:00.877Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -686,6 +686,10 @@ spec:
     token: $slack-token
     username: argocd-bot
     icon: "rocket:"
+  trigger.on-sync-succeeded: |
+    - when: app.status.sync.status == 'Synced'     # trigger condition
+      send: [app-sync-succceeded-slack] # template names
+
 </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
