@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T20:02:47.394Z
+date: 2026-01-02T20:04:48.085Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -347,6 +347,47 @@ items:
 <ul>
   <li>To &nbsp;route the traffic to the newer version manually promote the preview version. Then argo rollouts will change the labels on the active service to adopt the new version pods and destroy the older replicaset version.&nbsp;</li>
 </ul>
+<pre><code class="language-plaintext">
+- apiVersion: v1
+  kind: Service
+  metadata:
+
+    name: highway-bluegreen-active
+    namespace: blue-green
+
+  spec:
+
+    ports:
+    - nodePort: 30838
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: highway-bluegreen
+      rollouts-pod-template-hash: d88b957f9 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+
+    type: NodePort
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+
+    name: highway-bluegreen-preview
+    namespace: blue-green
+
+  spec:
+
+    ports:
+    - nodePort: 30168
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: highway-bluegreen
+      rollouts-pod-template-hash: d88b957f9 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+
+    type: NodePort
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
