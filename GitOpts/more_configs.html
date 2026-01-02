@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-02T13:43:00.877Z
+date: 2026-01-02T13:44:17.673Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -689,6 +689,9 @@ spec:
   trigger.on-sync-succeeded: |
     - when: app.status.sync.status == 'Synced'     # trigger condition
       send: [app-sync-succceeded-slack] # template names
+  template.app-sync-succceeded-slack: |
+    message: |
+      Application {{.app.metadata.name}} sync is {{.app.status.sync.status}}.
 
 </code></pre>
 <p>&nbsp;</p>
