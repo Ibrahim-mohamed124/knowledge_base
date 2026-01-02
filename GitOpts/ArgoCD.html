@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T17:46:48.699Z
+date: 2026-01-02T18:21:54.054Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -57,7 +57,7 @@ dateCreated: 2025-12-29T09:23:18.217Z
 <h3>GitOps Reconciler types</h3>
 <ol>
   <li>In-Cluster: Runs on the target cluster and use the l<mark class="marker-yellow">ocal API service and pulls the state</mark>. Do not require exposing the API server outside the cluster<ul>
-      <li>Argocd can act as both types, and must explicitly configured to connect to the external clusters.&nbsp;</li>
+      <li>Argocd can act as both types, and must explicitly configured to connect to the external clusters.</li>
     </ul>
   </li>
   <li>External: &nbsp;The Operator connect to the external API-Server to<mark class="marker-yellow"> push stateto the target the clusters</mark>, which might introduces security risks</li>
@@ -99,7 +99,7 @@ dateCreated: 2025-12-29T09:23:18.217Z
   </li>
   <li>Refresh: compares the target with the live</li>
   <li>Health: &nbsp;the application is up and running?</li>
-  <li>Continues reconciliation == auto sync&nbsp;</li>
+  <li>Continues reconciliation == auto sync</li>
 </ul>
 <h3>Installation options</h3>
 <ol>
@@ -163,7 +163,11 @@ spec:
 </ul>
 <pre><code class="language-plaintext">argocd proj create -h</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Deployment strategies&nbsp;</h3>
+<ol>
+  <li>RollingUpdate: Replaces pods one by one after becoming ready ( default )</li>
+  <li>Recreate: Terminate and create</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
