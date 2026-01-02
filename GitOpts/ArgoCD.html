@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T18:31:43.516Z
+date: 2026-01-02T18:54:03.617Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -167,7 +167,7 @@ spec:
 <ol>
   <li>RollingUpdate: Replaces pods one by one after becoming ready ( default )</li>
   <li>Recreate: Terminate and create</li>
-  <li>Blue Green: Two deployments Blue is active (current version) &nbsp;and green which is idle (new version). The traffic is switched from blue to green once the green deployment is validated&nbsp;<ul>
+  <li>Blue Green: Two deployments Blue is active (current version) &nbsp;and green which is idle (new version). The traffic is switched from blue to green once the green deployment is validated<ul>
       <li>Needs two identical deployments</li>
     </ul>
   </li>
@@ -176,7 +176,12 @@ spec:
     </ul>
   </li>
 </ol>
-<p>&nbsp;</p>
+<h3>Argo Rollouts</h3>
+<ul>
+  <li>A controller and set of CRDs that support advanced deployment strategies, fine grade traffic control, automatic analysis, and rollback capabilities. ( integrates with service mesh and ingress controllers )</li>
+</ul>
+<h6>Installation</h6>
+<pre><code class="language-plaintext">&nbsp;</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
