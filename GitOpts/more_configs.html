@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-02T12:50:11.913Z
+date: 2026-01-02T13:06:18.439Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -655,7 +655,7 @@ spec:
 <pre><code class="language-plaintext">k edit  prometheusrules promo-kube-prometheus-stac-alertmanager.rules</code></pre>
 <pre><code class="language-plaintext">    - alert: ArgoApplicationOutOfSync
       annotations:
-        summary: '{{ $labels.name }} application has a sync issue'
+        summary: "'{{ $labels.name }}' application has a sync issue"
       expr: argocd_app_info{sync_status="OutOfSync"} == 1
       for: 1m
       labels:
