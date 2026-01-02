@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T18:54:03.617Z
+date: 2026-01-02T18:54:31.246Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -181,7 +181,8 @@ spec:
   <li>A controller and set of CRDs that support advanced deployment strategies, fine grade traffic control, automatic analysis, and rollback capabilities. ( integrates with service mesh and ingress controllers )</li>
 </ul>
 <h6>Installation</h6>
-<pre><code class="language-plaintext">&nbsp;</code></pre>
+<pre><code class="language-plaintext">kubectl create namespace argo-rollouts
+kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
