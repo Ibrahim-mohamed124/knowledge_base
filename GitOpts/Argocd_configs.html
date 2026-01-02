@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2026-01-02T18:01:39.980Z
+date: 2026-01-02T18:08:59.770Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -11,7 +11,7 @@ dateCreated: 2025-12-30T13:45:21.307Z
 <h3>Reconciliation loop &nbsp;</h3>
 <ul>
   <li><a href="https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/#automated-sync-semantics">Reconciliation loop is how often does argocd sync with the git server &gt; by default every 2 min, and can be configured via <code>argocd-cm</code> configmap</a></li>
-  <li>server.insecure: “true” to make the argocd server run in insecure mode &nbsp;or in the argocd-server deployment add the --insecure flag</li>
+  <li><mark class="marker-yellow">server.insecure: “true”</mark> to make the argocd server run in insecure mode in the <mark class="marker-yellow">argocd-cmd-params-cm</mark> &nbsp; or in the argocd-server deployment add the --insecure flag</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cm --patch='{"data":{"timeout.reconciliation":"300s"}}'
 kubectl -n argocd rollout restart sts argocd-application-controller</code></pre>
