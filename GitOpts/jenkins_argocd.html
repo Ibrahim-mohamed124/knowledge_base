@@ -2,7 +2,7 @@
 title: CICD with Gitops
 description: 
 published: true
-date: 2026-01-02T14:40:54.487Z
+date: 2026-01-02T14:41:30.196Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-02T14:40:54.487Z
@@ -12,7 +12,8 @@ dateCreated: 2026-01-02T14:40:54.487Z
 <ul>
   <li>Usually we have two repos one for source code and another for IaC files</li>
   <li>The GitOps operator that runs on a cluster will pull the IaC files from the Iac repo and applies them</li>
-  <li>A push or merge event on the application source code repo will create an image and update the IaC files in the another repo with the new image tag created by the CI in the a feature branch &nbsp;and opens new PR to the main branch.&nbsp;</li>
+  <li>A push or merge event on the application source code repo will create an image and update the IaC files in the another repo with the new image tag created by the CI in the a feature branch &nbsp;and opens new PR to the main branch.</li>
   <li>A person checks the PR and &nbsp;accepted it to the main branch</li>
   <li>The GitOps operator refreshes the application and apply the changes</li>
+  <li>It is possible to rollback be reverting the git commit or using the argocd server&nbsp;</li>
 </ul>
