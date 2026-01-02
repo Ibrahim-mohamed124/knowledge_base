@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-02T11:35:06.139Z
+date: 2026-01-02T11:53:47.193Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -650,7 +650,16 @@ spec:
     - port: metrics</code></pre>
 <ul>
   <li>For grafana dashboard import the dashboard from <a href="https://grafana.com/grafana/dashboards/14584-argocd/">ArgoCD | Grafana Labs</a></li>
+  <li>For Alertmanager edit the promethuesrules to add custom argocd rules</li>
 </ul>
+<pre><code class="language-plaintext">k edit  prometheusrules promo-kube-prometheus-stac-alertmanager.rules</code></pre>
+<pre><code class="language-plaintext">- alret: ArgoApplicationOutOfSynx
+  expr: argocd_app_info{sync_status="OutOfSync" == 1
+  for: 1m
+  labels:
+   serverity: warning
+  annotations:
+    summary: "'{{ $labels.name }}' Applicatin has sync issue"</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
