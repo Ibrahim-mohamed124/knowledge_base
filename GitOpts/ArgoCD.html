@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T20:31:12.459Z
+date: 2026-01-02T21:37:48.946Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -394,8 +394,46 @@ items:
 <h6>Canary deployment</h6>
 <ul>
   <li>Gradual rollout to eventually reach 100% of the new version by certain rate.</li>
-  <li>&nbsp;</li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: example-rollout
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.15.4
+          ports:
+            - containerPort: 80
+  minReadySeconds: 30
+  revisionHistoryLimit: 3
+  strategy:
+    canary: #Indicates that the rollout should use the Canary strategy
+      maxSurge: '25%'
+      maxUnavailable: 0
+      steps:
+        - setWeight: 10
+        - pause:
+            duration: 1h # 1 hour
+        - setWeight: 20
+        - pause: {} # pause indefinitely</code></pre>
+<ul>
+  <li>argo rollout will create a new rs with a specific number of pods according to the weight and reduce this number of pods form the old rs</li>
+</ul>
+<pre><code class="language-plaintext">k get rs -n canary
+NAME                     DESIRED   CURRENT   READY   AGE
+app-rollout-6f44c5f47b   2         2         2       35s
+app-rollout-76f479c6bf   8         8         8       21m
+</code></pre>
 <h6>Progressive Delivery</h6>
 <ul>
   <li>Gradually rollouts features to users &nbsp;while minimizing the risk through automated validations. Utilize canary releases, feature flags, and traffic shifting &nbsp;</li>
