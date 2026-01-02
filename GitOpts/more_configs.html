@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-02T13:37:20.108Z
+date: 2026-01-02T13:39:16.008Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -680,7 +680,7 @@ spec:
 <ul>
   <li>edit the argocd-cm to add a trigger and message template</li>
 </ul>
-<pre><code class="language-plaintext">k edit cm argocd-cm -n argocd</code></pre>
+<pre><code class="language-plaintext">k edit cm argocd-notifications-cm -n argocd</code></pre>
 <pre><code class="language-plaintext">data:
   service.slack: |
     token: $slack-token
