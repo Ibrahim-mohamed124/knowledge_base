@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T18:24:04.441Z
+date: 2026-01-02T18:27:06.225Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -167,7 +167,8 @@ spec:
 <ol>
   <li>RollingUpdate: Replaces pods one by one after becoming ready ( default )</li>
   <li>Recreate: Terminate and create</li>
-  <li>Blue Green: Two deployments Blue is active (current version) &nbsp;and green which is idle (new version)&nbsp;</li>
+  <li>Blue Green: Two deployments Blue is active (current version) &nbsp;and green which is idle (new version). The traffic is switched from blue to green once the green deployment is validated&nbsp;</li>
+  <li>Canary deployment: &nbsp;gradual rollouts &nbsp;Releases new features to a small subset of users before expanding to the entire user base.</li>
 </ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
