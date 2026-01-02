@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T17:32:06.203Z
+date: 2026-01-02T17:43:43.415Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -54,6 +54,11 @@ dateCreated: 2025-12-29T09:23:18.217Z
 <ul>
   <li>challenges with secret management</li>
 </ul>
+<h3>GitOps Reconciler types</h3>
+<ol>
+  <li>In-Cluster: Runs on the target cluster and use the l<mark class="marker-yellow">ocal API service and pulls the state</mark>. Do not require exposing the API server outside the cluster</li>
+  <li>External: &nbsp;The Operator connect to the external API-Server to<mark class="marker-yellow"> push stateto the target the clusters</mark>, which might introduces security risks</li>
+</ol>
 <h4>Well known tools</h4>
 <ul>
   <li>ArgoCD</li>
