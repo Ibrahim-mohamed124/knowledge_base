@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2025-12-29T11:10:26.344Z
+date: 2026-01-02T17:01:12.165Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -10,10 +10,11 @@ dateCreated: 2025-12-29T09:23:18.217Z
 
 <h1>What is GitOps</h1>
 <ul>
-  <li>Without GitOps operations that done manually in clusters will lead to a configuration drift, which could lead to down time in the service.</li>
+  <li>Without GitOps, operations that are done manually in clusters will lead to a configuration drift, which could lead to down time in the service.</li>
   <li>GitOps is a framework where the entire code deliver process is controlled by git allowing to do rollbacks, operations, and releases seamlessly</li>
   <li>It extends the IaCs to use Git as a control system with the source code of the applications</li>
   <li>GitOps operator like ArgoCD continuously compare the actual state to the state exist in Git</li>
+  <li>Reduce the risk of allowing builder tools to have access to the clusters by using pull based deployment.</li>
 </ul>
 <h4>Principles&nbsp;</h4>
 <ol>
@@ -25,9 +26,9 @@ dateCreated: 2025-12-29T09:23:18.217Z
 <h4>DevOps vs GitOps</h4>
 <ul>
   <li>DevOps works with any application, but GitOps works best with containerized applications. DevOps push the changes to the target platform unlike the GitOps operator that usually &nbsp;pulls the state.</li>
-  <li>GitOps usually has two repos &nbsp;one for source code and another for the IaC files.&nbsp;</li>
+  <li>GitOps usually has two repos &nbsp;one for source code and another for the IaC files.</li>
   <li>The DevOps pipeline will build the container image, pulls the manifests from the IaC repo, and then it modified the manifests with the tag of the created image and push the modified files to the Iac repo.</li>
-  <li>The GitOps operator will pull the state from the IaC repo and apply them to the target platform.&nbsp;</li>
+  <li>The GitOps operator will pull the state from the IaC repo and apply them to the target platform.</li>
 </ul>
 <figure class="image"><img src="/argo.png"></figure>
 <ul>
@@ -46,15 +47,15 @@ dateCreated: 2025-12-29T09:23:18.217Z
   <li>It works with kustomize, Helm charts, ksonnet applications, Jsonnet files, Yaml / Json manfiests</li>
   <li>Integrates with SSO solutions</li>
   <li>Audit trails for application events and API calls</li>
-  <li>WebHook integration with Git servers&nbsp;</li>
-  <li>Detect configuration drift&nbsp;</li>
-  <li>Prometheus metrics&nbsp;</li>
+  <li>WebHook integration with Git servers</li>
+  <li>Detect configuration drift</li>
+  <li>Prometheus metrics</li>
   <li>expose gRPC REST APIs</li>
 </ul>
 <figure class="image"><img src="/archee.png"></figure>
 <h4>Terminology</h4>
 <ul>
-  <li>Applications: is a crd that create when ArgoCd is deployed, and groups some kubernetes resources defined by a manifest&nbsp;</li>
+  <li>Applications: is a crd that create when ArgoCd is deployed, and groups some kubernetes resources defined by a manifest</li>
   <li>Application source type: The tool that is used to build the applications (helm, kustomize…)</li>
   <li>Project: logical grouping of applications</li>
   <li>States:<ul>
@@ -86,6 +87,7 @@ dateCreated: 2025-12-29T09:23:18.217Z
 </ul>
 <pre><code class="language-plaintext">kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3.2.3/manifests/install.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>install the argocd cli from the assets section in the release page</li>
   <li>the initial admin secret is saved in a secret called <mark class="marker-yellow">argocd-initial-admin-secret</mark></li>
@@ -94,10 +96,10 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v3
 <ul>
   <li>Application is a crd that define<ul>
       <li>source: repoURL, targetRevision, Path</li>
-      <li>destination: target cluster, namespace&nbsp;</li>
-      <li>project names it belongs to&nbsp;</li>
+      <li>destination: target cluster, namespace</li>
+      <li>project names it belongs to</li>
       <li>sync policy</li>
-      <li>ignore diff&nbsp;</li>
+      <li>ignore diff</li>
     </ul>
   </li>
 </ul>
@@ -115,15 +117,18 @@ spec:
  destination:
    server: https://kubernetes.default.svc
    namespace: guestbook</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>argocd create k8s secrets with git server credentials&nbsp;</li>
+  <li>argocd create k8s secrets with git server credentials</li>
   <li>To create application using cli</li>
 </ul>
 <pre><code class="language-plaintext">argocd app create name --repo --path --dest-namespace --dest-server https://kubernetes.default.svc</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To sync</li>
 </ul>
 <pre><code class="language-plaintext">argocd app sync name</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To create projects</li>
 </ul>
