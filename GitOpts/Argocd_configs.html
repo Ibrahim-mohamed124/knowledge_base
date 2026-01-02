@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2025-12-30T18:42:18.136Z
+date: 2026-01-02T17:57:06.017Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -10,10 +10,10 @@ dateCreated: 2025-12-30T13:45:21.307Z
 
 <h3>Reconciliation loop &nbsp;</h3>
 <ul>
-  <li>Reconciliation loop is how often does argocd sync with the git server &gt; by default every 1 min, and can be configured via <code>argocd-cmd-params-cm</code> configmap</li>
+  <li>Reconciliation loop is how often does argocd sync with the git server &gt; by default every 2 min, and can be configured via <code>argocd-cm</code> configmap</li>
   <li>server.insecure: “true” to make the argocd server run in insecure mode</li>
 </ul>
-<pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cmd-params-cm --patch='{"data":{"server.repo.server.timeout.seconds":"300s"}}'
+<pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cm --patch='{"data":{"timeout.reconciliation":"300s"}}'
 kubectl -n argocd rollout restart deploy argocd-repo-server</code></pre>
 <h6>&nbsp;Webbooks configurations&nbsp;</h6>
 <ul>
@@ -130,7 +130,7 @@ spec:
 <p>&nbsp;</p>
 <ul>
   <li>using the helm repos<ul>
-      <li>create a helm repo in argocd&nbsp;</li>
+      <li>create a helm repo in argocd</li>
     </ul>
   </li>
 </ul>
@@ -140,9 +140,13 @@ spec:
   <li>Argocd takes data from the .kube/config file to add new clusters, so create a new context with a user that can create sa and grant cluster-admin clusterrole because argocd will create them using this user.</li>
 </ul>
 <pre><code class="language-plaintext">kubectl config set-credentials name --token or --client-certificate --client-key</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">kuectl config set-cluster name --server=apiserver --certificate-authority=file or use insecure-skip-tls-verify: true without the --certificate-authority=file</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">kubectl config set-context name --cluster= --user= --namespace</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">argocd cluster add context</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>the credentials are stored in argocd namespace as secret&nbsp;</p>
 </blockquote>
