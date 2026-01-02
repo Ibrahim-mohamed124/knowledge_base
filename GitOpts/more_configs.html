@@ -2,7 +2,7 @@
 title: More_configs
 description: 
 published: true
-date: 2026-01-01T23:44:58.117Z
+date: 2026-01-02T11:21:03.452Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-31T04:37:31.808Z
@@ -261,7 +261,7 @@ stringData:
   AVP_AUTH_TYPE: token</code></pre>
 <h4>Config Management plugins</h4>
 <ul>
-  <li>There are two steps to configure a custom plugin which are creating the plugin configuration file and&nbsp;</li>
+  <li>There are two steps to configure a custom plugin which are creating the plugin configuration file and</li>
   <li>ConfigManagementPlugin resource is a resource that used by argocd server and is located in the plugin container</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
@@ -353,6 +353,7 @@ spec:
   # If set to `true` then the plugin can retrieve git credentials from the reposerver during generate. Plugin authors 
   # should ensure these credentials are appropriately protected during execution
   provideGitCreds: false</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>mount the ConfigManagementPlugin file to the sidecar</li>
 </ul>
@@ -374,6 +375,7 @@ data:
         command: [sh, -c, 'echo "{\"kind\": \"ConfigMap\", \"apiVersion\": \"v1\", \"metadata\": { \"name\": \"$ARGOCD_APP_NAME\", \"namespace\": \"$ARGOCD_APP_NAMESPACE\", \"annotations\": {\"Foo\": \"$ARGOCD_ENV_FOO\", \"KubeVersion\": \"$KUBE_VERSION\", \"KubeApiVersion\": \"$KUBE_API_VERSIONS\",\"Bar\": \"baz\"}}}"']
       discover:
         fileName: "./subdir/s*.yaml"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Register the plugin sidecar</li>
 </ul>
@@ -453,7 +455,7 @@ data:
       lockRepo: false
 </code></pre>
 <ul>
-  <li>The init container that will install the binary&nbsp;</li>
+  <li>The init container that will install the binary</li>
 </ul>
 <pre><code class="language-plaintext">      - name: download-tools
         image: alpine:3.8
@@ -468,7 +470,7 @@ data:
           name: custom-tools
 </code></pre>
 <ul>
-  <li>the volumes needed&nbsp;</li>
+  <li>the volumes needed</li>
 </ul>
 <pre><code class="language-plaintext">      - configMap:
           name: cmp-plugin
@@ -543,16 +545,111 @@ data:
 </code></pre>
 <h3>Prometheus &amp; Garfana monitoring</h3>
 <ul>
-  <li>&nbsp;Argocd exposed metrics in these serveries:<ul>
+  <li>Argocd exposed metrics in these serveries:<ul>
       <li>argocd-metrics</li>
       <li>argocd-server-metrics</li>
       <li>argocd-applicationset-controller</li>
-      <li>argocd-repo-server&nbsp;</li>
+      <li>argocd-repo-server</li>
     </ul>
   </li>
   <li>promethues uses service monitor resource to monitor service based on labels and selectors</li>
   <li>promethues uses promethues monitoring resource to match to service monitoring resource based on labels and selectors and then create the configuration for promethues.</li>
   <li>promethues rules define alerts and alertmanager configs send alerts on a condition</li>
+  <li>use these service monitors &nbsp;to expose metrics. Change the label to the release name of helm installation of prometheus</li>
+</ul>
+<pre><code class="language-plaintext">k get prometheuses.monitoring.coreos.com  -o yaml | grep -i servicemonitorselector -A5</code></pre>
+<pre><code class="language-plaintext">apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-metrics
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-metrics
+  endpoints:
+    - port: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-server-metrics
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-server-metrics
+  endpoints:
+    - port: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-repo-server-metrics
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-repo-server
+  endpoints:
+    - port: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-applicationset-controller-metrics
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-applicationset-controller
+  endpoints:
+    - port: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-dex-server
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-dex-server
+  endpoints:
+    - port: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-redis-haproxy-metrics
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-redis-ha-haproxy
+  endpoints:
+    - port: http-exporter-port
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-notifications-controller
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-notifications-controller-metrics
+  endpoints:
+    - port: metrics</code></pre>
+<ul>
+  <li>&nbsp;</li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
