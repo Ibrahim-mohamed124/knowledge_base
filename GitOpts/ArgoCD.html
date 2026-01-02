@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T19:07:53.300Z
+date: 2026-01-02T19:57:32.608Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -194,7 +194,153 @@ mv kubectl-argo-rollouts-linux-amd64 /usr/bin/local/kubectl-argo-rollouts</code>
 </ul>
 <pre><code class="language-plaintext">kubectl-argo-rollouts dashboard</code></pre>
 <h6>Blue Green deployment with argo-rollout&nbsp;</h6>
-<p>&nbsp;</p>
+<ul>
+  <li>argo rollout manage<mark class="marker-yellow"> RepliaSets and services</mark> ( active and preview in the same namespace)</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollout-bluegreen
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollout-bluegreen
+  template:
+    metadata:
+      labels:
+        app: rollout-bluegreen
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen: 
+      # activeService specifies the service to update with the new template hash at time of promotion.
+      # This field is mandatory for the blueGreen update strategy.
+      activeService: rollout-bluegreen-active
+      # previewService specifies the service to update with the new template hash before promotion.
+      # This allows the preview stack to be reachable without serving production traffic.
+      # This field is optional.
+      previewService: rollout-bluegreen-preview
+      # autoPromotionEnabled disables automated promotion of the new stack by pausing the rollout
+      # immediately before the promotion. If omitted, the default behavior is to promote the new
+      # stack as soon as the ReplicaSet are completely ready/available.
+      # Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`
+      autoPromotionEnabled: false</code></pre>
+<ul>
+  <li>Both services use the same parameters expect the service names. In case of a rollout, the preview service will be used to handle the traffic of the new deployment by introduction a hash label to both the pods in the new deployment and the service selector</li>
+</ul>
+<pre><code class="language-plaintext">k get svc -n blue-green -o yaml
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: highway-bluegreen-active
+    namespace: blue-green
+
+  spec:
+
+    ports:
+    - nodePort: 30838
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: highway-bluegreen
+      rollouts-pod-template-hash: 674c49d44d   &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+
+    type: NodePort
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: highway-bluegreen-preview
+    namespace: blue-green
+
+  spec:
+
+    ports:
+    - nodePort: 30168
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      app: highway-bluegreen
+      rollouts-pod-template-hash: d88b957f9   &gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+
+    type: NodePort</code></pre>
+<pre><code class="language-plaintext">k get rs -n blue-green -o yaml
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+
+
+    labels:
+      app: highway-bluegreen
+      rollouts-pod-template-hash: 674c49d44d       &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+    name: highway-bluegreen-674c49d44d
+    namespace: blue-green
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: highway-bluegreen
+
+  spec:
+
+    selector:
+
+      matchLabels:
+        app: highway-bluegreen
+        rollouts-pod-template-hash: 674c49d44d  &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+    template:
+      metadata:
+
+        labels:
+          app: highway-bluegreen
+          rollouts-pod-template-hash: 674c49d44d  &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+
+.......
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+
+    labels:
+      app: highway-bluegreen
+      rollouts-pod-template-hash: d88b957f9 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+    name: highway-bluegreen-d88b957f9
+    namespace: blue-green
+    ownerReferences:
+    - apiVersion: argoproj.io/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Rollout
+      name: highway-bluegreen
+
+  spec:
+
+    selector:
+      matchLabels:
+        app: highway-bluegreen
+        rollouts-pod-template-hash: d88b957f9 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+    template:
+      metadata:
+
+        labels:
+          app: highway-bluegreen
+          rollouts-pod-template-hash: d88b957f9 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; here
+
+
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
