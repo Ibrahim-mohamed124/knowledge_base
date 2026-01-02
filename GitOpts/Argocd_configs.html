@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2026-01-02T18:01:21.792Z
+date: 2026-01-02T18:01:39.980Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -15,7 +15,7 @@ dateCreated: 2025-12-30T13:45:21.307Z
 </ul>
 <pre><code class="language-plaintext">kubectl -n argocd patch configmap argocd-cm --patch='{"data":{"timeout.reconciliation":"300s"}}'
 kubectl -n argocd rollout restart sts argocd-application-controller</code></pre>
-<h6>&nbsp;Webbooks configurations&nbsp;</h6>
+<h6>&nbsp;Webbooks configurations (Event driven )&nbsp;</h6>
 <ul>
   <li>Configuring the git server to sent evets to the argocd server by<mark class="marker-yellow"> http://IP/api/webhook </mark>for the insecure mode</li>
 </ul>
