@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T20:04:48.085Z
+date: 2026-01-02T20:05:13.580Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -345,7 +345,7 @@ items:
 
 </code></pre>
 <ul>
-  <li>To &nbsp;route the traffic to the newer version manually promote the preview version. Then argo rollouts will change the labels on the active service to adopt the new version pods and destroy the older replicaset version.&nbsp;</li>
+  <li>To &nbsp;route the traffic to the newer version manually promote the preview version. Then argo rollouts will change the labels on the active service to adopt the new version pods and reduce the older replicaset version to zero replicas.&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">
 - apiVersion: v1
