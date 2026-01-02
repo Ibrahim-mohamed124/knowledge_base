@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T20:22:25.525Z
+date: 2026-01-02T20:31:12.459Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -399,7 +399,13 @@ items:
 <h6>Progressive Delivery</h6>
 <ul>
   <li>Gradually rollouts features to users &nbsp;while minimizing the risk through automated validations. Utilize canary releases, feature flags, and traffic shifting &nbsp;</li>
-  <li>Allows controlled exposure of new feature to subset of users while continuously monitoring for issues.</li>
+  <li>Allows controlled exposure of new feature to subset of users while continuously monitoring for issues.<ul>
+      <li>canary releases: allows monitoring of the performance and error rates before full deployments with full rollback capabilities</li>
+      <li>feature flags: &nbsp;conditional logic to enable or disable features at the run time without code redeployment . It enables controlled feature releases and instant rollback by toggling flags through configuration&nbsp;</li>
+      <li>traffic shifting: A/B testing between different versions to compare performance.</li>
+      <li>Traffic Mirroring: &nbsp;duplicate the production traffic &nbsp;to test the new version without affecting the users. The shadow &nbsp;version process the requests &nbsp;but responses are discarded</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
