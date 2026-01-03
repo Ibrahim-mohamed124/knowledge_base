@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-02T21:37:48.946Z
+date: 2026-01-03T17:27:52.512Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -183,12 +183,14 @@ spec:
 <h6>Installation</h6>
 <pre><code class="language-plaintext">kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Download the cli from the release pages</li>
 </ul>
 <pre><code class="language-plaintext">wget https://github.com/argoproj/argo-rollouts/releases/download/v1.8.3/kubectl-argo-rollouts-linux-amd64
 chmod +x kubectl-argo-rollouts-linux-amd64
 mv kubectl-argo-rollouts-linux-amd64 /usr/bin/local/kubectl-argo-rollouts</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To show the UI</li>
 </ul>
@@ -232,6 +234,7 @@ spec:
       # stack as soon as the ReplicaSet are completely ready/available.
       # Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`
       autoPromotionEnabled: false</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Both services use the same parameters expect the service names. In case of a rollout, the preview service will be used to handle the traffic of the new deployment by introduction a hash label to both the pods in the new deployment and the service selector</li>
 </ul>
@@ -275,6 +278,7 @@ items:
       rollouts-pod-template-hash: d88b957f9   &gt;&gt;&gt;&gt;&gt;&gt;&gt; here
 
     type: NodePort</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">k get rs -n blue-green -o yaml
 apiVersion: v1
 items:
@@ -345,7 +349,7 @@ items:
 
 </code></pre>
 <ul>
-  <li>To &nbsp;route the traffic to the newer version manually promote the preview version. Then argo rollouts will change the labels on the active service to adopt the new version pods and reduce the older replicaset version to zero replicas.&nbsp;</li>
+  <li>To &nbsp;route the traffic to the newer version manually promote the preview version. Then argo rollouts will change the labels on the active service to adopt the new version pods and reduce the older replicaset version to zero replicas.</li>
 </ul>
 <pre><code class="language-plaintext">
 - apiVersion: v1
@@ -426,6 +430,7 @@ spec:
             duration: 1h # 1 hour
         - setWeight: 20
         - pause: {} # pause indefinitely</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>argo rollout will create a new rs with a specific number of pods according to the weight and reduce this number of pods form the old rs</li>
 </ul>
@@ -436,15 +441,21 @@ app-rollout-76f479c6bf   8         8         8       21m
 </code></pre>
 <h6>Progressive Delivery</h6>
 <ul>
-  <li>Gradually rollouts features to users &nbsp;while minimizing the risk through automated validations. Utilize canary releases, feature flags, and traffic shifting &nbsp;</li>
+  <li>Gradually rollouts features to users &nbsp;while minimizing the risk through automated validations. Utilize canary releases, feature flags, and traffic shifting</li>
   <li>Allows controlled exposure of new feature to subset of users while continuously monitoring for issues.<ul>
       <li>canary releases: allows monitoring of the performance and error rates before full deployments with full rollback capabilities</li>
-      <li>feature flags: &nbsp;conditional logic to enable or disable features at the run time without code redeployment . It enables controlled feature releases and instant rollback by toggling flags through configuration&nbsp;</li>
+      <li>feature flags: &nbsp;conditional logic to enable or disable features at the run time without code redeployment . It enables controlled feature releases and instant rollback by toggling flags through configuration</li>
       <li>traffic shifting: A/B testing between different versions to compare performance.</li>
       <li>Traffic Mirroring: &nbsp;duplicate the production traffic &nbsp;to test the new version without affecting the users. The shadow &nbsp;version process the requests &nbsp;but responses are discarded</li>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<h3>Manifest Format and Packaging</h3>
+<ol>
+  <li>&nbsp;Raws kubernetes yaml ifles</li>
+  <li>Kustomize</li>
+  <li>Helm</li>
+  <li>Combine them&nbsp;</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
