@@ -2,7 +2,7 @@
 title: Advanced configs
 description: 
 published: true
-date: 2026-01-04T19:38:38.819Z
+date: 2026-01-04T20:21:54.788Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-04T18:19:55.562Z
@@ -46,6 +46,10 @@ spec:
         command: ["/bin/sh", "-c", "echo 'Running Cleanup Job...' &amp;&amp; sleep 10 &amp;&amp; echo 'Cleanup Complete.'"]
       restartPolicy: Never
   backoffLimit: 2</code></pre>
+<ul>
+  <li>to skip hooks</li>
+</ul>
+<pre><code class="language-plaintext">argocd sync app --no-hooks</code></pre>
 <h6>Sync waves</h6>
 <ul>
   <li>Help in ordering resources deployments with the lowest order applied first</li>
