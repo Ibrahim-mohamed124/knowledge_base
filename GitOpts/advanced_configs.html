@@ -2,7 +2,7 @@
 title: Advanced configs
 description: 
 published: true
-date: 2026-01-04T19:32:56.586Z
+date: 2026-01-04T19:38:38.819Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-04T18:19:55.562Z
@@ -51,3 +51,7 @@ spec:
   <li>Help in ordering resources deployments with the lowest order applied first</li>
   <li>resources with same order run in the same stage in different phases&nbsp;<mark class="marker-yellow"> argocd.argoproj.io/sync-wave: ‘x’</mark></li>
 </ul>
+<figure class="image image_resized" style="width:100%;"><img src="/hooks.png"></figure>
+<blockquote>
+  <p>The hook phase takes precedence over sync waves.</p>
+</blockquote>
