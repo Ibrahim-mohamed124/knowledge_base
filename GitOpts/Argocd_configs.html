@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2026-01-04T13:49:17.775Z
+date: 2026-01-04T13:56:44.198Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -62,6 +62,10 @@ kubectl -n argocd rollout restart sts argocd-application-controller</code></pre>
   <li>Manual or Automatic</li>
   <li>Auto-pruning of resources: Auto-pruning feature describes what happens when files are deleted or removed from Git</li>
   <li>self-healing from actual state to the desired state to revert imperative changes in the cluster</li>
+</ul>
+<h3>IgnoreDifferences</h3>
+<ul>
+  <li>When enable auto sync and self-heal, argocd might control resources that should be controlled by other controllers like HPA or argo rollouts, so argocd can be configured to ignore drift in some resource to stop conflicting with other controllers</li>
 </ul>
 <h3>Declarative setup of argocd components&nbsp;</h3>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
