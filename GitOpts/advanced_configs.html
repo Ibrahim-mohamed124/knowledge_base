@@ -2,7 +2,7 @@
 title: Advanced configs
 description: 
 published: true
-date: 2026-01-04T18:24:36.669Z
+date: 2026-01-04T18:31:11.604Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-04T18:19:55.562Z
@@ -15,11 +15,18 @@ dateCreated: 2026-01-04T18:19:55.562Z
 </ul>
 <h6>Sync Hooks</h6>
 <ul>
-  <li>Jobs run during the deployment to do certain functions<ul>
+  <li>Jobs run during the deployment to do certain functions &gt;&gt; &nbsp;<mark class="marker-yellow">argocd.argoproj.io/hook:</mark>
+    <ul>
       <li>PreSync: run before the main sync to prepare &nbsp;for the sync</li>
       <li>Sync: resources deployment</li>
       <li>PostSync: after deploying the resources</li>
-      <li>SyncFail: in case the main sync failed&nbsp;</li>
+      <li>SyncFail: in case the main sync failed</li>
+    </ul>
+  </li>
+  <li>These jobs are not cleaned automatically, so you have to use a clean up strategy that uses a job. <mark class="marker-yellow">argocd.argoproj.io/hook-delete-policy:&nbsp;</mark>
+    <ul>
+      <li>HookSuccedded: only delete the job only if it successful&nbsp;</li>
+      <li>HookFailed: keep successful jobs</li>
     </ul>
   </li>
 </ul>
