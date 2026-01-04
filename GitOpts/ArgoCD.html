@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-04T13:27:52.110Z
+date: 2026-01-04T13:28:44.199Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -191,8 +191,9 @@ spec:
 </ul>
 <pre><code class="language-plaintext">argocd proj create -h</code></pre>
 <ul>
-  <li>projects include state stores, target clusters, roles , and resource white list<ul>
+  <li>projects include state stores, target clusters, roles , resource white list, and a sync window<ul>
       <li>resource white list includes which k8s resources can be deployed in this project</li>
+      <li>sync windows: in which time the sync is allowed or blocked&nbsp;</li>
     </ul>
   </li>
 </ul>
