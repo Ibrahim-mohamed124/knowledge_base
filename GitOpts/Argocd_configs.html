@@ -2,7 +2,7 @@
 title: Argocd Configs
 description: 
 published: true
-date: 2026-01-04T13:56:44.198Z
+date: 2026-01-04T14:04:14.545Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-30T13:45:21.307Z
@@ -65,8 +65,31 @@ kubectl -n argocd rollout restart sts argocd-application-controller</code></pre>
 </ul>
 <h3>IgnoreDifferences</h3>
 <ul>
-  <li>When enable auto sync and self-heal, argocd might control resources that should be controlled by other controllers like HPA or argo rollouts, so argocd can be configured to ignore drift in some resource to stop conflicting with other controllers</li>
+  <li>When enable auto sync and self-heal, argocd might control resources that should be controlled by other controllers like HPA or argo rollouts, so argocd can be configured to ignore drift in some resource to stop conflicting with other controllers<ul>
+      <li>enable <code>RespectIgnoreDifferences</code> in the sync options</li>
+    </ul>
+  </li>
 </ul>
+<pre><code class="language-plaintext">  # Will ignore differences between live and desired states during the diff. Note that these configurations are not
+  # used during the sync process unless the `RespectIgnoreDifferences=true` sync option is enabled.
+  ignoreDifferences:
+  # for the specified json pointers
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
+  - kind: ConfigMap
+    jqPathExpressions:
+    # Example: Ignore changes to a specific key inside a ConfigMap
+    - '.data["config.yaml"]'
+  # for the specified managedFields managers
+  - group: "*"
+    kind: "*"
+    managedFieldsManagers:
+    - kube-controller-manager
+    # Name and namespace are optional. If specified, they must match exactly, these are not glob patterns.
+    name: my-deployment
+    namespace: my-namespace</code></pre>
 <h3>Declarative setup of argocd components&nbsp;</h3>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
 kind: Application
