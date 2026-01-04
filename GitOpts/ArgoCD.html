@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-03T19:52:33.389Z
+date: 2026-01-04T13:23:46.675Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -82,6 +82,26 @@ dateCreated: 2025-12-29T09:23:18.217Z
   <li>expose gRPC REST APIs</li>
 </ul>
 <figure class="image"><img src="/archee.png"></figure>
+<h3>Core Components&nbsp;</h3>
+<ul>
+  <li>argocd-server: gRPC/Rest API server that exposed the APIs to the UI/CLI/CICD systems.&nbsp;<ul>
+      <li>Manages Applications and credentials</li>
+      <li>Invokes operations like sync and rollback&nbsp;</li>
+      <li>Handles authentication and RBAC by delegating authentication to the argocd-dex-server that integrates with different IdPs</li>
+    </ul>
+  </li>
+  <li>argocd-redis: for caching only</li>
+  <li>argocd-repo-server:&nbsp;<ul>
+      <li>handles retrieving the files from repos servers</li>
+      <li>generate the final manifests&nbsp;</li>
+      <li>Run the sidecar plugins</li>
+    </ul>
+  </li>
+  <li>argocd-application-controller<ul>
+      <li>handles the reconciliation process</li>
+    </ul>
+  </li>
+</ul>
 <h4>Terminology</h4>
 <ul>
   <li>Applications: is a crd that create when ArgoCd is deployed, and groups some kubernetes resources defined by a manifest</li>
