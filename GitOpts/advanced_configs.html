@@ -2,7 +2,7 @@
 title: Advanced configs
 description: 
 published: true
-date: 2026-01-04T18:31:11.604Z
+date: 2026-01-04T19:16:41.737Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-04T18:19:55.562Z
@@ -23,7 +23,7 @@ dateCreated: 2026-01-04T18:19:55.562Z
       <li>SyncFail: in case the main sync failed</li>
     </ul>
   </li>
-  <li>These jobs are not cleaned automatically, so you have to use a clean up strategy that uses a job. <mark class="marker-yellow">argocd.argoproj.io/hook-delete-policy:&nbsp;</mark>
+  <li>These jobs are not cleaned automatically, so you have to use a clean up strategy for each job. <mark class="marker-yellow">argocd.argoproj.io/hook-delete-policy:&nbsp;</mark>
     <ul>
       <li>HookSuccedded: only delete the job only if it successful&nbsp;</li>
       <li>HookFailed: keep successful jobs</li>
