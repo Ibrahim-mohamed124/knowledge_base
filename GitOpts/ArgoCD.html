@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-04T13:24:45.822Z
+date: 2026-01-04T13:27:52.110Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -190,7 +190,12 @@ spec:
   <li>To create projects</li>
 </ul>
 <pre><code class="language-plaintext">argocd proj create -h</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>projects include state stores, target clusters, roles , and resource white list<ul>
+      <li>resource white list includes which k8s resources can be deployed in this project</li>
+    </ul>
+  </li>
+</ul>
 <h3>Deployment strategies&nbsp;</h3>
 <ol>
   <li>RollingUpdate: Replaces pods one by one after becoming ready ( default )</li>
