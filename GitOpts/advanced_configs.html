@@ -2,7 +2,7 @@
 title: Advanced configs
 description: 
 published: true
-date: 2026-01-04T19:27:32.054Z
+date: 2026-01-04T19:31:23.325Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-04T18:19:55.562Z
@@ -15,7 +15,7 @@ dateCreated: 2026-01-04T18:19:55.562Z
 </ul>
 <h6>Sync Hooks</h6>
 <ul>
-  <li>Jobs run during the deployment to do certain functions &gt;&gt; &nbsp;<mark class="marker-yellow">argocd.argoproj.io/hook:</mark>
+  <li>Jobs run during the deployment to do certain functions in different phases &gt;&gt; &nbsp;<mark class="marker-yellow">argocd.argoproj.io/hook:</mark>
     <ul>
       <li>PreSync: run before the main sync to prepare &nbsp;for the sync</li>
       <li>Sync: resources deployment</li>
@@ -46,3 +46,8 @@ spec:
         command: ["/bin/sh", "-c", "echo 'Running Cleanup Job...' &amp;&amp; sleep 10 &amp;&amp; echo 'Cleanup Complete.'"]
       restartPolicy: Never
   backoffLimit: 2</code></pre>
+<h6>Sync waves</h6>
+<ul>
+  <li>Help in ordering resources deployments with the lowest order applied first</li>
+  <li>resources with same order run in the same stage</li>
+</ul>
