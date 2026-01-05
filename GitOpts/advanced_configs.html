@@ -2,7 +2,7 @@
 title: Advanced configs
 description: 
 published: true
-date: 2026-01-05T19:32:09.189Z
+date: 2026-01-05T19:37:50.830Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-04T18:19:55.562Z
@@ -77,7 +77,34 @@ spec:
 <p>&nbsp;</p>
 <figure class="image"><img src="/gen.png"></figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: guestbook
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - list:
+      elements:
+      - cluster: engineering-dev
+        url: https://1.2.3.4
+      - cluster: engineering-prod
+        url: https://2.4.6.8
+      - cluster: finance-preprod
+        url: https://9.8.7.6
+  template:
+    metadata:
+      name: '{{.cluster}}-guestbook'
+    spec:
+      project: my-project
+      source:
+        repoURL: https://github.com/infra-team/cluster-deployments.git
+        targetRevision: HEAD
+        path: guestbook/{{.cluster}}
+      destination:
+        server: '{{.url}}'
+        namespace: guestbook</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
