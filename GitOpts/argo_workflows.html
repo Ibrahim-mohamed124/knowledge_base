@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-05T21:13:01.551Z
+date: 2026-01-05T21:16:40.124Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -47,6 +47,9 @@ dateCreated: 2026-01-05T20:53:05.581Z
   </li>
   <li>CLI</li>
 </ul>
+<pre><code class="language-plaintext">ARGO_WORKFLOWS_VERSION="v3.7.6"
+kubectl create namespace argo
+kubectl apply -n argo -f "https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/quick-start-minimal.yaml"</code></pre>
 <h3>Architecture</h3>
 <ul>
   <li>&nbsp;Argo namespace: works as the main controllplane by using the argo server&nbsp;<ul>
