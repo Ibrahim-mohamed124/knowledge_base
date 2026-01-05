@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-05T21:06:18.390Z
+date: 2026-01-05T21:10:38.519Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -45,4 +45,15 @@ dateCreated: 2026-01-05T20:53:05.581Z
       <li>namespace scoped controller&nbsp;</li>
     </ul>
   </li>
+  <li>CLI</li>
+</ul>
+<h3>Architecture</h3>
+<ul>
+  <li>&nbsp;Argo namespace: works as the main controllplane by using the argo server&nbsp;<ul>
+      <li>argo server exposes REST APIs and UI</li>
+      <li>Workflow controller: Core engine that orchestrate jobs in the workflow by creating pods &nbsp;</li>
+      <li>argo server uses the k8s-api to manage cluster resources&nbsp;</li>
+    </ul>
+  </li>
+  <li>User namespaces: acts as the execution plane where the actual jobs of the workflow runs</li>
 </ul>
