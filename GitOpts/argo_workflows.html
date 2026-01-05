@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-05T21:16:40.124Z
+date: 2026-01-05T21:17:51.144Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -50,6 +50,26 @@ dateCreated: 2026-01-05T20:53:05.581Z
 <pre><code class="language-plaintext">ARGO_WORKFLOWS_VERSION="v3.7.6"
 kubectl create namespace argo
 kubectl apply -n argo -f "https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/quick-start-minimal.yaml"</code></pre>
+<pre><code class="language-plaintext"># Detect OS
+ARGO_OS="darwin"
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  ARGO_OS="linux"
+fi
+
+# Download the binary
+curl -sLO "https://github.com/argoproj/argo-workflows/releases/download/v3.7.6/argo-$ARGO_OS-amd64.gz"
+
+# Unzip
+gunzip "argo-$ARGO_OS-amd64.gz"
+
+# Make binary executable
+chmod +x "argo-$ARGO_OS-amd64"
+
+# Move binary to path
+mv "./argo-$ARGO_OS-amd64" /usr/local/bin/argo
+
+# Test installation
+argo version</code></pre>
 <h3>Architecture</h3>
 <ul>
   <li>&nbsp;Argo namespace: works as the main controllplane by using the argo server&nbsp;<ul>
