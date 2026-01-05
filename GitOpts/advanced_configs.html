@@ -2,7 +2,7 @@
 title: Advanced configs
 description: 
 published: true
-date: 2026-01-04T20:47:54.180Z
+date: 2026-01-05T19:30:42.684Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-04T18:19:55.562Z
@@ -10,7 +10,7 @@ dateCreated: 2026-01-04T18:19:55.562Z
 
 <h3>Sync Hooks and Sync Waves</h3>
 <ul>
-  <li>Using both these features, we can create deployment playbooks to define the chorological relationship between resources in the aspect of creation, updating, and deleting.&nbsp;</li>
+  <li>Using both these features, we can create deployment playbooks to define the chorological relationship between resources in the aspect of creation, updating, and deleting.</li>
   <li>Depend mainly on annotating &nbsp;the manifests to categorize them into groups</li>
 </ul>
 <h6>Sync Hooks</h6>
@@ -25,7 +25,7 @@ dateCreated: 2026-01-04T18:19:55.562Z
   </li>
   <li>These jobs are not cleaned automatically, so you have to use a clean up strategy for each job. <mark class="marker-yellow">argocd.argoproj.io/hook-delete-policy:&nbsp;</mark>
     <ul>
-      <li>HookSuccedded: only delete the job only if it successful&nbsp;</li>
+      <li>HookSuccedded: only delete the job only if it successful</li>
       <li>HookFailed: keep successful jobs</li>
     </ul>
   </li>
@@ -46,6 +46,7 @@ spec:
         command: ["/bin/sh", "-c", "echo 'Running Cleanup Job...' &amp;&amp; sleep 10 &amp;&amp; echo 'Cleanup Complete.'"]
       restartPolicy: Never
   backoffLimit: 2</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to skip hooks</li>
 </ul>
@@ -61,5 +62,47 @@ spec:
 </blockquote>
 <h3>ApplicationSet</h3>
 <ul>
-  <li>A dynamic template for application resources</li>
+  <li>A dynamic template for application resources&nbsp;<ul>
+      <li>generators:<ul>
+          <li>defines the target locations to deploy an app, state stores to get the state</li>
+        </ul>
+      </li>
+      <li>template:&nbsp;<ul>
+          <li>blueprint for the application with place holders&nbsp;</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
