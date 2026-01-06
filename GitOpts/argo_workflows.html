@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-06T17:34:34.486Z
+date: 2026-01-06T17:53:45.246Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -130,3 +130,21 @@ spec:
   <li>to start argo server UI</li>
 </ul>
 <pre><code class="language-plaintext">argo server --secure=false --auth-mode=server --namespace argo</code></pre>
+<h3>Templates Type</h3>
+<ul>
+  <li>Define the steps in each step (function)</li>
+  <li>The first step is defined by the entrypoint attribute&nbsp;</li>
+  <li>Types:<ol>
+      <li>Container: Most Common, executes the steps inside a container with commands and args</li>
+      <li>Script: Runs a script inside a container from a file</li>
+      <li>Resource: Manage k8s resources&nbsp;</li>
+      <li>Suspend: &nbsp;pause the execution for a duration<ul>
+          <li>Can be resumed from CLI, UI, and APIs</li>
+        </ul>
+      </li>
+      <li>Container Set: &nbsp;Run multiple containers in the same pod</li>
+      <li>HTTP: execute a https request</li>
+      <li>Plugin</li>
+    </ol>
+  </li>
+</ul>
