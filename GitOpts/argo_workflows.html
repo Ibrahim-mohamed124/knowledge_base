@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-06T17:31:30.145Z
+date: 2026-01-06T17:34:34.486Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -126,3 +126,7 @@ spec:
   <li>to override parameters&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">argo submit -n argo cowsay-workflow.yml --watch -p message="With great power comes great responsibility"</code></pre>
+<ul>
+  <li>to start argo server UI</li>
+</ul>
+<pre><code class="language-plaintext">argo server --secure=false --auth-mode=server --namespace argo</code></pre>
