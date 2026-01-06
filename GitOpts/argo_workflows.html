@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-06T18:01:27.582Z
+date: 2026-01-06T18:10:45.546Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -151,6 +151,27 @@ spec:
 <h3>Paramters</h3>
 <ul>
   <li>Input parameters at the workflow or template levels as name and value, and cloud be overridden by CLI -p and -file params.yaml &nbsp;optiond&nbsp;</li>
+  <li>the arguments are defined in the template using the input attribute&nbsp;</li>
   <li>Invocation by "{{inputs.parameters.name}}"&nbsp;</li>
   <li>To choose the entrypoint use --entrypoint option</li>
 </ul>
+<pre><code class="language-plaintext">metadata:
+  generateName: cowsay-
+spec:
+  entrypoint: cowsay
+  arguments:
+    parameters:
+      - name: message
+        value: "a message from teh workflow argumetns section"
+  templates:
+    - name: cowsay
+      inputs:
+        parameters:
+        - name: message
+      ontainer:
+        image: rancher/cowsay
+        command: [cowsay]
+        args: ["{{inputs.parameters.message}}"]
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+</code></pre>
