@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-06T17:15:26.100Z
+date: 2026-01-06T17:30:42.667Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -96,6 +96,8 @@ metadata:
   generateName: steps-
 spec:
   entrypoint: hello           # We reference our first "template" here
+  arguments:
+    parameters:  workflow level arguments 
 
   templates:
   - name: hello               # The first "template" in this Workflow, it is referenced by "entrypoint"
