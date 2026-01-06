@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-05T21:17:51.144Z
+date: 2026-01-06T17:09:58.368Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -11,7 +11,7 @@ dateCreated: 2026-01-05T20:53:05.581Z
 <h1>Argo Workflows</h1>
 <ul>
   <li>Is a workflow engine that execute its steps parallelly in containers that runs inside pods. These steps run as a sequence of tasks or directed acyclic graph.<ul>
-      <li>Deeply integrated with kubernetes works with CI/CD, data processing, and ML pipelines&nbsp;</li>
+      <li>Deeply integrated with kubernetes works with CI/CD, data processing, and ML pipelines</li>
     </ul>
   </li>
 </ul>
@@ -31,9 +31,9 @@ dateCreated: 2026-01-05T20:53:05.581Z
   <li>suspend and resume workflows</li>
   <li>Support outputting Artifacts using S3 ( Artifacts )</li>
   <li>Parallelism</li>
-  <li>&nbsp;Daemon steps for background jobs</li>
+  <li>Daemon steps for background jobs</li>
   <li>Integrate with SDKs like Python, Golang, and Jave</li>
-  <li>&nbsp;Exit Hooks</li>
+  <li>Exit Hooks</li>
   <li>Garbage Collection</li>
 </ul>
 <h3>Installation Options</h3>
@@ -42,7 +42,7 @@ dateCreated: 2026-01-05T20:53:05.581Z
   <li>Production installation: fully secure setup</li>
   <li>Scopes:<ul>
       <li>Cluster wide</li>
-      <li>namespace scoped controller&nbsp;</li>
+      <li>namespace scoped controller</li>
     </ul>
   </li>
   <li>CLI</li>
@@ -50,6 +50,7 @@ dateCreated: 2026-01-05T20:53:05.581Z
 <pre><code class="language-plaintext">ARGO_WORKFLOWS_VERSION="v3.7.6"
 kubectl create namespace argo
 kubectl apply -n argo -f "https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/quick-start-minimal.yaml"</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext"># Detect OS
 ARGO_OS="darwin"
 if [[ "$(uname -s)" != "Darwin" ]]; then
@@ -72,13 +73,48 @@ mv "./argo-$ARGO_OS-amd64" /usr/local/bin/argo
 argo version</code></pre>
 <h3>Architecture</h3>
 <ul>
-  <li>&nbsp;Argo namespace: works as the main controllplane by using the argo server&nbsp;<ul>
+  <li>Argo namespace: works as the main controllplane by using the argo server<ul>
       <li>argo server exposes REST APIs and UI</li>
-      <li>Workflow controller: Core engine that orchestrate jobs in the workflow by creating pods &nbsp;</li>
-      <li>argo server uses the k8s-api to manage cluster resources&nbsp;</li>
+      <li>Workflow controller: Core engine that orchestrate jobs in the workflow by creating pods</li>
+      <li>argo server uses the k8s-api to manage cluster resources</li>
     </ul>
   </li>
   <li>User namespaces: acts as the execution plane where the actual jobs of the workflow runs</li>
-  <li>Integrates with external systems like promethues and others&nbsp;</li>
+  <li>Integrates with external systems like promethues and others</li>
 </ul>
 <figure class="image"><img src="/archflow.png"></figure>
+<h4>Argo Workflow specification</h4>
+<ul>
+  <li>Built directly over k8s APIs using CRDs, which defined instances of it by using CRs<ul>
+      <li>workflow is a structured set of tasks to do a job</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: steps-
+spec:
+  entrypoint: hello           # We reference our first "template" here
+
+  templates:
+  - name: hello               # The first "template" in this Workflow, it is referenced by "entrypoint"
+    steps:                    # The type of this "template" is "steps"
+    - - name: hello
+        template: print-message # We reference our second "template" here
+        arguments:
+          parameters: [{name: message, value: "hello1"}]
+
+  - name: print-message       # The second "template" in this Workflow, it is referenced by "hello"
+    inputs:
+      parameters:
+      - name: message
+    container:                # The type of this "template" is "container"
+      image: busybox
+      command: [echo]
+      args: ["{{inputs.parameters.message}}"]</code></pre>
+<ul>
+  <li>generateName: creates a unique name for each run of the workflow</li>
+  <li>spec.entrypoint: the starting point and define which template to be used first</li>
+  <li>templates: define the actual task</li>
+</ul>
