@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T09:49:33.927Z
+date: 2026-01-07T09:57:21.582Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -262,13 +262,12 @@ spec:
   workflowTemplateRef:
     name: workflow-template-submittable</code></pre>
 <ul>
-  <li>cluster wide workflow templates</li>
+  <li>cluster wide workflow templates. In the Ref section must include <mark class="marker-yellow">clusterScope: true attribute&nbsp;</mark></li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
 kind: ClusterWorkflowTemplate
 metadata:
   name: workflow-template-submittable
-  namespace: argo
 spec:
 
   entrypoint: print-message
