@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T14:39:15.512Z
+date: 2026-01-07T15:14:48.546Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -230,7 +230,6 @@ metadata:
   name: workflow-template-submittable
   namespace: argo
 spec:
-
   entrypoint: print-message
   arguments:
     parameters:
@@ -454,6 +453,38 @@ spec:
       command: ["python", -c]
       # fail with a 66% probability
       args: ["import random; import sys; exit_code = random.choice([0, 1, 1]); sys.exit(exit_code)"]</code></pre>
+<ul>
+  <li>to repeat a task with many items</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: cosmic-moo-manual-
+spec:
+  entrypoint: moo-madness
+  parallelism: 3
+  templates:
+  - name: moo-madness
+    template: moo-wisdom
+    withItems:
+        - "Galaxy"
+        - "Universe"
+        - "Cosmos"
+        - "Nebula"
+        - "Orbit"
+        - "Comet"
+        - "Star"
+        - "Planet"
+        - "Moon"
+        - "Solar"
+  - name: moo-wisdom
+    inputs:
+      parameters:
+      - name: cosmic-item
+    container:
+      image: rancher/cowsay
+      command: [sh, -c]
+      args: ["cowsay 'Greetings from the {{inputs.parameters.cosmic-item}} System!' &amp;&amp; sleep 8"]</code></pre>
 <ul>
   <li>successConditions: to ensure that a job done its work correctly by validation some conditions using the resource attribute.&nbsp;</li>
 </ul>
