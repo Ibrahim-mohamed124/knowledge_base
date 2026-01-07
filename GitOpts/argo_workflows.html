@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T20:10:39.743Z
+date: 2026-01-07T20:39:16.494Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -502,7 +502,7 @@ spec:
 </ul>
 <h3>Artifacts</h3>
 <ul>
-  <li>Uses S3 bucket to store artifacts&nbsp;<ul>
+  <li>Uses S3 bucket to store artifacts &nbsp;and the configuration details in artifacts-reposistory configmap<ul>
       <li>Generate a file from a step</li>
       <li>Read &nbsp;that file &nbsp;from the S3</li>
     </ul>
@@ -532,8 +532,45 @@ spec:
        path: /path
        artifactGC:
          strategy: OnWorkFlowCompletion | never</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: 
+kind: Workflow
+metadata:
+  generateName: artifact-
+spec:
+ entrypoint: main
+ templates:
+ - name: main
+   steps:
+   - - name: generate
+       template: generate-file
+   - - name: consume
+       template: consume-file
+       arguments:
+         artifacts:
+          - name: file
+            from: "{{steps.generate.output.artifacts.file}}"
+ - name: generate-file
+   script:
+     image: busybox
+     command: [sh, -c]
+     source: "echo 'testin' &gt; /tmp/hello.txt"
+   outputs:
+     artifacts:
+      - name: file
+        path: /tmp/hello.txt
+ - name: consume-file
+   input:
+    artifacts:
+     - name: file
+       path: /tmp/message
+   container:
+     image: busybox
+     command: [sh, -c]
+     args: ["echo '---'; echo 'recieved'; cat /tmp/message"]
+   </code></pre>
+<blockquote>
+  <p>artifacts are compressed and archived by default but this is customizable by using the archive attribute</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
