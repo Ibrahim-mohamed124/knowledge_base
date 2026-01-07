@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T20:39:16.494Z
+date: 2026-01-07T20:46:16.799Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -537,6 +537,8 @@ kind: Workflow
 metadata:
   generateName: artifact-
 spec:
+ artifactGC:
+  strategy: OnWorkFlowCompletion
  entrypoint: main
  templates:
  - name: main
