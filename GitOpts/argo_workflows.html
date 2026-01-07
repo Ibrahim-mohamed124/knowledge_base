@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T14:29:58.469Z
+date: 2026-01-07T14:32:39.816Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -367,6 +367,22 @@ spec:
       <li>sets a max duration for a step or entire workflow activeDeadlineSeconds</li>
     </ul>
   </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: timeouts-
+spec:
+  activeDeadlineSeconds: 10 # terminate workflow after 10 seconds
+  entrypoint: sleep
+  templates:
+  - name: sleep
+    activeDeadlineSeconds: 5 # timeout for this step
+    container:
+      image: alpine:3.23
+      command: [sh, -c]
+      args: ["echo sleeping for 1m; sleep 60; echo done"]</code></pre>
+<ul>
   <li>OnExit handers: A script to run at the end of the workflow for tasks like cleaning up, sending notifications, or logging status.</li>
   <li>RetryStrategy: &nbsp;Control retries and the delay between them</li>
   <li>successConditions: to ensure that a job done its work correctly by validation some conditions using the resource attribute.&nbsp;</li>
