@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T15:26:50.396Z
+date: 2026-01-07T20:05:11.414Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -290,7 +290,7 @@ spec:
 <h3>Workflow spec</h3>
 <ul>
   <li>Conditions<ul>
-      <li>when: defined at the step level and uses arguments&nbsp;</li>
+      <li>when: defined at the step level and uses arguments</li>
     </ul>
   </li>
 </ul>
@@ -333,8 +333,8 @@ kind: Workflow
 </code></pre>
 <ul>
   <li>Daemon<ul>
-      <li>Runs a service in the background like a database or an api service&nbsp;</li>
-      <li>automatically terminated when the workflow is finished&nbsp;</li>
+      <li>Runs a service in the background like a database or an api service</li>
+      <li>automatically terminated when the workflow is finished</li>
     </ul>
   </li>
 </ul>
@@ -381,6 +381,7 @@ spec:
       image: alpine:3.23
       command: [sh, -c]
       args: ["echo sleeping for 1m; sleep 60; echo done"]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>OnExit handers: A script to run at the end of the workflow for tasks like cleaning up, sending notifications, or logging status.</li>
 </ul>
@@ -428,6 +429,7 @@ spec:
       image: alpine:3.23
       command: [sh, -c]
       args: ["echo boohoo!"]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>RetryStrategy: &nbsp;Control retries and the delay between them</li>
 </ul>
@@ -453,6 +455,7 @@ spec:
       command: ["python", -c]
       # fail with a 66% probability
       args: ["import random; import sys; exit_code = random.choice([0, 1, 1]); sys.exit(exit_code)"]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to repeat a task with many items</li>
 </ul>
@@ -485,6 +488,7 @@ spec:
       command: [sh, -c]
       args: ["cowsay 'Greetings from the {{item}} System!' &amp;&amp; sleep 8"]
       args: ["cowsay 'Greetings from the {{item}} System!' &amp;&amp; sleep 8"]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to restrict the number of jobs run in the same time</li>
 </ul>
@@ -492,6 +496,28 @@ spec:
   entrypoint: moo-madness
   parallelism: 2
   templates:</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>successConditions: to ensure that a job done its work correctly by validation some conditions using the resource attribute.&nbsp;</li>
+  <li>successConditions: to ensure that a job done its work correctly by validation some conditions using the resource attribute.</li>
 </ul>
+<h3>Artifacts</h3>
+<ul>
+  <li>Uses S3 bucket to store artifacts&nbsp;<ul>
+      <li>Generate a file from a step</li>
+      <li>Read &nbsp;that file &nbsp;from the S3</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">- name: producer
+  container:
+   staff
+  outputs:
+    artifacts:
+     - name: name
+       path: /path
+- name: consumer
+  inputs:
+    artifacts:
+     - name: name
+       path: /path</code></pre>
+<p>&nbsp;</p>
