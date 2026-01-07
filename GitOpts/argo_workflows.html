@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T15:15:46.239Z
+date: 2026-01-07T15:19:23.820Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -465,25 +465,25 @@ spec:
   parallelism: 3
   templates:
   - name: moo-madness
-    template: moo-wisdom
-    withItems:
-        - "Galaxy"
-        - "Universe"
-        - "Cosmos"
-        - "Nebula"
-        - "Orbit"
-        - "Comet"
-        - "Star"
-        - "Planet"
-        - "Moon"
-        - "Solar"
+    steps:
+    -  - name: cosmic-cow
+         template: moo-wisdom
+         withItems:
+             - "Galaxy"
+             - "Universe"
+             - "Cosmos"
+             - "Nebula"
+             - "Orbit"
+             - "Comet"
+             - "Star"
+             - "Planet"
+             - "Moon"
+             - "Solar"
   - name: moo-wisdom
-    inputs:
-      parameters:
-      - name: cosmic-item
     container:
       image: rancher/cowsay
       command: [sh, -c]
+      args: ["cowsay 'Greetings from the {{item}} System!' &amp;&amp; sleep 8"]
       args: ["cowsay 'Greetings from the {{item}} System!' &amp;&amp; sleep 8"]</code></pre>
 <ul>
   <li>successConditions: to ensure that a job done its work correctly by validation some conditions using the resource attribute.&nbsp;</li>
