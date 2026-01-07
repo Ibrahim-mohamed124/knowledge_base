@@ -2,7 +2,7 @@
 title: Air
 description: 
 published: true
-date: 2025-11-17T20:16:58.572Z
+date: 2026-01-07T06:31:48.908Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-17T09:09:06.285Z
@@ -132,6 +132,7 @@ version   4.14.0    True        False         2d      Cluster version is 4.14.0
 
 [user@host ~]$ oc get clusterversion -o jsonpath='{.items[0].spec.channel}{"\n"}'
 stable-4.14</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>View the available updates and note the version number of the update to apply.</li>
 </ul>
@@ -146,15 +147,18 @@ Recommended updates:
 VERSION    IMAGE
 4.14.10    quay.io/openshift-release-dev/ocp-release@sha256:...
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Apply the latest update to your cluster, or update to a specific version:</li>
   <li>Run the following command to install the latest available update for your cluster.</li>
 </ul>
 <pre><code class="language-plaintext">[user@host ~]$ oc adm upgrade --to-latest=true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Run the following command to install a specific version. <i>VERSION</i> corresponds to one of the available versions that the <code>oc adm upgrade</code> command returns.</li>
 </ul>
 <pre><code class="language-plaintext">[user@host ~]$ oc adm upgrade --to=VERSION</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The previous command initializes the update process. Run the following command t<mark class="marker-yellow">o review the status of the Cluster Version Operator (CVO) and the installed cluster operators.</mark></li>
 </ul>
@@ -168,6 +172,7 @@ authentication             4.14.0      True        False         False     ...
 baremetal                  4.14.10     False       True          False     ...
 cloud-controller-manager   4.14.10     True        False         True      ...
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Use the following command to review the cluster version history and monitor the status of the update. It might take some time for all the objects to finish updating.<ul>
       <li>The history contains a list of the most recent versions that were applied to the cluster. This list is updated when the CVO applies an update. The list is ordered by date, where the newest update is first in the list.</li>
@@ -190,6 +195,7 @@ cloud-controller-manager   4.14.10     True        False         True      ...
     State:              Completed
     Verified:           false
     Version:            4.14.10</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>After the process completes, you can confirm that the cluster is updated to the new version.</li>
 </ul>
@@ -224,6 +230,7 @@ version  4.14.10  True       False        30m    Cluster version is 4.14.10</cod
   </table>
 </figure>
 <pre><code class="language-plaintext"> oc api-resources</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>You can identify from the API request count whether a workload uses a deprecated API version. <mark class="marker-yellow">The API request count output contains four columns</mark>. A value in the <code>REMOVEDINRELEASE</code> column indicates that the API version is deprecated and specifies the Kubernetes version that will remove it.</li>
 </ul>
@@ -316,4 +323,9 @@ status:
 <ul>
   <li>When updating a cluster, you might need to update operators if the installed version of the operator is not compatible with the updated OpenShift version. Before you update a cluster, review and install any operator updates that are needed for compatibility fixes. <mark class="marker-yellow">If no compatible updates are available, then you must update the cluster by uninstalling incompatible operators.</mark></li>
 </ul>
+<h3>Providing the administrator acknowledgement</h3>
+<ul>
+  <li>After you have evaluated your cluster for any removed APIs and have migrated any removed APIs, you can acknowledge that your cluster is ready to upgrade&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.15-kube-1.29-api-removals-in-4.16":"true"}}' --type=merge</code></pre>
 <p>&nbsp;</p>
