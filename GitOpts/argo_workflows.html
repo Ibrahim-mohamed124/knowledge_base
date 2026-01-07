@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T11:43:04.085Z
+date: 2026-01-07T12:27:57.792Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -274,7 +274,6 @@ kind: ClusterWorkflowTemplate
 metadata:
   name: workflow-template-submittable
 spec:
-
   entrypoint: print-message
   arguments:
     parameters:
@@ -295,14 +294,55 @@ spec:
       <li>when: defined at the step level and uses arguments&nbsp;</li>
     </ul>
   </li>
+</ul>
+<pre><code class="language-plaintext">metadata:
+  generateName:  when-condition-
+  namespace: argo
+spec:
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: environment
+        value: "production"
+  templates:
+        - name: main
+          steps:
+          - - name: build
+              template: build-step
+            - name: test
+              template:  test-step
+              when: "{{workflow.parameters.environment}} != production"
+            - name: deploy
+              template: deploy-step
+        - name: build-step
+          container:
+            image: alpine
+            command: [sh, -c]
+            args: ["echo ldteng"]
+        - name: test-step
+          container:
+             image: alpine
+             command: [sh, -c]
+             args: ["echo ttesting"]
+        - name: deploy-step
+          container:
+             image: alpine
+             command: [sh, -c]
+             args: ["echo kldfjsdltesting"]
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+</code></pre>
+<ul>
   <li>Daemon<ul>
       <li>Runs a service in the background like a database or an api service&nbsp;</li>
       <li>automatically terminated when the workflow is finished&nbsp;</li>
     </ul>
   </li>
-  <li>timeout<ul>
+  <li>Timeout<ul>
       <li>sets a max duration for a step or entire workflow activeDeadlineSeconds</li>
     </ul>
   </li>
   <li>OnExit handers: A script to run at the end of the workflow for tasks like cleaning up, sending notifications, or logging status.</li>
+  <li>RetryStrategy: &nbsp;Control retries and the delay between them</li>
+  <li>successConditions: to ensure that a job done its work correctly by validation some conditions using the resource attribute.&nbsp;</li>
 </ul>
