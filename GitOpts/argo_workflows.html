@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T10:05:17.452Z
+date: 2026-01-07T11:43:04.085Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -223,6 +223,7 @@ spec:
   <li>Reusable workflows in namespaces</li>
 </ul>
 <pre><code class="language-plaintext">argo template create file.yaml</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
@@ -244,6 +245,7 @@ spec:
         image: busybox
         command: [echo]
         args: ["{{inputs.parameters.message}}"]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Invoking one template from the workflow template</li>
 </ul>
@@ -256,12 +258,14 @@ spec:
          parameters:
            - name: message
              value: "test"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Invoking the entire workflow template</li>
 </ul>
 <pre><code class="language-plaintext">spec:
   workflowTemplateRef:
     name: workflow-template-submittable</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>cluster wide workflow templates. In the <mark class="marker-yellow">Ref section must include clusterScope: true attribute&nbsp;</mark></li>
 </ul>
@@ -285,3 +289,20 @@ spec:
         image: busybox
         command: [echo]
         args: ["{{inputs.parameters.message}}"]</code></pre>
+<h3>Workflow spec</h3>
+<ul>
+  <li>Conditions<ul>
+      <li>when: defined at the step level and uses arguments&nbsp;</li>
+    </ul>
+  </li>
+  <li>Daemon<ul>
+      <li>Runs a service in the background like a database or an api service&nbsp;</li>
+      <li>automatically terminated when the workflow is finished&nbsp;</li>
+    </ul>
+  </li>
+  <li>timeout<ul>
+      <li>sets a max duration for a step or entire workflow activeDeadlineSeconds</li>
+    </ul>
+  </li>
+  <li>OnExit handers: A script to run at the end of the workflow for tasks like cleaning up, sending notifications, or logging status.</li>
+</ul>
