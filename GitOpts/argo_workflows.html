@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T20:05:11.414Z
+date: 2026-01-07T20:10:39.743Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -520,4 +520,28 @@ spec:
     artifacts:
      - name: name
        path: /path</code></pre>
+<ul>
+  <li>artifact garbage collection automatically delete artifacts according to delete strategy at the artifact level or globally&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">- name: producer
+  container:
+   staff
+  outputs:
+    artifacts:
+     - name: name
+       path: /path
+       artifactGC:
+         strategy: OnWorkFlowCompletion | never</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
