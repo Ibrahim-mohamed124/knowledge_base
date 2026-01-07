@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T12:27:57.792Z
+date: 2026-01-07T14:29:58.469Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -338,6 +338,31 @@ kind: Workflow
       <li>automatically terminated when the workflow is finished&nbsp;</li>
     </ul>
   </li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+   generateName:  daemon-
+spec:
+  entrypoint: main
+  templates:
+  - name: main
+    steps:
+    - - name: db
+        template: db
+    - - name: svc
+        template: svc
+  - name: db
+    daemon: true
+    container:
+      image: redis
+      command: [redis-server]
+  - name: svc
+    container:
+      image: nginx
+      command: [echo "connetting to a redus"]</code></pre>
+<p>&nbsp;</p>
+<ul>
   <li>Timeout<ul>
       <li>sets a max duration for a step or entire workflow activeDeadlineSeconds</li>
     </ul>
