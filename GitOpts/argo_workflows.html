@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-06T19:14:26.544Z
+date: 2026-01-07T09:15:35.261Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -115,17 +115,21 @@ spec:
       image: busybox
       command: [echo]
       args: ["{{inputs.parameters.message}}"]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>generateName: creates a unique name for each run of the workflow</li>
   <li>spec.entrypoint: the starting point and define which template to be used first</li>
   <li>templates: define the actual task</li>
 </ul>
 <pre><code class="language-plaintext">argo submit file.yaml -n argo --watch</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">argo logs &lt;workflow_name&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to override parameters&nbsp;</li>
+  <li>to override parameters</li>
 </ul>
 <pre><code class="language-plaintext">argo submit -n argo cowsay-workflow.yml --watch -p message="With great power comes great responsibility"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to start argo server UI</li>
 </ul>
@@ -133,26 +137,26 @@ spec:
 <h3>Templates Type</h3>
 <ul>
   <li>Define the steps in each step (function)</li>
-  <li>The first step is defined by the entrypoint attribute&nbsp;</li>
+  <li>The first step is defined by the entrypoint attribute</li>
   <li>Types:<ol>
       <li>Container: Most Common, executes the steps inside a container with commands and args</li>
       <li>Script: Runs a script inside a container from a file</li>
-      <li>Resource: Manage k8s resources&nbsp;</li>
+      <li>Resource: Manage k8s resources</li>
       <li>Suspend: &nbsp;pause the execution for a duration<ul>
           <li>Can be resumed from CLI, UI, and APIs</li>
         </ul>
       </li>
       <li>Container Set: &nbsp;Run multiple containers in the same pod</li>
       <li>HTTP: execute a http request</li>
-      <li>Plugin: execute external plugins like integration with argocd&nbsp;</li>
+      <li>Plugin: execute external plugins like integration with argocd</li>
     </ol>
   </li>
 </ul>
 <h3>Paramters</h3>
 <ul>
-  <li>Input parameters at the workflow or template levels as name and value, and cloud be overridden by CLI -p and -file params.yaml &nbsp;optiond&nbsp;</li>
-  <li>the arguments are defined in the template using the input attribute&nbsp;</li>
-  <li>Invocation by "{{inputs.parameters.name}}"&nbsp;</li>
+  <li>Input parameters at the workflow or template levels as name and value, and cloud be overridden by CLI -p and -file params.yaml &nbsp;optiond</li>
+  <li>the arguments are defined in the template using the input attribute</li>
+  <li>Invocation by "{{inputs.parameters.name}}"</li>
   <li>To choose the entrypoint use --entrypoint option</li>
 </ul>
 <pre><code class="language-plaintext">metadata:
@@ -173,5 +177,44 @@ spec:
         command: [cowsay]
         args: ["{{inputs.parameters.message}}"]
 apiVersion: argoproj.io/v1alpha1
+kind: Workflow</code></pre>
+<h6>Outputs</h6>
+<ul>
+  <li>Passing data between steps from producer to consumer</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
 kind: Workflow
-</code></pre>
+metadata:
+  generateName: output-parameter-
+spec:
+  entrypoint: output-parameter
+  templates:
+  - name: output-parameter
+    steps:
+    - - name: generate-parameter
+        template: hello-world-to-file
+    - - name: consume-parameter
+        template: print-message
+        arguments:
+          parameters:
+          # Pass the hello-param output from the generate-parameter step as the message input to print-message
+          - name: message
+            value: "{{steps.generate-parameter.outputs.parameters.hello-param}}"
+  - name: hello-world-to-file
+    container:
+      image: busybox
+      command: [sh, -c]
+      args: ["echo -n hello world &gt; /tmp/hello_world.txt"]  # generate the content of hello_world.txt
+    outputs:
+      parameters:
+      - name: hello-param  # name of output parameter
+        valueFrom:
+          path: /tmp/hello_world.txt # set the value of hello-param to the contents of this hello-world.txt
+  - name: print-message
+    inputs:
+      parameters:
+      - name: message
+    container:
+      image: busybox
+      command: [echo]
+      args: ["{{inputs.parameters.message}}"]</code></pre>
