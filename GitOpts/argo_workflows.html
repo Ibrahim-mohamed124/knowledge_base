@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T09:39:23.458Z
+date: 2026-01-07T09:46:52.745Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -220,12 +220,13 @@ spec:
       args: ["{{inputs.parameters.message}}"]</code></pre>
 <h3>WorkflowTemplate</h3>
 <ul>
-  <li>Reusable blocks</li>
+  <li>Reusable workflows in namespaces</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
   name: workflow-template-submittable
+  namespace: argo
 spec:
 
   entrypoint: print-message
@@ -242,3 +243,15 @@ spec:
         image: busybox
         command: [echo]
         args: ["{{inputs.parameters.message}}"]</code></pre>
+<ul>
+  <li>Invoking one template from the workflow template</li>
+</ul>
+<pre><code class="language-plaintext">steps:
+ - - name: test
+     templateRef:
+       name: workflow-template-submittable
+       template: print-message
+       arguments:
+         parameters:
+           - name: message
+             value: "test"</code></pre>
