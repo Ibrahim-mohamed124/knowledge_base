@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-09T13:01:52.289Z
+date: 2026-01-09T13:10:37.075Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -594,7 +594,42 @@ spec:
   <li>dependencies attribute is more simple one only for succeeded result</li>
   <li><mark class="marker-yellow">failFast</mark>: DAG stops by default if any task fail in it, but with this attribute it continues.</li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">kind: Workflow
+metadata:
+  generateName: dag-
+spec:
+  entrypoint: main
+  templates:
+  - name: main
+    dag:
+      tasks:
+      - name: A
+        template: echo-message
+        arguments:
+          parameters: [{name: message, value: A}]
+      - name: B
+        dependencies: [A]
+        template: echo-message
+        arguments:
+          parameters: [{name: message, value: B}]
+      - name: C
+        dependencies: [A]
+        template: echo-message
+        arguments:
+          parameters: [{name: message, value: C}]
+      - name: D
+        dependencies: [B, C]
+        template: echo-message
+        arguments:
+          parameters: [{name: message, value: D}]
+  - name: echo-message
+    inputs:
+      parameters:
+        - name: message
+    container:
+      image: busybox
+      command: [sh, -c, "echo {{inputs.parameters.message}}"]
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
