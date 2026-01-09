@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-07T20:47:50.134Z
+date: 2026-01-09T09:53:02.805Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -520,8 +520,9 @@ spec:
     artifacts:
      - name: name
        path: /path</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>artifact garbage collection automatically delete artifacts according to delete strategy at the artifact level or globally&nbsp;</li>
+  <li>artifact garbage collection automatically delete artifacts according to delete strategy at the artifact level or globally</li>
 </ul>
 <pre><code class="language-plaintext">- name: producer
   container:
@@ -532,6 +533,7 @@ spec:
        path: /path
        artifactGC:
          strategy: OnWorkFlowCompletion | never | OnWorkFlowDeletion</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: 
 kind: Workflow
 metadata:
@@ -573,7 +575,14 @@ spec:
 <blockquote>
   <p>artifacts are compressed and archived by default but this is customizable by using the archive attribute</p>
 </blockquote>
-<p>&nbsp;</p>
+<h3>]DAG</h3>
+<ul>
+  <li>A collection of tasks that are connected by dependencies with main two features<ul>
+      <li>Directed: the flow is always has specific direction</li>
+      <li>&nbsp;Acyclic &nbsp;(on way)&nbsp;</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
