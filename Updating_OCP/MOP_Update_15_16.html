@@ -2,7 +2,7 @@
 title: MOP Update
 description: 
 published: true
-date: 2026-01-09T09:29:51.483Z
+date: 2026-01-09T09:33:25.287Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-09T09:29:51.483Z
@@ -12,3 +12,6 @@ dateCreated: 2026-01-09T09:29:51.483Z
   <li>Patch the admin-ack configmap to acknowledge &nbsp;the cluster upgrade and accept the risks</li>
 </ol>
 <pre><code class="language-plaintext">oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.15-kube-1.29-api-removals-in-4.16":"true"}}' --type=merge</code></pre>
+<p>&nbsp; 2.<mark class="marker-yellow"> Ensure that the anyuid scc has &nbsp;the runAsUser type as RunAsAny not MustInRange</mark></p>
+<pre><code class="language-plaintext">runAsUser:
+  type: RunAsAny</code></pre>
