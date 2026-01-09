@@ -1,0 +1,14 @@
+<!--
+title: MOP Update
+description: 
+published: true
+date: 2026-01-09T09:29:51.483Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-01-09T09:29:51.483Z
+-->
+
+<ol>
+  <li>Patch the admin-ack configmap to acknowledge &nbsp;the cluster upgrade and accept the risks</li>
+</ol>
+<pre><code class="language-plaintext">oc -n openshift-config patch cm admin-acks --patch '{"data":{"ack-4.15-kube-1.29-api-removals-in-4.16":"true"}}' --type=merge</code></pre>
