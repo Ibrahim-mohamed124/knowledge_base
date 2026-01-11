@@ -2,7 +2,7 @@
 title: Open Virtual Networking - Kubernetes
 description: 
 published: true
-date: 2026-01-11T09:55:22.858Z
+date: 2026-01-11T10:00:40.010Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-28T12:03:56.739Z
@@ -27,21 +27,21 @@ dateCreated: 2025-12-28T12:03:56.739Z
       <li>Kubernetes Core Networking Conformance<ul>
           <li>Generic Network Virtualization Encapsulation GENEVE tunnels that enables pod-to-pod communication.</li>
           <li>Implements Kubernetes Services &amp; EndpointSlices through OVN Load Balancers.</li>
-          <li>Implements Kubernetes NetworkPolicies and AdminNetworkPolicies through OVN Access Control Lists (ACLs).</li>
+          <li><mark class="marker-yellow">Implements Kubernetes NetworkPolicies and AdminNetworkPolicies through OVN Access Control Lists (ACLs).</mark></li>
         </ul>
       </li>
       <li>Fine grained Cluster Egress Traffic Controls<ul>
           <li>Multiple External Gateways (MEG) allows for multiple dynamically or statically assigned egress next-hop gateways by utilizing OVN ECMP routing features.</li>
           <li>Implements Quality of Service (QoS) Differentiated Services Code Point (DSCP) for traffic egressing the cluster through OVN QoS.</li>
-          <li>Provides ability to send egress traffic from cluster workloads using an admin-configured source IP (EgressIP) to outside the cluster using OVN Logical Router Policies and Network Address Translations.</li>
+          <li><mark class="marker-yellow">Provides ability to send egress traffic from cluster workloads using an admin-configured source IP (EgressIP) to outside the cluster using OVN Logical Router Policies and Network Address Translations.</mark></li>
           <li>Provides ability to send egress traffic from cluster workloads using the service load balancer IP (EgressService) to outside the cluster using OVN Logical Router Policies and Network Address Translations</li>
           <li>Provides the ability to restrict egress traffic from cluster workloads (Egress Firewall) using OVN Access Control Lists.</li>
         </ul>
       </li>
       <li>Advanced Networking Features:<ul>
-          <li>Implements Hybrid Networking to provide support for mixed Windows/Linux clusters using VXLAN tunnels.</li>
-          <li>Provides IP Multicast using OVN IGMP snooping and relays.</li>
-          <li>Internet Protocol Security ( IPsec ) encryption&nbsp;</li>
+          <li><mark class="marker-yellow">Implements Hybrid Networking to provide support for mixed Windows/Linux clusters using VXLAN tunnels.</mark></li>
+          <li><mark class="marker-yellow">Provides IP Multicast using OVN IGMP snooping and relays.</mark></li>
+          <li><mark class="marker-yellow">Internet Protocol Security ( IPsec ) encryption&nbsp;</mark></li>
           <li><mark class="marker-yellow">Provides ability to offload networking tasks from CPU to NIC using OVS Hardware Offload thus providing increased data-plane performance.</mark></li>
           <li><mark class="marker-yellow">Adds support for creating secondary and local networks in addition to the default primary networks</mark></li>
         </ul>
@@ -49,6 +49,84 @@ dateCreated: 2025-12-28T12:03:56.739Z
     </ul>
   </li>
 </ul>
+<figure class="table" style="width:auto;">
+  <table style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;">
+    <thead>
+      <tr>
+        <th style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Feature</th>
+        <th style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">OpenShift SDN</th>
+        <th style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">OVN-Kubernetes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Egress IPs</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Egress firewall</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported <sup>[1]</sup></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Egress router</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported <sup>[2]</sup></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Hybrid networking</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Not supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">IPsec encryption for intra-cluster communication</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Not supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">IPv4 single-stack</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">IPv6 single-stack</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Not supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported <sup>[3]</sup></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">IPv4/IPv6 dual-stack</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Not Supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported <sup>[4]</sup></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">IPv6/IPv4 dual-stack</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Not supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported <sup>[5]</sup></td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Kubernetes network policy</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Kubernetes network policy logs</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Not supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Hardware offloading</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Not supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Multicast</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+        <td style="border-bottom:0.8px solid rgb(210, 210, 210);border-left:0px initial initial;border-right:0px initial initial;border-top:0px initial initial;padding:16px 1rem;vertical-align:top;">Supported</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <h3>Interconnect installation mode Architecture</h3>
 <ul>
   <li>OVN Interconnection is a feature that allows connecting<mark class="marker-yellow"> multiple OVN deployments with OVN managed GENEVE tunnels.</mark></li>
