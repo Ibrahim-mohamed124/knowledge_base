@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T17:22:01.866Z
+date: 2026-01-11T17:49:16.703Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -359,14 +359,27 @@ spec:
      args:
       - name: test
         value: test</code></pre>
-<pre><code class="language-plaintext">strategy:
-  blueGreen:
-    postPromotionAnalysis
+<pre><code class="language-plaintext">    spec:
+      containers:
+      - name: highway-bluegreen
+        image: siddharth67/highway-animation:blue
+        ports:
+        - containerPort: 3000
+        env:
+        - name: POD_COUNT
+          value: "10"
+  strategy:
+    blueGreen:
+      activeService: highway-bluegreen-active
+      previewService: highway-bluegreen-preview
+      autoPromotionEnabled: false
+    prePromotionAnalysis:
      templates:
      - templateName: test
      args:
       - name: test
-        value: test</code></pre>
+        value: test
+</code></pre>
 <ul>
   <li>types of analysis run in blue-green<ol>
       <li>pre-promotion: &nbsp;validation checks before routing the traffic to the new environment&nbsp;</li>
@@ -374,7 +387,9 @@ spec:
     </ol>
   </li>
 </ul>
-<p>&nbsp;</p>
+<blockquote>
+  <p>clusterAnalysisTemplate is cluster wide</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
