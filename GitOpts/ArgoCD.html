@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T16:55:07.274Z
+date: 2026-01-11T17:15:40.903Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -279,12 +279,77 @@ spec:
       <li>Custom Job with exit code</li>
     </ul>
   </li>
-  <li>AnalysisRun: is the instance of the analysis template and give the final verdict&nbsp;<ul>
-      <li>Once fail the automatic rollback is triggered&nbsp;</li>
+  <li>AnalysisRun: is the instance of the analysis template and give the final verdict<ul>
+      <li>Once fail the automatic rollback is triggered</li>
     </ul>
   </li>
 </ul>
 <figure class="image"><img src="/analysise.png"></figure>
+<ul>
+  <li>spec:</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: success-rate
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: success-rate
+    interval: 5m
+    # NOTE: prometheus queries return results in the form of a vector.
+    # So it is common to access the index 0 of the returned array to obtain the value
+    successCondition: result[0] &gt;= 0.95
+    failureLimit: 3
+    provider:
+      prometheus:
+        address: http://prometheus.example.com:9090
+        query: |
+          sum(irate(
+            istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}",response_code!~"5.*"}[5m]
+          )) /
+          sum(irate(
+            istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}"}[5m]
+          ))
+    count: 3
+    interval: 20s
+    failureLimit: 1
+    successCondition: result &gt; 5</code></pre>
+<ul>
+  <li>args: for passing parameters</li>
+  <li>metrics: list of checks to perform</li>
+  <li>provider: the data source like http request, prometheus, jobs</li>
+  <li>count: number of runs&nbsp;</li>
+  <li>interval: time between each count</li>
+  <li>failure limit: how many conuts allowed to fail?</li>
+  <li>success condition: defines the success criteria for the run</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: api-app
+spec:
+ strategy:
+   canary:
+     analysis
+       templates:
+       - templateName: success-rate
+       startingStep: 2
+       args:
+        - name: service-name
+          value: svc.default.cluster.local</code></pre>
+<ul>
+  <li>types of analysis run:<ul>
+      <li>runs in the background while the rollout is happening</li>
+      <li>inline: runs as a step before the rollout can procced</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h6>&nbsp;</h6>
 <h6>Blue Green deployment with argo-rollout&nbsp;</h6>
 <ul>
   <li>argo rollout manage<mark class="marker-yellow"> RepliaSets and services</mark> ( active and preview in the same namespace)</li>
