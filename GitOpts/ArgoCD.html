@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T17:20:18.958Z
+date: 2026-01-11T17:22:01.866Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -350,10 +350,28 @@ spec:
       <li>inline: runs as a step before the rollout can procced</li>
     </ol>
   </li>
-  <li>types of analysis run in blue-green<ul>
+</ul>
+<pre><code class="language-plaintext">strategy:
+  blueGreen:
+    prePromotionAnalysis
+     templates:
+     - templateName: test
+     args:
+      - name: test
+        value: test</code></pre>
+<pre><code class="language-plaintext">strategy:
+  blueGreen:
+    postPromotionAnalysis
+     templates:
+     - templateName: test
+     args:
+      - name: test
+        value: test</code></pre>
+<ul>
+  <li>types of analysis run in blue-green<ol>
       <li>pre-promotion: &nbsp;validation checks before routing the traffic to the new environment&nbsp;</li>
       <li>post-promotion: validation checks after routing the traffic to the new environment&nbsp;</li>
-    </ul>
+    </ol>
   </li>
 </ul>
 <p>&nbsp;</p>
