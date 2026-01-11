@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T13:01:23.606Z
+date: 2026-01-11T13:08:46.442Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -234,6 +234,7 @@ sudo mv kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts</
 <ul>
   <li>Rollout Controller:&nbsp;<ul>
       <li>controls the rollout resource lifecycle by creating the replicaSets and integrates with ingress controllers to split or redirect &nbsp;the traffic&nbsp;</li>
+      <li>Controlled promotion&nbsp;</li>
     </ul>
   </li>
   <li>AnalysisTemplate Controller:&nbsp;<ul>
@@ -244,7 +245,27 @@ sudo mv kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts</
 <h3>Converting deployment to rollout</h3>
 <ol>
   <li>Directing conversion: change the kind and API then add strategy section</li>
+  <li>WorkloadRef Method:<ul>
+      <li>create standard deployment&nbsp;</li>
+      <li>add the deployment to the rollout using workloadRef attribute&nbsp;</li>
+    </ul>
+  </li>
 </ol>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: test
+spec:
+ workloadRef:
+   apiVersion: apps/v1
+   kind: Deployment
+   name: test-deploy
+   scaleDown: never | onsuccess | progessive
+ strategy:
+   blueGreen:
+     activeService: svc-act
+     previewSerice: svc-dev
+     autoPromotionEnabled: false</code></pre>
 <p>&nbsp;</p>
 <h6>Blue Green deployment with argo-rollout&nbsp;</h6>
 <ul>
