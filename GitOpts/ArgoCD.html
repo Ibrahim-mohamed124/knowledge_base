@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T13:40:40.004Z
+date: 2026-01-11T16:55:04.653Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -217,7 +217,7 @@ spec:
 </ul>
 <h6>Installation</h6>
 <ul>
-  <li>Cluster wide installation or name spaced installation&nbsp;</li>
+  <li>Cluster wide installation or name spaced installation</li>
 </ul>
 <pre><code class="language-plaintext">kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/download/v1.8.3/install.yaml</code></pre>
@@ -232,13 +232,13 @@ sudo mv kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts</
 <pre><code class="language-plaintext">kubectl-argo-rollouts dashboard</code></pre>
 <h6>Architecture</h6>
 <ul>
-  <li>Rollout Controller:&nbsp;<ul>
-      <li>controls the rollout resource lifecycle by creating the replicaSets and integrates with ingress controllers to split or redirect &nbsp;the traffic&nbsp;</li>
-      <li>Controlled promotion&nbsp;</li>
+  <li>Rollout Controller:<ul>
+      <li>controls the rollout resource lifecycle by creating the replicaSets and integrates with ingress controllers to split or redirect &nbsp;the traffic</li>
+      <li>Controlled promotion</li>
     </ul>
   </li>
-  <li>AnalysisTemplate Controller:&nbsp;<ul>
-      <li>Trigger AnalysisRuns to collect metrics to analysis the deployment performance&nbsp;</li>
+  <li>AnalysisTemplate Controller:<ul>
+      <li>Trigger AnalysisRuns to collect metrics to analysis the deployment performance</li>
     </ul>
   </li>
 </ul>
@@ -246,10 +246,10 @@ sudo mv kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts</
 <ol>
   <li>Directing conversion: change the kind and API then add strategy section</li>
   <li>WorkloadRef Method:<ul>
-      <li>create standard deployment&nbsp;</li>
-      <li>add the deployment to the rollout using workloadRef attribute&nbsp;</li>
+      <li>create standard deployment</li>
+      <li>add the deployment to the rollout using workloadRef attribute</li>
       <li>Integrate with existing tools that only use deployment object</li>
-      <li>decouple deployment from update strategy&nbsp;</li>
+      <li>decouple deployment from update strategy</li>
       <li>scale down the original workload to zero</li>
     </ul>
   </li>
@@ -270,7 +270,21 @@ spec:
      activeService: svc-act
      previewService: svc-dev
      autoPromotionEnabled: false</code></pre>
-<p>&nbsp;</p>
+<h3>Analysis</h3>
+<ul>
+  <li>Collect data for making go or no go decisions</li>
+  <li>AnalysisTemplate: reusable template for different services<ul>
+      <li>HTTP request</li>
+      <li>prometheus metrics</li>
+      <li>Custom Job with exit code</li>
+    </ul>
+  </li>
+  <li>AnalysisRun: is the instance of the analysis template and give the final verdict&nbsp;<ul>
+      <li>Once fail the automatic rollback is triggered&nbsp;</li>
+    </ul>
+  </li>
+</ul>
+<figure class="image"><img src="/analysise.png"></figure>
 <h6>Blue Green deployment with argo-rollout&nbsp;</h6>
 <ul>
   <li>argo rollout manage<mark class="marker-yellow"> RepliaSets and services</mark> ( active and preview in the same namespace)</li>
