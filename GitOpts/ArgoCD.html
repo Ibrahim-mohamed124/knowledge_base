@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-04T13:28:44.199Z
+date: 2026-01-11T12:40:04.260Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -84,16 +84,16 @@ dateCreated: 2025-12-29T09:23:18.217Z
 <figure class="image"><img src="/archee.png"></figure>
 <h3>Core Components&nbsp;</h3>
 <ul>
-  <li>argocd-server: gRPC/Rest API server that exposed the APIs to the UI/CLI/CICD systems.&nbsp;<ul>
+  <li>argocd-server: gRPC/Rest API server that exposed the APIs to the UI/CLI/CICD systems.<ul>
       <li>Manages Applications and credentials</li>
-      <li>Invokes operations like sync and rollback&nbsp;</li>
+      <li>Invokes operations like sync and rollback</li>
       <li>Handles authentication and RBAC by delegating authentication to the argocd-dex-server that integrates with different IdPs</li>
     </ul>
   </li>
   <li>argocd-redis: for caching only</li>
-  <li>argocd-repo-server:&nbsp;<ul>
+  <li>argocd-repo-server:<ul>
       <li>handles retrieving the files from repos servers</li>
-      <li>generate the final manifests&nbsp;</li>
+      <li>generate the final manifests</li>
       <li>Run the sidecar plugins</li>
     </ul>
   </li>
@@ -190,10 +190,11 @@ spec:
   <li>To create projects</li>
 </ul>
 <pre><code class="language-plaintext">argocd proj create -h</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>projects include state stores, target clusters, roles , resource white list, and a sync window<ul>
       <li>resource white list includes which k8s resources can be deployed in this project</li>
-      <li>sync windows: in which time the sync is allowed or blocked&nbsp;</li>
+      <li>sync windows: in which time the sync is allowed or blocked</li>
     </ul>
   </li>
 </ul>
@@ -217,10 +218,7 @@ spec:
 <h6>Installation</h6>
 <pre><code class="language-plaintext">kubectl create namespace argo-rollouts
 kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml</code></pre>
-<p>&nbsp;</p>
-<ul>
-  <li>Download the cli from the release pages</li>
-</ul>
+<p>Download the cli from the release pages</p>
 <pre><code class="language-plaintext">wget https://github.com/argoproj/argo-rollouts/releases/download/v1.8.3/kubectl-argo-rollouts-linux-amd64
 chmod +x kubectl-argo-rollouts-linux-amd64
 mv kubectl-argo-rollouts-linux-amd64 /usr/bin/local/kubectl-argo-rollouts</code></pre>
@@ -229,6 +227,17 @@ mv kubectl-argo-rollouts-linux-amd64 /usr/bin/local/kubectl-argo-rollouts</code>
   <li>To show the UI</li>
 </ul>
 <pre><code class="language-plaintext">kubectl-argo-rollouts dashboard</code></pre>
+<h6>Architecture</h6>
+<ul>
+  <li>Rollout Controller:&nbsp;<ul>
+      <li>controls the rollout resource lifecycle by creating the replicaSets and integrates with ingress controllers to split or redirect &nbsp;the traffic&nbsp;</li>
+    </ul>
+  </li>
+  <li>AnalysisTemplate Controller:&nbsp;<ul>
+      <li>Trigger AnalysisRuns to collect metrics to analysis the deployment performance&nbsp;</li>
+    </ul>
+  </li>
+</ul>
 <h6>Blue Green deployment with argo-rollout&nbsp;</h6>
 <ul>
   <li>argo rollout manage<mark class="marker-yellow"> RepliaSets and services</mark> ( active and preview in the same namespace)</li>
