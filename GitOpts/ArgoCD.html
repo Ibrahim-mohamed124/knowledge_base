@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T19:06:32.525Z
+date: 2026-01-11T19:12:54.383Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -383,6 +383,25 @@ spec:
           value: test   autoPromotionEnabled: false
 
 </code></pre>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: http-health-check
+  namespace: argo-analysis-lab
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: health-check
+    interval: 5s
+    count: 3
+    provider:
+      web:
+        method: GET
+        url: http://{{args.service-name}}.argo-analysis-lab.svc.cluster.local/health
+    successCondition: result.code &gt;= 200 &amp;&amp; result.code &lt; 300
+</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>types of analysis run in blue-green<ol>
       <li>pre-promotion: &nbsp;validation checks before routing the traffic to the new environment&nbsp;</li>
