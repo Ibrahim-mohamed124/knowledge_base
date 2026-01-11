@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T17:49:38.591Z
+date: 2026-01-11T17:51:30.037Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -351,14 +351,17 @@ spec:
     </ol>
   </li>
 </ul>
-<pre><code class="language-plaintext">strategy:
-  blueGreen:
-    postPromotionAnalysis
-     templates:
-     - templateName: test
-     args:
-      - name: test
-        value: test</code></pre>
+<pre><code class="language-plaintext">  strategy:
+    blueGreen:
+      activeService: highway-bluegreen-active
+      previewService: highway-bluegreen-preview
+      postPromotionAnalysis:
+       templates:
+       - templateName: test
+       args:
+        - name: test
+          value: test   autoPromotionEnabled: false
+</code></pre>
 <pre><code class="language-plaintext">    spec:
       containers:
       - name: highway-bluegreen
@@ -372,13 +375,13 @@ spec:
     blueGreen:
       activeService: highway-bluegreen-active
       previewService: highway-bluegreen-preview
-      autoPromotionEnabled: false
-    prePromotionAnalysis:
-     templates:
-     - templateName: test
-     args:
-      - name: test
-        value: test
+      prePromotionAnalysis:
+       templates:
+       - templateName: test
+       args:
+        - name: test
+          value: test   autoPromotionEnabled: false
+
 </code></pre>
 <ul>
   <li>types of analysis run in blue-green<ol>
