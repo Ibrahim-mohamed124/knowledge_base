@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-12T19:35:15.325Z
+date: 2026-01-12T19:55:18.764Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -28,14 +28,17 @@ dateCreated: 2026-01-12T17:31:57.809Z
   <li>to add an email and username for the repos</li>
 </ul>
 <pre><code class="language-plaintext">git config user.name &lt;name&gt; or user.email &lt;email&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to initialize a new repo&nbsp;</li>
+  <li>to initialize a new repo</li>
 </ul>
 <pre><code class="language-plaintext">git init</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to see the status of the files in the git repo&nbsp;</li>
+  <li>to see the status of the files in the git repo</li>
 </ul>
 <pre><code class="language-plaintext">git status</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">$ git status
 On branch master  &gt;&gt; the current branch
 
@@ -46,13 +49,15 @@ Untracked files: &gt;&gt; in the working area
         test.txt &gt;&gt; to add the file to the staginging area
 
 nothing added to commit but untracked files present (use "git add" to track)</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to add files to the staging area&nbsp;</li>
+  <li>to add files to the staging area</li>
 </ul>
 <blockquote>
   <p>In the staging area we can add files individually and commit them. For example, if we have file 1 and file2, and we finished working on file2 gist add the file 2 to the staging area and commit without file 1&nbsp;</p>
 </blockquote>
 <pre><code class="language-plaintext">git add &lt;files&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to commit files from the staging area</li>
 </ul>
@@ -60,26 +65,31 @@ nothing added to commit but untracked files present (use "git add" to track)</co
   <p>commit should be atomic, meaning that the should fix one issue or introduce one feature</p>
 </blockquote>
 <pre><code class="language-plaintext">git commit -m "message"</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>&nbsp;A commit records the change in the repository compared to its previous state.</p>
 </blockquote>
 <ul>
-  <li>&nbsp;to restore a file from the staged area</li>
+  <li>to restore a file from the staged area</li>
 </ul>
 <pre><code class="language-plaintext">git restore --staged &lt;file&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to discard changes in the working area and return to the state in the staging state</li>
 </ul>
 <pre><code class="language-plaintext">git restore &lt;file&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to remove one tracked files form the repo commits</li>
 </ul>
 <pre><code class="language-plaintext">git rm --force &gt; delete the file forever or --cached &gt; retain the file in the working dir &lt;file&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>.gitignore file to ignore local files while staging&nbsp;</li>
+  <li>.gitignore file to ignore local files while staging</li>
   <li>to see the commit history</li>
 </ul>
 <pre><code class="language-plaintext">git log | --one-line for compact view</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">commit 0aa6189134d19b3ea45347c177b0c2d531ddfe62 &gt;&gt; hash
 Author: Ibrahim Mohamed &lt;sci.ibrahimmohamed@gmail.com&gt; &gt;&gt; info
 Date:   Mon Jan 12 19:46:14 2026 +0200
@@ -87,9 +97,10 @@ Date:   Mon Jan 12 19:46:14 2026 +0200
     first &gt;&gt; commit message
 </code></pre>
 <ul>
-  <li>to &nbsp;list the changed files&nbsp;</li>
+  <li>to &nbsp;list the changed files</li>
 </ul>
 <pre><code class="language-plaintext">git log --name-only</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">commit 3004087b51e96b08d67bc05c73bc36cc9d76a8f3 (HEAD -&gt; master)
 Author: sarah &lt;sarah@example.com&gt;
 Date:   Mon Jan 12 18:39:47 2026 +0000
@@ -97,8 +108,9 @@ Date:   Mon Jan 12 18:39:47 2026 +0000
     Added the lion and mouse story
 
 lion-and-mouse.txt</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to get the latest commit&nbsp;</li>
+  <li>to get the latest commit</li>
 </ul>
 <pre><code class="language-cs">git log -n 1</code></pre>
 <h3>Branches&nbsp;</h3>
@@ -108,18 +120,22 @@ lion-and-mouse.txt</code></pre>
   <li>to create a new branch</li>
 </ul>
 <pre><code class="language-plaintext">git checkout -b &lt;branch name&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>to list all the branches</li>
 </ul>
 <pre><code class="language-plaintext">git branch</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to switch to another branch&nbsp;</li>
+  <li>to switch to another branch</li>
 </ul>
 <pre><code class="language-plaintext">git checkout &lt;branch name&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>to delete a branch&nbsp;</li>
+  <li>to delete a branch</li>
 </ul>
 <pre><code class="language-plaintext">git branch -d &lt; name &gt;.</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>Head point to the last commit on the current branch</p>
 </blockquote>
@@ -127,10 +143,19 @@ lion-and-mouse.txt</code></pre>
   <li>to merge branches first switch to the base branch and</li>
 </ul>
 <pre><code class="language-plaintext">git merge &lt;overlay_branch&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>types of merge:<ul>
       <li>fast forward: if the base branch has no extra commits, the head of the base branch is just moved to the last commit of the overlay branch</li>
-      <li>no &nbsp;fast forward: if the base branch has extra commits, git creates a new merging commit on the base branch that points to both branches&nbsp;</li>
+      <li>no &nbsp;fast forward: if the base branch has extra commits, git creates a new merging commit on the base branch that points to both branches</li>
     </ul>
   </li>
+</ul>
+<h3>Remote repos</h3>
+<ul>
+  <li>connect to the remote repos by using connection strings https://../…/name.git</li>
+</ul>
+<pre><code class="language-plaintext">git remote add origin</code></pre>
+<ul>
+  <li>this command adds the remote repo and give it an alias &lt;origin&gt;</li>
 </ul>
