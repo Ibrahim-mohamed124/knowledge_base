@@ -2,7 +2,7 @@
 title: Argo Events
 description: 
 published: true
-date: 2026-01-12T08:56:14.445Z
+date: 2026-01-12T09:03:23.548Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-11T20:00:21.964Z
@@ -57,5 +57,31 @@ spec:
 <h3>Event Sources</h3>
 <ul>
   <li>Constantly listen to events from various sources from the world&nbsp;</li>
+  <li>Transform events into cloud event format</li>
+  <li>Publish the cloud events to the Event Bus</li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: webhook
+spec:
+  service:
+    ports:
+      - port: 12000
+        targetPort: 12000
+    metadata:
+      labels:
+        foo: bar
+      annotations:
+        foo: bar
+  webhook:
+    # event-source can run multiple HTTP servers. Simply define a unique port to start a new HTTP server
+    example:
+      # port to run HTTP server on
+      port: "12000"
+      # endpoint to listen to
+      endpoint: /example
+      # HTTP request method to allow. In this case, only POST requests are accepted
+      method: POST
+
+</code></pre>
