@@ -2,7 +2,7 @@
 title: Argo Workflows
 description: 
 published: true
-date: 2026-01-09T13:26:16.320Z
+date: 2026-01-12T13:20:20.252Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-05T20:53:05.581Z
@@ -592,7 +592,7 @@ spec:
 <ul>
   <li>depends attribute utilize OR, AND, NOT logic gates to connect more complex flows</li>
   <li>dependencies attribute is more simple one only for succeeded result</li>
-  <li><mark class="marker-yellow">failFast</mark>: DAG stops by default if any task fail in it, but with this attribute it continues.</li>
+  <li><mark class="marker-yellow">failFast</mark>: The <code><strong>failFast: true</strong></code> setting changes the default DAG behavior. As soon as any task fails, Argo immediately stops scheduling new tasks and terminates any other tasks that are already running in the DAG. This prevents wasting resources on branches that will not be completed.</li>
 </ul>
 <pre><code class="language-plaintext">kind: Workflow
 metadata:
