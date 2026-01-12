@@ -2,7 +2,7 @@
 title: Argo Events
 description: 
 published: true
-date: 2026-01-11T20:37:07.447Z
+date: 2026-01-12T08:56:14.445Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-11T20:00:21.964Z
@@ -14,11 +14,11 @@ dateCreated: 2026-01-11T20:00:21.964Z
       <li>Event Sources: produce the event (webhooks, schedules, AWS notifies [s3, sqn,sns], and others)</li>
       <li>EventSource object: consumes these events and transforms them into one standard format (CloudEvents format)</li>
       <li>EventBus: central transport layer for events<ul>
-          <li>Decouples the event sources from the event consumers by receiving the events as a subscriber from the EventSource and handling them independently&nbsp;</li>
+          <li>Decouples the event sources from the event consumers by receiving the events as a subscriber from the EventSource and handling them independently</li>
         </ul>
       </li>
-      <li>Sensor: &nbsp;Performs logic to handle the events from the Bus and trigger definitions when the event dependencies are met.&nbsp;</li>
-      <li>Triggers: k8s jobs, workflow, notifier or any thing that triggered by an event &nbsp;</li>
+      <li>Sensor: &nbsp;Performs logic to handle the events from the Bus and trigger definitions when the event dependencies are met.</li>
+      <li>Triggers: k8s jobs, workflow, notifier or any thing that triggered by an event</li>
     </ul>
   </li>
 </ul>
@@ -54,5 +54,8 @@ spec:
         storageClassName: standard
         accessMode: ReadWriteOnce
         volumeSize: 10Gi</code></pre>
-<h3>&nbsp;</h3>
+<h3>Event Sources</h3>
+<ul>
+  <li>Constantly listen to events from various sources from the world&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
