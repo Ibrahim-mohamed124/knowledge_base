@@ -2,7 +2,7 @@
 title: Argo Events
 description: 
 published: true
-date: 2026-01-12T09:32:08.945Z
+date: 2026-01-12T09:58:38.394Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-11T20:00:21.964Z
@@ -49,11 +49,8 @@ spec:
   nats:
     native:
       replicas: 3 # optional, defaults to 3, and requires minimal 3
-      auth: token # optional, defaults to none
-      persistence: # optional
-        storageClassName: standard
-        accessMode: ReadWriteOnce
-        volumeSize: 10Gi</code></pre>
+      auth: none # optional, defaults to none
+</code></pre>
 <h3>Event Sources</h3>
 <ul>
   <li>Constantly listen to events from various sources from the world by exposing the event sources via http service (ingress or route) or using internal service attribute in the spec</li>
