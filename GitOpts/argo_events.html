@@ -2,7 +2,7 @@
 title: Argo Events
 description: 
 published: true
-date: 2026-01-12T09:04:49.620Z
+date: 2026-01-12T09:09:15.988Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-11T20:00:21.964Z
@@ -64,24 +64,19 @@ spec:
 kind: EventSource
 metadata:
   name: webhook
+  namespace: argo-events
 spec:
   service:
     ports:
-      - port: 12000
-        targetPort: 12000
-    metadata:
-      labels:
-        foo: bar
-      annotations:
-        foo: bar
+      - port: 13000
+        targetPort: 13000
+
   webhook:
-    # event-source can run multiple HTTP servers. Simply define a unique port to start a new HTTP server
     example:
-      # port to run HTTP server on
-      port: "12000"
-      # endpoint to listen to
+
+      port: "13000"
       endpoint: /example
-      # HTTP request method to allow. In this case, only POST requests are accepted
+
       method: POST
 
 </code></pre>
