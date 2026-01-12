@@ -2,7 +2,7 @@
 title: Argo Events
 description: 
 published: true
-date: 2026-01-12T11:16:10.181Z
+date: 2026-01-12T12:21:31.763Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-11T20:00:21.964Z
@@ -80,7 +80,7 @@ spec:
 </code></pre>
 <h3>Sensors</h3>
 <ul>
-  <li>Implement the logic of event trafficking by listening to the Event Bus and triggering actions when certain conditions are met.&nbsp;</li>
+  <li>Implement the logic of event trafficking by listening to the Event Bus and triggering actions when certain conditions are met.</li>
   <li>use the parameters attribute to use data from the event in the trigger action</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
@@ -130,6 +130,7 @@ spec:
                 dependencyName: test-dep
                 dataKey: body.message
               dest: spec.containers.0.args.0</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>the sensor needs a service account with correct privileges to create pods in the cluster&nbsp;</p>
 </blockquote>
@@ -159,11 +160,52 @@ spec:
       conditions: "test-dep || other-test"
         name: webhook-sensor-pod-trigger
         k8s:</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext"> curl -X POST http://webhook-eventsource-svc.argo-events.svc.cluster.local:13000/push   -H "Content-Type: application/json"   -H "Accept: application/json"   -d '{
     "message": "hi"
   }'
 </code></pre>
-<p>&nbsp;</p>
+<h3>Integration with mino</h3>
+<ul>
+  <li>create a secret with the credentials&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext"> k -n argo-events create secret generic artifacts-minio --from-literal=accesskey=admin --from-literal=secretkey=password</code></pre>
+<ul>
+  <li>create the event source</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: minio
+spec:
+  minio:
+    example:
+      # bucket information
+      bucket:
+        # name of the bucket
+        name: test-bucket
+      # s3 service endpoint
+      endpoint: minio.argo.svc.cluster.local:9000
+      # list of events to subscribe to
+      # Visit https://docs.minio.io/docs/minio-bucket-notification-guide.html
+      events:
+        - s3:ObjectCreated:Put
+        - s3:ObjectRemoved:Delete
+      # type of the connection
+      insecure: true
+      # accessKey refers to K8s secret that stores the access key
+      accessKey:
+        # Key within the K8s secret whose corresponding value (must be base64 encoded) is access key
+        key: accesskey
+        # Name of the K8s secret that contains the access key
+        name: artifacts-minio
+      # secretKey contains information about K8s secret that stores the secret key
+      secretKey:
+        # Key within the K8s secret whose corresponding value (must be base64 encoded) is secret key
+        key: secretkey
+        # Name of the K8s secret that contains the secret key
+        name: artifacts-minio
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
