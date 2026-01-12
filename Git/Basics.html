@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-12T18:46:11.234Z
+date: 2026-01-12T18:59:12.756Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -101,3 +101,25 @@ lion-and-mouse.txt</code></pre>
   <li>to get the latest commit&nbsp;</li>
 </ul>
 <pre><code class="language-cs">git log -n 1</code></pre>
+<h3>Branches&nbsp;</h3>
+<ul>
+  <li>default branch is master</li>
+  <li>a branch is a pointer to the last commit</li>
+  <li>to create a new branch</li>
+</ul>
+<pre><code class="language-plaintext">git checkout -b &lt;branch name&gt;</code></pre>
+<ul>
+  <li>to list all the branches</li>
+</ul>
+<pre><code class="language-plaintext">git branch</code></pre>
+<ul>
+  <li>to switch to another branch&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">git checkout &lt;branch name&gt;</code></pre>
+<ul>
+  <li>to delete a branch&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">git branch -d &lt; name &gt;.</code></pre>
+<blockquote>
+  <p>Head point to the last commit on the current branch</p>
+</blockquote>
