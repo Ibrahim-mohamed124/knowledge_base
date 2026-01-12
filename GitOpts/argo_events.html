@@ -2,7 +2,7 @@
 title: Argo Events
 description: 
 published: true
-date: 2026-01-12T09:14:54.674Z
+date: 2026-01-12T09:21:27.182Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-11T20:00:21.964Z
@@ -85,8 +85,48 @@ spec:
 <ul>
   <li>Implement the logic of event trafficking by listening to the Event Bus and triggering actions when certain conditions are met.&nbsp;</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: webhook-sensor
+  namespace: argo-events
+spec:
+
+  eventBusName: default
+  template:
+    serviceAccountName: operate-workflow-sa
+  dependencies:
+    - name: test-dep
+      eventSourceName: webhook
+      eventName: example-webhook
+  triggers:
+    - template:
+        name: webhook-sensor-pod-trigger
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                generateName: webhook-sensor-po-
+                namespace: argo-events
+              spec:
+
+                containers:
+
+                 - name: webhook-sensor-container
+
+                   command: 
+
+                     - echo
+
+                   args: 
+
+                     - "test message"
+
+                   image: busybox
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
