@@ -2,7 +2,7 @@
 title: Argo Events
 description: 
 published: true
-date: 2026-01-12T10:05:56.349Z
+date: 2026-01-12T10:34:47.432Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-11T20:00:21.964Z
@@ -94,6 +94,7 @@ spec:
   template:
     serviceAccountName: operate-workflow-sa
   dependencies:
+  
     - name: test-dep
       eventSourceName: webhook
       eventName: example-webhook
@@ -129,6 +130,9 @@ spec:
                 dependencyName: test-dep
                 dataKey: body.message
               dest: spec.containers.0.args.0</code></pre>
+<blockquote>
+  <p>the sensor needs a service account with correct privileges to create pods in the cluster&nbsp;</p>
+</blockquote>
 <h6>trigger conditions</h6>
 <ul>
   <li>many dependency using AND , OR logic gates</li>
