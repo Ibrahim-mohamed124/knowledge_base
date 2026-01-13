@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T10:20:38.082Z
+date: 2026-01-13T10:22:04.371Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -103,7 +103,14 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ul>
 <pre><code class="language-plaintext"> oc get network.operator.openshift.io cluster -o yaml</code></pre>
 <ul>
-  <li><strong>Unmanaged DaemonSets</strong></li>
+  <li><strong>Unmanaged DaemonSets</strong>
+    <ul>
+      <li>All DaemonSet objects in the <code>openshift-sdn</code> namespace, which are not managed by the Cluster Network Operator (CNO), must be removed before initiating the Limited Live Ligration.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get daemonset -n openshift-sdn</code></pre>
+<ul>
   <li><strong>GitOps Configuration Management</strong></li>
   <li><strong>kube-proxy customization</strong></li>
 </ul>
