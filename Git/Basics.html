@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T20:22:26.827Z
+date: 2026-01-13T20:24:16.847Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -348,3 +348,62 @@ first
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">Every 1.0s: find .                                    k8s-master: Tue Jan 13 22:22:38 2026
+
+.
+./.git
+./.git/branches
+./.git/hooks
+./.git/info
+./.git/info/exclude
+./.git/description
+./.git/config
+./.git/refs
+./.git/refs/heads
+./.git/refs/heads/master
+./.git/refs/tags
+./.git/HEAD
+./.git/objects
+./.git/objects/pack
+./.git/objects/info
+./.git/objects/d6
+./.git/objects/d6/c6a3b586af9530f6235f804d3fbbf3246a4756
+./.git/objects/62
+./.git/objects/62/0e8c4c4fd1a7f859c4261bb81509f3964c34e3
+./.git/objects/6e
+./.git/objects/6e/e1ee55207b4c0f8d43faf8e425536822cfabb0
+./.git/objects/b1
+./.git/objects/b1/0b7f506db51c41ac0eeb008559e2a6ec9a7cc5  &gt;&gt; the new blob for test2.txt content
+./.git/objects/34
+./.git/objects/34/f0c6c46f6338b4c4ac7103888ca334799bd0b5  &gt;&gt; new tree with the two blobs
+./.git/objects/a3
+./.git/objects/a3/f622863b944e3fdd212b2039a0786c2864041e  &gt;&gt; the new commit 
+./.git/index
+./.git/COMMIT_EDITMSG
+./.git/logs
+./.git/logs/HEAD
+./.git/logs/refs
+./.git/logs/refs/heads
+./.git/logs/refs/heads/master
+./test1.txt
+./test2.txt
+</code></pre>
+<pre><code class="language-plaintext">[root@k8s-master git]# git cat-file -t 34f0
+tree
+[root@k8s-master git]# ls
+test1.txt  test2.txt
+[root@k8s-master git]# git cat-file -t a3f6
+commit
+[root@k8s-master git]# git cat-file -p 34f0
+100644 blob d6c6a3b586af9530f6235f804d3fbbf3246a4756    test1.txt
+100644 blob b10b7f506db51c41ac0eeb008559e2a6ec9a7cc5    test2.txt
+[root@k8s-master git]# git cat-file -p a3f6
+tree 34f0c6c46f6338b4c4ac7103888ca334799bd0b5
+parent 6ee1ee55207b4c0f8d43faf8e425536822cfabb0
+author Your Name &lt;you@example.com&gt; 1768335578 +0200
+committer Your Name &lt;you@example.com&gt; 1768335578 +0200
+
+second
+[root@k8s-master git]#
+</code></pre>
+<p>&nbsp;</p>
