@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T21:09:11.181Z
+date: 2026-01-13T21:09:55.047Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -431,3 +431,9 @@ second
 ./.git/refs/heads/master &gt; the head of the master branch pointing to the current commit
 ./.git/refs/heads/test  &gt; the head of the new branch pointing to the current commit 
 ./.git/refs/tags</code></pre>
+<pre><code class="language-plaintext">[root@k8s-master git]# git branch test
+[root@k8s-master git]# cat .git/refs/heads/master
+f6271d285780cd056ddb5ef46f7358080d8c9ea3
+[root@k8s-master git]# cat .git/refs/heads/test
+f6271d285780cd056ddb5ef46f7358080d8c9ea3
+</code></pre>
