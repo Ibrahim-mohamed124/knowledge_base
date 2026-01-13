@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-11T19:16:38.349Z
+date: 2026-01-13T14:32:58.033Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -198,6 +198,9 @@ spec:
     </ul>
   </li>
 </ul>
+<blockquote>
+  <p>While this window defines an "allow" schedule, the presence of <code><strong>manualSync: true</strong></code> explicitly disables automatic synchronization for applications matching this window. It means that even during the allowed time, a user must initiate the sync manually.</p>
+</blockquote>
 <h3>Deployment strategies&nbsp;</h3>
 <ol>
   <li>RollingUpdate: Replaces pods one by one after becoming ready ( default )</li>
@@ -316,11 +319,12 @@ spec:
     interval: 20s
     failureLimit: 1
     successCondition: result &gt; 5</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>args: for passing parameters</li>
   <li>metrics: list of checks to perform</li>
   <li>provider: the data source like http request, prometheus, jobs</li>
-  <li>count: number of runs&nbsp;</li>
+  <li>count: number of runs</li>
   <li>interval: time between each count</li>
   <li>failure limit: how many conuts allowed to fail?</li>
   <li>success condition: <mark class="marker-yellow">defines the success criteria for the run using parameters from the respond body</mark></li>
@@ -405,8 +409,8 @@ spec:
 <p>&nbsp;</p>
 <ul>
   <li>types of analysis run in blue-green<ol>
-      <li>pre-promotion: &nbsp;validation checks before routing the traffic to the new environment&nbsp;</li>
-      <li>post-promotion: validation checks after routing the traffic to the new environment&nbsp;</li>
+      <li>pre-promotion: &nbsp;validation checks before routing the traffic to the new environment</li>
+      <li>post-promotion: validation checks after routing the traffic to the new environment</li>
     </ol>
   </li>
 </ul>
