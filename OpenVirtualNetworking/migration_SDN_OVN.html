@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T12:22:14.140Z
+date: 2026-01-13T12:25:08.839Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -14,6 +14,9 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <li>Offline Migration used for on-prem clusters</li>
   <li>Limited live migration to automatically migrate from SDN to OVN</li>
 </ol>
+<blockquote>
+  <p>After running this command, the migration process begins. During this process, the Machine Config Operator reboots the nodes in your cluster twice. The migration takes approximately twice as long as a cluster upgrade</p>
+</blockquote>
 <h3>Limited Live Migration</h3>
 <ul>
   <li>No service interruption</li>
