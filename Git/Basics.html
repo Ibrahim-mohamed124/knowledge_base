@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T20:24:16.847Z
+date: 2026-01-13T20:46:06.801Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -342,7 +342,7 @@ committer Your Name &lt;you@example.com&gt; 1768334837 +0200
 first
 </code></pre>
 <ul>
-  <li>commuting another file creates two more objects a tree and a commit&nbsp;<ul>
+  <li>committing another file creates two more objects a tree and a commit&nbsp;<ul>
       <li>the tree contains the two blobs the old and the new one</li>
       <li>the new commit reference the new tree that contain the new blob</li>
     </ul>
@@ -406,4 +406,6 @@ committer Your Name &lt;you@example.com&gt; 1768335578 +0200
 second
 [root@k8s-master git]#
 </code></pre>
-<p>&nbsp;</p>
+<blockquote>
+  <p>blobs under the .git/objects are loose files not packfiles so every blob contains the full file content in that commit</p>
+</blockquote>
