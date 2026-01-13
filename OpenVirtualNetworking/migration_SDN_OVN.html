@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T12:03:03.534Z
+date: 2026-01-13T12:04:12.941Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -131,6 +131,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
     </ul>
   </li>
   <li>the hardware time stamping cannot be applied to primary interface devices, such as an Open vSwitch (OVS) bridge. As a result, UDP version 4 configurations cannot work with a <code>br-ex</code> interface.</li>
+  <li>if run an Operator or you have configured any application with the <mark class="marker-yellow">pod disruption budget,</mark> you might experience an interruption during the update process. If <code>minAvailable</code> is set to 1 in <code>PodDisruptionBudget</code>, the nodes are drained to apply pending machine configs which might block the eviction process. If several nodes are rebooted, all the pods might run on only one node, and the <code>PodDisruptionBudget</code> field can prevent the node drain</li>
 </ul>
 <h3>Monitoring the stages of the migration</h3>
 <ul>
