@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T09:39:53.610Z
+date: 2026-01-13T09:41:39.657Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -44,7 +44,14 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ul>
 <pre><code class="language-plaintext">oc get pods --all-namespaces -o json | jq '.items[] | select(.metadata.annotations."pod.network.openshift.io/assign-macvlan" == "true") | {name: .metadata.name, namespace: .metadata.namespace}'</code></pre>
 <ul>
-  <li><strong>Multicast</strong></li>
+  <li><strong>Multicast</strong>
+    <ul>
+      <li><code>Multicast</code> functionality is disabled during a limited live migration</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get netnamespace -o json | jq -r '.items[] | select(.metadata.annotations."netnamespace.network.openshift.io/multicast-enabled" == "true") | .metadata.name'</code></pre>
+<ul>
   <li><strong>Multitenant Isolation Mode</strong></li>
   <li><strong>100.64.0.0/16 and 100.88.0.0/16 Address Range Usage</strong></li>
   <li><strong>Maximum Transmission Unit - MTU</strong></li>
