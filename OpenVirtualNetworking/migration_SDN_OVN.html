@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T09:20:26.801Z
+date: 2026-01-13T09:39:21.953Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -36,7 +36,14 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ul>
 <pre><code class="language-plaintext">oc get egressnetworkpolicies.network.openshift.io -A</code></pre>
 <ul>
-  <li><strong>Egress Router</strong></li>
+  <li><strong>Egress Router</strong>
+    <ul>
+      <li>The <code>EgressRouter</code> functionality will not work during the limited live migration, is not automatically migrated, and is required to be reconfigured once the migration is complete</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get pods --all-namespaces -o json | jq '.items[] | select(.metadata.annotations."pod.network.openshift.io/assign-macvlan" == "true") | {name: .metadata.name, namespace: .metadata.namespace}'</code></pre>
+<ul>
   <li><strong>Multicast</strong></li>
   <li><strong>Multitenant Isolation Mode</strong></li>
   <li><strong>100.64.0.0/16 and 100.88.0.0/16 Address Range Usage</strong></li>
