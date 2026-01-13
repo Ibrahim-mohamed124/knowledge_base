@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T12:09:59.712Z
+date: 2026-01-13T12:12:27.469Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -139,6 +139,17 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <li>User initiate the migration by patching the default network CR</li>
 </ol>
 <pre><code class="language-plaintext">oc patch Network.config.openshift.io cluster --type='merge' --patch '{"metadata":{"annotations":{"network.openshift.io/network-type-migration":""}},"spec":{"networkType":"OVNKubernetes"}}'</code></pre>
+<p>&nbsp; 2. The migration program:</p>
+<ul>
+  <li>Sets migration related fields in the <code>network.operator</code> custom resource (CR) and waits for routable MTUs to be applied to all nodes.</li>
+  <li>Patches the <code>network.operator</code> CR to set the migration mode to <code>Live</code> for OVN-Kubernetes and deploys the OpenShift SDN network plugin in migration mode.</li>
+  <li>Deploys OVN-Kubernetes with hybrid overlay enabled, ensuring that no racing conditions occur.</li>
+  <li>Waits for the OVN-Kubernetes deployment and updates the conditions in the status of the <code>network.config</code> CR.</li>
+  <li>Triggers the Machine Config Operator (MCO) to apply the new machine config to each machine config pool, which includes node cordoning, draining, and rebooting.</li>
+  <li>OVN-Kubernetes adds nodes to the appropriate zones and recreates pods using OVN-Kubernetes as the default CNI plugin.</li>
+  <li>Removes migration-related fields from the network.operator CR and performs cleanup actions, such as deleting OpenShift SDN resources and redeploying OVN-Kubernetes in normal mode with the necessary configurations.</li>
+  <li>Waits for the OVN-Kubernetes redeployment and updates the status conditions in the <code>network.config</code> CR to indicate migration completion. If your migration is blocked, see "Checking limited live migration metrics" for information on troubleshooting the issue.</li>
+</ul>
 <h3>Monitoring the stages of the migration</h3>
 <ul>
   <li>follow the progress of the migration using the following statuses set on the <code>network.config</code> CustomResource (CR).</li>
