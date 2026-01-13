@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T10:13:11.843Z
+date: 2026-01-13T10:17:47.303Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -87,7 +87,14 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ul>
 <pre><code class="language-plaintext">oc get nncp</code></pre>
 <ul>
-  <li><strong>Multiple Network Interface Cards on a Node</strong></li>
+  <li><strong>Multiple Network Interface Cards on a Node</strong>
+    <ul>
+      <li>if these secondary interfaces were set up on the default network interface card (NIC) of the host, using the network types like MACVLAN, IPVLAN, SR-IOV, or bridge interfaces with the default NIC as the control node, OVN-Kubernetes might encounter issues.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get network-attachment-definitions -A</code></pre>
+<ul>
   <li><strong>Static Routes and Routing Policies</strong></li>
   <li><strong>Unmanaged DaemonSets</strong></li>
   <li><strong>GitOps Configuration Management</strong></li>
