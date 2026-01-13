@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T09:45:29.383Z
+date: 2026-01-13T10:08:31.548Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -27,7 +27,9 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get netnamespace -A | awk '$3 != ""'</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc get hostsubnet | awk '$5 != ""'</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>EgressIP is a CRD allowing the user to define a fixed source IP for all egress traffic originating from any pods which match the EgressIP resource according to its spec definition.</p>
 </blockquote>
@@ -35,6 +37,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <li>check for <strong>EgressNetworkPolicy</strong></li>
 </ul>
 <pre><code class="language-plaintext">oc get egressnetworkpolicies.network.openshift.io -A</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Egress Router</strong>
     <ul>
@@ -43,6 +46,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get pods --all-namespaces -o json | jq '.items[] | select(.metadata.annotations."pod.network.openshift.io/assign-macvlan" == "true") | {name: .metadata.name, namespace: .metadata.namespace}'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Multicast</strong>
     <ul>
@@ -51,6 +55,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get netnamespace -o json | jq -r '.items[] | select(.metadata.annotations."netnamespace.network.openshift.io/multicast-enabled" == "true") | .metadata.name'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Multitenant Isolation Mode</strong>
     <ul>
@@ -65,6 +70,9 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get network/cluster -o json | jq '.spec | .clusterNetwork[].cidr,.serviceNetwork'</code></pre>
+<blockquote>
+  <p>&nbsp;It is also recommended to check with your datacenter networking team to verify these range are not used anywhere else on external networks within your OpenShift infrastructure.</p>
+</blockquote>
 <ul>
   <li><strong>Maximum Transmission Unit - MTU</strong></li>
   <li><strong>NodeNetworkConfigurationPolicy</strong></li>
