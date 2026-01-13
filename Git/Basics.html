@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T19:05:31.623Z
+date: 2026-01-13T19:06:41.818Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -208,7 +208,12 @@ lion-and-mouse.txt</code></pre>
 </ul>
 <h3>How Git really works?</h3>
 <ul>
-  <li>Git is a database and its units are commits</li>
+  <li>Git is a database and its units are commits forming a DAG</li>
+</ul>
+<blockquote>
+  <p>DAG: because commit point backward to their parents and in a non liner non cyclic way</p>
+</blockquote>
+<ul>
   <li>commit is a complete snapshot of entire project at a point of time and contain:<ul>
       <li>A pointer to the complete snapshot</li>
       <li>Metadata about the commit</li>
