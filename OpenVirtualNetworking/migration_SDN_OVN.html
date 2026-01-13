@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T09:41:39.657Z
+date: 2026-01-13T09:42:34.084Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -52,7 +52,12 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ul>
 <pre><code class="language-plaintext">oc get netnamespace -o json | jq -r '.items[] | select(.metadata.annotations."netnamespace.network.openshift.io/multicast-enabled" == "true") | .metadata.name'</code></pre>
 <ul>
-  <li><strong>Multitenant Isolation Mode</strong></li>
+  <li><strong>Multitenant Isolation Mode</strong>
+    <ul>
+      <li>This feature is only supported by <code>OpenShift-SDN</code> and will stop working during and after the migration is completed</li>
+      <li>Look for Multitenant Isolation Mode by checking the <code>Network</code> custom resource for the <code>mode: Multitenant</code> configuration:</li>
+    </ul>
+  </li>
   <li><strong>100.64.0.0/16 and 100.88.0.0/16 Address Range Usage</strong></li>
   <li><strong>Maximum Transmission Unit - MTU</strong></li>
   <li><strong>NodeNetworkConfigurationPolicy</strong></li>
