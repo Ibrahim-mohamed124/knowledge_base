@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T08:53:05.970Z
+date: 2026-01-13T08:59:06.419Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -16,6 +16,16 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ol>
 <h3>Limited Live Migration</h3>
 <ul>
-  <li>No service interruption&nbsp;</li>
-  <li>supported on vmware, baremetal, nutanix, and openstack&nbsp;</li>
+  <li>No service interruption</li>
+  <li>supported on vmware, baremetal, nutanix, and openstack</li>
 </ul>
+<h3>Prerequisites&nbsp;</h3>
+<ul>
+  <li><code>EgressIP</code> functionality is disabled during a limited live migration<ul>
+      <li>Look for usage of <code>EgressIP</code> in your cluster by checking for <code>egressIPs</code> or <code>egressCIDRs</code> on your <code>NetNamespace</code> and <code>HostSubnet</code> objects</li>
+    </ul>
+  </li>
+</ul>
+<blockquote>
+  <p>EgressIP is a CRD allowing the user to define a fixed source IP for all egress traffic originating from any pods which match the EgressIP resource according to its spec definition.</p>
+</blockquote>
