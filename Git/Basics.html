@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T21:36:41.351Z
+date: 2026-01-13T21:48:56.104Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -211,9 +211,16 @@ lion-and-mouse.txt</code></pre>
   <li>Putting one branch on top of another one:<ul>
       <li>creates new commits automatically with new hashes because the commits are copied from one branch to another</li>
       <li>modifies the git history by the interactive rebase</li>
+      <li><code>git rebase -i HEAD~x&nbsp;</code>
+        <ul>
+          <li>x number of commit that should be modified</li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">git switch destination branch
+git rebase target branch</code></pre>
 <h3>How Git really works?</h3>
 <ul>
   <li>Git is a content-addressable object database and its units are trees, commits, and blobs.</li>
