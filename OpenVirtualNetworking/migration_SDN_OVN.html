@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T08:59:06.419Z
+date: 2026-01-13T09:01:18.451Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -26,6 +26,8 @@ dateCreated: 2026-01-13T08:53:05.970Z
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">oc get netnamespace -A | awk '$3 != ""'</code></pre>
+<pre><code class="language-plaintext">oc get hostsubnet | awk '$3 != """'</code></pre>
 <blockquote>
   <p>EgressIP is a CRD allowing the user to define a fixed source IP for all egress traffic originating from any pods which match the EgressIP resource according to its spec definition.</p>
 </blockquote>
