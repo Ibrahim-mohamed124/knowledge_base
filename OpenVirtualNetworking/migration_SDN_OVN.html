@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T12:25:08.839Z
+date: 2026-01-13T12:29:00.513Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -154,6 +154,15 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <li>Waits for the OVN-Kubernetes redeployment and updates the status conditions in the <code>network.config</code> CR to indicate migration completion. If your migration is blocked, see "Checking limited live migration metrics" for information on troubleshooting the issue.</li>
 </ul>
 <h3>Monitoring the stages of the migration</h3>
+<ul>
+  <li>To ensure that the migration process has completed</li>
+</ul>
+<pre><code class="language-plaintext">oc get network.config.openshift.io cluster -o jsonpath='{.status.networkType}'</code></pre>
+<pre><code class="language-plaintext">oc get network.config cluster -o=jsonpath='{.status.conditions}' | jq .</code></pre>
+<ul>
+  <li>a successful migration operation, remove the <code>network.openshift.io/network-type-migration-</code> annotation from the <code>network.config</code> custom resourc</li>
+</ul>
+<pre><code class="language-plaintext">oc annotate network.config cluster network.openshift.io/network-type-migration-</code></pre>
 <ul>
   <li>follow the progress of the migration using the following statuses set on the <code>network.config</code> CustomResource (CR).</li>
 </ul>
