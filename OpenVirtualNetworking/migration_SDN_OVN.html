@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T09:42:34.084Z
+date: 2026-01-13T09:45:29.383Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -58,7 +58,14 @@ dateCreated: 2026-01-13T08:53:05.970Z
       <li>Look for Multitenant Isolation Mode by checking the <code>Network</code> custom resource for the <code>mode: Multitenant</code> configuration:</li>
     </ul>
   </li>
-  <li><strong>100.64.0.0/16 and 100.88.0.0/16 Address Range Usage</strong></li>
+  <li><strong>100.64.0.0/16 and 100.88.0.0/16 Address Range Usage</strong>
+    <ul>
+      <li>OVN-Kubernetes uses the <code>100.64.0.0/16</code> and <code>100.88.0.0/16</code> IP range internally by default and this can not overlap.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get network/cluster -o json | jq '.spec | .clusterNetwork[].cidr,.serviceNetwork'</code></pre>
+<ul>
   <li><strong>Maximum Transmission Unit - MTU</strong></li>
   <li><strong>NodeNetworkConfigurationPolicy</strong></li>
   <li><strong>Multiple Network Interface Cards on a Node</strong></li>
