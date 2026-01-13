@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T20:46:06.801Z
+date: 2026-01-13T20:50:38.949Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -409,3 +409,16 @@ second
 <blockquote>
   <p>blobs under the .git/objects are loose files not packfiles so every blob contains the full file content in that commit</p>
 </blockquote>
+<pre><code class="language-plaintext">When Git does use packfiles automatically
+
+	You usually do not need to run git gc manually.
+
+	Git automatically packs objects when:
+
+	You run git fetch or git pull
+
+	You run git push
+
+	Loose object count crosses a threshold
+
+	Background maintenance is enabled (modern Git)</code></pre>
