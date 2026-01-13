@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T10:31:52.380Z
+date: 2026-01-13T10:36:51.500Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -70,6 +70,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get network/cluster -o json | jq '.spec | .clusterNetwork[].cidr,.serviceNetwork'</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>&nbsp;It is also recommended to check with your datacenter networking team to verify these range are not used anywhere else on external networks within your OpenShift infrastructure.</p>
 </blockquote>
@@ -86,6 +87,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get nncp</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Multiple Network Interface Cards on a Node</strong>
     <ul>
@@ -94,6 +96,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get network-attachment-definitions -A</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Static Routes and Routing Policies</strong>
     <ul>
@@ -102,6 +105,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext"> oc get network.operator.openshift.io cluster -o yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Unmanaged DaemonSets</strong>
     <ul>
@@ -110,6 +114,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   </li>
 </ul>
 <pre><code class="language-plaintext">oc get daemonset -n openshift-sdn</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>GitOps Configuration Management</strong>
     <ul>
@@ -124,6 +129,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ul>
 <h3>Monitoring the stages of the migration</h3>
 <ul>
-  <li>&nbsp;</li>
+  <li>follow the progress of the migration using the following statuses set on the <code>network.config</code> CustomResource (CR).</li>
 </ul>
+<pre><code class="language-plaintext">oc get network.config.openshift.io cluster -o yaml</code></pre>
 <p>&nbsp;</p>
