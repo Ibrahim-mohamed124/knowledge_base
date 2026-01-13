@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T10:17:47.303Z
+date: 2026-01-13T10:20:38.082Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -95,7 +95,14 @@ dateCreated: 2026-01-13T08:53:05.970Z
 </ul>
 <pre><code class="language-plaintext">oc get network-attachment-definitions -A</code></pre>
 <ul>
-  <li><strong>Static Routes and Routing Policies</strong></li>
+  <li><strong>Static Routes and Routing Policies</strong>
+    <ul>
+      <li>If the cluster depends on static routes or routing policies via the host network so that pods can reach specific external destinations, you must set <code>routingViaHost</code> to <code>true</code> and <code>ipForwarding</code> to <code>Global</code> on the <code>gatewayConfig</code> key in the <code>network.operator.openshift.io</code> CR before you start the Limited Live Migration.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext"> oc get network.operator.openshift.io cluster -o yaml</code></pre>
+<ul>
   <li><strong>Unmanaged DaemonSets</strong></li>
   <li><strong>GitOps Configuration Management</strong></li>
   <li><strong>kube-proxy customization</strong></li>
