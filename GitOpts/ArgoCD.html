@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-13T14:32:58.033Z
+date: 2026-01-13T14:36:57.966Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-29T09:23:18.217Z
@@ -624,6 +624,7 @@ items:
 </ul>
 <h6>Canary deployment</h6>
 <ul>
+  <li>The <code><strong>setWeight</strong></code> step is the primary mechanism for traffic shaping in a canary strategy. The integer value provided (e.g., <code><strong>setWeight: 10</strong></code>) instructs the Rollout controller to modify the underlying networking layer (like an Ingress or service mesh) to direct that percentage of traffic to the new version's service.</li>
   <li>Gradual rollout to eventually reach 100% of the new version by certain rate.</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: argoproj.io/v1alpha1
