@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T10:08:31.548Z
+date: 2026-01-13T10:13:11.843Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -74,8 +74,19 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <p>&nbsp;It is also recommended to check with your datacenter networking team to verify these range are not used anywhere else on external networks within your OpenShift infrastructure.</p>
 </blockquote>
 <ul>
-  <li><strong>Maximum Transmission Unit - MTU</strong></li>
-  <li><strong>NodeNetworkConfigurationPolicy</strong></li>
+  <li><strong>Maximum Transmission Unit - MTU</strong>
+    <ul>
+      <li>During the limited live migration, both OVN-Kubernetes and OpenShift SDN run in parallel. OVN-Kubernetes manages the cluster network of some nodes, while OpenShift SDN manages the cluster network of others. To ensure that cross-CNI traffic remains functional, the Cluster Network Operator updates the routable MTU to ensure that both CNIs share the same overlay MTU. As a result, after the migration has completed, the cluster MTU is 50 bytes less.</li>
+    </ul>
+  </li>
+  <li><strong>NodeNetworkConfigurationPolicy</strong>
+    <ul>
+      <li>The OpenShiftSDN CNI plugin supports a NodeNetworkConfigurationPolicy (NNCP) custom resource (CR) to configure the primary interface on a node. The OVN-Kubernetes network plugin does not have this capability.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get nncp</code></pre>
+<ul>
   <li><strong>Multiple Network Interface Cards on a Node</strong></li>
   <li><strong>Static Routes and Routing Policies</strong></li>
   <li><strong>Unmanaged DaemonSets</strong></li>
