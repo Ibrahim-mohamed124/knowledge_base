@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T10:36:51.500Z
+date: 2026-01-13T12:03:03.534Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -19,6 +19,9 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <li>No service interruption</li>
   <li>supported on vmware, baremetal, nutanix, and openstack</li>
 </ul>
+<blockquote>
+  <p>there are multiple NICs inside of the host, and the default route is not on the interface that has the Kubernetes NodeIP, you must use the offline migration instead</p>
+</blockquote>
 <h3>Prerequisites from this <a href="https://access.redhat.com/solutions/7057169">article&nbsp;</a></h3>
 <ul>
   <li><code>EgressIP</code> functionality is disabled during a limited live migration<ul>
@@ -42,6 +45,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <li><strong>Egress Router</strong>
     <ul>
       <li>The <code>EgressRouter</code> functionality will not work during the limited live migration, is not automatically migrated, and is required to be reconfigured once the migration is complete, check the existence of Egress router pods</li>
+      <li>Egresss router pods block the limited live migration process. <mark class="marker-yellow">They must be removed before beginning the limited live migration process.</mark></li>
     </ul>
   </li>
 </ul>
@@ -126,6 +130,7 @@ dateCreated: 2026-01-13T08:53:05.970Z
       <li>The <code>OVNKubernetes</code> CNI does not support custom <code>kube-proxy</code> configurations. If you are customizing <code>kube-proxy</code> through the <code>kubeProxyConfig</code> key in the <code>network.operator.openshift.io</code> CR, you need to edit it and remove the options, you can perform this changes even after migration to OVN is completed.</li>
     </ul>
   </li>
+  <li>the hardware time stamping cannot be applied to primary interface devices, such as an Open vSwitch (OVS) bridge. As a result, UDP version 4 configurations cannot work with a <code>br-ex</code> interface.</li>
 </ul>
 <h3>Monitoring the stages of the migration</h3>
 <ul>
