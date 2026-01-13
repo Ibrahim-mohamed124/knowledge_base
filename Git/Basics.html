@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T20:02:00.879Z
+date: 2026-01-13T20:06:36.114Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -235,3 +235,52 @@ lion-and-mouse.txt</code></pre>
   <p>Every object of this database is stored in the desk on .git/objects/SHA 1 of the file content &nbsp;and the content is ZIP encrypted</p>
 </blockquote>
 <pre><code class="language-plaintext">git cat-file -t &lt;type&gt; or -p &lt;content&gt; SHA</code></pre>
+<h3>Actual Demo</h3>
+<ul>
+  <li>Once a git repo is initialized these dirs &nbsp;are created&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">Every 1.0s: find .                                    k8s-master: Tue Jan 13 22:04:22 2026
+
+.
+./.git
+./.git/branches
+./.git/hooks
+./.git/info
+./.git/info/exclude
+./.git/description
+./.git/config
+./.git/refs
+./.git/refs/heads
+./.git/refs/tags
+./.git/HEAD
+
+./.git/index
+
+......
+</code></pre>
+<ul>
+  <li>after adding a file to the staging area&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">Every 1.0s: find .                                    k8s-master: Tue Jan 13 22:05:16 2026
+
+.
+./.git
+./.git/branches
+./.git/hooks
+./.git/info
+./.git/info/exclude
+./.git/description
+./.git/config
+./.git/refs
+./.git/refs/heads
+./.git/refs/tags
+./.git/HEAD
+./.git/objects
+./.git/objects/pack
+./.git/objects/info
+./.git/objects/d6
+./.git/objects/d6/c6a3b586af9530f6235f804d3fbbf3246a4756 &gt;&gt; a blob with the content of the file
+./.git/index                                             &gt;&gt; contain the name of the file temporary untill the next commit 
+./test1.txt
+</code></pre>
+<p>&nbsp;</p>
