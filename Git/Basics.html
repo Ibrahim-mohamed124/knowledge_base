@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-13T19:48:14.796Z
+date: 2026-01-13T20:02:00.879Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -223,7 +223,7 @@ lion-and-mouse.txt</code></pre>
         </ul>
       </li>
       <li>Trees: Pointers to file names, blobs(content), other trees</li>
-      <li>Blobs: the actual compressed data&nbsp;</li>
+      <li>Blobs: the actual compressed data, only the file content no thing else</li>
     </ul>
   </li>
   <li>Tags and branches<ul>
@@ -231,4 +231,7 @@ lion-and-mouse.txt</code></pre>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<blockquote>
+  <p>Every object of this database is stored in the desk on .git/objects/SHA 1 of the file content &nbsp;and the content is ZIP encrypted</p>
+</blockquote>
+<pre><code class="language-plaintext">git cat-file -t &lt;type&gt; or -p &lt;content&gt; SHA</code></pre>
