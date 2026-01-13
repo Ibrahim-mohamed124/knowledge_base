@@ -2,7 +2,7 @@
 title: Migration From SDN to OVN
 description: 
 published: true
-date: 2026-01-13T12:06:20.835Z
+date: 2026-01-13T12:09:59.712Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-13T08:53:05.970Z
@@ -134,6 +134,11 @@ dateCreated: 2026-01-13T08:53:05.970Z
   <li>if run an Operator or you have configured any application with the <mark class="marker-yellow">pod disruption budget,</mark> you might experience an interruption during the update process. If <code>minAvailable</code> is set to 1 in <code>PodDisruptionBudget</code>, the nodes are drained to apply pending machine configs which might block the eviction process. If several nodes are rebooted, all the pods might run on only one node, and the <code>PodDisruptionBudget</code> field can prevent the node drain</li>
   <li>to prevent traffic flow issues, check existing network policies in any namespaces that host applications that rely on system components. If a policy exists, enable traffic that originates from <code>openshift-ingress</code> or <code>openshift-kube-apiserver</code> system services to prevent the default setting from blocking this traffic.</li>
 </ul>
+<h3>workflow</h3>
+<ol>
+  <li>User initiate the migration by patching the default network CR</li>
+</ol>
+<pre><code class="language-plaintext">oc patch Network.config.openshift.io cluster --type='merge' --patch '{"metadata":{"annotations":{"network.openshift.io/network-type-migration":""}},"spec":{"networkType":"OVNKubernetes"}}'</code></pre>
 <h3>Monitoring the stages of the migration</h3>
 <ul>
   <li>follow the progress of the migration using the following statuses set on the <code>network.config</code> CustomResource (CR).</li>
