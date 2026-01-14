@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-14T12:30:16.719Z
+date: 2026-01-14T13:22:38.435Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -500,3 +500,22 @@ f6271d285780cd056ddb5ef46f7358080d8c9ea3</code></pre>
 <blockquote>
   <p>When you rebase, you're changing the <strong>parent commit</strong>, which means you get a completely different SHA-1 hash, which means it's a <strong>new commit object</strong> entirely.</p>
 </blockquote>
+<h3>How rebasing actually works?</h3>
+<ul>
+  <li>First we checkout to the feature branch</li>
+  <li>when the git rebase master branches Git does these serious of tasks:<ul>
+      <li>Git Moves the head of the feature branch to the last commit in the master branch so the feature branch becomes headless temporarily</li>
+      <li>Git gets identifies the first common commit between the two branches</li>
+      <li>Git identifies the commits in the feature branch that will be replayed</li>
+      <li>Git get the diff between the first commit in the feature branch and the common commit between the two branches</li>
+      <li>Git takes the tree of the last commit in the master branch and applies the changes that has been found to it, then use it to create a new commit that has the last commit in the master branch as its parent and uses the new created tree<ul>
+          <li>the tree is modified with blobs according to the if there is no changes, compatible changes, conflicts between the&nbsp;</li>
+          <li>No changes: the tree just uses &nbsp;blobs that in the first commit in the branch, which contains the changes already</li>
+          <li>Compatible changes: git auto merge them and create new blob that is used in the new tree</li>
+          <li>Conflict: rebase stops till resolving the conflict then creates new blob</li>
+        </ul>
+      </li>
+      <li>Git replays the other commits in the same way</li>
+    </ul>
+  </li>
+</ul>
