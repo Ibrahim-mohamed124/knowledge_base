@@ -2,7 +2,7 @@
 title: Configuring certificates
 description: 
 published: true
-date: 2026-01-14T11:00:14.890Z
+date: 2026-01-14T11:02:22.574Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-25T07:10:29.705Z
@@ -76,6 +76,7 @@ status: {}</code></pre>
 <h3>Operator installation issue</h3>
 <ul>
   <li>After creating the operator group and subscription the OLM does not create the CSV to start operator installation</li>
+  <li><code>{Type:MultipleOperatorGroup Status:True}</code></li>
 </ul>
 <pre><code class="language-plaintext"> oc logs -n openshift-operator-lifecycle-manager olm-operator-5f484cb994-fv2jh</code></pre>
 <pre><code class="language-plaintext">{"level":"info","ts":"2026-01-14T10:21:41Z","logger":"controllers.adoption","msg":"Could not find Subscription","request":{"name":"cloud-native-postgresql","namespace":"keycloak-dev"}}
@@ -85,4 +86,8 @@ time="2026-01-14T10:21:42Z" level=info msg="creating cluster role: olm.og.keyclo
 E0114 10:21:42.490237       1 queueinformer_operator.go:316] sync "/keycloak-dev" failed: Operation cannot be fulfilled on namespaces "keycloak-dev": the object has been modified; please apply your changes to the latest version and try again
 time="2026-01-14T10:21:42Z" level=info msg="creating cluster role: olm.og.keycloak-operatorgroup.view-6xxrBpDhODIilJDb1m53JtB3sp1022BiBP0ivb owned by operator group: keycloak-dev/keycloak-operatorgroup"
 </code></pre>
+<ul>
+  <li>The issue was that there are two operatorgroup in the same namespace, which caused conflict for the OLM operator, and by deleting one of them OLM created the CSV and started to download the operator normally.</li>
+</ul>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
