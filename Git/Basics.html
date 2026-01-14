@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-14T13:41:40.040Z
+date: 2026-01-14T19:14:41.771Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -258,6 +258,15 @@ git rebase target branch</code></pre>
   <li>picking only one commit for a different branch</li>
 </ul>
 <pre><code class="language-plaintext">git cherry-pick &lt;hash&gt;</code></pre>
+<h3>Reverting and Resetting &nbsp;</h3>
+<ul>
+  <li>git revert command creates a new commit that contain everything expect the things in the reverted commit and delete the changes in that commit</li>
+</ul>
+<pre><code class="language-plaintext">git revert &lt;commit&gt;</code></pre>
+<ul>
+  <li>git reset soft or hard to keep or lose the changes in the commits</li>
+</ul>
+<pre><code class="language-plaintext">git reset --sort | --hard HEAD~x</code></pre>
 <h3>How Git really works?</h3>
 <ul>
   <li>Git is a content-addressable object database and its units are trees, commits, and blobs.</li>
@@ -514,7 +523,7 @@ f6271d285780cd056ddb5ef46f7358080d8c9ea3</code></pre>
       <li>Git identifies the commits in the feature branch that will be replayed</li>
       <li>Git get the diff between the first commit in the feature branch and the common commit between the two branches</li>
       <li>Git takes the tree of the last commit in the master branch and applies the changes that has been found to it, then use it to create a new commit that has the last commit in the master branch as its parent and uses the new created tree<ul>
-          <li>the tree is modified with blobs according to the if there is no changes, compatible changes, conflicts between the&nbsp;</li>
+          <li>the tree is modified with blobs according to the if there is no changes, compatible changes, conflicts between the</li>
           <li>No changes: the tree just uses &nbsp;blobs that in the first commit in the branch, which contains the changes already</li>
           <li>Compatible changes: git auto merge them and create new blob that is used in the new tree</li>
           <li>Conflict: rebase stops till resolving the conflict then creates new blob</li>
