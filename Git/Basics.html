@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-15T11:21:21.274Z
+date: 2026-01-15T11:27:00.098Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -554,7 +554,35 @@ f6271d285780cd056ddb5ef46f7358080d8c9ea3</code></pre>
       </li>
       <li>Git replays the other commits in the same way</li>
       <li>Git set the last replayed commit as the head of the branch</li>
-      <li>The old commits still exist but orphaned and are kept in the RefLog for 30 days by default</li>
+      <li>The old commits still exist but orphaned and are kept in the RefLog for 30 days by default3</li>
     </ul>
   </li>
+</ul>
+<h3>Git directories</h3>
+<ul>
+  <li>git directory</li>
+</ul>
+<pre><code class="language-plaintext">$ ls -alR
+.:
+total 23
+drwxr-xr-x 1 SPEED 197121   0 Jan 12 22:00 ./
+drwxr-xr-x 1 SPEED 197121   0 Jan 12 22:00 ../
+-rw-r--r-- 1 SPEED 197121  41 Jan 12 20:20 AUTO_MERGE
+-rw-r--r-- 1 SPEED 197121 235 Jan 12 20:20 COMMIT_EDITMSG
+-rw-r--r-- 1 SPEED 197121  23 Jan 12 19:35 HEAD
+-rw-r--r-- 1 SPEED 197121  78 Jan 12 20:20 MERGE_MSG
+-rw-r--r-- 1 SPEED 197121 276 Jan 12 21:58 config
+-rw-r--r-- 1 SPEED 197121  15 Jan 12 19:36 description
+drwxr-xr-x 1 SPEED 197121   0 Jan 15 13:24 hooks/
+-rw-r--r-- 1 SPEED 197121 206 Jan 12 22:00 index
+drwxr-xr-x 1 SPEED 197121   0 Jan 12 19:35 info/
+drwxr-xr-x 1 SPEED 197121   0 Jan 12 19:46 logs/
+drwxr-xr-x 1 SPEED 197121   0 Jan 12 22:00 objects/
+drwxr-xr-x 1 SPEED 197121   0 Jan 12 22:02 refs/
+
+</code></pre>
+<ul>
+  <li>Git gets its configuration form $PWD/.git/config then ~/.gitconfig then /etc/gitconfig</li>
+  <li>working directory</li>
+  <li>&nbsp;</li>
 </ul>
