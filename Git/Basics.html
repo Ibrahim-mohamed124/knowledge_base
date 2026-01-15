@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-15T11:30:05.112Z
+date: 2026-01-15T11:31:36.451Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -584,7 +584,10 @@ drwxr-xr-x 1 SPEED 197121   0 Jan 12 22:02 refs/
 <ol>
   <li>Git gets its configuration form $PWD/.git/config then ~/.gitconfig then /etc/gitconfig</li>
   <li>.git/index is the temporary staging area data</li>
-  <li>.git/index/refs has three subdirs heads, remotes, and tags</li>
+  <li>.git/index/refs has three subdirs heads, remotes, and tags<ul>
+      <li>The index was called the cache for a while, because that’s largely what it does. It is a staging area for changes that are made to files or trees that are not committed to your repository yet.&nbsp;</li>
+    </ul>
+  </li>
   <li>.git/hooks contains scrpits that run before or after comitting, merging and other actions.</li>
 </ol>
 <ul>
