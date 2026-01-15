@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-15T11:27:00.098Z
+date: 2026-01-15T11:30:05.112Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -581,8 +581,15 @@ drwxr-xr-x 1 SPEED 197121   0 Jan 12 22:00 objects/
 drwxr-xr-x 1 SPEED 197121   0 Jan 12 22:02 refs/
 
 </code></pre>
-<ul>
+<ol>
   <li>Git gets its configuration form $PWD/.git/config then ~/.gitconfig then /etc/gitconfig</li>
-  <li>working directory</li>
-  <li>&nbsp;</li>
+  <li>.git/index is the temporary staging area data</li>
+  <li>.git/index/refs has three subdirs heads, remotes, and tags</li>
+  <li>.git/hooks contains scrpits that run before or after comitting, merging and other actions.</li>
+</ol>
+<ul>
+  <li>working directory<ul>
+      <li>The working directory is the checkout of the current branch you are working on. What is really important to note here is that this code is a working copy – it is not really important.</li>
+    </ul>
+  </li>
 </ul>
