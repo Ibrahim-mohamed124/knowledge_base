@@ -2,7 +2,7 @@
 title: Git Basics
 description: 
 published: true
-date: 2026-01-14T20:35:08.233Z
+date: 2026-01-15T11:21:21.274Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-12T17:31:57.809Z
@@ -266,17 +266,19 @@ git rebase target branch</code></pre>
   <li>git revert command creates a new commit that contain everything expect the things in the reverted commit and delete the changes in that commit</li>
 </ul>
 <pre><code class="language-plaintext">git revert &lt;commit to be reverted&gt; or HEAD~0</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>git reset soft or hard to keep or lose the changes in the working area</li>
 </ul>
 <pre><code class="language-plaintext">git reset --sort | --hard HEAD~x</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>--soft removes the changes from the commit and keeps them in the working area</li>
-  <li>--hard drop the changes completely&nbsp;</li>
+  <li>--hard drop the changes completely</li>
 </ul>
 <h3>stashing</h3>
 <ul>
-  <li>git stash&nbsp;</li>
+  <li>git stash</li>
   <li>git stash list</li>
   <li>git stash show &lt;name&gt;</li>
   <li>git stash pop &nbsp;&lt;name&gt;</li>
@@ -285,6 +287,9 @@ git rebase target branch</code></pre>
 <ul>
   <li>shows all the actions done on the repo and can undo any action (even --hard reset) by changing &nbsp;the head position to a commit</li>
 </ul>
+<blockquote>
+  <p>The main difference between rebasing and merges is that usually rebasing is used for the long lived branches while merging is used for short lived branches&nbsp;</p>
+</blockquote>
 <h3>How Git really works?</h3>
 <ul>
   <li>Git is a content-addressable object database and its units are trees, commits, and blobs.</li>
