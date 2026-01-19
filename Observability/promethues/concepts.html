@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-19T19:18:23.294Z
+date: 2026-01-19T19:23:17.879Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -98,13 +98,13 @@ dateCreated: 2026-01-19T11:20:24.899Z
   <li>conf file is prometheus.yaml in the prometheus-1768820394-server configmap</li>
 </ul>
 <pre><code class="language-plaintext">  prometheus.yml: |
-    global:
+    global:                  &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; for all the scrape_configs to inherit
       evaluation_interval: 1m
       scrape_interval: 1m
       scrape_timeout: 10s
-    scrape_configs:
+    scrape_configs:              &gt;&gt;&gt;&gt;&gt;&gt;  Define targets &amp; configs for metrics collection
 
-    - job_name: kubernetes-nodes
+    - job_name: kubernetes-nodes &gt;&gt;&gt;&gt;&gt;&gt;  a collection of instance that need to be scraped 
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       kubernetes_sd_configs:
       - role: node
@@ -123,7 +123,7 @@ dateCreated: 2026-01-19T11:20:24.899Z
         ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
      - job_name: prometheus
       static_configs:
-      - targets:
+      - targets:                &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; endpoints to be scraped 
         - localhost:9090
 
     rule_files:
@@ -151,4 +151,4 @@ dateCreated: 2026-01-19T11:20:24.899Z
         - source_labels: [__meta_kubernetes_pod_container_port_number]
           regex: "9093"
           action: keep
-</code></pre>
+    storage: {}</code></pre>
