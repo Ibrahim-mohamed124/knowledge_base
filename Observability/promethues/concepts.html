@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-19T19:24:55.511Z
+date: 2026-01-19T20:12:53.734Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -154,3 +154,14 @@ dateCreated: 2026-01-19T11:20:24.899Z
           regex: "9093"
           action: keep
     storage: {}</code></pre>
+<pre><code class="language-plaintext">  - job_name: "nodes"
+    static_configs:
+      - targets: ["node01:9100"]
+        labels:
+          node: "node01"
+      - targets: ["node02:9100"]
+        labels:
+          node: "node02"</code></pre>
+<blockquote>
+  <p>In Prometheus version 3.5.0 and above, the <code>consoles/</code> and <code>console_libraries/</code> directories have been removed from the distribution tarball.</p>
+</blockquote>
