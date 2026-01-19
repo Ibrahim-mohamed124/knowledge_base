@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-19T12:59:08.244Z
+date: 2026-01-19T13:03:15.804Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -28,7 +28,7 @@ dateCreated: 2026-01-19T11:20:24.899Z
 <h3>Pillars of Observability</h3>
 <ol>
   <li>logging:<ul>
-      <li>Records of events that have occurred and encapsulated information about the specific event with timestamps&nbsp;</li>
+      <li>Records of events that have occurred and encapsulated information about the specific event with timestamps</li>
     </ul>
   </li>
   <li>metrics:<ul>
@@ -42,8 +42,8 @@ dateCreated: 2026-01-19T11:20:24.899Z
     </ul>
   </li>
   <li>Traces:<ul>
-      <li>allow to follow operations as they traverses through various systems &amp; services hop by hop to understand the whole picture&nbsp;<ul>
-          <li>trace ID: the unique id for a trace&nbsp;</li>
+      <li>allow to follow operations as they traverses through various systems &amp; services hop by hop to understand the whole picture<ul>
+          <li>trace ID: the unique id for a trace</li>
           <li>Spans: evens in the trace and contain start time of the span, duration, and parent id</li>
         </ul>
       </li>
@@ -57,7 +57,7 @@ dateCreated: 2026-01-19T11:20:24.899Z
           <li>Metrics that accurately measure the user's experience.</li>
         </ul>
       </li>
-      <li>&nbsp;SLO: service level objective - target value or range &nbsp;of an SLI</li>
+      <li>SLO: service level objective - target value or range &nbsp;of an SLI</li>
       <li>SLA: service level agreement: &nbsp;Contract between end user and provider to meet the SLO</li>
     </ul>
   </li>
@@ -65,14 +65,14 @@ dateCreated: 2026-01-19T11:20:24.899Z
 <h2>Prometheus</h2>
 <h3>Use cases</h3>
 <ul>
-  <li>collect metrics from many datacenters&nbsp;</li>
+  <li>collect metrics from many datacenters</li>
   <li>alerting when conditions are met</li>
   <li>scrape and do operations in metrics.</li>
-  <li>data charting&nbsp;</li>
+  <li>data charting</li>
 </ul>
 <h3>Basics</h3>
 <ul>
-  <li>Prometheus collects metrics by scraping targets who expose metrics through an HTTP endpoint&nbsp;</li>
+  <li>Prometheus collects metrics by scraping targets who expose metrics through an HTTP endpoint</li>
   <li>Store the scraped metrics into time based database</li>
 </ul>
 <h6>Architecture</h6>
@@ -80,12 +80,12 @@ dateCreated: 2026-01-19T11:20:24.899Z
   <li>Data retrieval workers: &nbsp;scrape the data from the target endpoints by sending http requests ( pulling metrics )</li>
   <li>TSDB: &nbsp;stores the metric data</li>
   <li>HTTP server: accepts PromeQL Query</li>
-  <li>Exporters: runs on the targets so data retrieval can scrape the metrics &nbsp;</li>
+  <li>Exporters: runs on the targets so data retrieval can scrape the metrics</li>
   <li>Push Gateway: for short lived jobs that cannot wait till the data retrievals pull the metrics so the gateway pushes stores the metrics till the data retrieval workers pull the data</li>
-  <li>Service Discovery: Dynamically update the list of target to monitor&nbsp;</li>
-  <li>Alert manager: to send alerts&nbsp;</li>
+  <li>Service Discovery: Dynamically update the list of target to monitor</li>
+  <li>Alert manager: to send alerts</li>
 </ol>
-<p>&nbsp;</p>
+<figure class="image"><img src="/observability/arch.png"></figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
