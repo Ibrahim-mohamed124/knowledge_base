@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-19T19:24:16.323Z
+date: 2026-01-19T19:24:55.511Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -106,7 +106,7 @@ dateCreated: 2026-01-19T11:20:24.899Z
 
     - job_name: kubernetes-nodes &gt;&gt;&gt;&gt;&gt;&gt;  a collection of instance that need to be scraped 
 
-      scrape_interval: 10s
+      scrape_interval: 10s       &gt;&gt;&gt;&gt;&gt;&gt; override the global config
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       kubernetes_sd_configs:
       - role: node
