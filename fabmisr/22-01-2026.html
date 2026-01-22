@@ -1,0 +1,15 @@
+<!--
+title: Adding custom proxy ca to the portworx operator
+description: 
+published: true
+date: 2026-01-22T10:32:57.448Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-01-22T10:32:57.448Z
+-->
+
+<ul>
+  <li>If the cluster is using a custom you need to add the ca bundle to the operator, by adding the config to its subscription</li>
+  <li>https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/operators/administrator-tasks#olm-inject-custom-ca_olm-configuring-proxy-support</li>
+  <li>Do not add Proxy variables to the storage cluster because it causes issues in the communication between services &nbsp;</li>
+</ul>
