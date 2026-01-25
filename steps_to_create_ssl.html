@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-01-25T17:17:27.783Z
+date: 2026-01-25T17:24:16.479Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -22,3 +22,7 @@ dateCreated: 2026-01-25T17:14:44.674Z
 <pre><code class="language-plaintext">openssl rsa -in &lt;file.key&gt; -pubout</code></pre>
 <p>&nbsp; 3. create a root certificate for CA&nbsp;</p>
 <pre><code class="language-plaintext">openssl req -x509 -new -nodes -key &lt;file.key&gt; -sha256 -days 1826 -out ca.crt</code></pre>
+<ul>
+  <li>provide the data about the organization</li>
+  <li>copy the root ca certificate to /usr/local/share/ca-certificates and update-ca-trust</li>
+</ul>
