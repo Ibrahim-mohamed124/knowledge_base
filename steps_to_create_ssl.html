@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-01-25T17:40:44.913Z
+date: 2026-01-25T17:44:19.676Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -36,5 +36,7 @@ keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1 = localhost
-</code></pre>
+DNS.1 = localhost</code></pre>
+<p>&nbsp; &nbsp;6. sign the CSR using the CA private key&nbsp;</p>
+<pre><code class="language-plaintext">openssl x509 -req -in file.csr -CA ca.crt -CAkkey file.key -CAcreateserial -out file.crt -days 10 -sha256 -exfile file.ext</code></pre>
+<p>&nbsp;</p>
