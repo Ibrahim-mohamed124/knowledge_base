@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-01-25T17:27:58.905Z
+date: 2026-01-25T17:40:44.913Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -26,5 +26,15 @@ dateCreated: 2026-01-25T17:14:44.674Z
   <li>provide the data about the organization</li>
   <li>copy the root ca certificate to /usr/local/share/ca-certificates and update-ca-trust</li>
 </ul>
-<p>&nbsp; 4. create new ssl certs signed by the root CA private key</p>
-<pre><code class="language-plaintext">&nbsp;</code></pre>
+<p>&nbsp; 4. create new private key for the new certificate&nbsp;</p>
+<pre><code class="language-plaintext"> openssl req -new -nodes -out $MYCERT.csr -newkey rsa:4096 -keyout $MYCERT.key</code></pre>
+<p>&nbsp; 5. create a file to add the Subject Alternative Name (SAN) to SSL certificate</p>
+<pre><code class="language-plaintext">touch san.ext</code></pre>
+<pre><code class="language-plaintext">authorityKeyIdentifier = keyid,issuer
+basicConstraints = CA:FALSE
+keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = localhost
+</code></pre>
