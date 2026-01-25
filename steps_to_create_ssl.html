@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-01-25T17:14:44.674Z
+date: 2026-01-25T17:17:27.783Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -10,14 +10,15 @@ dateCreated: 2026-01-25T17:14:44.674Z
 
 <h3>To create a CA to self-sign other certificates</h3>
 <ol>
-  <li>Define the certificate authority name&nbsp;</li>
+  <li>Define the certificate authority name</li>
 </ol>
 <pre><code class="language-plaintext">CANAME="MY-ORG"</code></pre>
 <p>&nbsp; 2. create a private key for the CA</p>
 <pre><code class="language-plaintext">openssl genrsa -aes256 -out $CANAME.key 4096</code></pre>
 <ul>
-  <li>Must add a passphrase to that key, this file contain both key pairs in the same file</li>
+  <li>&nbsp;Must add a passphrase to that key, this file contain both key pairs in the same file</li>
   <li>to see the public key use:</li>
 </ul>
 <pre><code class="language-plaintext">openssl rsa -in &lt;file.key&gt; -pubout</code></pre>
-<p>&nbsp; 3.&nbsp;</p>
+<p>&nbsp; 3. create a root certificate for CA&nbsp;</p>
+<pre><code class="language-plaintext">openssl req -x509 -new -nodes -key &lt;file.key&gt; -sha256 -days 1826 -out ca.crt</code></pre>
