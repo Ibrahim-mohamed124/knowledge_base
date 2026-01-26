@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-26T15:36:47.931Z
+date: 2026-01-26T15:43:12.486Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -93,76 +93,6 @@ dateCreated: 2026-01-19T11:20:24.899Z
   <li>If the system has no metrics endpoint use exporter process to collect metrics and exposing /metrics endpoint</li>
   <li>client libraries allow to expose any application metrics for promethues for different languages like go and python</li>
 </ul>
-<h3>Prometheus configuration</h3>
-<ul>
-  <li>conf file is prometheus.yaml in the prometheus-server configmap</li>
-</ul>
-<pre><code class="language-plaintext">  prometheus.yml: |
-    global:                  &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; for all the scrape_configs to inherit
-      evaluation_interval: 1m
-      scrape_interval: 1m
-      scrape_timeout: 10s
-    scrape_configs:              &gt;&gt;&gt;&gt;&gt;&gt;  Define targets &amp; configs for metrics collection
-
-    - job_name: kubernetes-nodes &gt;&gt;&gt;&gt;&gt;&gt;  a collection of instance that need to be scraped 
-
-      scrape_interval: 10s       &gt;&gt;&gt;&gt;&gt;&gt; override the global config
-      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-      kubernetes_sd_configs:
-      - role: node
-      relabel_configs:
-      - action: labelmap
-        regex: __meta_kubernetes_node_label_(.+)
-      - replacement: kubernetes.default.svc:443
-        target_label: __address__
-      - regex: (.+)
-        replacement: /api/v1/nodes/$1/proxy/metrics
-        source_labels:
-        - __meta_kubernetes_node_name
-        target_label: __metrics_path__
-      scheme: https
-      tls_config:
-        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-     - job_name: prometheus
-      static_configs:
-      - targets:                &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; endpoints to be scraped 
-        - localhost:9090
-
-    rule_files:
-    - /etc/config/recording_rules.yml
-    - /etc/config/alerting_rules.yml
-    - /etc/config/rules
-    - /etc/config/alerts
-    alerting:
-      alertmanagers:
-      - kubernetes_sd_configs:
-          - role: pod
-        tls_config:
-          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        relabel_configs:
-        - source_labels: [__meta_kubernetes_namespace]
-          regex: prome
-          action: keep
-        - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
-          regex: prometheus-1768820394
-          action: keep
-        - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
-          regex: alertmanager
-          action: keep
-        - source_labels: [__meta_kubernetes_pod_container_port_number]
-          regex: "9093"
-          action: keep
-    storage: {}</code></pre>
-<p>&nbsp;</p>
-<pre><code class="language-plaintext">  - job_name: "nodes"
-    static_configs:
-      - targets: ["node01:9100"]
-        labels:
-          node: "node01"
-      - targets: ["node02:9100"]
-        labels:
-          node: "node02"</code></pre>
 <p>&nbsp;</p>
 <blockquote>
   <p>In Prometheus version 3.5.0 and above, the <code>consoles/</code> and <code>console_libraries/</code> directories have been removed from the distribution tarball.</p>
@@ -231,4 +161,12 @@ Type=simple
 ExecStart=/usr/local/bin/node_exporter
 [Install]
 WantedBy=multi-user.target</code></pre>
-<p>&nbsp;</p>
+<h3>config prometheus</h3>
+<ul>
+  <li>configure the prometheus by editing the prometheus.yaml file</li>
+</ul>
+<pre><code class="language-plaintext">global:
+scrape_configs:
+ - job_name: "prometheus"
+   static_configs:
+   - targets: [10.200.130.134:9100, 10.200.130.142:9100, 10.200.130.197:9100]</code></pre>
