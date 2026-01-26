@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-26T15:43:56.458Z
+date: 2026-01-26T19:49:07.646Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -99,26 +99,31 @@ dateCreated: 2026-01-19T11:20:24.899Z
 </blockquote>
 <h3>Installation as systemd services</h3>
 <ul>
-  <li>Install the binary from the official docs&nbsp;</li>
+  <li>Install the binary from the official docs</li>
 </ul>
 <pre><code class="language-plaintext">wget https://github.com/prometheus/prometheus/releases/download/v3.9.1/prometheus-3.9.1.linux-amd64.tar.gz</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>unarchive the tar file</li>
 </ul>
 <pre><code class="language-plaintext"> tar -xvaf prometheus-3.9.1.linux-amd64.tar.gz</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>create a user for prometheus without a login shell</li>
 </ul>
 <pre><code class="language-plaintext">useradd -no-create-home --shell /bin/false prometheus</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>make the configuration and data directories</li>
 </ul>
 <pre><code class="language-plaintext">mkdir /etc/prometheus &amp;&amp; mkdir /var/lib/prometheus
 chown prometheus:prometheus /etc/prometheus &amp;&amp; chown prometheus:promethues /var/lib/promethues</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>move prometheus and promtool binaries &nbsp;to /usr/local/bin/ and change ownership</li>
 </ul>
 <pre><code class="language-plaintext">mv prometheus promtool /usr/local/bin/ &amp;&amp; chown prometheus:prometheus /usr/local/bin/prometheus /usr/local/bin/promtool</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>move prometheus.yaml to /etc/prometheus/ and change ownership</li>
   <li>create the service file</li>
@@ -138,14 +143,16 @@ ExecStart=/usr/local/bin/prometheus \
 
 [Install]
 WantedBy=multi-user.target</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>copy the file to the /etc/systemd/system/promethues.service and enable the service</li>
 </ul>
 <h3>Install the node exporter as a systemd</h3>
 <ul>
-  <li>get the binary and unarchieve&nbsp;</li>
+  <li>get the binary and unarchieve</li>
 </ul>
 <pre><code class="language-plaintext">https://github.com/prometheus/node_exporter/releases/download/v1.10.2/node_exporter-1.10.2.linux-amd64.tar.gz</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>create a user and move the binary to /etc/local/bin then change ownership</li>
   <li>create the systemd service</li>
@@ -167,8 +174,15 @@ WantedBy=multi-user.target</code></pre>
 </ul>
 <pre><code class="language-plaintext">global:
   scrape_interval: 1m
-  scrape_timeout:
-scrape_configs:
+  scrape_timeout:  10s
+scrape_configs:          &gt; define the targets
  - job_name: "prometheus"
+   scrape_interval 20s
+   sample_limit: 1000
    static_configs:
-   - targets: [10.200.130.134:9100, 10.200.130.142:9100, 10.200.130.197:9100]</code></pre>
+   - targets: [10.200.130.134:9100, 10.200.130.142:9100, 10.200.130.197:9100]
+alerting:
+rule_files:
+storage:
+remote_read:
+remote_write:</code></pre>
