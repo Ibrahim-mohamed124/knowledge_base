@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-26T15:05:36.195Z
+date: 2026-01-26T15:12:31.849Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -176,3 +176,13 @@ dateCreated: 2026-01-19T11:20:24.899Z
   <li>unarchive the tar file</li>
 </ul>
 <pre><code class="language-plaintext"> tar -xvaf prometheus-3.9.1.linux-amd64.tar.gz</code></pre>
+<ul>
+  <li>create a user for prometheus without a login shell</li>
+</ul>
+<pre><code class="language-plaintext">useradd -no-create-home --shell /bin/false prometheus</code></pre>
+<ul>
+  <li>make the configuration and data directories</li>
+</ul>
+<pre><code class="language-plaintext">mkdir /etc/prometheus &amp;&amp; mkdir /var/lib/prometheus
+chown prometheus:prometheus /etc/prometheus &amp;&amp; chown prometheus:promethues /var/lib/promethues</code></pre>
+<p>&nbsp;</p>
