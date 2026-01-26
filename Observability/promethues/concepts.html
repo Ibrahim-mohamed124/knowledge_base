@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-26T15:20:46.845Z
+date: 2026-01-26T15:28:34.030Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -208,6 +208,27 @@ ExecStart=/usr/local/bin/prometheus \
 
 [Install]
 WantedBy=multi-user.target</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>copy the file to the /etc/systemd/system/promethues.service and enable the service</li>
+</ul>
+<h3>Install the node exporter as a systemd</h3>
+<ul>
+  <li>get the binary and unarchieve&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">https://github.com/prometheus/node_exporter/releases/download/v1.10.2/node_exporter-1.10.2.linux-amd64.tar.gz</code></pre>
+<ul>
+  <li>create a user and move the binary to /etc/local/bin then change ownership</li>
+  <li>create the systemd service</li>
+</ul>
+<pre><code class="language-plaintext">[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+[Install]
+WantedBy=multi-user.target</code></pre>
 <p>&nbsp;</p>
