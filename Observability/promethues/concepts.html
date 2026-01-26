@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-26T15:12:31.849Z
+date: 2026-01-26T15:15:42.196Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -185,4 +185,9 @@ dateCreated: 2026-01-19T11:20:24.899Z
 </ul>
 <pre><code class="language-plaintext">mkdir /etc/prometheus &amp;&amp; mkdir /var/lib/prometheus
 chown prometheus:prometheus /etc/prometheus &amp;&amp; chown prometheus:promethues /var/lib/promethues</code></pre>
+<ul>
+  <li>move prometheus and promtool binaries &nbsp;to /usr/local/bin/ and change permissions&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">mv prometheus promtool /usr/local/bin/ &amp;&amp; chown prometheus:prometheus /usr/local/bin/prometheus /usr/local/bin/promtool</code></pre>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
