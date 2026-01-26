@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-26T20:29:31.326Z
+date: 2026-01-26T20:53:25.502Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -207,4 +207,4 @@ scrape_configs:
   cert_file: file.crt
   key_file: file.key</code></pre>
 <pre><code class="language-plaintext">chown -R node_exporter:node_exporter /etc/node_exporter/</code></pre>
-<pre><code class="language-plaintext">./node_exporter  --web.config=config.yml</code></pre>
+<pre><code class="language-plaintext">./node_exporter   --web.config.file="/etc/node_exporter/config.yml"</code></pre>
