@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-26T15:43:12.486Z
+date: 2026-01-26T15:43:56.458Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -166,6 +166,8 @@ WantedBy=multi-user.target</code></pre>
   <li>configure the prometheus by editing the prometheus.yaml file</li>
 </ul>
 <pre><code class="language-plaintext">global:
+  scrape_interval: 1m
+  scrape_timeout:
 scrape_configs:
  - job_name: "prometheus"
    static_configs:
