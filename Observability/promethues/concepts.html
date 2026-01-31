@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-27T15:13:23.900Z
+date: 2026-01-31T19:37:29.346Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -225,19 +225,23 @@ scrape_configs:
 <p>&nbsp;</p>
 <h3>Authentication</h3>
 <ul>
-  <li>use any tool to create a hashed password</li>
+  <li>use any tool to create a hashed password like apach2-utils or httpd-tools</li>
 </ul>
 <pre><code class="language-plaintext">htpasswd -nBC 10 "" | tr -d ':\n'; echo</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>add the config</li>
 </ul>
 <pre><code class="language-plaintext">vi /etc/node_exporter/config.yml
 basic_auth_users:
   prometheus: &lt;hashed-password&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>config prometheus</li>
 </ul>
 <pre><code class="language-plaintext">vi /etc/prometheus/prometheus.yml
-basic_auth:
-  username: prometheus
-  password: secret-password</code></pre>
+- job_name: "node"
+  scheme: https
+  basic_auth:
+   username: prometheus
+   password: secret-password-plain-text</code></pre>
