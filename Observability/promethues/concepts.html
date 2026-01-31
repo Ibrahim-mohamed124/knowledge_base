@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-31T19:49:56.404Z
+date: 2026-01-31T19:59:43.730Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -253,5 +253,28 @@ basic_auth_users:
 <p>&nbsp;* &nbsp;The labels are the instances of a metric like a class and instance of that class in programming</p>
 <ul>
   <li>the metrics are stored with timestamp using the Unix Epoch time&nbsp;</li>
+  <li>promethues stores these metrics with unique set of labels and name in a time series&nbsp;</li>
+  <li>Every metric has two attributes<ol>
+      <li>Type: &nbsp;specify the type of that metric&nbsp;</li>
+      <li>Help: description of what is that metric</li>
+    </ol>
+  </li>
+</ul>
+<h6>Types of metrics</h6>
+<ul>
+  <li>Counter<ul>
+      <li>how many times an event happened like total number of &nbsp;http requests</li>
+    </ul>
+  </li>
+  <li>Gauge<ul>
+      <li>&nbsp;measure the current value of event, can go up or down like current CPU utilization</li>
+    </ul>
+  </li>
+  <li>&nbsp;Histogram<ul>
+      <li>track a metric for some time, how many total events in a period of time like request size and response time</li>
+    </ul>
+  </li>
+  <li>Histogram</li>
+  <li>&nbsp;</li>
 </ul>
 <p>&nbsp;</p>
