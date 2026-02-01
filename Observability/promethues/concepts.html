@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-01T19:36:41.686Z
+date: 2026-02-01T19:37:41.075Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -290,7 +290,11 @@ basic_auth_users:
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">promtool check config /path.yaml</code></pre>
+<pre><code class="language-plaintext">[root@k8s-master ~]# promtool check config /etc/prometheus/prometheus.yml
+Checking /etc/prometheus/prometheus.yml
+ SUCCESS: /etc/prometheus/prometheus.yml is valid prometheus config file syntax
+
+</code></pre>
 <ul>
   <li>Validate metrics passed to it are correctly formatted</li>
   <li>Can perform queries on a promethues server</li>
