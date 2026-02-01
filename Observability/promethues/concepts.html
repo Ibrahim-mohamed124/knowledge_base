@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-01-31T20:40:09.992Z
+date: 2026-02-01T19:36:41.686Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -253,11 +253,12 @@ basic_auth_users:
 <p>&nbsp;* &nbsp;The labels are the instances of a metric like a class and instance of that class in programming</p>
 <p>&nbsp;* Every metrics has two labels by default (instance, job)</p>
 <pre><code class="language-plaintext">the metric name is save under the __name__ label inside the prometheus server</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>the metrics are stored with timestamp using the Unix Epoch time&nbsp;</li>
-  <li>promethues stores these metrics with unique set of labels and name in a time series&nbsp;</li>
+  <li>the metrics are stored with timestamp using the Unix Epoch time</li>
+  <li>promethues stores these metrics with unique set of labels and name in a time series</li>
   <li>Every metric has two attributes<ol>
-      <li>Type: &nbsp;specify the type of that metric&nbsp;</li>
+      <li>Type: &nbsp;specify the type of that metric</li>
       <li>Help: description of what is that metric</li>
     </ol>
   </li>
@@ -269,17 +270,33 @@ basic_auth_users:
     </ul>
   </li>
   <li>Gauge<ul>
-      <li>&nbsp;measure the current value of event, can go up or down like current CPU utilization</li>
+      <li>measure the current value of event, can go up or down like current CPU utilization</li>
     </ul>
   </li>
-  <li>&nbsp;Histogram<ul>
+  <li>Histogram<ul>
       <li>groups &nbsp;metrics for in certain limits(quantiles), how many total events in a period of time like request size and response time</li>
     </ul>
   </li>
   <li>Summary<ul>
-      <li>like histogram but does not need quantiles ahead of time like percentages of response time for a number of requests&nbsp;</li>
+      <li>like histogram but does not need quantiles ahead of time like percentages of response time for a number of requests</li>
     </ul>
   </li>
+</ul>
+<h3>Promtools</h3>
+<ul>
+  <li>Check and validate configuration<ul>
+      <li>validate prometheus.yaml</li>
+      <li>validate rules files</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">promtool check config /path.yaml</code></pre>
+<ul>
+  <li>Validate metrics passed to it are correctly formatted</li>
+  <li>Can perform queries on a promethues server</li>
+  <li>Debugging &amp; Profiling a promethues server&nbsp;</li>
+  <li>Perform unit tests against recording and alerting rules</li>
+  <li>&nbsp;</li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
