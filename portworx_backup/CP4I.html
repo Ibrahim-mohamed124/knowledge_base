@@ -1,0 +1,137 @@
+<!--
+title: Backing up and restoring IBM Cloud Pak for Integration
+description: 
+published: true
+date: 2026-02-01T17:58:17.799Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-02-01T17:58:17.799Z
+-->
+
+<h4>Before the backup</h4>
+<ul>
+  <li>The backup process saves a copy of the configuration (and some of the data) for some of the instances in Cloud Pak for Integration.</li>
+</ul>
+<figure class="table">
+  <table style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;">
+    <thead>
+      <tr>
+        <th style="background-color:rgb(82, 82, 82);border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;"><strong>Operator</strong></th>
+        <th style="background-color:rgb(82, 82, 82);border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;"><strong>Instance type</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">Cloud Pak for Integration</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Platform UI</li>
+            <li>API</li>
+            <li>API Product</li>
+            <li>Assembly</li>
+            <li>Messaging server</li>
+            <li>Messaging queue</li>
+            <li>Messaging channel</li>
+            <li>Messaging user</li>
+            <li>Policy</li>
+            <li>Policy binding</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM Automation Foundation assets</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Automation assets</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM API Connect</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>API Connect cluster</li>
+            <li>API Manager</li>
+            <li>API Analytics</li>
+            <li>API Gateway</li>
+            <li>API Portal</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM App Connect</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Configuration</li>
+            <li>Integration dashboard</li>
+            <li>Integration design</li>
+            <li>Integration runtime</li>
+            <li>Integration server</li>
+            <li>Switch server</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM MQ</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Queue manager</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM DataPower Gateway</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Enterprise gateways</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM Event Streams</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Kafka cluster</li>
+            <li>Kafka connect</li>
+            <li>Kafka topic</li>
+            <li>Kafka user</li>
+            <li>Kafka bridge</li>
+            <li>Kafka connector</li>
+            <li>Kafka rebalance</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM Event Endpoint Management</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Event Gateway</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">IBM Cloud Pak foundational services</td>
+        <td style="border-bottom:0px;border-left:0px;border-right:0px;border-top:0px;padding:0px;">
+          <ul>
+            <li>Keycloak</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<ul>
+  <li>If your system includes instances that are managed by the IBM App Connect or IBM API Connect operators, ensure that the restore cluster has the same hostname as the backup cluster.</li>
+  <li>If you are using a certificate manager on the backup cluster, install a certificate manager on the restore cluster, as well.</li>
+  <li>some operators are installed automatically like EDB and others are installed manually like ibm-integration-platform-navigator &nbsp;ibm-integration-asset-repository &nbsp;ibm-appconnect &nbsp;datapower-operatoribm-eventstreams &nbsp;ibm-common-service-operator &nbsp;ibm-apiconnect &nbsp;ibm-mq. &nbsp;</li>
+</ul>
+<p>ibm-eventendpointmanagement&nbsp;</p>
+<ul>
+  <li>To install an operator you need:<ul>
+      <li>catalogsource which usually exists in the openshift-marketplace namespace (certified-operators, community-operators, redhat-marketplace, redhat-operators)</li>
+      <li>operator subscription</li>
+      <li>&nbsp;</li>
+      <li>&nbsp;</li>
+    </ul>
+  </li>
+</ul>
