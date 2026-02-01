@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-01T19:37:41.075Z
+date: 2026-02-01T20:23:03.484Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -300,8 +300,21 @@ Checking /etc/prometheus/prometheus.yml
   <li>Can perform queries on a promethues server</li>
   <li>Debugging &amp; Profiling a promethues server&nbsp;</li>
   <li>Perform unit tests against recording and alerting rules</li>
-  <li>&nbsp;</li>
 </ul>
+<h3>scraping metrics from containers</h3>
+<ul>
+  <li>Docker Engine Metrics and cAdvisor provide the /metrics endpoint&nbsp;</li>
+  <li>To enable Docker Engine Metrics<ul>
+      <li>create a file /etc/docker/daemon.json with that content</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">{
+  "metrics-addr": "127.0.0.1:9323",
+  "experimental": true
+}</code></pre>
+<p>&nbsp; &nbsp; &nbsp;* restart docker service&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
