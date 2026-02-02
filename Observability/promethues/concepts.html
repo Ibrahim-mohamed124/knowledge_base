@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-01T20:23:03.484Z
+date: 2026-02-02T04:13:33.429Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -298,12 +298,12 @@ Checking /etc/prometheus/prometheus.yml
 <ul>
   <li>Validate metrics passed to it are correctly formatted</li>
   <li>Can perform queries on a promethues server</li>
-  <li>Debugging &amp; Profiling a promethues server&nbsp;</li>
+  <li>Debugging &amp; Profiling a promethues server</li>
   <li>Perform unit tests against recording and alerting rules</li>
 </ul>
 <h3>scraping metrics from containers</h3>
 <ul>
-  <li>Docker Engine Metrics and cAdvisor provide the /metrics endpoint&nbsp;</li>
+  <li>Docker Engine Metrics and cAdvisor provide the /metrics endpoint</li>
   <li>To enable Docker Engine Metrics<ul>
       <li>create a file /etc/docker/daemon.json with that content</li>
     </ul>
@@ -314,8 +314,13 @@ Checking /etc/prometheus/prometheus.yml
   "experimental": true
 }</code></pre>
 <p>&nbsp; &nbsp; &nbsp;* restart docker service&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Or use this with containerd &nbsp;/etc/containerd/config.toml</li>
+</ul>
+<pre><code class="language-plaintext">[metrics]
+
+  address = '0.0.0.0:1338'
+  grpc_histogram = true
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
