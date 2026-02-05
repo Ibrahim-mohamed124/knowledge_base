@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-05T19:45:19.711Z
+date: 2026-02-05T20:00:10.834Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -322,5 +322,23 @@ Checking /etc/prometheus/prometheus.yml
   address = '0.0.0.0:1338'
   grpc_histogram = true
 </code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>to get the container level metrics cAdvisor must be installed</li>
+</ul>
+<pre><code class="language-plaintext">root@prometheus-server ~ ➜  cat docker-compose.yml 
+version: '3.4'
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - "/dev/kmsg:/dev/kmsg"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - 8070:8080</code></pre>
