@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-05T20:25:13.831Z
+date: 2026-02-05T20:27:18.929Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -351,8 +351,11 @@ services:
   <li>String &gt; simple string value</li>
   <li>scalar &gt; numeric floating value</li>
   <li>Instant Vector &gt; a set of time series with a single sample for each time series, all sharing the same timestamp&nbsp;<ul>
-      <li>like querying node-cpu-seconds-total will return a number of timeseries' for each cpu. all the returned values share the same timestamp&nbsp;</li>
+      <li>like querying node-cpu-seconds-total will return a number of timeseries' (metric + unique labels) for each cpu. all the returned values share the same timestamp&nbsp;</li>
     </ul>
   </li>
-  <li>Range Vector</li>
+  <li>Range Vector &gt; set of time series with a range of different data points over time for each time series&nbsp;<ul>
+      <li>like querying node-cpu-seconds-total[xm]. The data that will be returned will cover a range of x mintues</li>
+    </ul>
+  </li>
 </ol>
