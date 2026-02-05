@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-05T20:27:18.929Z
+date: 2026-02-05T20:35:00.240Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -359,3 +359,15 @@ services:
     </ul>
   </li>
 </ol>
+<h6>Selector &amp; Matchers</h6>
+<ul>
+  <li>to select only a subset of timeseries' of a metric</li>
+  <li>types of matchers<ul>
+      <li>equality = &nbsp;&gt; node-filesystem-avail-bytes{instance="node1"}</li>
+      <li>negative equality ≠ node-filesystem-avail-bytes{device!≠"tmpfs"}</li>
+      <li>regular expression&nbsp;</li>
+      <li>negative regex</li>
+      <li>&nbsp;</li>
+    </ul>
+  </li>
+</ul>
