@@ -2,14 +2,14 @@
 title: configuring a proxy
 description: 
 published: true
-date: 2026-02-06T21:13:25.673Z
+date: 2026-02-06T21:20:02.262Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-06T21:13:25.673Z
 -->
 
 <ul>
-  <li>To configure a proxy for a cluster after the installation&nbsp;<ul>
+  <li>To configure a proxy for a cluster after the installation<ul>
       <li>create a configmap in the openshift-config namespace with the ca.crt of the proxy</li>
     </ul>
   </li>
@@ -72,5 +72,9 @@ spec:
 status:
   httpProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
   httpsProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
-  noProxy: .cluster.local,.svc,10.0.0.0/16,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.prod-v1.takamol.eg,localhost
-</code></pre>
+  noProxy: .cluster.local,.svc,10.0.0.0/16,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.prod-v1.takamol.eg,localhost</code></pre>
+<p>&nbsp;</p>
+<blockquote>
+  <p>Change the special characters in the password or username to the coded values in the URL</p>
+  <p>ex. &gt; == %C3</p>
+</blockquote>
