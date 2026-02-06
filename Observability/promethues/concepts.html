@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-05T20:35:00.240Z
+date: 2026-02-06T06:30:24.329Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -219,6 +219,7 @@ scrape_configs:
     scheme: https
     tls_config:
       ca_file: /etc/prometheus/MY-ORG.crt
+      insecure_skip_verify: false
     metrics_path: /metrics
     static_configs:
     - targets: [10.200.130.134:9100, 10.200.130.142:9100, 10.200.130.197:9100]</code></pre>
@@ -350,11 +351,11 @@ services:
 <ol>
   <li>String &gt; simple string value</li>
   <li>scalar &gt; numeric floating value</li>
-  <li>Instant Vector &gt; a set of time series with a single sample for each time series, all sharing the same timestamp&nbsp;<ul>
-      <li>like querying node-cpu-seconds-total will return a number of timeseries' (metric + unique labels) for each cpu. all the returned values share the same timestamp&nbsp;</li>
+  <li>Instant Vector &gt; a set of time series with a single sample for each time series, all sharing the same timestamp<ul>
+      <li>like querying node-cpu-seconds-total will return a number of timeseries' (metric + unique labels) for each cpu. all the returned values share the same timestamp</li>
     </ul>
   </li>
-  <li>Range Vector &gt; set of time series with a range of different data points over time for each time series&nbsp;<ul>
+  <li>Range Vector &gt; set of time series with a range of different data points over time for each time series<ul>
       <li>like querying node-cpu-seconds-total[xm]. The data that will be returned will cover a range of x mintues</li>
     </ul>
   </li>
@@ -365,9 +366,9 @@ services:
   <li>types of matchers<ul>
       <li>equality = &nbsp;&gt; node-filesystem-avail-bytes{instance="node1"}</li>
       <li>negative equality ≠ node-filesystem-avail-bytes{device!≠"tmpfs"}</li>
-      <li>regular expression&nbsp;</li>
-      <li>negative regex</li>
-      <li>&nbsp;</li>
+      <li>regular expression =~</li>
+      <li>negative regex !~&nbsp;</li>
     </ul>
   </li>
 </ul>
+<p>&nbsp;</p>
