@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-06T17:33:21.216Z
+date: 2026-02-06T17:45:53.630Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -394,8 +394,21 @@ Checking /etc/prometheus/prometheus.yml
 <ul>
   <li>Types of matching<ul>
       <li>one to one &gt; one sample and another</li>
-      <li>many to one &gt; &nbsp;many samples for one&nbsp;</li>
+      <li>many to one &gt; &nbsp;many samples for one&nbsp;<ul>
+          <li>group_left key tells &nbsp;the server that the many is on the lift</li>
+          <li>group_right key tells the server that the many is on the right</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Aggregators&nbsp;<ul>
+      <li>aggregate vectors(metrics) values [like functions]&nbsp;<ul>
+          <li>sum(), max(), avg()</li>
+        </ul>
+      </li>
+      <li>to aggregate vectors by labels use the by</li>
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">sum by(label) (metric)</code></pre>
 <p>&nbsp;</p>
