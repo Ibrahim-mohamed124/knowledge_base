@@ -1,0 +1,76 @@
+<!--
+title: configuring a proxy
+description: 
+published: true
+date: 2026-02-06T21:13:25.673Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-02-06T21:13:25.673Z
+-->
+
+<ul>
+  <li>To configure a proxy for a cluster after the installation&nbsp;<ul>
+      <li>create a configmap in the openshift-config namespace with the ca.crt of the proxy</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">[cloudvc@bastion-prod-v1 loki]$ oc get cm -n openshift-config user-ca-bundle -o yaml
+apiVersion: v1
+data:
+  ca-bundle.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIEEjCCAvqgAwIBAgIIN2crRLPjIi8wDQYJKoZIhvcNAQELBQAwgakxCzAJBgNV
+    BAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRIwEAYDVQQHDAlTdW5ueXZhbGUx
+    ETAPBgNVBAoMCEZvcnRpbmV0MR4wHAYDVQQLDBVDZXJ0aWZpY2F0ZSBBdXRob3Jp
+    dHkxGTAXBgNVBAMMEEZHVk1FTFRNMjUwMTQzOTMxIzAhBgkqhkiG9w0BCQEWFHN1
+    cHBvcnRAZm9ydGluZXQuY29tMB4XDTI1MTEyMTE3MTExMVoXDTM1MTEyMjE3MTEx
+    MVowgakxCzAJBgNVBAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRIwEAYDVQQH
+    DAlTdW5ueXZhbGUxETAPBgNVBAoMCEZvcnRpbmV0MR4wHAYDVQQLDBVDZXJ0aWZp
+    Y2F0ZSBBdXRob3JpdHkxGTAXBgNVBAMMEEZHVk1FTFRNMjUwMTQzOTMxIzAhBgkq
+    hkiG9w0BCQEWFHN1cHBvcnRAZm9ydGluZXQuY29tMIIBIjANBgkqhkiG9w0BAQEF
+    AAOCAQ8AMIIBCgKCAQEAibGQ9VPuqg0LAcXxf8KQ9luMOs9FeBj8ROhuis3Mte9Y
+    2s9DBj/M6lqB3cknbSGWZKp8W25F+M3t+hRefhZw85+W1jwbHGp/9YuV+5cQl6aH
+    1wLtQU0KE8mtPptpcNmkiiaVRXW/HiYHeNijLGmpdXmY+J/YdJQv+Zmk4QfH1Nzq
+    MeRhXbJ+cOGjJqfmtIeA3Ud4zA9hebltfn1Kvab3WsQDwsEzCcwRQOoSuzQJ9ZFf
+    ZMySzg+7ApnrMZf5o6eWC24WrmA8CRhQYCZWRIhZWhjZQPstd64m3HmcjLzU7j/+
+    /G8jHK8ZM0sPSC1FE0ileAls0ybi1JT3zgudwrTkLQIDAQABozwwOjAMBgNVHRME
+    BTADAQH/MAsGA1UdDwQEAwICBDAdBgNVHQ4EFgQUx3IF5DcMeE/+vtGbNoPFdX5j
+    58UwDQYJKoZIhvcNAQELBQADggEBAFF59L1+j+eHTYnumKcqBh/AaHLBMQcACnAk
+    aa+wsHuO0F1DhID2BnXUae5pvT8hH5inS0b0AoUUYrw+xLsUXro6Z2RELAagGaZT
+    VNu4Li+XQ5fe+itY6exlG6C7+Uu/0SA82Z2xv712L+ps3O5GmQzXfkV0dhZG42Fw
+    zF+SJt7HOWdWw6XayJKq94WMA3VuhzaRMG/gIPDTKqdb0lPuSmZ16YRfiYJB/pst
+    rmHJtMrtx2Kz6F67GvX/UNouxVLFJ2AF9Joj6uUrDkZkUhwnIQTyT539cYGUugnR
+    EERU/s3FTQgJsc4OhzKh4cL17mdR+pSjJbl5jqxswdOy0hs0AdQ=
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2026-02-06T14:42:29Z"
+  name: user-ca-bundle
+  namespace: openshift-config
+  resourceVersion: "572663592"
+  uid: ce61f347-a2e8-4769-a180-5cab996d90c2
+</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;* then edit the proxy CRD to include the proxy IP and username:password</p>
+<pre><code class="language-plaintext">[cloudvc@bastion-prod-v1 loki]$ oc get proxy cluster -o yaml
+apiVersion: config.openshift.io/v1
+kind: Proxy
+metadata:
+  creationTimestamp: "2024-12-08T20:14:39Z"
+  generation: 8
+  name: cluster
+  resourceVersion: "573134324"
+  uid: c758ea2f-462f-4d5e-a610-b1252ee97c3e
+spec:
+  httpProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
+  httpsProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
+  readinessEndpoints:
+  - http://www.google.com
+  - https://www.google.com
+  trustedCA:
+    name: user-ca-bundle
+status:
+  httpProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
+  httpsProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
+  noProxy: .cluster.local,.svc,10.0.0.0/16,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.prod-v1.takamol.eg,localhost
+</code></pre>
