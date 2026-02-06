@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-06T17:45:53.630Z
+date: 2026-02-06T18:16:12.822Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -410,5 +410,7 @@ Checking /etc/prometheus/prometheus.yml
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">sum by(label) (metric)</code></pre>
+<pre><code class="language-plaintext">sum by(labels) (metric)</code></pre>
+<p>&nbsp; &nbsp; * to ignore labels in the aggregation use the without keyword</p>
+<pre><code class="language-plaintext">sum without(labels) (metric)</code></pre>
 <p>&nbsp;</p>
