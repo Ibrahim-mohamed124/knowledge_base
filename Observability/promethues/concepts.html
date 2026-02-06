@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-06T06:40:35.286Z
+date: 2026-02-06T06:47:05.461Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -326,23 +326,7 @@ Checking /etc/prometheus/prometheus.yml
 <ul>
   <li>to get the container level metrics cAdvisor must be installed</li>
 </ul>
-<pre><code class="language-plaintext">root@prometheus-server ~ ➜  cat docker-compose.yml 
-version: '3.4'
-services:
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor
-    container_name: cadvisor
-    privileged: true
-    devices:
-      - "/dev/kmsg:/dev/kmsg"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    ports:
-      - 8070:8080</code></pre>
+<h6>root@prometheus-server ~ ➜ &nbsp;cat docker-compose.yml&nbsp;<br>version: '3.4'<br>services:<br>&nbsp; cadvisor:<br>&nbsp; &nbsp; image: gcr.io/cadvisor/cadvisor<br>&nbsp; &nbsp; container_name: cadvisor<br>&nbsp; &nbsp; privileged: true<br>&nbsp; &nbsp; devices:<br>&nbsp; &nbsp; &nbsp; - "/dev/kmsg:/dev/kmsg"<br>&nbsp; &nbsp; volumes:<br>&nbsp; &nbsp; &nbsp; - /:/rootfs:ro<br>&nbsp; &nbsp; &nbsp; - /var/run:/var/run:ro<br>&nbsp; &nbsp; &nbsp; - /sys:/sys:ro<br>&nbsp; &nbsp; &nbsp; - /var/lib/docker/:/var/lib/docker:ro<br>&nbsp; &nbsp; &nbsp; - /dev/disk/:/dev/disk:ro<br>&nbsp; &nbsp; ports:<br>&nbsp; &nbsp; &nbsp; - 8070:8080</h6>
 <h3>PromeQL</h3>
 <ul>
   <li>query language in promethues</li>
@@ -370,5 +354,11 @@ services:
       <li>negative regex !~ node-filesystem-avail-bytes{mountpoint!~"/boot".*}</li>
     </ul>
   </li>
+</ul>
+<h6>offset modifier&nbsp;</h6>
+<ul>
+  <li>instead of getting the latest value, get a value from the history</li>
+  <li>metric{selector} offset xU &gt;&gt; unit cloud be days, weeks, hours, minutes</li>
+  <li>to go back to specific point in time use @ with unix timestamp</li>
 </ul>
 <p>&nbsp;</p>
