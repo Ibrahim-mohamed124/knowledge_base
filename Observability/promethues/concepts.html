@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-06T06:36:15.583Z
+date: 2026-02-06T06:38:10.325Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -367,7 +367,7 @@ services:
       <li>equality = &nbsp;&gt; node-filesystem-avail-bytes{instance="node1"}</li>
       <li>negative equality ≠ node-filesystem-avail-bytes{instance="node1, device!≠"tmpfs"}</li>
       <li>regular expression =~ node-filesystem-avail-bytes{device=~"/dev/sda.*}</li>
-      <li>negative regex !~&nbsp;</li>
+      <li>negative regex !~ node-filesystem-avail-bytes{mountpoint!~"/boot".*}</li>
     </ul>
   </li>
 </ul>
