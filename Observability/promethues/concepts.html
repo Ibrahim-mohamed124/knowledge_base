@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-06T06:56:29.294Z
+date: 2026-02-06T17:08:45.363Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -362,4 +362,16 @@ Checking /etc/prometheus/prometheus.yml
   <li>to go back to specific point in time use @ with unix timestamp</li>
 </ul>
 <pre><code class="language-plaintext">node_memory_Active_bytes{instance="10.200.130.134:9100"}[2m] @1770360941 offset 10m</code></pre>
-<p>&nbsp;</p>
+<h6>Operators</h6>
+<ul>
+  <li>Arithmetic operators</li>
+</ul>
+<pre><code class="language-plaintext">metric (+|*|-|/)</code></pre>
+<ul>
+  <li>Comparison operators</li>
+</ul>
+<pre><code class="language-plaintext">metric (&lt;|&gt;|=)</code></pre>
+<ul>
+  <li>bool operator returns true or false</li>
+</ul>
+<pre><code class="language-plaintext">metric (&lt;|&gt;|=) bool value  </code></pre>
