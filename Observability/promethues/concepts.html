@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-06T17:14:54.092Z
+date: 2026-02-06T17:33:21.216Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -380,3 +380,22 @@ Checking /etc/prometheus/prometheus.yml
   <li>Logical operators</li>
 </ul>
 <pre><code class="language-plaintext">metric AND metric OR|UNLESS</code></pre>
+<ul>
+  <li>Vector Matching: operations on the metrics against each others<ul>
+      <li>&nbsp;samples with the exactly the same labels get matched together</li>
+      <li><mark class="marker-yellow">All labels must be same for samples to match</mark></li>
+      <li>To match samples with different labels use the ignore keyword</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">metric / igonring(lables) metric1</code></pre>
+<p>&nbsp; &nbsp; &nbsp; * To match on specific label use the on(label) keyword</p>
+<pre><code class="language-plaintext">metric / on(labels) metric1</code></pre>
+<ul>
+  <li>Types of matching<ul>
+      <li>one to one &gt; one sample and another</li>
+      <li>many to one &gt; &nbsp;many samples for one&nbsp;</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
