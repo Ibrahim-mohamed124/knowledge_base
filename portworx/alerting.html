@@ -1,0 +1,151 @@
+<!--
+title: alerting manager
+description: 
+published: true
+date: 2026-02-10T12:20:30.826Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-02-10T12:20:30.826Z
+-->
+
+<pre><code class="language-plaintext">
+apiVersion: monitoring.coreos.com/v1beta1
+kind: AlertmanagerConfig
+metadata:
+  creationTimestamp: "2026-02-09T10:08:21Z"
+  generation: 16
+  labels:
+    app: px-backup-alert-configs
+    orgId: default
+    owner: b9b94c6d-f5ad-4747-b829-bf96d5e53d83
+    receiver_uid: f2b24d46-f3cd-4426-9906-fce5549d51a0
+  name: px-backup-9e894833-1d03-4368-9dd9-82fcca040b31
+  namespace: px-central
+  resourceVersion: "15943970"
+  uid: 521f65bf-15a5-431d-b212-f8a692cabc40
+spec:
+  receivers:
+  - emailConfigs:
+    - from: portworx@test.com
+      headers:
+      - key: Subject
+        value: Portworx Backup - {{ if eq .GroupLabels.alertname "BackupAlert" }}Backup
+          Status Alert{{ else if eq .GroupLabels.alertname "RestoreAlert" }}Restore
+          Status Alert{{ else if eq .GroupLabels.alertname "ClusterAlert" }}Cluster
+          Status Alert{{ else if eq .GroupLabels.alertname "BackupLocationAlert" }}Backup
+          Location Status Alert{{ else if eq .GroupLabels.alertname "BackupLocationLimitedAvailabilityAlert"
+          }}Backup Location Limited Availability Alert{{ else if eq .GroupLabels.alertname
+          "PartialBackupAlert" }}Partial Backup Success Alert{{ else }}Unknown Alert
+          Type{{ end }}
+      requireTLS: false
+      smarthost: 10.100.100.200:1025
+      tlsConfig:
+        ca: {}
+        cert: {}
+      to: portworx@test.com
+    name: px-backup-9e894833-1d03-4368-9dd9-82fcca040b31
+  route:
+    groupBy:
+    - backup
+    - restore
+    groupInterval: 24h
+    groupWait: 10s
+    matchers:
+    - matchType: =
+      name: user_id
+      value: b9b94c6d-f5ad-4747-b829-bf96d5e53d83
+    - matchType: =
+      name: backfill
+      value: ""
+    receiver: px-backup-9e894833-1d03-4368-9dd9-82fcca040b31
+    repeatInterval: 22080h
+</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    meta.helm.sh/release-name: px-central
+    meta.helm.sh/release-namespace: px-central
+  creationTimestamp: "2026-02-09T09:40:34Z"
+  generation: 6
+  labels:
+    app: px-backup-alerts
+    app.kubernetes.io/managed-by: Helm
+  name: px-backup-dashboard-prometheus-rules
+  namespace: px-central
+  resourceVersion: "15233227"
+  uid: 28d09a9c-2a1e-412c-a253-a19ddbb01e8b
+spec:
+  groups:
+  - limit: 10
+    name: gauge_rules
+    rules:
+    - alert: ClusterAlert
+      annotations:
+        description: The Cluster "{{ $labels.name }}" {{- if eq $value 5.00 }} has
+          failed.  {{- else if eq $value 2.00 }} has turned offline.{{- else }}unknown
+          state.{{- end }}
+        summary: Cluster {{- if eq $value 5.00 }} addition failed {{- else if eq $value
+          2.00}} turned offline {{- else }}unknown state {{- end }}
+        value: '{{ $value }}'
+      expr: pxbackup_cluster_status == 5 or pxbackup_cluster_status == 2
+      for: 60m
+      labels:
+        severity: critical
+    - alert: BackupAlert
+      annotations:
+        description: "The Backup \"{{ $labels.name }}\"\n{{- if eq $labels.schedule_name
+          \"\" }}\n{{ else }} part of backup schedule \"{{ $labels.schedule_name }}\"\n{{
+          end }} taken for cluster \"{{ $labels.cluster }}\" on namespace \"{{ $labels.backup_namespace
+          }}\"\n{{- if eq $value 4.00 }} has failed. {{- else }} is missing from backup
+          location. {{- end }} "
+        summary: ' {{- if eq $value 4.00 -}} Backup failed {{- else -}} Cloud file
+          missing {{- end }} '
+        value: '{{ $value }}'
+      expr: pxbackup_backup_status == 4 or pxbackup_backup_status == 10
+      for: 1m
+      labels:
+        backup: "true"
+        severity: critical
+    - alert: RestoreAlert
+      annotations:
+        description: The Restore "{{ $labels.name }}" made from backup "{{ $labels.backup}}"
+          has failed.
+        summary: Restoring backup failed
+      expr: pxbackup_restore_status == 4
+      for: 1m
+      labels:
+        restore: "true"
+        severity: critical
+    - alert: BackupLocationAlert
+      annotations:
+        description: The Backup Location "{{ $labels.name }}" has failed.
+        summary: Backup Location addition failed
+      expr: pxbackup_backup_location_status == 4
+      for: 60m
+      labels:
+        severity: critical
+    - alert: BackupLocationLimitedAvailabilityAlert
+      annotations:
+        description: The Backup Location "{{ $labels.name }}" has transitioned to
+          a limited availability state.
+        summary: Backup Location status changed to limited availability. KDMP backup
+          will not be allowed.
+      expr: pxbackup_backup_location_status == 5
+      for: 1m
+      labels:
+        severity: critical
+    - alert: PartialBackupAlert
+      annotations:
+        description: The Backup "{{ $labels.name }}" {{- if eq .Labels.schedule_name
+          "" }} {{ else }} part of backup schedule "{{ $labels.schedule_name }}" {{
+          end }} taken for cluster "{{ $labels.cluster }}"on namespace "{{ $labels.backup_namespace}}"
+          was only completed partially.
+        summary: Partial Backup Success
+      expr: pxbackup_backup_status == 8
+      for: 1m
+      labels:
+        backup: "true"
+        severity: critical
+</code></pre>
