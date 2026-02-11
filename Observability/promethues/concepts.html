@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-06T18:16:12.822Z
+date: 2026-02-11T21:24:02.887Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -367,10 +367,12 @@ Checking /etc/prometheus/prometheus.yml
   <li>Arithmetic operators</li>
 </ul>
 <pre><code class="language-plaintext">metric (+|*|-|/)</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Comparison operators</li>
 </ul>
 <pre><code class="language-plaintext">metric (&lt;|&gt;|=)</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>bool operator returns true or false</li>
 </ul>
@@ -380,9 +382,10 @@ Checking /etc/prometheus/prometheus.yml
   <li>Logical operators</li>
 </ul>
 <pre><code class="language-plaintext">metric AND metric OR|UNLESS</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Vector Matching: operations on the metrics against each others<ul>
-      <li>&nbsp;samples with the exactly the same labels get matched together</li>
+      <li>samples with the exactly the same labels get matched together</li>
       <li><mark class="marker-yellow">All labels must be same for samples to match</mark></li>
       <li>To match samples with different labels use the ignore keyword</li>
     </ul>
@@ -391,18 +394,19 @@ Checking /etc/prometheus/prometheus.yml
 <pre><code class="language-plaintext">metric / igonring(lables) metric1</code></pre>
 <p>&nbsp; &nbsp; &nbsp; * To match on specific label use the on(label) keyword</p>
 <pre><code class="language-plaintext">metric / on(labels) metric1</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Types of matching<ul>
       <li>one to one &gt; one sample and another</li>
-      <li>many to one &gt; &nbsp;many samples for one&nbsp;<ul>
+      <li>many to one &gt; &nbsp;many samples for one<ul>
           <li>group_left key tells &nbsp;the server that the many is on the lift</li>
           <li>group_right key tells the server that the many is on the right</li>
         </ul>
       </li>
     </ul>
   </li>
-  <li>Aggregators&nbsp;<ul>
-      <li>aggregate vectors(metrics) values [like functions]&nbsp;<ul>
+  <li>Aggregators<ul>
+      <li>aggregate vectors(metrics) values [like functions]<ul>
           <li>sum(), max(), avg()</li>
         </ul>
       </li>
@@ -413,4 +417,10 @@ Checking /etc/prometheus/prometheus.yml
 <pre><code class="language-plaintext">sum by(labels) (metric)</code></pre>
 <p>&nbsp; &nbsp; * to ignore labels in the aggregation use the without keyword</p>
 <pre><code class="language-plaintext">sum without(labels) (metric)</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Functions:<ul>
+      <li>math floor(), ceil()</li>
+      <li>time()</li>
+    </ul>
+  </li>
+</ul>
