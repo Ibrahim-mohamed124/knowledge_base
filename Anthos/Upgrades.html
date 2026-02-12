@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-12T16:07:34.419Z
+date: 2026-02-12T16:10:03.075Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -15,7 +15,7 @@ dateCreated: 2026-02-12T16:07:34.419Z
 <h6>Essentials&nbsp;</h6>
 <ul>
   <li>The gkectl command line version must be the same as the target version of the clusters</li>
-  <li>The Admin cluster version must be equal or higher than the User cluster version&nbsp;</li>
+  <li>The Admin cluster version must be equal or higher than the User cluster version</li>
   <li>The gkectl command line version cannot be higher than the current cluster version by 2 minor versions</li>
 </ul>
 <h6>Upgrade sequence</h6>
@@ -39,3 +39,26 @@ dateCreated: 2026-02-12T16:07:34.419Z
 <ul>
   <li>The command-line tool <code>gkectl</code>, which you run on your admin workstation. Before the upgrade, you modify your user cluster <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#nodepool-gkeonpremversion-field">configuration file</a> to set the target version for the cluster's control plane and optionally, for the node pools. You specify this file on the command line to <code>gkectl</code>.</li>
 </ul>
+<h1>Best practices</h1>
+<h6>Upgrade checklist</h6>
+<ul class="todo-list">
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#estimate_the_time_commitment_and_plan_a_maintenance_window"><span class="text-tiny"><label class="todo-list__label"><u><input type="checkbox" disabled="disabled"></u><span class="todo-list__label__description"><u>Estimate the time commitment and plan a maintenance window</u></span></label><span class="todo-list__label__description"> for the upgrade.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#back_up_the_user_and_admin_cluster"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Prepare backups for the user clusters and admin cluster</span></label><span class="todo-list__label__description">.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#review_the_use_of_poddisruptionbudgets"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Check for </span></label><code><span class="todo-list__label__description">PodDisruptionBudgets</span></code><span class="todo-list__label__description"> in user clusters.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#review_the_available_ip_addresses"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Review the available IP addresses</span></label><span class="todo-list__label__description"> and needs.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#check_cluster_utilization"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Check the user cluster utilization</span></label><span class="todo-list__label__description"> and available resources.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#check_vsphere_utilization"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Check the vSphere cluster capacity</span></label><span class="todo-list__label__description"> for available resources such as CPU, memory, and ready times.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#check_cluster_health"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Check the cluster health and configuration</span></label><span class="todo-list__label__description"> to resolve problems before the upgrade.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#use_deployments_to_minimize_application_disruption"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Use Deployments to minimize application disruption</span></label><span class="todo-list__label__description">.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#use_a_high_availability_load_balancer_pair"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Use a high availability load balancer pair</span></label><span class="todo-list__label__description">.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#decide_how_to_upgrade_each_user_cluster"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Decide how to upgrade each user cluster</span></label><span class="todo-list__label__description">.</span></span></a></li>
+  <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#check_ca_certificates"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Check if CA certificates need to be rotated</span></label><span class="todo-list__label__description">.</span></span></a></li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
