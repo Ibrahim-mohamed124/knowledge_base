@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-12T16:35:25.446Z
+date: 2026-02-12T16:36:44.392Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -104,6 +104,7 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
 <ul>
   <li>Edit the admin cluster configuration file and add the <code>clusterBackup.datastore</code> field, then run <code>gkectl update admin</code>.</li>
 </ul>
+<pre><code class="language-plaintext">gkectl  backup admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG --config ADMIN_CLUSTER_CONFIG</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
