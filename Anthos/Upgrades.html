@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-12T16:10:03.075Z
+date: 2026-02-12T16:14:19.010Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -54,7 +54,13 @@ dateCreated: 2026-02-12T16:07:34.419Z
   <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#decide_how_to_upgrade_each_user_cluster"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Decide how to upgrade each user cluster</span></label><span class="todo-list__label__description">.</span></span></a></li>
   <li><a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrade-best-practices#check_ca_certificates"><span class="text-tiny"><label class="todo-list__label"><input type="checkbox" disabled="disabled"><span class="todo-list__label__description">Check if CA certificates need to be rotated</span></label><span class="todo-list__label__description">.</span></span></a></li>
 </ul>
-<p>&nbsp;</p>
+<h6>Downtime</h6>
+<ul>
+  <li>During the upgrade Anthos drains the nodes, and recreates them</li>
+  <li>To calculate a rough estimate for the upgrade time, multiply 15 minutes times the number of nodes in the largest node pool. For example, if you have 10 nodes in the largest pool, the total upgrade time would be about 15 * 10 = 150 minutes or 2.5 hours</li>
+  <li>Accelerate an upgrade by setting the value of <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#nodepool-update-policy-updatestrategy-rolling-update-maxsurge-field"><code>maxSurge</code></a> for individual node pools.&nbsp;</li>
+</ul>
+<h6>Back up the user and admin cluster</h6>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
