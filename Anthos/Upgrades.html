@@ -1,0 +1,41 @@
+<!--
+title: Anthos Upgrades
+description: 
+published: true
+date: 2026-02-12T16:07:34.419Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-02-12T16:07:34.419Z
+-->
+
+<blockquote>
+  <p>This documents assumes that all the clusters are updated to the recommended features and the cluster is not advanced cluster</p>
+</blockquote>
+<h1>Overview of cluster upgrades</h1>
+<h6>Essentials&nbsp;</h6>
+<ul>
+  <li>The gkectl command line version must be the same as the target version of the clusters</li>
+  <li>The Admin cluster version must be equal or higher than the User cluster version&nbsp;</li>
+  <li>The gkectl command line version cannot be higher than the current cluster version by 2 minor versions</li>
+</ul>
+<h6>Upgrade sequence</h6>
+<ol>
+  <li>Upgrade the admin workstation</li>
+  <li>Upgrade the admin cluster</li>
+  <li>Upgrade the user clusters, one at a time</li>
+</ol>
+<blockquote>
+  <p>For Controlplane V2, the user cluster control plane nodes are upgraded during the user cluster upgrade, and the admin cluster control plane nodes are upgraded during the admin cluster upgrade.</p>
+</blockquote>
+<blockquote>
+  <p>When upgrading user clusters, you can choose to upgrade the user cluster as a whole (meaning you can upgrade the control plane and all node pools in the cluster), or you can upgrade the user cluster's control plane and leave the node pools at the current version. Which approach you take depends on several factors, such as:</p>
+  <ul>
+    <li>The environment (production or non-production) that the cluster is in.</li>
+    <li>The length of your maintenance window.</li>
+    <li>The version of the user cluster.</li>
+  </ul>
+</blockquote>
+<h6>Upgrade tool</h6>
+<ul>
+  <li>The command-line tool <code>gkectl</code>, which you run on your admin workstation. Before the upgrade, you modify your user cluster <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#nodepool-gkeonpremversion-field">configuration file</a> to set the target version for the cluster's control plane and optionally, for the node pools. You specify this file on the command line to <code>gkectl</code>.</li>
+</ul>
