@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-12T16:44:04.508Z
+date: 2026-02-12T16:49:45.047Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -111,3 +111,13 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
   <p>Check for PDBs that can't be fulfilled. For example, you might set a minimum availability of 1, when the Deployment only features 1 replica. In this example, the draining operation is disrupted because the PDB can't be satisfied by the resource controller.</p>
 </blockquote>
 <h6>Review the available IP addresses</h6>
+<ul>
+  <li>Always have N+1 IP addresses for the cluster, where N is the number of nodes in the user cluster.</li>
+  <li>When using static IP addresses, the required IP addresses must be listed in the IP block files.<ul>
+      <li>When upgrading non-HA admin clusters, add the additional IP address in the IP block file used by the admin cluster. The path to this file must be specified in the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/admin-cluster-configuration-file-latest#network-ipmode.ipblockfilepath-field"><code>network.ipMode.ipBlockFilePath</code></a> field of the admin cluster configuration file.</li>
+      <li>When upgrading user clusters, add the additional IP address in the IP block file used by the user cluster. The path to this file must be specified in the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#network-ipmode.ipblockfilepath-field"><code>network.ipMode.ipBlockFilePath</code></a> field of the user cluster configuration file.</li>
+      <li>If you need to add IP addresses, update the IP block file, then run the <code>gkectl update</code> command.</li>
+    </ul>
+  </li>
+  <li>HA admin clusters don't require N+1 IP addresses for upgrades. The three control-plane nodes in an HA admin cluster are recreated one by one, ensuring no additional IP addresses are needed.</li>
+</ul>
