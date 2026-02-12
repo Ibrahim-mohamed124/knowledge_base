@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-12T16:14:19.010Z
+date: 2026-02-12T16:25:37.169Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -61,9 +61,45 @@ dateCreated: 2026-02-12T16:07:34.419Z
   <li>Accelerate an upgrade by setting the value of <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#nodepool-update-policy-updatestrategy-rolling-update-maxsurge-field"><code>maxSurge</code></a> for individual node pools.&nbsp;</li>
 </ul>
 <h6>Back up the user and admin cluster</h6>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>check if the cluster is controlplane V2</li>
+</ul>
+<pre><code class="language-plaintext">kubectl get onpremuserclusters --kubeconfig USER_CLUSTER_KUBECONFIG \
+  -n kube-system -o jsonpath='{.items[0].spec.enableControlplaneV2}' &amp;&amp; echo</code></pre>
+<ul>
+  <li>Get the etcd Pod's name:</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG get pods \
+ -n kube-system -l component=etcd,tier=control-plane -ojsonpath='{$.items[*].metadata.name}{"\n"}'</code></pre>
+<ul>
+  <li>Get a shell into the <code>etcd</code> container:</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG exec -it \
+ POD_NAME -c etcd -n kube-system -- /bin/sh
+</code></pre>
+<ul>
+  <li>In your shell, create a backup file named <code>snapshot.db</code>:</li>
+</ul>
+<pre><code class="language-plaintext">ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+  --cert=/etc/kubernetes/pki/etcd/server.crt \
+  --key=/etc/kubernetes/pki/etcd/server.key \
+  snapshot save /tmp/snapshot.db</code></pre>
+<ul>
+  <li>Copy <code>snapshot.db</code> from the <code>etcd</code> container to the workstation home directory:</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG \
+ cp POD_NAME:/tmp/snapshot.db ~/snapshot.db \
+ -c etcd -n kube-system</code></pre>
+<ul>
+  <li>Copy the secrets from the PKI directory:</li>
+</ul>
+<pre><code class="language-plaintext">ssh -i NODE_NAME.key ubuntu@NODE_EXTERNAL_IP
+sudo chmod -R 0644 /etc/kubernetes/pki/*
+sudo chmod 0755 /etc/kubernetes/pki/etcd
+exit
+scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAME</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
