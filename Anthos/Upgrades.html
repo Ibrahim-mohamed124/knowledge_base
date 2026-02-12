@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-12T16:40:19.062Z
+date: 2026-02-12T16:41:22.551Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -107,4 +107,6 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
 <pre><code class="language-plaintext">gkectl  backup admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG --config ADMIN_CLUSTER_CONFIG</code></pre>
 <h6>Review the use of <code>PodDisruptionBudgets</code></h6>
 <pre><code class="language-plaintext">kubectl get pdb -A --kubeconfig KUBECONFIG</code></pre>
-<p>&nbsp;</p>
+<blockquote>
+  <p>Check for PDBs that can't be fulfilled. For example, you might set a minimum availability of 1, when the Deployment only features 1 replica. In this example, the draining operation is disrupted because the PDB can't be satisfied by the resource controller.</p>
+</blockquote>
