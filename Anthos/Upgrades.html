@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-12T16:25:55.645Z
+date: 2026-02-12T16:35:25.446Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -60,7 +60,7 @@ dateCreated: 2026-02-12T16:07:34.419Z
   <li>To calculate a rough estimate for the upgrade time, multiply 15 minutes times the number of nodes in the largest node pool. For example, if you have 10 nodes in the largest pool, the total upgrade time would be about 15 * 10 = 150 minutes or 2.5 hours</li>
   <li>Accelerate an upgrade by setting the value of <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#nodepool-update-policy-updatestrategy-rolling-update-maxsurge-field"><code>maxSurge</code></a> for individual node pools.&nbsp;</li>
 </ul>
-<h6>Back up the user and admin cluster</h6>
+<h6>Back up the user cluster</h6>
 <ul>
   <li>check if the cluster is controlplane V2</li>
 </ul>
@@ -100,7 +100,10 @@ sudo chmod -R 0644 /etc/kubernetes/pki/*
 sudo chmod 0755 /etc/kubernetes/pki/etcd
 exit
 scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAME</code></pre>
-<p>&nbsp;</p>
+<h6>Backup admin cluster</h6>
+<ul>
+  <li>Edit the admin cluster configuration file and add the <code>clusterBackup.datastore</code> field, then run <code>gkectl update admin</code>.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
