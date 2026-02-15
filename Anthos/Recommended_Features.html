@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-15T20:13:34.544Z
+date: 2026-02-15T20:15:46.794Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -83,3 +83,7 @@ adminMaster:
   cpus: 4
   memoryMB: 8192
 ...</code></pre>
+<h3>Migrate the admin cluster</h3>
+<pre><code class="language-plaintext">gkectl update admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --config ADMIN_CLUSTER_CONFIG</code></pre>
+<p>&nbsp;</p>
