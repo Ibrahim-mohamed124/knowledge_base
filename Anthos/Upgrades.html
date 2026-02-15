@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T10:10:17.570Z
+date: 2026-02-15T10:18:10.673Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -264,3 +264,22 @@ EOF</code></pre>
 <h6>advanced clusters</h6>
 <p>* &nbsp;When you upgrade your clusters from version 1.32 to 1.33, they are automatically converted to advanced clusters</p>
 <pre><code class="language-plaintext">Set enableAdvancedCluster in your admin cluster configuration file to false.</code></pre>
+<blockquote>
+  <p>When you upgrade an admin cluster, Google Distributed Cloud deploys a <a href="https://kind.sigs.k8s.io/">Kubernetes in Docker</a> (kind) cluster to temporarily host the Kubernetes controllers needed to upgrade the admin cluster. This transient cluster is called a <i>bootstrap cluster</i>. Server-side preflight checks are run on the bootstrap cluster when you upgrade an admin cluster.</p>
+</blockquote>
+<h3>Cluster upgrade</h3>
+<ul>
+  <li>Remove any non-system NetworkPolicy</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG get networkpolicy -A -o wide | grep -v kube-system</code></pre>
+<ul>
+  <li>backup all the non-system NetworkPolicies</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG get networkpolicy NETWORK_POLICY_NAME -n NETWORK_POLICY_NAMESPACE -o yaml &gt; NETWORK_POLICY_NAME.yaml</code></pre>
+<ul>
+  <li>delete the non-system NetworkPolicies&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG delete networkpolicy NETWORK_POLICY_NAME -n NETWORK_POLICY_NAMESPACE</code></pre>
+<ul>
+  <li>after the upgrade restore the networkpolicies&nbsp;</li>
+</ul>
