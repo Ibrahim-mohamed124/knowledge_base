@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T09:42:09.590Z
+date: 2026-02-15T09:42:42.872Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -159,3 +159,7 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
   <li>check the version of the user cluster nodes</li>
 </ul>
 <pre><code class="language-plaintext">kubectl get nodes --kubeconfig USER_CLUSTER_KUBECONFIG</code></pre>
+<h6>Check if CA certificates need to be rotated</h6>
+<ul>
+  <li>During an upgrade, leaf certificates are rotated, but CA certificates aren't. You must manually rotate your CA certificates at least once every five years.</li>
+</ul>
