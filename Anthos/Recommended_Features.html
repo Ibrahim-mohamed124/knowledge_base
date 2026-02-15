@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-15T20:09:29.600Z
+date: 2026-02-15T20:11:55.977Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -45,4 +45,35 @@ dateCreated: 2026-02-15T19:53:45.620Z
   <li>If the output shows an empty key, such as in the following example, you must rotate the encryption key</li>
 </ul>
 <pre><code class="language-plaintext">"GeneratedKeys":[{"KeyVersion":"1","Key":""}]</code></pre>
-<p>&nbsp;</p>
+<h3>Update the admin cluster configuration file</h3>
+<pre><code class="language-plaintext">vCenter:
+  address: "my-vcenter-server.my-domain.example"
+  datacenter: "my-data-center"
+  dataDisk: "xxxx.vmdk"
+...
+network:
+  hostConfig:
+    dnsServers:
+    - 203.0.113.1
+    - 203.0.113.2
+    ntpServers:
+    - 203.0.113.3
+  ...
+  controlPlaneIPBlock:
+    netmask: "255.255.255.0"
+    gateway: "198.51.100.1"
+    ips:
+    - ip: "192.0.2.1"
+      hostname: "admin-cp-hostname-1"
+    - ip: "192.0.2.2"
+      hostname: "admin-cp-hostname-2"
+    - ip: "192.0.2.3"
+      hostname: "admin-cp-hostname-3"
+...
+
+...
+adminMaster:
+  replicas: 3
+  cpus: 4
+  memoryMB: 8192
+...</code></pre>
