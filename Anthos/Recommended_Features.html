@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-15T20:12:38.239Z
+date: 2026-02-15T20:13:34.544Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -49,7 +49,7 @@ dateCreated: 2026-02-15T19:53:45.620Z
 <pre><code class="language-plaintext">vCenter:
   address: "my-vcenter-server.my-domain.example"
   datacenter: "my-data-center"
-  dataDisk: "xxxx.vmdk"
+  dataDisk: "xxxx.vmdk"   &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; remove this
 ...
 network:
   hostConfig:
@@ -74,10 +74,8 @@ network:
 ...
 loadBalancer:
   vips:
-    controlPlaneVIP: 192.0.2.6 192.0.2.50
-  kind: ManualLB
-  manualLB:
-    controlPlaneNodePort: 30003 0
+    controlPlaneVIP:  192.0.2.50
+
 
 ...
 adminMaster:
