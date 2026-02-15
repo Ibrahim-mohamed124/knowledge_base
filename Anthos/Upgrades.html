@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T16:07:08.563Z
+date: 2026-02-15T18:15:47.210Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -327,17 +327,21 @@ EOF</code></pre>
 <pre><code class="language-plaintext">gkectl upgrade admin \
     --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
     --config ADMIN_CLUSTER_CONFIG_FILE \
-    --async || optinally</code></pre>
+    --async || optinal</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To see the status of the upgrade:</li>
 </ul>
 <pre><code class="language-plaintext">gkectl list admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To get more details about the upgrade progress and cluster events:</li>
 </ul>
 <pre><code class="language-plaintext">gkectl describe admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>If you are upgrading to version 1.14.0 or higher, a new kubeconfig file is generated for the admin cluster that overwrites any existing file. To view cluster details in the file, run the following command:</p>
   <pre><code class="language-plaintext">  kubectl config view --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+  <p>&nbsp;</p>
 </blockquote>
 <p>&nbsp;</p>
