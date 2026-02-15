@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T09:56:08.387Z
+date: 2026-02-15T09:56:38.882Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -255,3 +255,8 @@ EOF</code></pre>
   <li>for user clusters</li>
 </ul>
 <pre><code class="language-plaintext">./pre-upgrade.sh TARGET_VERSION USER_CLUSTER_NAME</code></pre>
+<ul>
+  <li>get the logs of the job</li>
+</ul>
+<pre><code class="language-plaintext">kubectl logs -n JOB_NAMESPACE jobs/JOB_NAME \
+    --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
