@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T09:57:24.872Z
+date: 2026-02-15T09:59:43.716Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -170,7 +170,8 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
 </ul>
 <pre><code class="language-plaintext">gkectl prepare \
     --bundle-path /var/lib/gke/bundles/gke-onprem-vsphere-TARGET_VERSION.tgz \
-    --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+    --kubeconfig ADMIN_CLUSTER_KUBECONFIG
+    --advanced-cluster=false</code></pre>
 <ul>
   <li>In the following bash script, set values for these placeholders:<ul>
       <li><code>ADMIN_CLUSTER_KUBECONFIG</code>: The path to the admin cluster kubeconfig.</li>
