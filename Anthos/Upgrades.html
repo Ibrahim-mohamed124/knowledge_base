@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T10:23:27.340Z
+date: 2026-02-15T10:27:12.400Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -151,10 +151,12 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
   <li>Check the version of the user clusters:</li>
 </ul>
 <pre><code class="language-plaintext">gkectl list clusters --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>check the version of the admin clusters</li>
 </ul>
 <pre><code class="language-plaintext">gkectl list admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>check the version of the user cluster nodes</li>
 </ul>
@@ -172,6 +174,7 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
     --bundle-path /var/lib/gke/bundles/gke-onprem-vsphere-TARGET_VERSION.tgz \
     --kubeconfig ADMIN_CLUSTER_KUBECONFIG
     --advanced-cluster=false</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>In the following bash script, set values for these placeholders:<ul>
       <li><code>ADMIN_CLUSTER_KUBECONFIG</code>: The path to the admin cluster kubeconfig.</li>
@@ -247,15 +250,19 @@ spec:
       imagePullSecrets:
       - name: private-registry-creds
 EOF</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">chmod +x pre-upgrade.sh</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>for admin cluster</li>
 </ul>
 <pre><code class="language-plaintext">./pre-upgrade.sh TARGET_VERSION</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>for user clusters</li>
 </ul>
 <pre><code class="language-plaintext">./pre-upgrade.sh TARGET_VERSION USER_CLUSTER_NAME</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>get the logs of the job</li>
 </ul>
@@ -264,6 +271,7 @@ EOF</code></pre>
 <h6>advanced clusters</h6>
 <p>* &nbsp;When you upgrade your clusters from version 1.32 to 1.33, they are automatically converted to advanced clusters</p>
 <pre><code class="language-plaintext">Set enableAdvancedCluster in your admin cluster configuration file to false.</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>When you upgrade an admin cluster, Google Distributed Cloud deploys a <a href="https://kind.sigs.k8s.io/">Kubernetes in Docker</a> (kind) cluster to temporarily host the Kubernetes controllers needed to upgrade the admin cluster. This transient cluster is called a <i>bootstrap cluster</i>. Server-side preflight checks are run on the bootstrap cluster when you upgrade an admin cluster.</p>
 </blockquote>
@@ -272,17 +280,23 @@ EOF</code></pre>
   <li>Remove any non-system NetworkPolicy</li>
 </ul>
 <pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG get networkpolicy -A -o wide | grep -v kube-system</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>backup all the non-system NetworkPolicies</li>
 </ul>
 <pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG get networkpolicy NETWORK_POLICY_NAME -n NETWORK_POLICY_NAMESPACE -o yaml &gt; NETWORK_POLICY_NAME.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>delete the non-system NetworkPolicies&nbsp;</li>
+  <li>delete the non-system NetworkPolicies</li>
 </ul>
 <pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG delete networkpolicy NETWORK_POLICY_NAME -n NETWORK_POLICY_NAMESPACE</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>after the upgrade restore the networkpolicies&nbsp;</li>
+  <li>after the upgrade restore the networkpolicies</li>
 </ul>
 <h6>Check available versions for cluster upgrades</h6>
 <pre><code class="language-plaintext">gkectl version --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
 <h2>Upgrade your admin workstation</h2>
+<ul>
+  <li>&nbsp;</li>
+</ul>
