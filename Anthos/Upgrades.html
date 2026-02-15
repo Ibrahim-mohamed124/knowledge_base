@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T09:46:46.813Z
+date: 2026-02-15T09:54:58.225Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -163,3 +163,86 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
 <ul>
   <li>During an upgrade, leaf certificates are rotated, but CA certificates aren't. You must manually rotate your CA certificates at least once every five years.</li>
 </ul>
+<h3>Run the pre-upgrade tool</h3>
+<ul>
+  <li>Upgrade the admin workstation</li>
+  <li>Run <code>gkectl prepare</code> to import OS images to vSphere if you have not done so:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl prepare \
+    --bundle-path /var/lib/gke/bundles/gke-onprem-vsphere-TARGET_VERSION.tgz \
+    --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<ul>
+  <li>In the following bash script, set values for these placeholders:<ul>
+      <li><code>ADMIN_CLUSTER_KUBECONFIG</code>: The path to the admin cluster kubeconfig.</li>
+      <li><code>REGISTRY_ADDRESS</code>: If the admin cluster uses a private registry, this is the private registry address that you specified in the previous step. If you aren't using a private registry, specify the public registry: <code>gcr.io/gke-on-prem-release</code></li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">#!/bin/bash
+UPGRADE_TARGET_VERSION=${1}
+CLUSTER_NAME=${2}
+ADMIN_KUBECONFIG=ADMIN_CLUSTER_KUBECONFIG
+REGISTRY_ADDRESS=REGISTRY_ADDRESS
+pre_upgrade_namespace=kube-system
+if [[ -z "$CLUSTER_NAME" ]]
+then
+  echo "Running the pre-ugprade tool before admin cluster upgrade"
+else
+  echo "Running the pre-ugprade tool before user cluster upgrade"
+  pre_upgrade_namespace=$CLUSTER_NAME-gke-onprem-mgmt
+fi
+kubectl apply --kubeconfig ${ADMIN_KUBECONFIG} -f - &lt;&lt;EOF
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pre-upgrade-job
+  namespace: $pre_upgrade_namespace
+EOF
+kubectl apply --kubeconfig ${ADMIN_KUBECONFIG} -f - &lt;&lt;EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  creationTimestamp: null
+  name: pre-upgrade-job-rolebinding-in-$pre_upgrade_namespace
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: onprem-user-cluster-controller-role
+subjects:
+  - kind: ServiceAccount
+    name: pre-upgrade-job
+    namespace: $pre_upgrade_namespace
+EOF
+kubectl apply --kubeconfig ${ADMIN_KUBECONFIG} -f - &lt;&lt;EOF
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pre-upgrade-$(date +%Y-%m%d-%H%M%S)
+  namespace: $pre_upgrade_namespace
+  labels:
+    onprem.cluster.gke.io/job-usage: preflight
+spec:
+  ttlSecondsAfterFinished: 2592000
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        onprem.cluster.gke.io/pod-usage: preflight
+    spec:
+      containers:
+      - name: preflight
+        image: $REGISTRY_ADDRESS/preflight@sha256:9704315c6637750a014d0079ca04a8f97d0ca3735e175020377107c3181f6234
+        imagePullPolicy: Always
+        command:
+        - /preflight
+        - --upgrade-target-version
+        - "$UPGRADE_TARGET_VERSION"
+        - --cluster-name
+        - "$CLUSTER_NAME"
+        - --scenario
+        - pre-upgrade
+      restartPolicy: Never
+      serviceAccountName: pre-upgrade-job
+      imagePullSecrets:
+      - name: private-registry-creds
+EOF</code></pre>
