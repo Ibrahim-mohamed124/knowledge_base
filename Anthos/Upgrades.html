@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T18:15:47.210Z
+date: 2026-02-15T18:31:13.975Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -344,4 +344,19 @@ EOF</code></pre>
   <pre><code class="language-plaintext">  kubectl config view --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
   <p>&nbsp;</p>
 </blockquote>
+<h2>Upgrade a user cluster</h2>
+<ul>
+  <li>In the user cluster configuration file, set <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#gkeonpremversion-field"><code>gkeOnPremVersion</code></a> to the target version of your upgrade.</li>
+</ul>
+<blockquote>
+  <p>If your cluster has a Windows node pool, run <code>gkectl prepare windows</code>, and update the <code>osImage</code> field for the node pool.&nbsp;</p>
+</blockquote>
+<pre><code class="language-plaintext">gkectl upgrade cluster \
+    --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --config USER_CLUSTER_CONFIG \
+    --dry-run</code></pre>
+<pre><code class="language-plaintext">gkectl upgrade cluster \
+  --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+  --config USER_CLUSTER_CONFIG</code></pre>
+<pre><code class="language-plaintext">kubectl config view --kubeconfig USER_CLUSTER_KUBECONFIG</code></pre>
 <p>&nbsp;</p>
