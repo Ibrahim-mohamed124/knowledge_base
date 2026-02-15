@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T09:36:42.714Z
+date: 2026-02-15T09:40:44.523Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -143,6 +143,11 @@ scp -ri NODE_NAME.key ubuntu@NODE_EXTERNAL_IP:/etc/kubernetes/pki ~/pki_NODE_NAM
 <h6>Check the cluster health and configuration</h6>
 <ul>
   <li>The <code>gkectl diagnose</code> command: <code>gkectl diagnose</code> ensures all clusters are healthy. The command runs advanced checks, such as to identify nodes that aren't configured properly, or that have Pods that are in a stuck state. If the <code>gkectl diagnose</code> command shows a <code>Cluster unhealthy</code> warning, fix the issues before you attempt an upgrade.</li>
-  <li>Run the <code>gkectl upgrade cluster</code> command with the <code>--dry-run</code> flag. The <code>--dry-run</code> flag runs <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrading#run-preflight-checks">preflight checks</a> but doesn't start the upgrade process.&nbsp;</li>
+  <li>Run the <code>gkectl upgrade cluster</code> command with the <code>--dry-run</code> flag. The <code>--dry-run</code> flag runs <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/upgrading#run-preflight-checks">preflight checks</a> but doesn't start the upgrade process.</li>
   <li>The <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/pre-upgrade-tool">pre-upgrade tool</a>: in addition to checking the cluster health and configuration, the pre-upgrade tool checks for potential known issues that could happen during a cluster upgrade.</li>
 </ul>
+<h6>Check user and admin cluster versions</h6>
+<ul>
+  <li>Check the version of the user clusters:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl list clusters --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
