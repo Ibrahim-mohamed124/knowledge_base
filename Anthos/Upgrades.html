@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T19:29:55.659Z
+date: 2026-02-15T19:30:36.605Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -390,7 +390,20 @@ EOF</code></pre>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">gkeOnPremVersion: TARGET_VERSION
+...
+nodePools:
+- name: pool-1
+  gkeOnPremVersion: ""
+  ...
+- name: pool-2
+  gkeOnPremVersion: SOURCE_VERSION
+  ...</code></pre>
+<ul>
+  <li>Upgrade the control plane and selected node pools:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl upgrade cluster \
+  --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+  --config USER_CLUSTER_CONFIG_FILE</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
