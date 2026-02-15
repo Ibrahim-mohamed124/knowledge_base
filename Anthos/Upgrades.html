@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T09:59:43.716Z
+date: 2026-02-15T10:10:17.570Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -261,3 +261,6 @@ EOF</code></pre>
 </ul>
 <pre><code class="language-plaintext">kubectl logs -n JOB_NAMESPACE jobs/JOB_NAME \
     --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<h6>advanced clusters</h6>
+<p>* &nbsp;When you upgrade your clusters from version 1.32 to 1.33, they are automatically converted to advanced clusters</p>
+<pre><code class="language-plaintext">Set enableAdvancedCluster in your admin cluster configuration file to false.</code></pre>
