@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T11:15:49.144Z
+date: 2026-02-15T11:16:16.456Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -302,6 +302,9 @@ EOF</code></pre>
   <li>ensure that the admin-ws-cofig.yaml exist in the jumb server</li>
   <li>list the available versions of gkeadm</li>
 </ul>
+<blockquote>
+  <p>When upgrading to 1.28 and higher, 100 GB is required, and the cluster upgrade fails if the admin workstation doesn't have sufficient disk space.</p>
+</blockquote>
 <pre><code class="language-plaintext">gcloud storage ls gs://gke-on-prem-release/gkeadm/v1.31.12-gke.600/linux/</code></pre>
 <ul>
   <li>Upgrade your admin workstation</li>
