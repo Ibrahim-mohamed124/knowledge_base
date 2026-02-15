@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T18:31:13.975Z
+date: 2026-02-15T18:53:17.678Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -359,4 +359,10 @@ EOF</code></pre>
   --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
   --config USER_CLUSTER_CONFIG</code></pre>
 <pre><code class="language-plaintext">kubectl config view --kubeconfig USER_CLUSTER_KUBECONFIG</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>If a user cluster upgrade is interrupted, you can resume the user cluster upgrade by running the same upgrade command with the <code>--skip-validation-all</code> flag:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl upgrade cluster \
+    --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --config USER_CLUSTER_CONFIG \
+    --skip-validation-all</code></pre>
