@@ -2,14 +2,14 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-15T19:55:17.632Z
+date: 2026-02-15T20:06:46.446Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
 -->
 
 <h1>Admin Cluster</h1>
-<h6>Key rotation</h6>
+<h2>Key rotation</h2>
 <ul>
   <li>To migrate from Non-HA to HA, first rotate the encryption key if always-on secret encryption is enabled</li>
   <li>To rotate an existing encryption key for a cluster, increment the <code>keyVersion</code> in the corresponding <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/admin-cluster-configuration-file-latest#secretsencryption-generatedkey-version-field">admin cluster configuration file</a> or <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#secretsencryption-generatedkey-version-field">user cluster configuration file</a>, and run the appropriate <code>gkectl update</code> command.</li>
@@ -24,3 +24,15 @@ dateCreated: 2026-02-15T19:53:45.620Z
   <li>update the cluster</li>
 </ul>
 <pre><code class="language-plaintext">gkectl update --config cluster-config.yaml --kubeconfig kubeconfig_admin_cluster</code></pre>
+<blockquote>
+  <p>The Kubernetes API access is unavailable for non-HA admin clusters for about 20 minutes</p>
+</blockquote>
+<h2>HA&nbsp;</h2>
+<h3>Allocate additional IP addresses</h3>
+<ul>
+  <li>When migrating the admin cluster from non-HA to HA, allocate four additional IP addresses. Ensure these IP addresses are in the same VLAN as the existing admin cluster nodes and aren't already used by any existing nodes:<ul>
+      <li>Allocate one IP address for the new control plane VIP, for the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/admin-cluster-configuration-file-latest#loadbalancer-vips-controlplanevip-field"><code>loadBalancer.vips.controlPlaneVIP</code></a> field in the admin cluster configuration file.</li>
+      <li>Allocate a new IP addresses for each of the three control-plane nodes, for the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/admin-cluster-configuration-file-latest#loadbalancer-vips-controlplanevip-field"><code>network.controlPlaneIPBlock</code></a> section in the admin cluster configuration file.</li>
+    </ul>
+  </li>
+</ul>
