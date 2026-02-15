@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T11:16:16.456Z
+date: 2026-02-15T11:50:09.651Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -311,3 +311,18 @@ EOF</code></pre>
 </ul>
 <pre><code class="language-plaintext">gkeadm upgrade admin-workstation --config AW_CONFIG_FILE \
     --info-file INFO_FILE</code></pre>
+<h2>Upgrade the admin cluster</h2>
+<ul>
+  <li>The admin cluster version, including the patch version, must be greater than or equal to the user cluster version.</li>
+  <li>From the admin workstation run:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl prepare \
+    --bundle-path /var/lib/gke/bundles/gke-onprem-vsphere-TARGET_VERSION.tgz \
+    --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<ul>
+  <li>On your admin workstation, start an asynchronous upgrade:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl upgrade admin \
+    --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --config ADMIN_CLUSTER_CONFIG_FILE \
+</code></pre>
