@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T19:20:04.394Z
+date: 2026-02-15T19:29:55.659Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -372,7 +372,24 @@ EOF</code></pre>
 </ul>
 <pre><code class="language-plaintext">docker stop gkectl-control-plane &amp;&amp; docker rm gkectl-control-plane</code></pre>
 <h2>Upgrade node pools</h2>
-<p>&nbsp;</p>
+<ul>
+  <li>Define the source version and the target version in the following placeholder variables. All versions must be the full version number in the form <code>x.y.z-gke.N</code> such as <code>1.16.11-gke.25</code>.&nbsp;</li>
+  <li>import the corresponding OS images to vSphere:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl prepare \
+  --bundle-path /var/lib/gke/bundles/gke-onprem-vsphere-TARGET_VERSION.tgz \
+  --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<ul>
+  <li>Make the following changes in the user cluster configuration file:</li>
+  <li>Set the <code>gkeOnPremVersion</code> field to the target version, <code>TARGET_VERSION</code>.<ul>
+      <li>For each node pool that you want to upgrade, set the <code>nodePools.nodePool[i].gkeOnPremVersion</code> field to the empty string.<ul>
+          <li>In version 1.28 and later, you can accelerate the node pool upgrade by setting <code>nodePools.nodePool[i].updateStrategy.rollingUpdate.maxSurge</code> <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#nodepool-updatestrategy-rollingupdate-maxsurge-field">field</a> to an integer value greater than 1. When you upgrade nodes with <code>maxSurge</code>, multiple nodes upgrade in the same time that it takes to upgrade a single node.</li>
+        </ul>
+      </li>
+      <li>For each node pool that you <strong>don't</strong> want to upgrade, set <code>nodePools.nodePool[i].gkeOnPremVersion</code> to the source version, <code>SOURCE_VERSION</code>.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
