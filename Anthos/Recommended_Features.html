@@ -1,0 +1,21 @@
+<!--
+title: Anthos Recommended Features Migration
+description: 
+published: true
+date: 2026-02-15T19:53:45.620Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-02-15T19:53:45.620Z
+-->
+
+<h1>Admin Cluster</h1>
+<ul>
+  <li>To migrate from Non-HA to HA, first rotate the encryption key if always-on secret encryption is enabled</li>
+  <li>To rotate an existing encryption key for a cluster, increment the <code>keyVersion</code> in the corresponding <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/admin-cluster-configuration-file-latest#secretsencryption-generatedkey-version-field">admin cluster configuration file</a> or <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#secretsencryption-generatedkey-version-field">user cluster configuration file</a>, and run the appropriate <code>gkectl update</code> command.</li>
+  <li>This creates a new key matching the new version number, re-encrypts each secret, and securely erases the old one. All subsequent new secrets are encrypted using the new encryption key.</li>
+</ul>
+<pre><code class="language-plaintext">secretsEncryption:
+  mode: GeneratedKey
+  generatedKey:
+    keyVersion: New Version
+    disabled: true</code></pre>
