@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-16T11:49:46.232Z
+date: 2026-02-16T11:56:37.822Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -120,7 +120,18 @@ adminMaster:
 <ul>
   <li>When planning your migration, plan for these types of downtime:<ul>
       <li><strong>Control-plane downtime</strong>: Access to the Kubernetes API server is affected during the migration. If you are migrating to Controlplane V2, there is control-plane downtime for kubeception user clusters as the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#loadbalancer-vips-controlplanevip-field"><code>loadBalancer.vips.controlPlaneVIP</code></a> is migrated. The downtime is typically be less than 10 minutes, but the length of the downtime depends on your infrastructure.</li>
-      <li><strong>Workload downtime</strong>: The virtual IPs (VIPs) used by <a href="https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer">Services of type: LoadBalancer</a> are unavailable. This only occurs during a migration from Seesaw to MetalLB. The MetalLB migration process will stop network connections to all VIPs in the user cluster for Kubernetes Services of type LoadBalancer for about two to ten minutes. After the migration is complete, the connections work again.</li>
+      <li><strong>Workload downtime</strong>: The virtual IPs (VIPs) used by <a href="https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer">Services of type: LoadBalancer</a> are unavailable. This only occurs during a migration from Seesaw to MetalLB. The MetalLB migration process will stop network connections to all VIPs in the user cluster for Kubernetes Services of type LoadBalancer for about <mark class="marker-yellow">two to ten minutes.</mark> After the migration is complete, the connections work again.</li>
     </ul>
   </li>
 </ul>
+<h3>Prepare for the migration</h3>
+<ul>
+  <li>If you are migrating to Controlplane V2, allocate new static IP addresses in the same VLAN as the worker nodes (the nodes in node pools).</li>
+  <li>You need one IP address for the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#loadbalancer-vips-controlplanevip-field"><code>loadBalancer.vips.controlPlaneVIP</code></a>.</li>
+  <li>Allocate one IP address for each control-plane node. The number of IP addresses that you need to allocate depends on whether the user cluster will be highly available (HA) or non-HA.<ul>
+      <li>Non-HA: one IP address</li>
+      <li>HA: three IP addresses</li>
+    </ul>
+  </li>
+</ul>
+<h6>Check the cluster and node pool versions</h6>
