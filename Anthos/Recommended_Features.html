@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-16T11:56:37.822Z
+date: 2026-02-16T11:58:51.994Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -135,3 +135,13 @@ adminMaster:
   </li>
 </ul>
 <h6>Check the cluster and node pool versions</h6>
+<pre><code class="language-plaintext">gkectl version --kubeconfig ADMIN_CLUSTER_KUBECONFIG --details</code></pre>
+<h3>Check the cluster health</h3>
+<pre><code class="language-plaintext">gkectl diagnose cluster --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --cluster-name USER_CLUSTER_NAME</code></pre>
+<h6>Disable auto-repair in the admin cluster</h6>
+<pre><code class="language-plaintext">autoRepair:
+  enabled: false
+</code></pre>
+<pre><code class="language-plaintext">gkectl update admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --config ADMIN_CLUSTER_CONFIG</code></pre>
