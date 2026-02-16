@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-16T11:58:51.994Z
+date: 2026-02-16T12:05:24.575Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -145,3 +145,41 @@ adminMaster:
 </code></pre>
 <pre><code class="language-plaintext">gkectl update admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
     --config ADMIN_CLUSTER_CONFIG</code></pre>
+<h6>Check for an issue with always-on secret encryption</h6>
+<pre><code class="language-plaintext">kubectl --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+  get onpremusercluster USER_CLUSTER_NAME \
+  -n USER_CLUSTER_NAME-gke-onprem-mgmt \
+  -o jsonpath={.spec.secretsEncryption}</code></pre>
+<ul>
+  <li>you must do the steps in the next section to ensure that the new Controlplane V2 cluster can decrypt secrets.</li>
+</ul>
+<h4>Disable always-on secrets encryption and decrypt secrets if needed</h4>
+<ul>
+  <li>In the user cluster configuration file, to disable always-on secrets encryption add a <code>disabled: true</code> field to the <code>secretsEncryption</code> section:</li>
+</ul>
+<pre><code class="language-plaintext">secretsEncryption:
+    mode: GeneratedKey
+    generatedKey:
+        keyVersion: KEY_VERSION
+        disabled: true</code></pre>
+<ul>
+  <li>Update the cluster:</li>
+</ul>
+<pre><code class="language-plaintext">gkectl update cluster --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --config USER_CLUSTER_CONFIG</code></pre>
+<ul>
+  <li>Do a rolling update on a specific DaemonSet, as follows:</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+  rollout restart statefulsets kube-apiserver \
+  -n USER_CLUSTER_NAME</code></pre>
+<ul>
+  <li>Get the manifests of all the secrets in the user cluster, in YAML format:</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG \
+  get secrets -A -o yaml &gt; SECRETS_MANIFEST.yaml</code></pre>
+<ul>
+  <li>So that all secrets are stored in etcd as plaintext, reapply all the secrets in the user cluster:</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG \
+  apply -f SECRETS_MANIFEST.yaml</code></pre>
