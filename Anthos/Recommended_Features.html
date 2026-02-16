@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-16T11:46:20.589Z
+date: 2026-02-16T11:49:46.232Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -112,4 +112,15 @@ adminMaster:
 <ul>
   <li>Make all the needed configuration changes to update your load balancer and to migrate to Controlplane V2. Then run <code>gkectl update cluster</code>.</li>
   <li>After the migration, if you disabled always-on secret encryption, re-enable the feature and run <code>gkectl update cluster</code>.</li>
+</ul>
+<blockquote>
+  <p>150 minutes for the Controlplane V2 and MetalLB update because 15 minutes * 10 nodes in the biggest pool = 150 minutes.</p>
+</blockquote>
+<h3>Plan for downtime during migration</h3>
+<ul>
+  <li>When planning your migration, plan for these types of downtime:<ul>
+      <li><strong>Control-plane downtime</strong>: Access to the Kubernetes API server is affected during the migration. If you are migrating to Controlplane V2, there is control-plane downtime for kubeception user clusters as the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#loadbalancer-vips-controlplanevip-field"><code>loadBalancer.vips.controlPlaneVIP</code></a> is migrated. The downtime is typically be less than 10 minutes, but the length of the downtime depends on your infrastructure.</li>
+      <li><strong>Workload downtime</strong>: The virtual IPs (VIPs) used by <a href="https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer">Services of type: LoadBalancer</a> are unavailable. This only occurs during a migration from Seesaw to MetalLB. The MetalLB migration process will stop network connections to all VIPs in the user cluster for Kubernetes Services of type LoadBalancer for about two to ten minutes. After the migration is complete, the connections work again.</li>
+    </ul>
+  </li>
 </ul>
