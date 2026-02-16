@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-16T12:20:22.104Z
+date: 2026-02-16T12:22:24.153Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -196,3 +196,16 @@ adminMaster:
 </ol>
 <pre><code class="language-plaintext">gkectl update cluster --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
     --config USER_CLUSTER_CONFIG</code></pre>
+<h3>Controlplane V2 migration</h3>
+<ul>
+  <li>During the Controlplane V2 migration, the update performs the following actions:</li>
+</ul>
+<ol>
+  <li>Creates the control plane of a new cluster with ControlPlane V2 enabled.</li>
+  <li>Stops the kubeception cluster's Kubernetes control plane.</li>
+  <li>Takes an etcd snapshot of the kubeception cluster.</li>
+  <li>Powers off the kubeception cluster's user cluster control plane nodes. Until the migration completes, the nodes are not deleted because that permits failure recovery by falling back to that kubeception cluster.</li>
+  <li>Restores the cluster data in the new control plane, using the etcd snapshot created in an earlier step.</li>
+  <li>Connects the nodepool nodes of the kubeception cluster to the new control-plane, which is accessible with the new <code>controlPlaneVIP</code>.</li>
+  <li>Reconciles the restored user cluster to meet the end state of the cluster with ControlPlane V2 enabled.</li>
+</ol>
