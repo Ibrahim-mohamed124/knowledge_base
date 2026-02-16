@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-15T20:16:00.842Z
+date: 2026-02-16T11:46:20.589Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -20,10 +20,12 @@ dateCreated: 2026-02-15T19:53:45.620Z
   generatedKey:
     keyVersion: New Version
     disabled: true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>update the cluster</li>
 </ul>
 <pre><code class="language-plaintext">gkectl update --config cluster-config.yaml --kubeconfig kubeconfig_admin_cluster</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>The Kubernetes API access is unavailable for non-HA admin clusters for about 20 minutes</p>
 </blockquote>
@@ -41,6 +43,7 @@ dateCreated: 2026-02-15T19:53:45.620Z
   <li>check if the encryption key is not rotated</li>
 </ul>
 <pre><code class="language-plaintext">kubectl --kubeconfig ADMIN_CLUSTER_KUBECONFIG get secret -n kube-system admin-master-component-options -o jsonpath='{.data.data}' | base64 -d | grep -oP '"GeneratedKeys":\[.*?\]'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>If the output shows an empty key, such as in the following example, you must rotate the encryption key</li>
 </ul>
@@ -86,6 +89,27 @@ adminMaster:
 <h3>Migrate the admin cluster</h3>
 <pre><code class="language-plaintext">gkectl update admin --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
     --config ADMIN_CLUSTER_CONFIG</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>During the migration from non-HA to HA, the older control-plane VIP continues to function and can be used to access the new HA admin cluster. When the migration completes, the admin cluster kubeconfig file is automatically updated to use the new control-plane VIP.</p>
 </blockquote>
+<h1>User Cluster</h1>
+<blockquote>
+  <p>For any other update in the migration process, multiply 15 minutes by the number of nodes in the node pool.</p>
+</blockquote>
+<ul>
+  <li>The following high-level steps show when you need to run <code>gkectl update cluster</code> to update the cluster:</li>
+</ul>
+<ol>
+  <li>If the user cluster uses <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/always-on-secrets-encryption#enable_always-on_secrets_encryption">always-on secret encryption</a>, disable the feature and run <code>gkectl update cluster</code>.</li>
+</ol>
+<ul>
+  <li>Prepare for load balancer and control plane migration:</li>
+</ul>
+<ol>
+  <li>If the admin cluster has <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/node-auto-repair#enabling_node_repair_and_health_checking_for_an_existing_admin_cluster">auto-repair enabled</a>, disable it. Then run <code>gkectl update admin</code>. This update finishes quickly because it does not recreate the admin cluster nodes.</li>
+</ol>
+<ul>
+  <li>Make all the needed configuration changes to update your load balancer and to migrate to Controlplane V2. Then run <code>gkectl update cluster</code>.</li>
+  <li>After the migration, if you disabled always-on secret encryption, re-enable the feature and run <code>gkectl update cluster</code>.</li>
+</ul>
