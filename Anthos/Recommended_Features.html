@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-16T12:12:43.015Z
+date: 2026-02-16T12:20:22.104Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -184,3 +184,15 @@ adminMaster:
 <pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG \
   apply -f SECRETS_MANIFEST.yaml</code></pre>
 <h3>Prepare for the migration to Controlplane V2</h3>
+<h6>Update the user cluster configuration file</h6>
+<ol>
+  <li>Set <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#enablecontrolplanev2-field"><code>enableControlplaneV2</code></a> to true.</li>
+  <li>Optionally, make the control plane for the Controlplane V2 user cluster highly available (HA). To change from a non-HA to an HA cluster, change <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#masternode-replicas-field"><code>masterNode.replicas</code></a> from 1 to 3.</li>
+  <li>Add the static IP address (or addresses) for the user cluster control-plane node(s) to the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#network-controlplaneipblock-ips-section"><code>network.controlPlaneIPBlock.ips</code></a> section. The IP address (or addresses) for the control-plane nodes must be in the same VLAN as the worker nodes. The hostnames are required.</li>
+  <li>Fill in the <code>netmask</code> and <code>gateway</code> in the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#network-controlplaneipblock-section"><code>network.controlPlaneIPBlock</code></a> section.</li>
+  <li>If the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#network-hostconfig-section"><code>network.hostConfig</code></a> section is empty, fill it in.</li>
+  <li>Make sure that the <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#loadbalancer-vips-controlplanevip-field"><code>loadBalancer.vips.controlPlaneVIP</code></a> field has the new IP address for the control plane VIP. The IP address has to be in the same VLAN as the control plane node IPs.</li>
+  <li>If the user cluster uses manual load balancing, set <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#loadbalancer-manuallb.controlplanenodeport-field"><code>loadBalancer.manualLB.controlPlaneNodePort</code></a> and <a href="https://docs.cloud.google.com/kubernetes-engine/distributed-cloud/vmware/docs/how-to/user-cluster-configuration-file-latest#loadbalancer-manuallb.konnectivityservernodeport-field"><code>loadBalancer.manualLB.konnectivityServerNodePort</code></a> to 0. They are not required when Controlplane V2 is enabled but they must have 0 as a value.</li>
+</ol>
+<pre><code class="language-plaintext">gkectl update cluster --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
+    --config USER_CLUSTER_CONFIG</code></pre>
