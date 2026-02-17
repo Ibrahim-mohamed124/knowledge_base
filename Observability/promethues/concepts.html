@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-17T18:37:57.445Z
+date: 2026-02-17T19:08:35.770Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -344,6 +344,31 @@ Checking /etc/prometheus/prometheus.yml
     </ul>
   </li>
 </ol>
+<blockquote>
+  <p>In Prometheus (specifically within PromQL), the difference between a <strong>scalar</strong> and a <strong>vector</strong> lies in whether the data represents a single numerical value or a set of time-series data with labels.&nbsp;</p>
+  <p>Here is a breakdown of the differences based on Prometheus Query Language (PromQL) data types:</p>
+  <p><strong>1. Scalar (Single Value)</strong></p>
+  <p>&nbsp;</p>
+  <ul>
+    <li><strong>Definition:</strong> A simple, constant numeric floating-point value.</li>
+    <li><strong>Characteristics:</strong> It has no time series data associated with it, no timestamps, and no labels (tags).</li>
+    <li><strong>Examples:</strong> <code>10</code>, <code>1.5</code>, <code>3.14159</code>, <code>86400</code>.</li>
+    <li><strong>Usage:</strong> Used as parameters in functions (e.g., <code>topk(3, ...)</code>), or in mathematical calculations against vectors (e.g., <code>http_requests_total * 2</code>).&nbsp;</li>
+  </ul>
+  <p><strong>2. Vector (Time-Series Set)</strong></p>
+  <p>&nbsp;</p>
+  <ul>
+    <li><strong>Definition:</strong> A collection of time series, where each time series usually has a single sample (value) associated with a timestamp.</li>
+    <li><strong>Characteristics:</strong> Includes labels (e.g., <code>instance="node1", job="api"</code>) which allow for filtering and grouping.</li>
+    <li><strong>Types:</strong>
+      <ul>
+        <li><strong>Instant Vector:</strong> A set of time series containing a single sample for each, all sharing the same timestamp. Example: <code>node_cpu_seconds_total</code>.</li>
+        <li><strong>Range Vector:</strong> A set of time series containing a <i>range</i> of data points over time (e.g., <code>node_cpu_seconds_total[5m]</code>).</li>
+      </ul>
+    </li>
+    <li><strong>Usage:</strong> The main data retrieved from Prometheus to create graphs, alerts, and perform calculations.&nbsp;</li>
+  </ul>
+</blockquote>
 <h6>Selector &amp; Matchers</h6>
 <ul>
   <li>to select only a subset of timeseries' of a metric</li>
@@ -430,3 +455,15 @@ Checking /etc/prometheus/prometheus.yml
   </li>
 </ul>
 <figure class="image"><img src="/observability/screenshot_2026-02-17_203648.png"></figure>
+<h6>Subqueries&nbsp;</h6>
+<ul>
+  <li>allow executing a range query <i>within</i> an instant query, acting as an in-line, ad-hoc recording rule to analyze historical data trends.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
