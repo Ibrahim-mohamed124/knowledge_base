@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-11T21:25:51.303Z
+date: 2026-02-17T18:31:55.862Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -417,10 +417,14 @@ Checking /etc/prometheus/prometheus.yml
 <pre><code class="language-plaintext">sum by(labels) (metric)</code></pre>
 <p>&nbsp; &nbsp; * to ignore labels in the aggregation use the without keyword</p>
 <pre><code class="language-plaintext">sum without(labels) (metric)</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Functions:<ul>
-      <li>math floor(), ceil()</li>
+      <li>math floor(metrics), ceil()</li>
       <li>time()</li>
+      <li>sort()</li>
+      <li>changing types of data from scalar to vector(value in a time series)</li>
+      <li>absent(), absent-over-time() and present(), present-over-time()</li>
     </ul>
   </li>
 </ul>
