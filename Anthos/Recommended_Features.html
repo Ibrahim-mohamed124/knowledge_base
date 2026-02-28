@@ -2,7 +2,7 @@
 title: Anthos Recommended Features Migration
 description: 
 published: true
-date: 2026-02-16T13:03:51.496Z
+date: 2026-02-28T20:06:34.969Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-15T19:53:45.620Z
@@ -150,6 +150,7 @@ adminMaster:
   get onpremusercluster USER_CLUSTER_NAME \
   -n USER_CLUSTER_NAME-gke-onprem-mgmt \
   -o jsonpath={.spec.secretsEncryption}</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>you must do the steps in the next section to ensure that the new Controlplane V2 cluster can decrypt secrets.</li>
 </ul>
@@ -162,22 +163,26 @@ adminMaster:
     generatedKey:
         keyVersion: KEY_VERSION
         disabled: true</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Update the cluster:</li>
 </ul>
 <pre><code class="language-plaintext">gkectl update cluster --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
     --config USER_CLUSTER_CONFIG</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Do a rolling update on a specific DaemonSet, as follows:</li>
 </ul>
 <pre><code class="language-plaintext">kubectl --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
   rollout restart statefulsets kube-apiserver \
   -n USER_CLUSTER_NAME</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Get the manifests of all the secrets in the user cluster, in YAML format:</li>
 </ul>
 <pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG \
   get secrets -A -o yaml &gt; SECRETS_MANIFEST.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>So that all secrets are stored in etcd as plaintext, reapply all the secrets in the user cluster:</li>
 </ul>
@@ -196,6 +201,28 @@ adminMaster:
 </ol>
 <pre><code class="language-plaintext">gkectl update cluster --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
     --config USER_CLUSTER_CONFIG</code></pre>
+<pre><code class="language-plaintext">network:
+  hostConfig:
+   dnsServers:
+   - "8.8.8.8"
+   ntpServers:
+   - "ntp.ubuntu.com"
+  ipMode:
+    type: static
+  serviceCIDR: 10.96.232.0/24
+  podCIDR: 192.168.0.0/16
+  vCenter:
+    networkName: VM Network
+  controlPlaneIPBlock:
+    netmask: "255.0.0.0"
+    gateway: "10.100.100.11"
+    ips:
+    - ip: "10.200.130.145"
+      hostname: "node01"
+    - ip: "10.200.130.146"
+      hostname: "node02"
+    - ip: "10.200.130.147"
+      hostname: "node03"</code></pre>
 <h3>Controlplane V2 migration</h3>
 <ul>
   <li>During the Controlplane V2 migration, the update performs the following actions:</li>
