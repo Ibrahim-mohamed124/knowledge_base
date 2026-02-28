@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-15T19:30:36.605Z
+date: 2026-02-28T19:35:58.607Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -93,7 +93,10 @@ dateCreated: 2026-02-12T16:07:34.419Z
 <pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG \
  cp POD_NAME:/tmp/snapshot.db ~/snapshot.db \
  -c etcd -n kube-system</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Or, copy the secrets from inside the etcd pods</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig ~/kubeconfig  cp etcd-node01:/etc/kubernetes/pki/etcd .  -c etcd -n kube-system</code></pre>
 <ul>
   <li>Copy the secrets from the PKI directory:</li>
 </ul>
@@ -355,10 +358,13 @@ EOF</code></pre>
     --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
     --config USER_CLUSTER_CONFIG \
     --dry-run</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">gkectl upgrade cluster \
   --kubeconfig ADMIN_CLUSTER_KUBECONFIG \
   --config USER_CLUSTER_CONFIG</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">kubectl config view --kubeconfig USER_CLUSTER_KUBECONFIG</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>If a user cluster upgrade is interrupted, you can resume the user cluster upgrade by running the same upgrade command with the <code>--skip-validation-all</code> flag:</li>
 </ul>
@@ -373,12 +379,13 @@ EOF</code></pre>
 <pre><code class="language-plaintext">docker stop gkectl-control-plane &amp;&amp; docker rm gkectl-control-plane</code></pre>
 <h2>Upgrade node pools</h2>
 <ul>
-  <li>Define the source version and the target version in the following placeholder variables. All versions must be the full version number in the form <code>x.y.z-gke.N</code> such as <code>1.16.11-gke.25</code>.&nbsp;</li>
+  <li>Define the source version and the target version in the following placeholder variables. All versions must be the full version number in the form <code>x.y.z-gke.N</code> such as <code>1.16.11-gke.25</code>.</li>
   <li>import the corresponding OS images to vSphere:</li>
 </ul>
 <pre><code class="language-plaintext">gkectl prepare \
   --bundle-path /var/lib/gke/bundles/gke-onprem-vsphere-TARGET_VERSION.tgz \
   --kubeconfig ADMIN_CLUSTER_KUBECONFIG</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Make the following changes in the user cluster configuration file:</li>
   <li>Set the <code>gkeOnPremVersion</code> field to the target version, <code>TARGET_VERSION</code>.<ul>
@@ -399,6 +406,7 @@ nodePools:
 - name: pool-2
   gkeOnPremVersion: SOURCE_VERSION
   ...</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Upgrade the control plane and selected node pools:</li>
 </ul>
