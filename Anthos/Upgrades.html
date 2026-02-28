@@ -2,7 +2,7 @@
 title: Anthos Upgrades
 description: 
 published: true
-date: 2026-02-28T19:36:58.665Z
+date: 2026-02-28T19:47:57.254Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-12T16:07:34.419Z
@@ -60,6 +60,27 @@ dateCreated: 2026-02-12T16:07:34.419Z
 </ul>
 <h6>Back up the user cluster</h6>
 <ul>
+  <li>If the cluster is kubeception</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig ADMIN_CLUSTER_KUBECONFIG exec -it \
+ kube-etcd-0 -c kube-etcd -n USER_CLUSTER_NAME \
+ -- /bin/sh</code></pre>
+<ul>
+  <li>take the snapshot</li>
+</ul>
+<pre><code class="language-plaintext">ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etcd.local.config/certificates/etcdCA.crt \
+  --cert=/etcd.local.config/certificates/etcd.crt \
+  --key=/etcd.local.config/certificates/etcd.key \
+  snapshot save /tmp/snapshot.db</code></pre>
+<ul>
+  <li>copy the snapshot into the admin workstation</li>
+</ul>
+<pre><code class="language-plaintext">kubectl --kubeconfig ADMIN_CLUSTER_KUBECONFIG cp \
+  USER_CLUSTER_NAME/kube-etcd-0:/tmp/snapshot.db \
+  --container kube-etcd snapshot.db</code></pre>
+<ul>
   <li>check if the cluster is controlplane V2</li>
 </ul>
 <pre><code class="language-plaintext">kubectl get onpremuserclusters --kubeconfig USER_CLUSTER_KUBECONFIG \
@@ -93,10 +114,12 @@ dateCreated: 2026-02-12T16:07:34.419Z
 <pre><code class="language-plaintext">kubectl --kubeconfig USER_CLUSTER_KUBECONFIG \
  cp POD_NAME:/tmp/snapshot.db ~/snapshot.db \
  -c etcd -n kube-system</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Or, copy the secrets from inside the etcd pods</li>
 </ul>
 <pre><code class="language-plaintext">kubectl --kubeconfig ~/kubeconfig  cp etcd-node01:/etc/kubernetes/pki/etcd .  -c etcd -n kube-system</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Copy the secrets from the PKI directory:</li>
 </ul>
