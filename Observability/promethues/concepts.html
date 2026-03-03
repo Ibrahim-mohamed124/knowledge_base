@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-03T07:59:12.674Z
+date: 2026-03-03T08:10:44.296Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -485,7 +485,12 @@ rate(requests_latency_seconds_sum[1m])
 rate(requests_latency_seconds_sum[5m]) / rate(requests_latency_seconds_count[5m])</code></pre>
 <pre><code class="language-plaintext">rate(request_latency_seconds_bucket{path="/articles", le="0.06"}[1m]) \ ignoring(le) 
 rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
-<p>&nbsp;</p>
+<h6>Quantiles</h6>
+<ul>
+  <li>Determine the count of &nbsp;values in a distribution are above or below a certain limit by percentage &nbsp;</li>
+  <li>Use the histogram_quantile() function to easily calculate quantile values</li>
+</ul>
+<pre><code class="language-plaintext">histogram_quantile(value, metreic)</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
