@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-02-17T19:46:07.719Z
+date: 2026-03-03T07:49:13.308Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -353,7 +353,7 @@ Checking /etc/prometheus/prometheus.yml
     <li><strong>Definition:</strong> A simple, constant numeric floating-point value.</li>
     <li><strong>Characteristics:</strong> It has no time series data associated with it, no timestamps, and no labels (tags).</li>
     <li><strong>Examples:</strong> <code>10</code>, <code>1.5</code>, <code>3.14159</code>, <code>86400</code>.</li>
-    <li><strong>Usage:</strong> Used as parameters in functions (e.g., <code>topk(3, ...)</code>), or in mathematical calculations against vectors (e.g., <code>http_requests_total * 2</code>).&nbsp;</li>
+    <li><strong>Usage:</strong> Used as parameters in functions (e.g., <code>topk(3, ...)</code>), or in mathematical calculations against vectors (e.g., <code>http_requests_total * 2</code>).</li>
   </ul>
   <p><strong>2. Vector (Time-Series Set)</strong></p>
   <p>&nbsp;</p>
@@ -366,7 +366,7 @@ Checking /etc/prometheus/prometheus.yml
         <li><strong>Range Vector:</strong> A set of time series containing a <i>range</i> of data points over time (e.g., <code>node_cpu_seconds_total[5m]</code>).</li>
       </ul>
     </li>
-    <li><strong>Usage:</strong> The main data retrieved from Prometheus to create graphs, alerts, and perform calculations.&nbsp;</li>
+    <li><strong>Usage:</strong> The main data retrieved from Prometheus to create graphs, alerts, and perform calculations.</li>
   </ul>
 </blockquote>
 <h6>Selector &amp; Matchers</h6>
@@ -457,16 +457,28 @@ Checking /etc/prometheus/prometheus.yml
 <figure class="image"><img src="/observability/screenshot_2026-02-17_203648.png"></figure>
 <h6>Subqueries&nbsp;</h6>
 <ul>
-  <li>Subqueries in Prometheus PromQL allow executing a range query <i>within</i> an instant query, acting as an in-line, ad-hoc recording rule to analyze historical data trends. They enable applying range-vector functions (like <code>rate</code> or <code>max_over_time</code>) over a historical period, returning a new range vector, typically used for complex, long-term trend analysis or alert calculations.&nbsp;</li>
+  <li>Subqueries in Prometheus PromQL allow executing a range query <i>within</i> an instant query, acting as an in-line, ad-hoc recording rule to analyze historical data trends. They enable applying range-vector functions (like <code>rate</code> or <code>max_over_time</code>) over a historical period, returning a new range vector, typically used for complex, long-term trend analysis or alert calculations.</li>
 </ul>
 <pre><code class="language-plaintext">&lt;instant_query&gt; [&lt;range&gt;]  [offset: duration]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>range: the data grouping period (like for rate function)</li>
   <li>offset: query range (get data from last x minutes)</li>
   <li>duration: query step for subquery</li>
 </ul>
 <pre><code class="language-plaintext">max_over_time(rate(prometheus_http_requests_total[1m]) [5m:30s])</code></pre>
-<p>&nbsp;</p>
+<h3>Histogram</h3>
+<ul>
+  <li>There are three sub metrics in histogram metric&nbsp;<ul>
+      <li>Count: total number of samples</li>
+      <li>Sum: sum of all the samples</li>
+      <li>Bucket: a count of samples with the a label (le) all these samples have values that are less than or equal to value of that label<ul>
+          <li>These buckets are cumulative( include all the pervious )</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
