@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-03T08:10:44.296Z
+date: 2026-03-05T20:21:52.221Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -469,7 +469,7 @@ Checking /etc/prometheus/prometheus.yml
 <pre><code class="language-plaintext">max_over_time(rate(prometheus_http_requests_total[1m]) [5m:30s])</code></pre>
 <h3>Histogram</h3>
 <ul>
-  <li>There are three sub metrics in histogram metric&nbsp;<ul>
+  <li>There are three sub metrics in histogram metric<ul>
       <li>Count: total number of samples</li>
       <li>Sum: sum of all the samples</li>
       <li>Bucket: a count of samples with the a label (le) all these samples have values that are less than or equal to value of that label<ul>
@@ -483,11 +483,12 @@ Checking /etc/prometheus/prometheus.yml
 rate(requests_latency_seconds_bucket[1m]) [5m: 30s]
 rate(requests_latency_seconds_sum[1m])
 rate(requests_latency_seconds_sum[5m]) / rate(requests_latency_seconds_count[5m])</code></pre>
+<p>&nbsp;* le label cloud be le="+Inf" &gt; all the samples</p>
 <pre><code class="language-plaintext">rate(request_latency_seconds_bucket{path="/articles", le="0.06"}[1m]) \ ignoring(le) 
 rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
 <h6>Quantiles</h6>
 <ul>
-  <li>Determine the count of &nbsp;values in a distribution are above or below a certain limit by percentage &nbsp;</li>
+  <li>Determine the count of &nbsp;values in a distribution are above or below a certain limit by percentage</li>
   <li>Use the histogram_quantile() function to easily calculate quantile values</li>
 </ul>
 <pre><code class="language-plaintext">histogram_quantile(value, metreic)</code></pre>
