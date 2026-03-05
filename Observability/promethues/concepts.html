@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-05T20:52:08.541Z
+date: 2026-03-05T20:56:24.618Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -497,8 +497,12 @@ rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
   <li>This function uses linear interpolation to estimate the value at a specific percentage of samples to get the actual number of samples equal or less that specific value make sure that you have a bucket that matches that value.&nbsp;</li>
   <li>Adding more buckets at the quantile range makes it more accurate, but more buckets more RAM and disk space usage.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Summary &nbsp;metric</h3>
+<ul>
+  <li>has three submetrics like the histogram (count, sum, and quantiles instead of buckets)&nbsp;</li>
+  <li>useful to get the percentage values instead of just numbers of samples&nbsp;</li>
+</ul>
+<figure class="image"><img src="/observability/screenshot_2026-03-05_225543.png"></figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
