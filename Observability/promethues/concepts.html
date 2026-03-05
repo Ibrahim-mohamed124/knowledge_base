@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-05T20:37:15.234Z
+date: 2026-03-05T20:39:15.759Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -495,6 +495,7 @@ rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
 <ul>
   <li>Quantiles can be used to ensure that SLO are met.&nbsp;</li>
   <li>This function uses linear interpolation to estimate the value at a specific percentage of samples to get the actual number of samples equal or less that specific value make sure that you have a bucket that matches that value.&nbsp;</li>
+  <li>Adding more buckets at the quantile range makes it more accurate&nbsp;</li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
