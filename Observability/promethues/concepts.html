@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-05T21:37:51.076Z
+date: 2026-03-06T18:51:59.728Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -492,17 +492,25 @@ rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
   <li>Use the histogram_quantile() function to easily calculate quantile values</li>
 </ul>
 <pre><code class="language-plaintext">histogram_quantile(value, metreic)</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>Quantiles can be used to ensure that SLO are met.&nbsp;</li>
-  <li>This function uses linear interpolation to estimate the value at a specific percentage of samples to get the actual number of samples equal or less that specific value make sure that you have a bucket that matches that value.&nbsp;</li>
+  <li>Quantiles can be used to ensure that SLO are met.</li>
+  <li>This function uses linear interpolation to estimate the value at a specific percentage of samples to get the actual number of samples equal or less that specific value make sure that you have a bucket that matches that value.</li>
   <li>Adding more buckets at the quantile range makes it more accurate, but more buckets more RAM and disk space usage.</li>
 </ul>
 <h3>Summary &nbsp;metric</h3>
 <ul>
-  <li>has three submetrics like the histogram (count, sum, and quantiles instead of buckets)&nbsp;</li>
-  <li>useful to get the percentage values instead of just numbers of samples&nbsp;</li>
+  <li>has three submetrics like the histogram (count, sum, and quantiles instead of buckets)</li>
+  <li>useful to get the percentage values instead of just numbers of samples</li>
 </ul>
 <figure class="image"><img src="/observability/screenshot_2026-03-05_225543.png"></figure>
-<p>&nbsp;</p>
+<h3>Recording Rules</h3>
+<ul>
+  <li>An expression that is run continuously and the results are stored in a time series to be used by other tools&nbsp;</li>
+  <li>The rules are in rules.yml file&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">global:
+  rules_files:
+  - rules.yml</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
