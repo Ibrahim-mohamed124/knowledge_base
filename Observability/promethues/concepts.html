@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-06T18:54:54.916Z
+date: 2026-03-06T19:09:47.671Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -529,8 +529,22 @@ rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
          lable: value
   - name: group_name
   ....</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>groups run parallel but rules inside each group run sequentially &nbsp;</li>
+  <li>best practices in naming the recording rules<ul>
+      <li>level:metric_name:operations<ul>
+          <li>level: indicates the aggregation level of the metric y the labels is has, and always includes the job label + others</li>
+          <li>Metric_name</li>
+          <li>Operations: &nbsp;list of aggregators or functions that applied on the metric values&nbsp;</li>
+        </ul>
+      </li>
+      <li>examples:<ul>
+          <li>job-method-path:http_errors:rate5m</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
