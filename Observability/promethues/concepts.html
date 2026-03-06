@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-06T19:09:47.671Z
+date: 2026-03-06T19:17:12.252Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -545,7 +545,12 @@ rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">groups:
+ - name: example1
+   intrval: 15s
+   rules: 
+    - record: "job:node_filesystem_free_percent:avg"
+      expr: avg by(instance) (node_filesystem_free_percent)</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
