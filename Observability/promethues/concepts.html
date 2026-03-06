@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-06T18:51:59.728Z
+date: 2026-03-06T18:54:54.916Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -507,10 +507,38 @@ rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
 <h3>Recording Rules</h3>
 <ul>
   <li>An expression that is run continuously and the results are stored in a time series to be used by other tools&nbsp;</li>
-  <li>The rules are in rules.yml file&nbsp;</li>
+  <li>The rules are in rules.yml file &nbsp;and restarting the promethues server</li>
 </ul>
 <pre><code class="language-plaintext">global:
   rules_files:
   - rules.yml</code></pre>
+<ul>
+  <li>rules file:</li>
+</ul>
+<pre><code class="language-plaintext">groups: &gt;&gt; group of rules that are run sequentially 
+  - name: group_name
+    interval: evaluation_interval
+    rules:
+     - record: rule_name
+       expr: promql_expr
+       labels: 
+         label: value &gt;&gt; can be used to group alerts
+     - record: rule_name
+       expr: promql_expr
+       labels: 
+         lable: value
+  - name: group_name
+  ....</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
