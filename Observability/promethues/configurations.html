@@ -1,0 +1,48 @@
+<!--
+title: Configurations
+description: 
+published: true
+date: 2026-03-06T21:46:57.577Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-03-06T21:46:57.577Z
+-->
+
+<h3>Dashboarding and Visualization</h3>
+<pre><code class="language-plaintext">{{template "head" .}}
+{{template "prom_content_head" .}}
+&lt;h1&gt;Node Stats&lt;/h1&gt;
+&lt;h3&gt;Memory&lt;/h3&gt;
+&lt;strong&gt;Memory utilization:&lt;/strong&gt; {{template "prom_query_drilldown" (args
+"100- (node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes*100)" "%") }}
+&lt;br/&gt;
+&lt;strong&gt;Memory Size:&lt;/strong&gt; {{template "prom_query_drilldown" (args
+"node_memory_MemTotal_bytes/1000000" "Mb") }}
+&lt;h3&gt;CPU&lt;/h3&gt;
+&lt;strong&gt;CPU Count:&lt;/strong&gt; {{template "prom_query_drilldown" (args
+"count(node_cpu_seconds_total{mode='idle'})") }}
+&lt;br/&gt;
+&lt;strong&gt;CPU Utilization:&lt;/strong&gt;
+{{template "prom_query_drilldown" (args
+"sum(rate(node_cpu_seconds_total{mode!='idle'}[2m]))*100/8" "%") }}
+
+&lt;div id="cpu"&gt;&lt;/div&gt;
+&lt;script&gt;
+  new PromConsole.Graph({
+    node: document.querySelector("#cpu"),
+    expr: "sum(rate(node_cpu_seconds_total{mode!='idle'}[2m]))*100/2",
+  });
+&lt;/script&gt;
+
+&lt;h3&gt;Network&lt;/h3&gt;
+&lt;div id="network"&gt;&lt;/div&gt;
+
+&lt;script&gt;
+  new PromConsole.Graph({
+    node: document.querySelector("#network"),
+    expr: "rate(node_network_receive_bytes_total[2m])",
+  });
+&lt;/script&gt;
+
+{{template "prom_content_tail" .}}
+{{template "tail"}}</code></pre>
