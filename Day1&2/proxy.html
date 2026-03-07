@@ -2,7 +2,7 @@
 title: configuring a proxy
 description: 
 published: true
-date: 2026-02-06T21:20:02.262Z
+date: 2026-03-07T13:46:39.080Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-06T21:13:25.673Z
@@ -14,7 +14,8 @@ dateCreated: 2026-02-06T21:13:25.673Z
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">[cloudvc@bastion-prod-v1 loki]$ oc get cm -n openshift-config user-ca-bundle -o yaml
+<pre><code class="language-plaintext">oc create cm user-ca-bundle -n openshift-config --from-file=ca-bundle.crt=fortinet-ca.cer
+[cloudvc@bastion-prod-v1 loki]$ oc get cm -n openshift-config user-ca-bundle -o yaml
 apiVersion: v1
 data:
   ca-bundle.crt: |
