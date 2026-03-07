@@ -2,7 +2,7 @@
 title: Disconnected Flash Array
 description: 
 published: true
-date: 2026-03-07T21:10:07.350Z
+date: 2026-03-07T21:12:10.275Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-07T20:20:43.863Z
@@ -24,3 +24,6 @@ dateCreated: 2026-03-07T20:20:43.863Z
   <li>verify that this package exist <code>device-mapper-multipath,</code> <a href="https://andreaskaris.github.io/blog/openshift/openshift-with-multipath/">installation here</a></li>
 </ul>
 <pre><code class="language-plaintext">rpm -q device-mapper-multipath</code></pre>
+<ul>
+  <li>Ensure that the second action, <code>CAPACITY_DATA_HAS_CHANGED</code>, is uncommented in the <a href="https://support.purestorage.com/bundle/m_linux/page/Production/Solutions/Oracle/Oracle_on_FlashArray/library/common_content/r_scsi_unit_attentions.html">90-scsi-ua.rules file</a>, and restart the udev service.</li>
+</ul>
