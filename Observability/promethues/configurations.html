@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-12T11:42:45.051Z
+date: 2026-03-12T12:22:17.914Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -135,7 +135,46 @@ def get_cycles():
 if __name__  == '__main__':
     app.run(port='5001')
 </code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To create histograms, import the Histogram function and implement the logic for the metric&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">from flask  import Flask, request
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import Counter, Histogram , make_wsgi_app
+import time
+
+
+REQUESTS = Counter('http_requests_total', 'Total number of requests', labelnames=['path', 'method'])
+LATENCY = Histogram('request_latency_seconds', 'Request Latency', labelnames=['path', 'method'])
+
+app = Flask(__name__)
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/metrics': make_wsgi_app()})
+
+@app.before_request
+def before_request():
+    request.start_time  = time.time()
+@app.after_request
+def after_request(response):
+    request_latency = time.time() - request.start_time
+    LATENCY.labels(request.path, request.method).observe(request_latency)
+    return response
+
+
+@app.get("/cars")
+def get_cars():
+    REQUESTS.labels('/cars', 'get').inc()
+    return ["Toyota"]
+
+
+@app.get("/cycles")
+def get_cycles():
+    REQUESTS.labels('/cycles', 'get').inc()
+    return ["Motorcycle"]
+
+
+if __name__  == '__main__':
+    app.run(port='5001')
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
