@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-06T21:46:57.577Z
+date: 2026-03-12T11:10:34.536Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -46,3 +46,47 @@ dateCreated: 2026-03-06T21:46:57.577Z
 
 {{template "prom_content_tail" .}}
 {{template "tail"}}</code></pre>
+<p>&nbsp;</p>
+<h3>Instrumentation using promethues client library</h3>
+<ul>
+  <li>To embed custom metrics into an application, import the promethues library for the programming language that is used, and use its functions to create metrics. For example:</li>
+</ul>
+<pre><code class="language-plaintext">pip install prometheus-client</code></pre>
+<ul>
+  <li>Then use this library functions:</li>
+</ul>
+<pre><code class="language-plaintext">from flask  import Flask
+from prometheus_client import Counter, start_http_server
+
+# initialize the Counter function to create a counter metric
+REQUESTS= Counter('metric_name', 'Metric describtion')
+
+
+app = Flask(__name__)
+
+
+
+@app.get("/cars")
+def get_cars():
+# to increament the counter every time this endpoint is called
+    REQUESTS.inc()
+    return ["Toyota"]
+
+if __name__  == '__main__':
+# to start http server to expose the metrics
+    start_http_server(8001)
+    app.run(port='5001')
+</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
