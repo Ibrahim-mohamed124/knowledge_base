@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-12T12:23:22.513Z
+date: 2026-03-12T18:12:00.127Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -52,6 +52,7 @@ dateCreated: 2026-03-06T21:46:57.577Z
   <li>To embed custom metrics into an application, import the promethues library for the programming language that is used, and use its functions to create metrics. For example:</li>
 </ul>
 <pre><code class="language-plaintext">pip install prometheus-client</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Then use this library functions:</li>
 </ul>
@@ -79,7 +80,7 @@ if __name__  == '__main__':
 </code></pre>
 <p>&nbsp;</p>
 <ul>
-  <li>Or you can use the framework logic (like flask) to expose the metrics on the same port of the application but in different endpoint by using the promethues client library function to expose the metrics in that endpoint.&nbsp;</li>
+  <li>Or you can use the framework logic (like flask) to expose the metrics on the same port of the application but in different endpoint by using the promethues client library function to expose the metrics in that endpoint.</li>
 </ul>
 <pre><code class="language-plaintext">from flask  import Flask
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
@@ -103,7 +104,7 @@ if __name__  == '__main__':
     app.run(port='5001')
 </code></pre>
 <ul>
-  <li>to add labels to metrics to be able to do operations on them while distinguishing the sub categories, use this&nbsp;</li>
+  <li>to add labels to metrics to be able to do operations on them while distinguishing the sub categories, use this</li>
 </ul>
 <pre><code class="language-plaintext">from flask  import Flask
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
@@ -136,7 +137,7 @@ if __name__  == '__main__':
     app.run(port='5001')
 </code></pre>
 <ul>
-  <li>To create histograms, import the Histogram function and implement the logic for the metric&nbsp;</li>
+  <li>To create histograms, import the Histogram function and implement the logic for the metric</li>
 </ul>
 <pre><code class="language-plaintext">from flask  import Flask, request
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
@@ -177,7 +178,49 @@ if __name__  == '__main__':
     app.run(port='5001')
 </code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>To make a gauge metric, use the Gauge function and use the sub functions inc(), dec(), set() to implement the increase and decrease logic of the guage</li>
+</ul>
+<pre><code class="language-plaintext">from flask  import Flask, request
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import Counter, Histogram , make_wsgi_app, Gauge
+import time
+
+
+REQUESTS = Counter('http_requests_total', 'Total number of requests', labelnames=['path', 'method'])
+LATENCY = Histogram('request_latency_seconds', 'Request Latency', labelnames=['path', 'method'])
+IN_PROGRESS = Gauge('my_inprogress_requests', 'my guage', labelnames=['path', 'method'])
+app = Flask(__name__)
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/metrics': make_wsgi_app()})
+
+@app.before_request
+def before_request():
+    request.start_time  = time.time()
+    IN_PROGRESS.labels(request.path, request.method).inc()
+@app.after_request
+def after_request(response):
+    time.sleep(20)
+    request_latency = time.time() - request.start_time
+    LATENCY.labels(request.path, request.method).observe(request_latency)
+    IN_PROGRESS.labels(request.path, request.method).dec()
+    return response
+
+
+@app.get("/cars")
+def get_cars():
+    REQUESTS.labels('/cars', 'get').inc()
+    return ["Toyota"]
+
+
+@app.get("/cycles")
+def get_cycles():
+    REQUESTS.labels('/cycles', 'get').inc()
+    return ["Motorcycle"]
+
+
+if __name__  == '__main__':
+    app.run(port='5001')
+  </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
