@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-12T12:22:17.914Z
+date: 2026-03-12T12:23:22.513Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -154,6 +154,7 @@ app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/metrics': make_wsgi_app()})
 def before_request():
     request.start_time  = time.time()
 @app.after_request
+# This is where the histogram gets its value - the observe method () -
 def after_request(response):
     request_latency = time.time() - request.start_time
     LATENCY.labels(request.path, request.method).observe(request_latency)
