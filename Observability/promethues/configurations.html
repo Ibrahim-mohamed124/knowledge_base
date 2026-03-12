@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-12T18:12:00.127Z
+date: 2026-03-12T19:27:26.207Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -221,7 +221,15 @@ def get_cycles():
 if __name__  == '__main__':
     app.run(port='5001')
   </code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>metrics naming best practices:<ul>
+      <li>the name should always follow the snake_case</li>
+      <li>the first word is for the package that will be monitored (http, postgres, node)</li>
+      <li>the second part should be the metric name</li>
+      <li>the last part should be the measuring unit (expect the counters) &nbsp;</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
