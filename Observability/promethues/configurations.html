@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-12T11:23:35.322Z
+date: 2026-03-12T11:42:45.051Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -102,8 +102,39 @@ def get_cars():
 if __name__  == '__main__':
     app.run(port='5001')
 </code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>to add labels to metrics to be able to do operations on them while distinguishing the sub categories, use this&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">from flask  import Flask
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import Counter, make_wsgi_app
+
+
+# define the labels names
+REQUESTS= Counter('http_requests_total', 'Total number of requests', labelnames=['path', 'method'])
+
+
+app = Flask(__name__)
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {'/metrics': make_wsgi_app()})
+
+
+
+@app.get("/cars")
+def get_cars():
+# define the labels values
+    REQUESTS.labels('/cars', 'get').inc()
+    return ["Toyota"]
+
+
+@app.get("/cycles")
+def get_cycles():
+    REQUESTS.labels('/cycles', 'get').inc()
+    return ["Motorcycle"]
+
+
+if __name__  == '__main__':
+    app.run(port='5001')
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
