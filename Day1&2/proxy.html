@@ -2,7 +2,7 @@
 title: configuring a proxy
 description: 
 published: true
-date: 2026-03-07T13:46:39.080Z
+date: 2026-03-13T17:17:50.385Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-02-06T21:13:25.673Z
@@ -74,7 +74,9 @@ status:
   httpProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
   httpsProxy: http://FortigateProxy:eQV96%3C5N-xDD@10.50.40.2:8080
   noProxy: .cluster.local,.svc,10.0.0.0/16,10.128.0.0/14,127.0.0.1,172.30.0.0/16,api-int.prod-v1.takamol.eg,localhost</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>the proxy env variables are saved under /etc/mco/proxy.env along with the pull secret, so if you want to make the pods in a node to not use a proxy empty this file</li>
+</ul>
 <blockquote>
   <p>Change the special characters in the password or username to the coded values in the URL</p>
   <p>ex. &gt; == %C3</p>
