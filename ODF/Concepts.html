@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-18T19:53:48.052Z
+date: 2026-03-18T19:55:25.728Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -51,6 +51,7 @@ dateCreated: 2026-03-18T19:09:33.355Z
     <ul>
       <li>The local storage operator manages the storage from the local disks, and the Ceph services handle the block storage volumes from the Ceph cluster.</li>
       <li>The Ceph services can pass data to either the MCG service, for handling as object storage, or to a Kubernetes Container Storage Interface (CSI) plug-in for direct OS-level access by containers or virtual machines (VMs) - either block for file system storage -</li>
+      <li>The NooBaa and Rook-Ceph operators handle these OBCs and PVCs, respectively.<mark class="marker-yellow"> The Rook-Ceph operator also handles RGW class OBCs.</mark></li>
     </ul>
   </li>
 </ul>
