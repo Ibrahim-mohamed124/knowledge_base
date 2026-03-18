@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-18T19:44:14.666Z
+date: 2026-03-18T19:50:26.264Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -11,7 +11,8 @@ dateCreated: 2026-03-18T19:09:33.355Z
 <h2>Architecture of OpenShift Data Foundation</h2>
 <ul>
   <li>OpenShift Data Foundation provides access to file, block, and object storage, based on <mark class="marker-yellow">Ceph technology.</mark></li>
-  <li>OpenShift Data Foundation uses the <mark class="marker-yellow">multicloud object gateway (MCG) service</mark>, which is based on the<mark class="marker-yellow"> NooBaa project,</mark> to act as a data federation service. (The NooBaa operator manages MCG)<ul>
+  <li>OpenShift Data Foundation uses the <mark class="marker-yellow">multicloud object gateway (MCG) service</mark>, which is based on the<mark class="marker-yellow"> NooBaa project,</mark> to act as a data federation service.<mark class="marker-yellow"> (The NooBaa operator manages MCG)</mark>
+    <ul>
       <li>The MCG service provides a local object service (S3 API), which is backed by local storage or cloud-native storage.</li>
     </ul>
   </li>
@@ -25,7 +26,7 @@ dateCreated: 2026-03-18T19:09:33.355Z
 <ol>
   <li><strong>OpenShift Data Foundation: </strong>Acts as <mark class="marker-yellow">a meta-operator</mark>, and installs the Rook-Ceph and NooBaa operators as a requirement.</li>
   <li><strong>OpenShift Container Storage: </strong>Provides the back-end services for file, block, and object data storage</li>
-  <li><strong>Multicloud Object Gateway: </strong>Provides the multicloud object gateway (MCG) service and the NooBaa cluster resource.</li>
+  <li><strong>Multicloud Object Gateway: </strong>Provides the multicloud object gateway (MCG) service and the<mark class="marker-yellow"> NooBaa cluster resource.</mark></li>
 </ol>
 <figure class="image image_resized" style="width:100%;"><img src="/odf/ceph-rgw-and-noobaa-mcg.svg"></figure>
 <p>&nbsp;</p>
@@ -43,8 +44,16 @@ dateCreated: 2026-03-18T19:09:33.355Z
   </li>
   <li>MCG stand-alone deployments use any available PVCs, and handle them through the MCG service.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>How the internal components work together?</h6>
+<figure class="image image_resized" style="width:100%;"><img src="/odf/simplified-architecture.svg"></figure>
+<ul>
+  <li><mark class="marker-yellow">Ceph services handle block storage within OpenShift Data Foundation.</mark>
+    <ul>
+      <li>The local storage operator manages the storage from the local disks, and the Ceph services handle the block storage volumes from the Ceph cluster.</li>
+      <li>The Ceph services can pass data to either the MCG service, for handling as object storage, or to a Kubernetes Container Storage Interface (CSI) plug-in for direct OS-level access by containers or virtual machines (VMs) - either block for file system storage -</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
