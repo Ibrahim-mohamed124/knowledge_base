@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-18T19:55:25.728Z
+date: 2026-03-18T19:56:45.887Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -59,7 +59,8 @@ dateCreated: 2026-03-18T19:09:33.355Z
   <p><mark class="marker-yellow">Rook</mark> orchestrates the Ceph storage solution, with a specialized Kubernetes Operator to automate management. Rook ensures that Ceph will run well on Kubernetes and simplify the deployment and management experience.</p>
 </blockquote>
 <ul>
-  <li>MCG services handle cloud object storage within OpenShift Data Foundation, which is managed by NooBaa operator.</li>
+  <li>MCG services handle cloud object storage within OpenShift Data Foundation, which is managed by <mark class="marker-yellow">NooBaa operator.</mark></li>
+  <li><mark class="marker-yellow">The Red&nbsp;Hat OpenShift Container Storage (OCS) operator</mark> provides additional internal management of the Rook-Ceph and the NooBaa operators.</li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
