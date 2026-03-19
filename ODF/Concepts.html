@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:28:46.135Z
+date: 2026-03-19T11:29:15.287Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -576,4 +576,6 @@ spec:
   name: odf-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace</code></pre>
-<p>&nbsp;</p>
+<blockquote>
+  <p>If you are deploying OpenShift Data Foundation on infrastructure nodes, then add tolerations for the infrastructure taints to the OpenShift Data Foundation components within the <code>StorageCluster</code> object specification.</p>
+</blockquote>
