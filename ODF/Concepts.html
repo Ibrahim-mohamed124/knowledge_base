@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T09:52:48.069Z
+date: 2026-03-19T09:57:06.963Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -89,7 +89,16 @@ dateCreated: 2026-03-18T19:09:33.355Z
   <li>OpenShift Data Foundation supports deploying two storage clusters, where one is in internal mode and one is in external mode.&nbsp;</li>
   <li>The<mark class="marker-yellow"> first cluster </mark>must be installed in <mark class="marker-yellow">internal mode</mark> in the <code>openshift-storage</code> namespace, and the <mark class="marker-yellow">second cluster</mark> must be installed in <mark class="marker-yellow">external mode </mark>in the <code>openshift-storage-extended</code> namespace.</li>
 </ul>
-<p>&nbsp;</p>
+<h3>Disaster Recovery Architectures</h3>
+<ul>
+  <li>OpenShift Data Foundation DR options provide volume-persistent data and metadata replication across sites that are geographically dispersed.</li>
+</ul>
+<h6><strong>DR with stretch cluster</strong></h6>
+<ul>
+  <li><mark class="marker-yellow">A single cluster is stretched across two locations</mark> to provide the storage infrastructure with DR capabilities, and <mark class="marker-yellow">a third location acts as the arbiter.&nbsp;</mark></li>
+  <li>OpenShift Data Foundation-based <mark class="marker-yellow">synchronous replication.</mark></li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/odf/stretch-dr.svg"></figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
