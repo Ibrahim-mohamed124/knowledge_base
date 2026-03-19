@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:10:23.959Z
+date: 2026-03-19T11:11:20.448Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -399,7 +399,11 @@ oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
   <p>OpenShift Data Foundation components tolerate the OpenShift Data Foundation taint by default. You do not need to configure the toleration in the StorageCluster resource.</p>
   <p><mark class="marker-yellow">The local storage operator, on the other hand, requires this toleration to detect disks on the dedicated nodes.</mark></p>
 </blockquote>
-<p>&nbsp;</p>
+<ul>
+  <li>Add the OpenShift Data Foundation label to each node with storage devices. The OpenShift Data Foundation operator determines from this label which nodes can schedule targets for OpenShift Data Foundation components.</li>
+</ul>
+<pre><code class="language-plaintext">oc label node nodename \
+  cluster.ocs.openshift.io/openshift-storage=''</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
