@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:24:33.386Z
+date: 2026-03-19T11:26:18.438Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -437,7 +437,6 @@ spec:
           <li>Creating the <code>LocalVolumeDiscovery</code> object generates the <code>LocalVolumeDiscoveryResults</code> object, which contains the list of disks on each selected node.</li>
         </ul>
       </li>
-      <li>The <code>LocalVolumeSet</code> CR, to filter a set of storage volumes on the selected nodes, group them, and create a dedicated storage class to consume storage from the set of volumes.</li>
     </ul>
   </li>
 </ul>
@@ -475,15 +474,81 @@ spec
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
 <ul>
   <li>retrieve the <code>LocalVolumeDiscoveryResults</code> objects with the following command:</li>
 </ul>
 <pre><code class="language-plaintext"> oc get localvolumediscoveryresults \
   -o custom-columns='NAME:metadata.name,PATH:status.discoveredDevices[*].path' \
   -n openshift-local-storage</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>When the discovery finishes, you can create a <code>LocalVolumeSet</code> object by using the devices that the <code>LocalVolumeDiscovery</code> object discovered.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: local.storage.openshift.io/v1alpha1
+kind: LocalVolumeSet
+metadata:
+  name: lso-volumeset
+  namespace: openshift-local-storage
+spec:
+  deviceInclusionSpec:
+    deviceTypes: 1
+    - disk
+    - part
+    minSize: 1Gi 2
+  nodeSelector: 3
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: cluster.ocs.openshift.io/openshift-storage
+        operator: Exists
+  tolerations: 4
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/infra
+    value: reserved
+  ...output omitted...
+  storageClassName: lso-volumeset 5
+  maxDeviceCount: 1 6
+  volumeMode: Block</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Select the type of device.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Set the minimum size of the disk.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Match only the selected nodes.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">If you are deploying OpenShift Data Foundation on infrastructure nodes, then set the tolerations for the infrastructure node taints to get the disks on the infrastructure nodes.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name of the storage class to create.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/6.svg" alt="6"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The maximum number of devices per node to use; if it is not set, then all the disks are used.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
