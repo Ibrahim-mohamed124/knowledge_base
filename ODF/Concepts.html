@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:23:51.779Z
+date: 2026-03-19T11:24:33.386Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -476,7 +476,12 @@ spec
   </table>
 </figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>retrieve the <code>LocalVolumeDiscoveryResults</code> objects with the following command:</li>
+</ul>
+<pre><code class="language-plaintext"> oc get localvolumediscoveryresults \
+  -o custom-columns='NAME:metadata.name,PATH:status.discoveredDevices[*].path' \
+  -n openshift-local-storage</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
