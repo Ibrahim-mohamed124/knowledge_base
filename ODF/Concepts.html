@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:29:56.832Z
+date: 2026-03-19T10:33:18.410Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -334,6 +334,18 @@ dateCreated: 2026-03-18T19:09:33.355Z
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Removing Storage System</h3>
+<ul>
+  <li><mark class="marker-yellow"><strong>Uninstall annotations:</strong></mark></li>
+</ul>
+<pre><code class="language-plaintext">uninstall.ocs.openshift.io/cleanup-policy
+
+uninstall.ocs.openshift.io/mode</code></pre>
+<ul>
+  <li>If the <code>uninstall.ocs.openshift.io/cleanup-policy</code> is set to <code>delete</code>, then the Rook-Ceph Storage Operator cleans up the physical drives and the <code>DataDirHostPath</code>. However, if the <code>uninstall.ocs.openshift.io/cleanup-policy</code> is set to <code>retain</code>, then it keeps the physical drives and <code>DataDirHostPath</code>.</li>
+  <li>If the <code>uninstall.ocs.openshift.io/mode</code> is set to <code>graceful</code>, then the Rook-Ceph and NooBaa operators pause the uninstallation process until the persistent volume claims (PVCs) and object bucket claims (OBCs) are removed manually. However, if the <code>uninstall.ocs.openshift.io/mode</code> is set to <code>forced</code>, then the Rook-Ceph and NooBaa operators proceed with the uninstallation process, even if the PVCs and the OBCs still exist.</li>
+</ul>
+<blockquote>
+  <p>The Rook-Ceph storage operator removes the PVCs and the NooBaa operator removes the OBCs.</p>
+</blockquote>
 <p>&nbsp;</p>
