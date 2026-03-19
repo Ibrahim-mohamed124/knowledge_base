@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:35:56.282Z
+date: 2026-03-19T10:36:25.389Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -358,6 +358,7 @@ uninstall.ocs.openshift.io/mode</code></pre>
       <li>Ensure that the OpenShift Data Foundation cluster is in a healthy state. Otherwise, the process can fail because pods cannot be terminated successfully due to insufficient resources or other problems.</li>
       <li>Ensure that applications or other services are not consuming PVCs or OBCs that use the storage classes from OpenShift Data Foundation.</li>
       <li>After removing the dependent resources, delete any other CRs that were created by using the custom resource definitions from OpenShift Data Foundation.</li>
+      <li>Delete PVCs and OBCs that are provisioned by using OpenShift Data Foundation.</li>
       <li>Delete the volume snapshots that are using OpenShift Data Foundation.</li>
     </ul>
   </li>
