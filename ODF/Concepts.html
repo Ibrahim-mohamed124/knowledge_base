@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:17:32.678Z
+date: 2026-03-19T10:19:30.906Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -141,9 +141,38 @@ dateCreated: 2026-03-18T19:09:33.355Z
           <li>Either select <strong>Disks on all nodes</strong> option to use available disks on all nodes, or select <strong>Disks on selected nodes</strong> option to use available disks on selected nodes.</li>
         </ul>
       </li>
+      <li>the <strong>Advanced</strong> section provides the following options:</li>
     </ol>
   </li>
 </ul>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;">Field</th>
+        <th style="padding:5px;vertical-align:top;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><strong>Volume mode</strong></td>
+        <td style="padding:5px;vertical-align:top;">The default value for <strong>Volume Mode</strong> is <code>Block</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><strong>Device type</strong></td>
+        <td style="padding:5px;vertical-align:top;">You can select one or more device types from the drop-down list.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><strong>Disk size</strong></td>
+        <td style="padding:5px;vertical-align:top;">You can set a minimum size of 100&nbsp;GB for the device and the maximum available size of the device to include.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><strong>Maximum disks limit</strong></td>
+        <td style="padding:5px;vertical-align:top;">This field indicates the maximum number of PVs that you can create on a node. If this field is left empty, then PVs are created for all the available disks on the matching nodes.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
