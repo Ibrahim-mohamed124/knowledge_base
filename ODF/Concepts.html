@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:40:24.774Z
+date: 2026-03-19T11:08:47.352Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -376,7 +376,19 @@ oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
   <li>Change the subscription update channel to the latest update channel. For a manual update, approve the install plan and wait for the status to change from <code>Unknown</code> to <code>Created</code>. Wait for the OpenShift Data Foundation status to change to <code>Up to date</code>.</li>
 </ul>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Deploying OpenShift Data Foundation from the Command Line</h2>
+<ul>
+  <li>The Kubernetes operator model enables administrators to install an operator in Red&nbsp;Hat OpenShift Container Platform (RHOCP) by creating the corresponding operator group and subscription.<ul>
+      <li>The operator group object selects target namespaces for generating the required <mark class="marker-yellow">role-based access control (RBAC) access for its member operators.</mark></li>
+      <li>The subscription object defines the name and namespace of the operator, the catalog that includes the operator data, and the channel that determines the operator stream.</li>
+    </ul>
+  </li>
+  <li>taint infra nodes if required</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/infra
+    value: reserved</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
