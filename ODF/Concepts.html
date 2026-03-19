@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:26:18.438Z
+date: 2026-03-19T11:28:46.135Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -549,7 +549,31 @@ spec:
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Installing the Red&nbsp;Hat OpenShift Data Foundation Operator</h6>
+<ul>
+  <li>To install the Red&nbsp;Hat OpenShift Data Foundation operator, first create the <code>openshift-storage</code> namespace, and then create the <code>OperatorGroup</code> and <code>Subscription</code> objects.</li>
+  <li>Label the <code>openshift-storage</code> namespace to use the available cluster monitoring solution.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext"> oc label namespace/openshift-storage \
+  openshift.io/cluster-monitoring=true</code></pre>
+<pre><code class="language-plaintext">apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-storage
+  namespace: openshift-storage
+spec:
+  targetNamespaces:
+    - openshift-storage
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: odf-operator
+  namespace: openshift-storage
+spec:
+  channel: "stable-4.16"
+  installPlanApproval: Automatic
+  name: odf-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace</code></pre>
 <p>&nbsp;</p>
