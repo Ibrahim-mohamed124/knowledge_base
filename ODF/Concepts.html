@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:11:20.448Z
+date: 2026-03-19T11:16:26.436Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -341,6 +341,7 @@ dateCreated: 2026-03-18T19:09:33.355Z
 <pre><code class="language-plaintext">uninstall.ocs.openshift.io/cleanup-policy
 
 uninstall.ocs.openshift.io/mode</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>If the <code>uninstall.ocs.openshift.io/cleanup-policy</code> is set to <code>delete</code>, then the Rook-Ceph Storage Operator cleans up the physical drives and the <code>DataDirHostPath</code>. However, if the <code>uninstall.ocs.openshift.io/cleanup-policy</code> is set to <code>retain</code>, then it keeps the physical drives and <code>DataDirHostPath</code>.</li>
   <li>If the <code>uninstall.ocs.openshift.io/mode</code> is set to <code>graceful</code>, then the Rook-Ceph and NooBaa operators pause the uninstallation process until the persistent volume claims (PVCs) and object bucket claims (OBCs) are removed manually. However, if the <code>uninstall.ocs.openshift.io/mode</code> is set to <code>forced</code>, then the Rook-Ceph and NooBaa operators proceed with the uninstallation process, even if the PVCs and the OBCs still exist.</li>
@@ -350,8 +351,10 @@ uninstall.ocs.openshift.io/mode</code></pre>
 </blockquote>
 <pre><code class="language-plaintext">oc annotate storagecluster ocs-storagecluster \
   uninstall.ocs.openshift.io/cleanup-policy="retain" --overwrite</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc annotate storagecluster ocs-storagecluster \
   uninstall.ocs.openshift.io/mode="forced" --overwrite</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><mark class="marker-yellow"><strong>Uninstallation Prerequisites:</strong></mark>
     <ul>
@@ -365,6 +368,7 @@ uninstall.ocs.openshift.io/mode</code></pre>
 </ul>
 <pre><code class="language-plaintext">oc get volumesnapshot --all-namespaces
 oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>delete the storage systems</li>
 </ul>
@@ -390,11 +394,13 @@ oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
   - effect: NoSchedule
     key: node-role.kubernetes.io/infra
     value: reserved</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>dedicate infrastructure nodes to OpenShift Data Foundation by adding an OpenShift Data Foundation taint with a <code>NoSchedule</code> effect. RHOCP then schedules only OpenShift Data Foundation resources on those nodes.</li>
 </ul>
 <pre><code class="language-plaintext"> oc adm taint node nodename \
   node.ocs.openshift.io/storage=true:NoSchedule</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>OpenShift Data Foundation components tolerate the OpenShift Data Foundation taint by default. You do not need to configure the toleration in the StorageCluster resource.</p>
   <p><mark class="marker-yellow">The local storage operator, on the other hand, requires this toleration to detect disks on the dedicated nodes.</mark></p>
@@ -404,9 +410,33 @@ oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
 </ul>
 <pre><code class="language-plaintext">oc label node nodename \
   cluster.ocs.openshift.io/openshift-storage=''</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Installing the Local Storage Operator</h6>
+<pre><code class="language-plaintext">apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-local-storage
+  namespace: openshift-local-storage
+spec:
+  targetNamespaces:
+    - openshift-local-storage
+    ---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: local-storage-operator
+  namespace: openshift-local-storage
+spec:
+  channel: stable
+  name: local-storage-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace</code></pre>
+<ul>
+  <li>create the following custom resources (CR) to finish installing the local storage operator:<ul>
+      <li>The <code>LocalVolumeDiscovery</code> CR, to discover a list of potentially usable disks on the chosen set of nodes.</li>
+      <li>The <code>LocalVolumeSet</code> CR, to filter a set of storage volumes on the selected nodes, group them, and create a dedicated storage class to consume storage from the set of volumes.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
