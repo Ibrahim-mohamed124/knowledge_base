@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:09:44.534Z
+date: 2026-03-19T11:10:23.959Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -395,4 +395,20 @@ oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
 </ul>
 <pre><code class="language-plaintext"> oc adm taint node nodename \
   node.ocs.openshift.io/storage=true:NoSchedule</code></pre>
+<blockquote>
+  <p>OpenShift Data Foundation components tolerate the OpenShift Data Foundation taint by default. You do not need to configure the toleration in the StorageCluster resource.</p>
+  <p><mark class="marker-yellow">The local storage operator, on the other hand, requires this toleration to detect disks on the dedicated nodes.</mark></p>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
