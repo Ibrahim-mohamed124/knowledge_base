@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-18T20:11:39.468Z
+date: 2026-03-19T09:47:11.862Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -63,8 +63,19 @@ dateCreated: 2026-03-18T19:09:33.355Z
   <li><mark class="marker-yellow">The Red&nbsp;Hat OpenShift Container Storage (OCS) operator</mark> provides additional internal management of the Rook-Ceph and the NooBaa operators.</li>
 </ul>
 <h3>OpenShift Data Foundation Deployment Modes</h3>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Internal Mode Deployment</h4>
+<ul>
+  <li>Internal: All the OpenShift Data Foundation components run entirely within an RHOCP cluster. <mark class="marker-yellow">This mode uses dynamically provisioned persistent volumes (PVs) that the administrators specify in the installation wizard.</mark></li>
+  <li><a href="https://sizer.ocs.ninja/">odf sizer</a></li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/odf/internal-mode.svg"></figure>
+<ul>
+  <li>Types of internal deployment<ol>
+      <li>Simple: The simple deployment approach uses the local storage devices, portable storage devices, vSphere volumes, or storage area network (SAN) volumes. <mark class="marker-yellow">OpenShift Data Foundation services run jointly with applications.</mark></li>
+      <li>Optimized: <mark class="marker-yellow">The optimized deployment approach uses dedicated RHOCP infrastructure nodes for OpenShift Data Foundation</mark>.</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
