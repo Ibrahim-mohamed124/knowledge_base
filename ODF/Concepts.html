@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T09:57:06.963Z
+date: 2026-03-19T10:01:49.280Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -99,7 +99,11 @@ dateCreated: 2026-03-18T19:09:33.355Z
   <li>OpenShift Data Foundation-based <mark class="marker-yellow">synchronous replication.</mark></li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/odf/stretch-dr.svg"></figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6><strong>Regional-DR</strong></h6>
+<ul>
+  <li>Regional-DR is based on<mark class="marker-yellow"> asynchronous volume level replication </mark>for block and file volumes, which provides protection against several failures with minimal potential data loss.</li>
+  <li>Regional-DR requires<mark class="marker-yellow"> a hub cluster</mark> with the <mark class="marker-yellow">Red&nbsp;Hat Advanced Cluster Management for Kubernetes (RHACM) and MultiClusterHub operators,</mark> and <mark class="marker-yellow">primary and secondary managed clusters with OpenShift Data Foundation.</mark></li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/odf/regional-dr.svg"></figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
