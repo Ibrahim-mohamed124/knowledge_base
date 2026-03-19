@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:29:08.119Z
+date: 2026-03-19T10:29:56.832Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -325,7 +325,15 @@ dateCreated: 2026-03-18T19:09:33.355Z
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
+<ul>
+  <li>Finally, you must verify that OpenShift Data Foundation created the four storage classes. Go to <strong>Storage</strong> → <strong>StorageClasses</strong>, which shows the following storage classes:<ul>
+      <li><code>ocs-storagecluster-ceph-rbd</code></li>
+      <li><code>ocs-storagecluster-cephfs</code></li>
+      <li><code>openshift-storage.noobaa.io</code></li>
+      <li><code>ocs-storagecluster-ceph-rgw</code></li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
