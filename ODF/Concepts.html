@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:36:25.389Z
+date: 2026-03-19T10:36:57.030Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -365,7 +365,10 @@ uninstall.ocs.openshift.io/mode</code></pre>
 </ul>
 <pre><code class="language-plaintext">oc get volumesnapshot --all-namespaces
 oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>delete the storage systems</li>
+</ul>
+<pre><code class="language-plaintext">oc delete -n openshift-storage storagesystem --all --wait=true</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
