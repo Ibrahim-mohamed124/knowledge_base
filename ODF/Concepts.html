@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:25:36.787Z
+date: 2026-03-19T10:28:01.543Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -192,8 +192,81 @@ dateCreated: 2026-03-18T19:09:33.355Z
 <blockquote>
   <p>For Red&nbsp;Hat Ceph Storage, you can download a Python script from the <strong>Connection details</strong> section on the <strong>Security and network</strong> page. The script retrieves the external cluster details from the Red&nbsp;Hat Ceph Storage cluster.</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Verifying the Storage System Installation from the Web Console</h3>
+<ul>
+  <li>Confirm that the <code>ocs-storagecluster</code> object has <code>Ready</code> as the status and a green checkmark.</li>
+  <li><strong>Pods for a storage system installation:</strong></li>
+</ul>
+<figure class="table" style="width:1170px;">
+  <table>
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Component</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Pods</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Pod placement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;" rowspan="2">CSI - <code>cephfs</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>csi-cephfsplugin-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on each compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>csi-cephfsplugin-provisioner-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">2 pods distributed across compute nodes</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;" rowspan="2">CSI - <code>rbd</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>csi-rbdplugin-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on each compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>csi-rbdplugin-provisioner-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">2 pods distributed across compute nodes</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;" rowspan="4">OpenShift Data Foundation operator</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ocs-operator-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ocs-metrics-exporter-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>odf-operator-controller-manager-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>odf-console-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Rook-Ceph operator</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rook-ceph-operator-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;" rowspan="4">Multicloud Object Gateway</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>noobaa-operator-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>noobaa-core-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>nooba-db-pg-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>noobaa-endpoint-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any compute node</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
