@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:21:10.042Z
+date: 2026-03-19T11:23:51.779Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -432,7 +432,11 @@ spec:
   sourceNamespace: openshift-marketplace</code></pre>
 <ul>
   <li>create the following custom resources (CR) to finish installing the local storage operator:<ul>
-      <li>The <code>LocalVolumeDiscovery</code> CR, to discover a list of potentially usable disks on the<mark class="marker-yellow"> chosen set of nodes.</mark></li>
+      <li>The <code>LocalVolumeDiscovery</code> CR, to discover a list of potentially usable disks on the<mark class="marker-yellow"> chosen set of nodes.</mark>
+        <ul>
+          <li>Creating the <code>LocalVolumeDiscovery</code> object generates the <code>LocalVolumeDiscoveryResults</code> object, which contains the list of disks on each selected node.</li>
+        </ul>
+      </li>
       <li>The <code>LocalVolumeSet</code> CR, to filter a set of storage volumes on the selected nodes, group them, and create a dedicated storage class to consume storage from the set of volumes.</li>
     </ul>
   </li>
