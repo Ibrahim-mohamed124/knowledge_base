@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:23:22.335Z
+date: 2026-03-19T10:24:14.313Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -177,6 +177,13 @@ dateCreated: 2026-03-18T19:09:33.355Z
 <p>&nbsp; &nbsp; &nbsp; 6. select the taint nodes option to dedicate <mark class="marker-yellow">selected nodes for OpenShift Data Foundation use only</mark>. The <strong>Taint nodes</strong> option adds a <code>node.ocs.openshift.io/storage="true"</code> taint to the selected nodes.</p>
 <p>&nbsp; &nbsp; &nbsp;7. In the <strong>Security and network</strong> stage, you can select the option to encrypt data and the encryption level, either <strong>Cluster-wide encryption</strong> or <strong>StorageClass encryption</strong>.</p>
 <p>&nbsp; &nbsp; &nbsp; 8. In the <strong>Network</strong> section, you can select either the <strong>Default (OVN)</strong> network for a single network or the <strong>Custom (Multus)</strong> network for multiple network interfaces.</p>
+<p>&nbsp; &nbsp; &nbsp; 9. In the <strong>Data protection</strong> stage, you can set the storage system for disaster recovery.</p>
+<ul>
+  <li>Deploy by Using Multicloud Object Gateway<ol>
+      <li>select the <strong>MultiCloud Object Gateway</strong> in the <strong>Deployment type</strong>.</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
