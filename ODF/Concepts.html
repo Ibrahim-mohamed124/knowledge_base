@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:31:27.018Z
+date: 2026-03-19T11:32:15.657Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -656,7 +656,15 @@ spec:
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc get storagecluster -n openshift-storage
+NAME                 AGE   PHASE   EXTERNAL   CREATED AT             VERSION
+ocs-storagecluster   40h   Ready              2024-08-01T20:47:04Z   4.16.0
+oc get cephcluster -n openshift-storage
+NAME                             ...   PHASE   ...   HEALTH   ...
+ocs-storagecluster-cephcluster   ...   Ready   ...   HEALTH_OK  ...
+oc get noobaa -n openshift-storage
+NAME     ...   PHASE   AGE
+noobaa   ...   Ready   57m</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
