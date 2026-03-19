@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:33:18.410Z
+date: 2026-03-19T10:33:58.359Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -348,4 +348,16 @@ uninstall.ocs.openshift.io/mode</code></pre>
 <blockquote>
   <p>The Rook-Ceph storage operator removes the PVCs and the NooBaa operator removes the OBCs.</p>
 </blockquote>
+<pre><code class="language-plaintext">oc annotate storagecluster ocs-storagecluster \
+  uninstall.ocs.openshift.io/cleanup-policy="retain" --overwrite</code></pre>
+<pre><code class="language-plaintext">oc annotate storagecluster ocs-storagecluster \
+  uninstall.ocs.openshift.io/mode="forced" --overwrite</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
