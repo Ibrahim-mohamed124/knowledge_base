@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T10:28:01.543Z
+date: 2026-03-19T10:29:08.119Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -267,7 +267,64 @@ dateCreated: 2026-03-18T19:09:33.355Z
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
+<ul>
+  <li><strong>&nbsp;Additional pods for an internal mode installation:</strong></li>
+</ul>
+<figure class="table" style="width:1170px;">
+  <table>
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Component</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Pods</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Ceph MON</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rook-ceph-mon-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">
+          <p>3 pods distributed across storage nodes</p>
+          <p>For the arbiter mode, 5 pods are distributed across 3 zones: 2 per data center zones and 1 in the arbiter zone</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Ceph MGR</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rook-ceph-mgr-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 pod on any storage node</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Ceph MDS</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rook-ceph-mds-ocs-storagecluster-cephfilesystem-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">
+          <p>2 pods distributed across storage nodes</p>
+          <p>For the arbiter mode, 2 pods are distributed across 2 data center zones</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Ceph RGW</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rook-ceph-rgw-ocs-storagecluster-cephobjectstore-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">
+          <p>1 pod on any storage node</p>
+          <p>For the arbiter mode, 2 pods are distributed across 2 data center zones</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Ceph crash collector</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rook-ceph-crashcollector-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">
+          <p>1 pod on each storage node</p>
+          <p>For the arbiter mode, 1 pod on each storage node and 1 pod in the arbiter zone</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Ceph OSD</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>rook-ceph-osd-*</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">1 Ceph object storage daemon (Ceph OSD) pod for each device</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
