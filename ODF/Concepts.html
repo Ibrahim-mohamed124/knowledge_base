@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:16:26.436Z
+date: 2026-03-19T11:21:10.042Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -432,12 +432,45 @@ spec:
   sourceNamespace: openshift-marketplace</code></pre>
 <ul>
   <li>create the following custom resources (CR) to finish installing the local storage operator:<ul>
-      <li>The <code>LocalVolumeDiscovery</code> CR, to discover a list of potentially usable disks on the chosen set of nodes.</li>
+      <li>The <code>LocalVolumeDiscovery</code> CR, to discover a list of potentially usable disks on the<mark class="marker-yellow"> chosen set of nodes.</mark></li>
       <li>The <code>LocalVolumeSet</code> CR, to filter a set of storage volumes on the selected nodes, group them, and create a dedicated storage class to consume storage from the set of volumes.</li>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: local.storage.openshift.io/v1alpha1
+kind: LocalVolumeDiscovery
+metadata:
+  name: auto-discover-devices
+  namespace: openshift-local-storage
+spec
+  nodeSelector: 1
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: cluster.ocs.openshift.io/openshift-storage
+        operator: Exists
+  tolerations: 2
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/infra
+    value: reserved
+  ...output omitted...</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Select a set of nodes based on their label.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">If you are deploying OpenShift Data Foundation on infrastructure nodes, then set the tolerations for the infrastructure node taints to discover the disks on the infrastructure nodes.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
