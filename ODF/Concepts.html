@@ -2,7 +2,7 @@
 title:  Architecture Overview and Deployment of OpenShift Data Foundation
 description: 
 published: true
-date: 2026-03-19T11:08:47.352Z
+date: 2026-03-19T11:09:44.534Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-18T19:09:33.355Z
@@ -390,5 +390,9 @@ oc delete volumesnapshot VOLUME-SNAPSHOT-NAME -n NAMESPACE</code></pre>
   - effect: NoSchedule
     key: node-role.kubernetes.io/infra
     value: reserved</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>dedicate infrastructure nodes to OpenShift Data Foundation by adding an OpenShift Data Foundation taint with a <code>NoSchedule</code> effect. RHOCP then schedules only OpenShift Data Foundation resources on those nodes.</li>
+</ul>
+<pre><code class="language-plaintext"> oc adm taint node nodename \
+  node.ocs.openshift.io/storage=true:NoSchedule</code></pre>
 <p>&nbsp;</p>
