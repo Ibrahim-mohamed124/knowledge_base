@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:28:43.417Z
+date: 2026-03-20T13:30:48.799Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -54,7 +54,41 @@ dateCreated: 2026-03-20T13:07:17.815Z
   </li>
 </ul>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li><strong>Recommended storage types for OpenShift services:</strong></li>
+</ul>
+<figure class="table" style="width:1170.01px;">
+  <table>
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Service</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Block</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">File</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Object</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Image registry</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configurable</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configurable (not recommended)</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Recommended</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Monitoring (Prometheus)</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Recommended</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Configurable (not recommended)</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Not configurable</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Logging (Loki)</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Not configurable</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Not configurable</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Recommended</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
