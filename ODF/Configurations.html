@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:24:17.820Z
+date: 2026-03-20T13:28:03.878Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -32,7 +32,22 @@ dateCreated: 2026-03-20T13:07:17.815Z
   <p>The block storage type does not support RWX, and the volumes are Non-shareable: only one client at a time can mount an endpoint of this type.</p>
 </blockquote>
 <ul>
-  <li>When deploying OpenShift Data Foundation by using local storage devices, you install the local storage operator as a prerequisite. The local storage operator creates a SC, commonly named <code>lso-volumeset</code>, to make disk devices available to the <mark class="marker-yellow">Rook-Ceph operator as PVs.</mark></li>
+  <li>When deploying OpenShift Data Foundation by using local storage devices, you install the local storage operator as a prerequisite. The local storage operator creates a SC, commonly named <code>lso-volumeset</code>, to make disk devices available to the <mark class="marker-yellow">Rook-Ceph operator as PVs.</mark>
+    <ul>
+      <li><code>ocs-storagecluster-ceph-rbd</code>. Installed by the Rook-Ceph operator, it provides block storage, and uses Ceph RADOS Block Device (RBD) technology. It introduces the <code>cephblockpool</code> CR to <mark class="marker-yellow">enable creating and customizing storage pools</mark>.<ul>
+          <li>The SC uses the <code>openshift-storage.rbd.csi.ceph.com</code> provisioner, and its parameters define the file system type, Ceph pool, Ceph image format, and image features.</li>
+        </ul>
+      </li>
+      <li><code>ocs-storagecluster-cephfs</code>. Installed by the Rook-Ceph operator, this class provides shared and distributed file system data services, by using the Ceph File System (CephFS).<ul>
+          <li>The SC uses the <code>openshift-storage.cephfs.csi.ceph.com</code> provisioner and it introduces the <code>CephFilesystem</code> CR that sets up and manages CephFS.</li>
+        </ul>
+      </li>
+      <li><code>ocs-storagecluster-ceph-rgw</code>. Installed by the Rook-Ceph operator, this class provides S3-compatible on-premise object storage, and uses the Ceph Object Gateway, which is also known as the <code>radosgw</code> RADOS Gateway (RGW) daemon, an HTTP server that interacts with the Ceph Storage Cluster.<ul>
+          <li>This class introduces the <code>cephobjectstore</code> CR, which defines the settings and operational parameters for the RGW instance. The SC uses the <code>openshift-storage.ceph.rook.io/bucket</code> provisioner.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
