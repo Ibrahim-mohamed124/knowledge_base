@@ -1,0 +1,34 @@
+<!--
+title: Installation Using GitOps or CLI
+description: 
+published: true
+date: 2026-03-20T12:29:22.546Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-03-20T12:29:22.546Z
+-->
+
+<ul>
+  <li>The installation depends on the deployment mode, but generally these steps are followed with minor modifications for each deployment type:&nbsp;<ol>
+      <li>Prepare the storage nodes</li>
+      <li>Install the local storage operator if a DAS &nbsp;is used to provide the storage &nbsp;backend&nbsp;</li>
+      <li>Create the volume set CR of the local storage operator after scanning for available disks</li>
+      <li>Install the ODF operator</li>
+      <li>Create a storage system using the created volume set</li>
+    </ol>
+  </li>
+</ul>
+<h6>Prepare the storage nodes</h6>
+<ul>
+  <li>Create &nbsp;infra nodes to optimize the subscription cost if possible.</li>
+</ul>
+<pre><code class="language-plaintext">oc label nodes  &lt;node_name&gt; node-role.kubernetes.io/infra=</code></pre>
+<ul>
+  <li>Add taints to the nodes so that application workloads does not get scheduled on it</li>
+</ul>
+<pre><code class="language-plaintext">oc adm taint nodes -l node-role.kubernetes.io/infra node-role.kubernetes.io/infra=reserved:NoSchedule node-role.kubernetes.io/infra=reserved:NoExecute</code></pre>
+<ul>
+  <li>To use some of the infra nodes for storage only add this label to them:</li>
+</ul>
+<pre><code class="language-plaintext">oc label nodes   -l node-role.kubernetes.io/infra=   cluster.ocs.openshift.io/openshift-storage=</code></pre>
+<p>&nbsp;</p>
