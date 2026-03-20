@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:56:02.965Z
+date: 2026-03-20T13:59:29.446Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -105,7 +105,18 @@ dateCreated: 2026-03-20T13:07:17.815Z
   <p><strong>Control Plane:</strong> CSI Driver handles <i>attaching</i> and <i>mounting</i>.</p>
   <p><strong>Data Plane:</strong> The Node's <strong>Operating System Kernel</strong> handles the actual movement of data between the app and the storage backend.</p>
 </blockquote>
-<p>&nbsp;</p>
+<blockquote>
+  <p>Normally, for a filesystem volume, the CSI driver would run <code>mkfs</code> to format the disk and then <code>mount</code> it to a directory.</p>
+  <p><strong>For Block Storage:</strong> The CSI driver <strong>skips the formatting</strong>. It does not create an <code>ext4</code> or <code>xfs</code> filesystem.</p>
+  <h3>3. Device Mapping (The "Plug-in")</h3>
+  <ul>
+    <li>Instead of mounting a directory, Kubernetes creates a <strong>symbolic link</strong> (symlink) to the raw device inside the Pod's infrastructure.<ul>
+        <li>On the <strong>Node</strong>, the device exists at a path like <code>/dev/xvda</code>.</li>
+        <li>Inside the <strong>Pod</strong>, that device is mapped to a path you specify (e.g., <code>/dev/block-storage</code>).</li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
