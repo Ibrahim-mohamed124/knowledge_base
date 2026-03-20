@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T20:29:32.557Z
+date: 2026-03-20T20:33:15.364Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -217,10 +217,47 @@ spec:
 </figure>
 <h4>Introducing Cross Storage Class Clones</h4>
 <ul>
-  <li>OpenShift Data Foundation enables moving volumes from a storage class to another storage class that uses the same provisioner but different settings, such as the storage pool,the number of replicas, or the compression mode.</li>
+  <li>OpenShift Data Foundation enables moving volumes from a storage class to another storage class that uses <mark class="marker-yellow">the same provisioner</mark> but different settings, such as the storage pool,the number of replicas, or the compression mode.</li>
+  <li>A clone is a duplicate of an existing storage volume that is used as any standard volume. You create a clone of a volume to make a point in time copy of the data. The back-end device creates an exact duplicate of the specified volume.<ul>
+      <li>When creating a PVC clone, you must meet the following requirements:</li>
+      <li>Cloning support is only available for Container Storage Interface (CSI) drivers.</li>
+      <li>Cloning support is only available for dynamic provisioners.</li>
+      <li>The capacity of the PVC clone must be the same or larger than the capacity of the source volume.</li>
+      <li>Cloning can only be performed between two volumes that use the same <code>volumeMode</code> setting.</li>
+      <li>You can only clone a PVC when it exists in the same namespace as the destination PVC.</li>
+      <li>You can create up to 512 clones per PVC for both CephFS and RADOS Block Device.</li>
+      <li>You cannot clone a PVC from one provisioner to another provisioner, for example a PVC from RBD to CephFS.</li>
+    </ul>
+  </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-clone
+  namespace: dummy
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource: 1
+    kind: PersistentVolumeClaim
+    name: test
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: pg-development-storage
+  volumeMode: Filesystem</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Reference the source PVC.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
