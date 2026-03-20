@@ -2,7 +2,7 @@
 title: Installation Using GitOps or CLI
 description: 
 published: true
-date: 2026-03-20T12:50:39.363Z
+date: 2026-03-20T12:51:44.189Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T12:29:22.546Z
@@ -187,7 +187,60 @@ clusterserviceversion.../rook-ceph-operator.v4.16.0-rhodf...     Succeeded</code
   <li>Enable the OpenShift Data Foundation Console plug-in by editing the <code>console.operator cluster</code> resource and adding the <code>odf-console</code> to the <code>spec.plugins</code> section</li>
 </ul>
 <pre><code class="language-plaintext"> oc patch console.operator cluster  -n openshift-storage --type json -p  "[{'op': 'add', 'path': '/spec/plugins', 'value': ['monitoring-plugin', 'odf-console']}]"</code></pre>
-<p>&nbsp;</p>
+<h6>Create the storage system</h6>
+<ul>
+  <li>create the storageCluster CR</li>
+</ul>
+<pre><code class="language-plaintext">---
+apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: ocs-storagecluster
+  namespace: openshift-storage
+spec:
+  monDataDirHostPath: /var/lib/rook
+  storageDeviceSets:
+  - count: 1
+    dataPVCTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: "1"
+        storageClassName: lso-volumeset
+        volumeMode: Block
+    name: ocs-deviceset-lso-volumeset
+    replica:  3
+  flexibleScaling: false
+  placement:
+    all:
+      tolerations:
+      - key: node-role.kubernetes.io/infra
+        value: reserved
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/infra
+        value: reserved
+        effect: NoExecute
+    mds:
+      tolerations:
+      - key: node-role.kubernetes.io/infra
+        value: reserved
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/infra
+        value: reserved
+        effect: NoExecute
+    noobaa-core:
+      tolerations:
+      - key: node-role.kubernetes.io/infra
+        value: reserved
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/infra
+        value: reserved
+        effect: NoExecute
+    rgw:
+      tolerations:
+      ...output omitted...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
