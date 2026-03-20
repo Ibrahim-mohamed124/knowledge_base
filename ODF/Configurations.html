@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T19:32:44.958Z
+date: 2026-03-20T19:33:09.929Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -134,5 +134,5 @@ spec:
   nfs:
     enable: true
 ...output omitted..</code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc patch storageclusters ocs-storagecluster   --namespace openshift-storage   --type merge --patch '{"spec": {"nfs":{"enable": true}}}'</code></pre>
 <p>&nbsp;</p>
