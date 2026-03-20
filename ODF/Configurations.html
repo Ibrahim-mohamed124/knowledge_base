@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:28:03.878Z
+date: 2026-03-20T13:28:43.417Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -44,6 +44,10 @@ dateCreated: 2026-03-20T13:07:17.815Z
       </li>
       <li><code>ocs-storagecluster-ceph-rgw</code>. Installed by the Rook-Ceph operator, this class provides S3-compatible on-premise object storage, and uses the Ceph Object Gateway, which is also known as the <code>radosgw</code> RADOS Gateway (RGW) daemon, an HTTP server that interacts with the Ceph Storage Cluster.<ul>
           <li>This class introduces the <code>cephobjectstore</code> CR, which defines the settings and operational parameters for the RGW instance. The SC uses the <code>openshift-storage.ceph.rook.io/bucket</code> provisioner.</li>
+        </ul>
+      </li>
+      <li><code>openshift-storage.noobaa.io</code>. Installed by the NooBaa operator, this class uses NooBaa, which is a highly customizable and dynamic data gateway for objects, to provide the Multicloud Object Gateway (MCG) service.<ul>
+          <li>This class introduces the <code>NooBaa</code> CR, which defines the configuration and deployment of the MCG service. This SC uses the <code>openshift-storage.noobaa.io/obc</code> provisioner.</li>
         </ul>
       </li>
     </ul>
