@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T19:35:18.223Z
+date: 2026-03-20T19:35:56.443Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -140,7 +140,9 @@ spec:
 </ul>
 <pre><code class="language-plaintext">oc describe cephnfs ocs-storagecluster-cephnfs   -n openshift-storage
 oc get pods -n openshift-storage -l app=csi-nfsplugin
-oc get pods -n openshift-storage -l ceph_daemon_type=nfs</code></pre>
+oc get pods -n openshift-storage -l ceph_daemon_type=nfs
+oc get sc
+ocs-storagecluster-ceph-nfs      openshift-storage.nfs.csi.ceph.com            ...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
