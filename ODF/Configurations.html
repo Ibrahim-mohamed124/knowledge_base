@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:50:23.354Z
+date: 2026-03-20T13:56:02.965Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -99,6 +99,12 @@ dateCreated: 2026-03-20T13:07:17.815Z
   <li>&nbsp;CSI driver primarily <mark class="marker-yellow">involves volume provisioning, attachment, and detachment not runtime I/O operations.</mark></li>
   <li>If a CSI Node Plugin DaemonSet faces issues like ImagePullBackOff, the Pod can continue to use the attached volume as long as it remains on the same node.</li>
 </ul>
+<blockquote>
+  <h3>Crucial Note: The "Data Plane" vs. "Control Plane"</h3>
+  <p>It’s a common misconception that data flows <i>through</i> the CSI driver. In reality:</p>
+  <p><strong>Control Plane:</strong> CSI Driver handles <i>attaching</i> and <i>mounting</i>.</p>
+  <p><strong>Data Plane:</strong> The Node's <strong>Operating System Kernel</strong> handles the actual movement of data between the app and the storage backend.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
