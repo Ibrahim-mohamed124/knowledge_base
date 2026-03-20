@@ -2,10 +2,17 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:07:17.815Z
+date: 2026-03-20T13:08:18.013Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
 -->
 
 <p><strong>A volume is a directory that is accessible to the containers in a pod. The volume type determines how that directory was created, the medium that backs it, and its contents.</strong></p>
+<ul>
+  <li>Kubernetes supports two categories of volume types:<ul>
+      <li>Ephemeral volume types, which have the lifetime of a pod. The most common types are: <code>emptyDir</code>, <code>configMap</code>, and <code>secret</code>.</li>
+      <li>Persistent volume types, which exist beyond the lifetime of a pod and are implemented as plug-ins. They are determined by the storage back end and by the access modes that they support.</li>
+    </ul>
+  </li>
+</ul>
