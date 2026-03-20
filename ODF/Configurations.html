@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T20:33:15.364Z
+date: 2026-03-20T20:35:44.128Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -258,6 +258,9 @@ spec:
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Introducing Single Replica Storage Classes</h4>
+<ul>
+  <li>Single replica pools require a dedicated set of Ceph OSDs. If one of the OSDs fails, then the data is lost.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext"> oc patch storagecluster ocs-storagecluster   -n openshift-storage --type json --patch '[{ "op": "replace", "path":   "/spec/managedResources/cephNonResilientPools/enable", "value": true }]'</code></pre>
 <p>&nbsp;</p>
