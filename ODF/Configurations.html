@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T19:34:08.406Z
+date: 2026-03-20T19:35:18.223Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -136,10 +136,11 @@ spec:
 ...output omitted..</code></pre>
 <pre><code class="language-plaintext">oc patch storageclusters ocs-storagecluster   --namespace openshift-storage   --type merge --patch '{"spec": {"nfs":{"enable": true}}}'</code></pre>
 <ul>
-  <li>After you enable the NFS feature, wait until the <code>ocs-storagecluster-cephnfs</code> resource is ready.</li>
+  <li>After you enable the NFS feature, wait until the <code>ocs-storagecluster-cephnfs</code> resource is ready , and both &nbsp;csi-nfsplugin and NFS server pods are created.</li>
 </ul>
 <pre><code class="language-plaintext">oc describe cephnfs ocs-storagecluster-cephnfs   -n openshift-storage
-oc get pods -n openshift-storage -l app=csi-nfsplugin</code></pre>
+oc get pods -n openshift-storage -l app=csi-nfsplugin
+oc get pods -n openshift-storage -l ceph_daemon_type=nfs</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
