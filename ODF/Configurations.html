@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T19:31:42.642Z
+date: 2026-03-20T19:32:44.958Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -123,6 +123,16 @@ dateCreated: 2026-03-20T13:07:17.815Z
   <li>OpenShift Data Foundation uses CephFS internally to manage NFS storage.</li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/odf/object-storage-providers.svg"></figure>
-<p>&nbsp;</p>
+<ul>
+  <li>By default, OpenShift Data Foundation does not provide the NFS storage class. You can enable the NFS feature when you create the storage cluster</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+...output omitted...
+spec:
+...output omitted...
+  nfs:
+    enable: true
+...output omitted..</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
