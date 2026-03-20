@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:23:43.504Z
+date: 2026-03-20T13:24:17.820Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -31,7 +31,9 @@ dateCreated: 2026-03-20T13:07:17.815Z
 <blockquote>
   <p>The block storage type does not support RWX, and the volumes are Non-shareable: only one client at a time can mount an endpoint of this type.</p>
 </blockquote>
-<p>&nbsp;</p>
+<ul>
+  <li>When deploying OpenShift Data Foundation by using local storage devices, you install the local storage operator as a prerequisite. The local storage operator creates a SC, commonly named <code>lso-volumeset</code>, to make disk devices available to the <mark class="marker-yellow">Rook-Ceph operator as PVs.</mark></li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
