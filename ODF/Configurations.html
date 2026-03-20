@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T19:35:56.443Z
+date: 2026-03-20T19:43:18.935Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -143,12 +143,41 @@ oc get pods -n openshift-storage -l app=csi-nfsplugin
 oc get pods -n openshift-storage -l ceph_daemon_type=nfs
 oc get sc
 ocs-storagecluster-ceph-nfs      openshift-storage.nfs.csi.ceph.com            ...</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Expose the NFS PV</h4>
+<ul>
+  <li>configure a load balancer (LB) service such as MetalLB in your cluster to allow external access to the NFS server pod.</li>
+  <li>Get the value for the <code>ceph_nfs</code> field from the CephNFS pod that Rook deploys in the <code>openshift-storage</code> namespace:</li>
+</ul>
+<pre><code class="language-plaintext">oc get pod -l app=rook-ceph-nfs -L ceph_nfs</code></pre>
+<ul>
+  <li>Expose the NFS service outside the cluster by creating an LB service.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: Service
+metadata:
+  name: cephnfs-lb 
+  namespace: openshift-storage
+spec:
+  ports:
+    - name: nfs
+      port: 2049
+  type: LoadBalancer 
+  externalTrafficPolicy: Local
+  selector: 
+    app: rook-ceph-nfs
+    ceph_nfs: ocs-storagecluster-cephnfs</code></pre>
+<ul>
+  <li>Get the name of the PV that is associated with the NFS PVC:</li>
+</ul>
+<pre><code class="language-plaintext">oc get pvc pvc_name --output jsonpath='{.spec.volumeName}{"\n"}'</code></pre>
+<ul>
+  <li>Use the NFS PV name to get the NFS share path:</li>
+</ul>
+<pre><code class="language-plaintext"> oc get pv pv_name   --output jsonpath='{.spec.csi.volumeAttributes.share}{"\n"}'</code></pre>
+<ul>
+  <li>Get the ingress IP for the NFS server from the LB service:</li>
+</ul>
+<pre><code class="language-plaintext">oc -n openshift-storage get service cephnfs-lb   --output jsonpath='{.status.loadBalancer.ingress[].ip}{"\n"}'</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
