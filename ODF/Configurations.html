@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T20:35:44.128Z
+date: 2026-03-20T20:36:37.247Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -263,4 +263,14 @@ spec:
   <li>Single replica pools require a dedicated set of Ceph OSDs. If one of the OSDs fails, then the data is lost.&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext"> oc patch storagecluster ocs-storagecluster   -n openshift-storage --type json --patch '[{ "op": "replace", "path":   "/spec/managedResources/cephNonResilientPools/enable", "value": true }]'</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>OpenShift Data Foundation creates <code>CephBlockPools</code> for each failure domain.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">oc get cephblockpools
+NAME                                     PHASE  ...
+...output omitted...
+ocs-storagecluster-cephblockpool-rack0   Ready  ...
+ocs-storagecluster-cephblockpool-rack1   Ready  ...
+ocs-storagecluster-cephblockpool-rack2   Ready  ...</code></pre>
+<pre><code class="language-plaintext"> oc get storageclasses -o name
+ storageclass.storage.k8s.io/ocs-storagecluster-ceph-non-resilient-rbd</code></pre>
