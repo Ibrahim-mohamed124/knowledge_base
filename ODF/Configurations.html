@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T19:27:30.592Z
+date: 2026-03-20T19:31:42.642Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -118,8 +118,11 @@ dateCreated: 2026-03-20T13:07:17.815Z
   </ul>
 </blockquote>
 <h4>Configuring Applications to Use NFS Storage</h4>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>within the RHOCP cluster, an application writes any data to the NFS share with the namespace UID and GID. From outside the cluster, the data is written with the UID of the external machine.</li>
+  <li>OpenShift Data Foundation uses CephFS internally to manage NFS storage.</li>
+</ul>
+<figure class="image image_resized" style="width:100%;"><img src="/odf/object-storage-providers.svg"></figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
