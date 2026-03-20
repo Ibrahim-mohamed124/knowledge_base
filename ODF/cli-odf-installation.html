@@ -2,7 +2,7 @@
 title: Installation Using GitOps or CLI
 description: 
 published: true
-date: 2026-03-20T12:51:44.189Z
+date: 2026-03-20T12:53:07.832Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T12:29:22.546Z
@@ -242,8 +242,12 @@ spec:
       tolerations:
       ...output omitted...</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Wait till the storage system is ready</li>
+</ul>
+<pre><code class="language-plaintext">watch oc get -n openshift-storage storagecluster,pods</code></pre>
+<pre><code class="language-plaintext">oc get cephcluster -n openshift-storage</code></pre>
+<pre><code class="language-plaintext">oc get noobaa -n openshift-storage</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
