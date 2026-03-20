@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:35:13.940Z
+date: 2026-03-20T13:50:23.354Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -92,8 +92,13 @@ dateCreated: 2026-03-20T13:07:17.815Z
 <blockquote>
   <p>OpenShift Data Foundation does not protect you from data corruption or from sharing files that should not be shared. &nbsp;Additionally, for file storage data, the operating system and the file system handle the locking and caching of the files.</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>Using block storage is ideal for applications that require faster access for optimizing computationally heavy data workloads. Applications that use block-level storage implementations gain efficiencies by communicating at the raw device level, instead of relying on the OS layer access.</p>
+</blockquote>
+<ul>
+  <li>&nbsp;CSI driver primarily <mark class="marker-yellow">involves volume provisioning, attachment, and detachment not runtime I/O operations.</mark></li>
+  <li>If a CSI Node Plugin DaemonSet faces issues like ImagePullBackOff, the Pod can continue to use the attached volume as long as it remains on the same node.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
