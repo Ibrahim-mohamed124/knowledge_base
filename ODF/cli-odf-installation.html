@@ -2,7 +2,7 @@
 title: Installation Using GitOps or CLI
 description: 
 published: true
-date: 2026-03-20T12:39:45.117Z
+date: 2026-03-20T12:41:45.431Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T12:29:22.546Z
@@ -94,8 +94,14 @@ spec:
     value: reserved
     effect: NoExecute</code></pre>
 <ul>
-  <li>&nbsp;</li>
+  <li>The results of the pervious &nbsp;CR are stored in a CR called <mark class="marker-yellow">localvolumediscoveryresults</mark></li>
 </ul>
+<pre><code class="language-plaintext">watch oc get localvolumediscoveryresults   -n openshift-local-storage
+NAME                        AGE
+discovery-result-worker01   4s
+discovery-result-worker02   5s
+discovery-result-worker03   6s</code></pre>
+<pre><code class="language-plaintext">oc get localvolumediscoveryresults  -o custom-columns='NAME:metadata.name,PATH:status.discoveredDevices[*].path'   -n openshift-local-storage</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
