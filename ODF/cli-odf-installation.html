@@ -2,7 +2,7 @@
 title: Installation Using GitOps or CLI
 description: 
 published: true
-date: 2026-03-20T12:41:45.431Z
+date: 2026-03-20T12:43:46.471Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T12:29:22.546Z
@@ -102,8 +102,37 @@ discovery-result-worker01   4s
 discovery-result-worker02   5s
 discovery-result-worker03   6s</code></pre>
 <pre><code class="language-plaintext">oc get localvolumediscoveryresults  -o custom-columns='NAME:metadata.name,PATH:status.discoveredDevices[*].path'   -n openshift-local-storage</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Create the volume set, and determine the number of disk to be used in it or the minimum size of the disks:</li>
+</ul>
+<pre><code class="language-plaintext">---
+apiVersion: local.storage.openshift.io/v1alpha1
+kind: LocalVolumeSet
+metadata:
+  name: lso-volumeset
+  namespace: openshift-local-storage
+spec:
+  deviceInclusionSpec:
+    deviceTypes:
+    - disk
+    - part
+    minSize: 0Ti
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: cluster.ocs.openshift.io/openshift-storage
+        operator: Exists
+  tolerations:
+  - key: node-role.kubernetes.io/infra
+    value: reserved
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/infra
+    value: reserved
+    effect: NoExecute
+  storageClassName: lso-volumeset
+  volumeMode: Block
+  maxDeviceCount: 1 
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
