@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T13:17:50.431Z
+date: 2026-03-20T13:19:09.967Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -21,7 +21,24 @@ dateCreated: 2026-03-20T13:07:17.815Z
 </blockquote>
 <h4>Lifecycle of PVs and PVCs</h4>
 <ul>
-  <li>A control loop in the control plane is responsible for binding the PVCs to the PVs. The loop watches for new PVCs and finds any matching PV, and binds them together. If a PV was dynamically provisioned for a new PVC, then the loop always binds that PV to the PVC. The binding is a one-to-one mapping between the PV and the PVC.</li>
+  <li>A control loop in the control plane is responsible for binding the PVCs to the PVs. The loop watches for new PVCs and finds any matching PV, and binds them together. If a PV was dynamically provisioned for a new PVC, then the loop always binds that PV to the PVC. <mark class="marker-yellow">The binding is a one-to-one mapping between the PV and the PVC.</mark></li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/odf/dynamic-provisioning.svg"></figure>
+<ul>
+  <li>The <code>Delete</code> reclaim policy removes the PV object from Kubernetes and removes the data from the storage back end. The <code>Retain</code> policy does not remove the data from the storage back end, even if you remove the PV manually.</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
