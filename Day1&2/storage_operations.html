@@ -1,0 +1,55 @@
+<!--
+title: Day 2 storage operations 
+description: 
+published: true
+date: 2026-03-21T18:32:52.224Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-03-21T18:32:52.224Z
+-->
+
+<h2>Configuring the Internal Image Registry to Use OpenShift Data Foundation</h2>
+<ul>
+  <li>The image registry is integrated into the cluster authentication and authorization systems.</li>
+  <li>OpenShift stores the container image data in the following locations:<ul>
+      <li>The image data in a configurable storage location</li>
+      <li>The image metadata as standard API resources, such as <mark class="marker-yellow">images and image streams</mark></li>
+    </ul>
+  </li>
+</ul>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;">Storage type</th>
+        <th style="padding:5px;vertical-align:top;"><code>ReadWriteOnce</code></th>
+        <th style="padding:5px;vertical-align:top;"><code>ReadWriteMany</code></th>
+        <th style="padding:5px;vertical-align:top;">Registry</th>
+        <th style="padding:5px;vertical-align:top;">Scaled Registry</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Block</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">No</td>
+        <td style="padding:5px;vertical-align:top;">Configurable</td>
+        <td style="padding:5px;vertical-align:top;">Not configurable</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">File</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">Configurable</td>
+        <td style="padding:5px;vertical-align:top;">Configurable</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><strong>Object</strong></td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;"><strong>Recommended</strong></td>
+        <td style="padding:5px;vertical-align:top;"><strong>Recommended</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
