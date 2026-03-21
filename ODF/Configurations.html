@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-21T09:50:36.929Z
+date: 2026-03-21T10:17:32.390Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -350,10 +350,15 @@ ocs-storagecluster-cephblockpool-rack2   Ready  ...</code></pre>
   </li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/odf/object-storage-providers_(1).svg"></figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>RADOS Object Gateway</h4>
+<ul>
+  <li>Ceph RGW is an object storage interface that is built on top of the <code>librados</code> library to provide applications with a RESTful gateway to Ceph storage clusters. <mark class="marker-yellow">Ceph RGW provides an S3 interface for the object storage service that is backed by a Ceph storage cluster.&nbsp;</mark></li>
+</ul>
+<h4>Multicloud Object Gateway</h4>
+<ul>
+  <li>Its back end any Amazon S3-compatible storage from a public or private cloud.&nbsp;</li>
+  <li>The NooBaa MCG abstracts the specific parameters for the backing S3 storage and provides a unique endpoint to connect the applications and consume object storage.&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
