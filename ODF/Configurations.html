@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-21T10:20:13.565Z
+date: 2026-03-21T10:21:41.083Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -377,6 +377,67 @@ ocs-storagecluster-cephblockpool-rack2   Ready  ...</code></pre>
     </ul>
   </li>
 </ul>
+<figure class="table" style="float:left;width:1170.01px;">
+  <table style="background-color:hsl(0, 0%, 0%);border-bottom:solid;border-left:solid;border-right:solid;border-top:solid;">
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Feature</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Ceph RGW</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">NooBaa MCG</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Primary purpose</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Direct S3 access to Ceph storage</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Gateway to multiple object storage services</td>
+      </tr>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Performance</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">High performance, low latency</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Additional gateway overhead</td>
+      </tr>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Multicloud support</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">No</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes</td>
+      </tr>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Replication across object storage providers</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">No</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes</td>
+      </tr>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Default for on-premise</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes (Uses Ceph RGW)</td>
+      </tr>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Default for cloud deployments</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Optional</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes (Uses cloud object storage)</td>
+      </tr>
+      <tr>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Storage class</td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ocs-storagecluster-ceph-rgw</code></td>
+        <td style="background-color:hsl(0, 0%, 0%);border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>openshift-storage.noobaa.io</code></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
