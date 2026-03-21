@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-21T18:44:37.688Z
+date: 2026-03-21T18:50:16.138Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -194,9 +194,43 @@ spec:
   --from-literal=REGISTRY_STORAGE_S3_ACCESSKEY=myaccesskey \
   --from-literal=REGISTRY_STORAGE_S3_SECRETKEY=mysecretkey \
   --namespace openshift-image-registry</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Configuring Persistent Storage for the Red&nbsp;Hat OpenShift Monitoring Stack</h3>
+<ul>
+  <li>By default, monitoring data storage is set to ephemeral. All the metrics are lost when the pods are restarted or re-created.</li>
+  <li>You can configure either block or file storage for the monitoring stack. The following table summarizes the recommended and configurable storage options:</li>
+</ul>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;">Storage type</th>
+        <th style="padding:5px;vertical-align:top;"><code>ReadOnlyMany</code></th>
+        <th style="padding:5px;vertical-align:top;"><code>ReadWriteMany</code></th>
+        <th style="padding:5px;vertical-align:top;">Monitoring stack</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">File</td>
+        <td style="padding:5px;vertical-align:top;">Yes (1)</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">Configurable</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Object</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">Yes</td>
+        <td style="padding:5px;vertical-align:top;">Not configurable</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;">Block</td>
+        <td style="padding:5px;vertical-align:top;">Yes (1)</td>
+        <td style="padding:5px;vertical-align:top;">No</td>
+        <td style="padding:5px;vertical-align:top;"><strong>Recommended</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
