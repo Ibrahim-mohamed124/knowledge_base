@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-21T18:38:06.192Z
+date: 2026-03-21T18:40:12.826Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -89,6 +89,10 @@ metadata:
   name: sha256:fd412c28289d014c10534597be1817753852c960b9a948773ba82c320a4469ee
 
 </code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>types of usable storage:</li>
+</ul>
 <figure class="table">
   <table>
     <thead>
@@ -128,4 +132,23 @@ metadata:
 <blockquote>
   <p>In descending order of preference, the preferred storage technology for the image registry is object storage, followed by block storage. Red&nbsp;Hat does not recommend using file storage for the image registry in production environments.</p>
 </blockquote>
+<ul>
+  <li>The <code>configs.imageregistry.operator.openshift.io</code> resource controls the configuration and intended status of the container image registry.<ul>
+      <li>The image registry operator automatically configures the storage for installer-provisioned infrastructure clusters that run on AWS, Azure, GCP, IBM, or OpenStack. For those infrastructures, the image registry operator sets the <code>spec.storage.managementState</code> parameter to the <code>Managed</code> value and attempts to apply the default configuration to the underlying storage. If you do not want the image registry operator to apply the default settings to the storage, then set the <code>spec.storage.managementState</code> parameter to the <code>Unmanaged</code> value.</li>
+      <li>For other infrastructures, the image registry operator sets the <code>spec.storage.managementState</code> parameter to the <code>Removed</code> value. After you install the image registry operator, edit the <code>spec.storage.managementState</code> parameter and set it to the <code>Managed</code> value. Then, manually configure the storage for the image registry.</li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
