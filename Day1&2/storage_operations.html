@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-21T18:50:16.138Z
+date: 2026-03-21T18:52:04.970Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -212,7 +212,7 @@ spec:
     <tbody>
       <tr>
         <td style="padding:5px;vertical-align:top;">File</td>
-        <td style="padding:5px;vertical-align:top;">Yes (1)</td>
+        <td style="padding:5px;vertical-align:top;">Yes&nbsp;</td>
         <td style="padding:5px;vertical-align:top;">Yes</td>
         <td style="padding:5px;vertical-align:top;">Configurable</td>
       </tr>
@@ -224,15 +224,69 @@ spec:
       </tr>
       <tr>
         <td style="padding:5px;vertical-align:top;">Block</td>
-        <td style="padding:5px;vertical-align:top;">Yes (1)</td>
+        <td style="padding:5px;vertical-align:top;">Yes&nbsp;</td>
         <td style="padding:5px;vertical-align:top;">No</td>
         <td style="padding:5px;vertical-align:top;"><strong>Recommended</strong></td>
       </tr>
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>To configure the core platform Prometheus storage, administrators must create a <code>ConfigMap</code> resource named <code>cluster-monitoring-config</code> in the <code>openshift-monitoring</code> namespace.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+  namespace: openshift-monitoring
+data:
+  config.yaml: |
+    prometheusK8s:
+      retention: 15d 1
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+      volumeClaimTemplate:
+        spec:
+          storageClassName: ocs-storagecluster-ceph-rbd 2
+          resources:
+            requests:
+              storage: 2000Gi 3
+    alertmanagerMain:
+      nodeSelector:
+        node-role.kubernetes.io/infra: ""
+      volumeClaimTemplate:
+        spec:
+          storageClassName: ocs-storagecluster-ceph-rbd 4
+          resources:
+            requests:
+              storage: 20Gi 5
+...output omitted...</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Time units are measured in seconds (s), minutes (m), hours (h), or days (d).</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The block storage class from OpenShift Data Foundation is named <code>ocs-storagecluster-ceph-rbd</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Storage values can be a plain integer or a fixed-point integer with one of these suffixes: E, P, T, G, M, K. You can also use the power-of-two equivalents: Ei, Pi, Ti, Gi, Mi, Ki.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
