@@ -1,0 +1,140 @@
+<!--
+title: s3cmd
+description: 
+published: true
+date: 2026-03-21T19:15:15.390Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-03-21T19:15:15.390Z
+-->
+
+<ul>
+  <li>Configure the <code>s3cmd</code> tool by using the <code>.s3cfg</code> configuration file in the home directory. Update the <code>access_key</code> and <code>secret_key</code> fields by using the retrieved values from the previous step.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ vi ~/.s3cfg
+access_key = AWS_ACCESS_KEY_ID
+secret_key = AWS_SECRET_ACCESS_KEY
+host_base = rook-ceph-rgw-ocs-storagecluster-cephobjectstore.openshift-storage.svc
+host_bucket = rook-ceph-rgw-ocs-storagecluster-cephobjectstore.openshift-storage.svc
+use_https = True
+ca_certs_file = /run/secrets/kubernetes.io/serviceaccount/service-ca.crt</code></pre>
+<ul>
+  <li>List all the available S3 buckets.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd ls s3://
+2024-08-30 08:11  s3://object-bucket-3d937944-9ece-48e0-be45-a5ec4646a18a</code></pre>
+<ul>
+  <li>List the objects that are stored in the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd du s3://${BUCKET_NAME}
+   0       0 objects s3://object-bucket-3d937944-9ece-48e0-be45-a5ec4646a18a/</code></pre>
+<ul>
+  <li>Upload and access the objects in the S3 bucket.</li>
+</ul>
+<p>Create a sample file and upload it to the S3 bucket.</p>
+<pre><code class="language-plaintext">bash-4.4$ s3cmd put sample-file.txt s3://${BUCKET_NAME}/
+WARNING: sample-file.txt: Owner groupname not known. Storing GID=1000750000 instead.
+upload: 'sample-file.txt' -&gt; 's3://object-bucket-3d937.../sample-file.txt'  [1 of 1]
+ 12 of 12   100% in    0s   188.84 B/s  done</code></pre>
+<ul>
+  <li>Retrieve the file from the S3 bucket and view its contents.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd get s3://${BUCKET_NAME}/sample-file.txt /tmp/
+download: 's3://object-bucket-3d937.../sample-file.txt' -&gt; '/tmp/sample-file.txt'  [1 of 1]
+ 12 of 12   100% in    0s   229.39 B/s  done(app-root) bash-4.4$ cat /tmp/sample-file.txt
+Hello world</code></pre>
+<ul>
+  <li>Update the sample file and upload it again to the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">bash-4.4$ s3cmd put sample-file.txt s3://${BUCKET_NAME}/
+WARNING: sample-file.txt: Owner groupname not known. Storing GID=1000750000 instead.
+upload: 'sample-file.txt' -&gt; 's3://object-bucket-3d937.../sample-file.txt'  [1 of 1]
+ 16 of 16   100% in    0s   213.35 B/s  done</code></pre>
+<ul>
+  <li>Duplicate an object in the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd cp s3://${BUCKET_NAME}/sample-file.txt \
+  s3://${BUCKET_NAME}/second-file.txt
+remote copy: 's3://object-bucket-3d937.../sample-file.txt' -&gt; 's3://object-bucket-3d937.../second-file.txt'  [1 of 1]</code></pre>
+<ul>
+  <li>Retrieve the duplicate file from the S3 bucket and view its contents.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd get s3://${BUCKET_NAME}/second-file.txt /tmp/
+download: 's3://object-bucket-3d937.../second-file.txt' -&gt; '/tmp/second-file.txt'  [1 of 1]
+ 16 of 16   100% in    0s   330.57 B/s  done(app-root) bash-4.4$ cat /tmp/second-file.txt
+updated content</code></pre>
+<ul>
+  <li>List all the stored objects in the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd la s3://${BUCKET_NAME}
+2024-08-30 ...    16    s3://object-bucket-3d937.../sample-file.txt
+2024-08-30 ...    16    s3://object-bucket-3d937.../second-file.txt</code></pre>
+<p>Create a file and upload the file with a prefix. The prefix enables objects to be sorted hierarchically.</p>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ echo "New world" &gt; new-file.txt(app-root) bash-4.4$ s3cmd put new-file.txt s3://${BUCKET_NAME}/prefix/
+WARNING: new-file.txt: Owner groupname not known. Storing GID=1000750000 instead.
+upload: 'new-file.txt' -&gt; 's3://object-bucket-3d937.../prefix/new-file.txt'  [1 of 1]
+ 10 of 10   100% in    0s   231.59 B/s  done</code></pre>
+<ul>
+  <li>Change the prefix name.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd mv s3://${BUCKET_NAME}/prefix/ \
+  s3://${BUCKET_NAME}/my-s3-prefix/ --recursive
+move: 's3://object-bucket-3d937.../prefix/sample-file.txt' -&gt; 's3://object-bucket-3d937.../my-s3-prefix/sample-file.txt'  [1 of 1]</code></pre>
+<ul>
+  <li>List all the stored objects in the S3 bucket, and verify that the new prefix is available.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd la s3://${BUCKET_NAME}/
+                  DIR   s3://object-bucket-3d937.../my-s3-prefix/
+2024-08-30 ...    16    s3://object-bucket-3d937.../sample-file.txt
+2024-08-30 ...    16    s3://object-bucket-3d937.../second-file.txt</code></pre>
+<ul>
+  <li>Rename an object that is stored in the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd mv s3://${BUCKET_NAME}/second-file.txt \
+  s3://${BUCKET_NAME}/other-file.txt
+move: 's3://object-bucket-3d937.../second-file.txt' -&gt; 's3://object-bucket-3d937.../other-file.txt'  [1 of 1]</code></pre>
+<ul>
+  <li>Move an object inside a given prefix.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd mv s3://${BUCKET_NAME}/sample-file.txt \
+  s3://${BUCKET_NAME}/my-s3-prefix/
+move: 's3://object-bucket-3d937.../sample-file.txt' -&gt; 's3://object-bucket-3d937.../my-s3-prefix/sample-file.txt'  [1 of 1]</code></pre>
+<ul>
+  <li>List all the stored objects in the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd ls s3://${BUCKET_NAME}/ -r
+2024-08-30 08:55           10  s3://object-bucket-3d937.../my-s3-prefix/new-file.txt
+2024-08-30 09:02           16  s3://object-bucket-3d937.../my-s3-prefix/sample-file.txt
+2024-08-30 09:00           16  s3://object-bucket-3d937.../other-file.txt</code></pre>
+<ul>
+  <li>Synchronize a local directory to the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd sync /usr/share/httpd/icons/ \
+  s3://${BUCKET_NAME}/icons/
+upload: '/usr/share/httpd/icons/README' -&gt; 's3://object-bucket-3d937.../icons/README'  [1 of 237]
+ 5108 of 5108   100% in    0s    97.90 KB/s  done
+Done. Uploaded 439091 bytes in 15.6 seconds, 27.40 KB/s.
+...output omitted...</code></pre>
+<p>Recursively list all the objects that are stored in the S3 bucket.</p>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd ls s3://${BUCKET_NAME}/ -r
+2024-08-30 09:06         5108  s3://object-bucket-3d937.../icons/README
+2024-08-30 09:06        36057  s3://object-bucket-3d937.../icons/README.html
+2024-08-30 09:06          246  s3://object-bucket-3d937.../icons/a.gif
+...output omitted...
+2024-08-30 09:07         1053  s3://object-bucket-3d937.../icons/xml.png
+2024-08-30 08:55           10  s3://object-bucket-3d937.../my-s3-prefix/new-file.txt
+2024-08-30 09:02           16  s3://object-bucket-3d937.../my-s3-prefix/sample-file.txt
+2024-08-30 09:00           16  s3://object-bucket-3d937.../other-file.txt</code></pre>
+<ul>
+  <li>Remove objects that are stored in the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd del s3://${BUCKET_NAME}/other-file.txt
+delete: 's3://object-bucket-3d937.../other-file.txt'</code></pre>
+<ul>
+  <li>Delete all objects with a given prefix in the S3 bucket.</li>
+</ul>
+<pre><code class="language-plaintext">(app-root) bash-4.4$ s3cmd del s3://${BUCKET_NAME}/icons/small/ -r
+delete: 's3://object-bucket-3d937.../icons/small/back.gif'
+delete: 's3://object-bucket-3d937.../icons/small/back.png'
+...output omitted...</code></pre>
+<p>&nbsp;</p>
