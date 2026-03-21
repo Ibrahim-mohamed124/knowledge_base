@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-21T10:47:31.105Z
+date: 2026-03-21T10:47:46.306Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -531,10 +531,12 @@ spec:
 </ol>
 <h6>S3 Service Endpoints</h6>
 <ul>
-  <li>The S3 service from Ceph RGW uses both the HTTP and HTTPS protocols. The internal endpoint is the name of the <code>rook-ceph-rgw-ocs-storagecluster-cephobjectstore</code> service in the <code>openshift-storage</code> namespace.</li>
-  <li>OpenShift Data Foundation provides two external endpoints in the openshfit-storage namespace to connect to the S3 service from outside the OpenShift cluster:<ul>
-      <li>The insecure route that uses the HTTP protocol on port 80.</li>
-      <li>The secure route that uses the HTTPS protocol on port 443.</li>
+  <li>The S3 service from Ceph RGW uses both the HTTP and HTTPS protocols. The internal endpoint is the name of the <code>rook-ceph-rgw-ocs-storagecluster-cephobjectstore</code> service in the <code>openshift-storage</code> namespace.<ul>
+      <li>OpenShift Data Foundation provides two external endpoints in the openshfit-storage namespace to connect to the S3 service from outside the OpenShift cluster:<ul>
+          <li>The insecure route that uses the HTTP protocol on port 80.</li>
+          <li>The secure route that uses the HTTPS protocol on port 443.</li>
+        </ul>
+      </li>
     </ul>
   </li>
   <li>The S3 service from NooBaa MCG uses the HTTPS protocol on port 443 by default. The internal endpoint is the name of the <code>s3</code> service in the <code>openshift-storage</code> namespace.</li>
