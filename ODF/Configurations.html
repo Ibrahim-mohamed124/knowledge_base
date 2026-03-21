@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-21T09:00:07.688Z
+date: 2026-03-21T09:50:36.929Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -150,7 +150,7 @@ ocs-storagecluster-ceph-nfs      openshift-storage.nfs.csi.ceph.com            .
   <li>configure a load balancer (LB) service such as MetalLB in your cluster to allow external access to the NFS server pod.</li>
   <li>Get the value for the <code>ceph_nfs</code> field from the CephNFS pod that Rook deploys in the <code>openshift-storage</code> namespace:</li>
 </ul>
-<pre><code class="language-plaintext">oc get pod -l app=rook-ceph-nfs -L ceph_nfs</code></pre>
+<pre><code class="language-plaintext">oc get pod -l app=rook-ceph-nfs -L ceph_nfs -n openshift-storage</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>Expose the NFS service outside the cluster by creating an LB service.</li>
