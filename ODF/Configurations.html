@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-20T22:45:49.064Z
+date: 2026-03-21T08:57:18.190Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -96,7 +96,7 @@ dateCreated: 2026-03-20T13:07:17.815Z
   <p>Using block storage is ideal for applications that require faster access for optimizing computationally heavy data workloads. Applications that use block-level storage implementations gain efficiencies by communicating at the raw device level, instead of relying on the OS layer access.</p>
 </blockquote>
 <ul>
-  <li>&nbsp;CSI driver primarily <mark class="marker-yellow">involves volume provisioning, attachment, and detachment not runtime I/O operations.</mark></li>
+  <li>CSI driver primarily <mark class="marker-yellow">involves volume provisioning, attachment, and detachment not runtime I/O operations.</mark></li>
   <li>If a CSI Node Plugin DaemonSet faces issues like ImagePullBackOff, the Pod can continue to use the attached volume as long as it remains on the same node.</li>
 </ul>
 <blockquote>
@@ -134,7 +134,9 @@ spec:
   nfs:
     enable: true
 ...output omitted..</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc patch storageclusters ocs-storagecluster   --namespace openshift-storage   --type merge --patch '{"spec": {"nfs":{"enable": true}}}'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>After you enable the NFS feature, wait until the <code>ocs-storagecluster-cephnfs</code> resource is ready , and both &nbsp;csi-nfsplugin and NFS server pods are created.</li>
 </ul>
@@ -149,6 +151,7 @@ ocs-storagecluster-ceph-nfs      openshift-storage.nfs.csi.ceph.com            .
   <li>Get the value for the <code>ceph_nfs</code> field from the CephNFS pod that Rook deploys in the <code>openshift-storage</code> namespace:</li>
 </ul>
 <pre><code class="language-plaintext">oc get pod -l app=rook-ceph-nfs -L ceph_nfs</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Expose the NFS service outside the cluster by creating an LB service.</li>
 </ul>
@@ -166,14 +169,17 @@ spec:
   selector: 
     app: rook-ceph-nfs
     ceph_nfs: ocs-storagecluster-cephnfs</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Get the name of the PV that is associated with the NFS PVC:</li>
 </ul>
 <pre><code class="language-plaintext">oc get pvc pvc_name --output jsonpath='{.spec.volumeName}{"\n"}'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Use the NFS PV name to get the NFS share path:</li>
 </ul>
 <pre><code class="language-plaintext"> oc get pv pv_name   --output jsonpath='{.spec.csi.volumeAttributes.share}{"\n"}'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Get the ingress IP for the NFS server from the LB service:</li>
 </ul>
@@ -197,6 +203,7 @@ spec:
   replicated:
     size: 3 2
   deviceClass: hdd</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -246,6 +253,7 @@ spec:
       storage: 2Gi
   storageClassName: pg-development-storage
   volumeMode: Filesystem</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -260,11 +268,12 @@ spec:
 </figure>
 <h4>Introducing Single Replica Storage Classes</h4>
 <ul>
-  <li>Single replica pools require a dedicated set of Ceph OSDs. If one of the OSDs fails, then the data is lost.&nbsp;</li>
+  <li>Single replica pools require a dedicated set of Ceph OSDs. If one of the OSDs fails, then the data is lost.</li>
 </ul>
 <pre><code class="language-plaintext"> oc patch storagecluster ocs-storagecluster   -n openshift-storage --type json --patch '[{ "op": "replace", "path":   "/spec/managedResources/cephNonResilientPools/enable", "value": true }]'</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>OpenShift Data Foundation creates <code>CephBlockPools</code> for each failure domain.&nbsp;</li>
+  <li>OpenShift Data Foundation creates <code>CephBlockPools</code> for each failure domain.</li>
 </ul>
 <pre><code class="language-plaintext">oc get cephblockpools
 NAME                                     PHASE  ...
@@ -272,6 +281,79 @@ NAME                                     PHASE  ...
 ocs-storagecluster-cephblockpool-rack0   Ready  ...
 ocs-storagecluster-cephblockpool-rack1   Ready  ...
 ocs-storagecluster-cephblockpool-rack2   Ready  ...</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext"> oc get storageclasses -o name
  storageclass.storage.k8s.io/ocs-storagecluster-ceph-non-resilient-rbd</code></pre>
+<h2>S3 Object Storage</h2>
+<figure class="table" style="width:1170.01px;">
+  <table>
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Type</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Block</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">File</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Object</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Data access</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Block device</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">File system</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">S3 API</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Random access</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">No</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Access modes</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>RWO</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>RWX</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>RWX</code></td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Hierarchical</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">No</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Yes</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Flat</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Storage unit</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Block</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">File</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Object</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Use cases</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">
+          <p>Databases</p>
+          <p>Virtual machine disks</p>
+        </td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Application data</td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">
+          <p>Unstructured data</p>
+          <p>Large data sets</p>
+          <p>Archive storage</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
