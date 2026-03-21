@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-21T18:40:12.826Z
+date: 2026-03-21T18:41:07.781Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -139,8 +139,53 @@ metadata:
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">oc edit configs.imageregistry.operator.openshift.io
+...output omitted...
+spec:
+...output omitted...
+  replicas: 1 1
+  storage:
+    s3: 2
+      bucket: bucket-name 3
+      region: region-name 4
+      regionEndpoint: region-endpoint-name 5
+...output omitted...</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The number of registry instances to run.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The storage type. See the references section for more information about the available storage types.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The bucket name.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The region for the bucket. The S3 library uses the region parameter to create the appropriate AWS URL for the S3 bucket.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The region endpoint. You can get the value for this parameter from the <code>s3</code> route in the <code>openshift-storage</code> namespace.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
