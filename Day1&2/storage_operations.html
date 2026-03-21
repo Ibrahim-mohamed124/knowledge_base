@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-21T18:41:07.781Z
+date: 2026-03-21T18:44:37.688Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -139,7 +139,7 @@ metadata:
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">oc edit configs.imageregistry.operator.openshift.io
+<pre><code class="language-plaintext">oc edit configs.imageregistry.operator.openshift.io cluster
 ...output omitted...
 spec:
 ...output omitted...
@@ -186,7 +186,14 @@ spec:
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
+<ul>
+  <li>&nbsp;The image registry operator also creates the <code>image-registry-private-configuration-user</code> secret in the <code>openshift-image-registry</code> namespace. You use this secret to configure storage access and management. The credentials in this secret override the default credentials that the image registry operator uses.</li>
+</ul>
+<pre><code class="language-plaintext">oc create secret generic \
+  image-registry-private-configuration-user \
+  --from-literal=REGISTRY_STORAGE_S3_ACCESSKEY=myaccesskey \
+  --from-literal=REGISTRY_STORAGE_S3_SECRETKEY=mysecretkey \
+  --namespace openshift-image-registry</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
