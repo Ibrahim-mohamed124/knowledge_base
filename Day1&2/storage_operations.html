@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-22T10:41:22.947Z
+date: 2026-03-22T10:44:38.659Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -335,7 +335,20 @@ oc get statefulset/prometheus-k8s \
   -n openshift-monitoring \
   -o jsonpath='{.spec.template.spec.volumes}' | \
   jq '.[] | select(.name == "prometheus-k8s-db")'</code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">#!/bin/bash
+set -veuo pipefail
+
+# AlertManager container volume mount spec:
+oc get statefulset/alertmanager-main \
+  -n openshift-monitoring \
+  -o jsonpath='{.spec.template.spec.containers}' | \
+jq '.[] | select(.name == "alertmanager") | .volumeMounts[] | select(.name == "alertmanager-main-db")'
+
+# AlertManager volume mount type:
+oc get statefulset/alertmanager-main \
+  -n openshift-monitoring \
+  -o jsonpath='{.spec.template.spec.volumes}' | \
+  jq '.[] | select(.name == "alertmanager-main-db")'</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
