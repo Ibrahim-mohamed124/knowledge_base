@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-22T09:51:17.215Z
+date: 2026-03-22T09:52:01.339Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -159,6 +159,9 @@ spec:
       bucket: noobaa-registry-02367470-0c7c-4c50-a640-11963ca54392  3
       region: us-east-1  4
       regionEndpoint: https://s3-openshift-storage.apps.ocp4.example.com  5</code></pre>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext"> oc patch configs.imageregistry/cluster \
+  --type=merge --patch-file=imageregistry-patch.yaml</code></pre>
 <p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
