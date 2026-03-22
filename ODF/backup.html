@@ -2,7 +2,7 @@
 title: Creating snapshots and clones
 description: 
 published: true
-date: 2026-03-22T13:11:49.728Z
+date: 2026-03-22T13:13:55.330Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-22T13:10:24.010Z
@@ -12,4 +12,5 @@ dateCreated: 2026-03-22T13:10:24.010Z
   <li>OpenShift cannot directly use volume snapshots. Thus, you must clone a volume snapshot to a PV to be able to use it. For RBD volumes, OpenShift Data Foundation internally uses layered clone and copy-on-write techniques to reduce the storage usage. For CephFS volumes, OpenShift Data Foundation copies all the data from the source volume, and the volume clone takes the same space as the source volume.</li>
   <li>In cloning, OpenShift creates a volume snapshot of the volume and a clone of that snapshot. However, the temporary snapshot is not exposed on the OpenShift side.</li>
   <li>A volume snapshot is the state of a PV in the cluster at a particular time. Volume snapshots help with storage efficiency because you do not need to make a full PV copy each time.</li>
+  <li>The CSI snapshot controller handles the binding of the <code>VolumeSnapshot</code> CRD with a <code>VolumeSnapshotContent</code> CRD, similarly to the binding of a PVC to a PV. The <code>VolumeSnapshotContent</code> CRD is a cluster resource that points to a real snapshot in the storage back end.</li>
 </ul>
