@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-21T18:52:04.970Z
+date: 2026-03-22T09:49:01.189Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -135,21 +135,24 @@ metadata:
 <ul>
   <li>The <code>configs.imageregistry.operator.openshift.io</code> resource controls the configuration and intended status of the container image registry.<ul>
       <li>The image registry operator automatically configures the storage for installer-provisioned infrastructure clusters that run on AWS, Azure, GCP, IBM, or OpenStack. For those infrastructures, the image registry operator sets the <code>spec.storage.managementState</code> parameter to the <code>Managed</code> value and attempts to apply the default configuration to the underlying storage. If you do not want the image registry operator to apply the default settings to the storage, then set the <code>spec.storage.managementState</code> parameter to the <code>Unmanaged</code> value.</li>
-      <li>For other infrastructures, the image registry operator sets the <code>spec.storage.managementState</code> parameter to the <code>Removed</code> value. After you install the image registry operator, edit the <code>spec.storage.managementState</code> parameter and set it to the <code>Managed</code> value. Then, manually configure the storage for the image registry.</li>
+      <li>For other infrastructures, the image registry operator sets the <code>spec.storage.managementState</code> parameter to the <code>Removed</code> value. <mark class="marker-yellow">After you install the image registry operator, edit the </mark><code><mark class="marker-yellow">spec.storage.managementState</mark></code><mark class="marker-yellow"> parameter and set it to the </mark><code><mark class="marker-yellow">Managed</mark></code><mark class="marker-yellow"> value.</mark> Then, manually configure the storage for the image registry.</li>
     </ul>
   </li>
 </ul>
 <pre><code class="language-plaintext">oc edit configs.imageregistry.operator.openshift.io cluster
-...output omitted...
+apiVersion: imageregistry.operator.openshift.io/v1
+kind: Config
+metadata:
+  name: cluster
 spec:
-...output omitted...
-  replicas: 1 1
   storage:
-    s3: 2
-      bucket: bucket-name 3
-      region: region-name 4
-      regionEndpoint: region-endpoint-name 5
-...output omitted...</code></pre>
+    managementState: Managed
+    pvc: null
+    s3:
+      bucket: noobaa-registry-02367470-0c7c-4c50-a640-11963ca54392
+      region: us-east-1
+      regionEndpoint: https://s3-openshift-storage.apps.ocp4.example.com</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -187,13 +190,17 @@ spec:
   </table>
 </figure>
 <ul>
-  <li>&nbsp;The image registry operator also creates the <code>image-registry-private-configuration-user</code> secret in the <code>openshift-image-registry</code> namespace. You use this secret to configure storage access and management. The credentials in this secret override the default credentials that the image registry operator uses.</li>
+  <li>The image registry operator also creates the <code>image-registry-private-configuration-user</code> secret in the <code>openshift-image-registry</code> namespace. You use this secret to configure storage access and management. The credentials in this secret override the default credentials that the image registry operator uses.</li>
 </ul>
 <pre><code class="language-plaintext">oc create secret generic \
   image-registry-private-configuration-user \
   --from-literal=REGISTRY_STORAGE_S3_ACCESSKEY=myaccesskey \
   --from-literal=REGISTRY_STORAGE_S3_SECRETKEY=mysecretkey \
   --namespace openshift-image-registry</code></pre>
+<pre><code class="language-plaintext">oc get objectbucketclaim \
+  noobaa-registry -n openshift-storage \
+  -o jsonpath='{.spec.bucketName}{"\n"}'</code></pre>
+<pre><code class="language-plaintext">oc get route/s3 -n openshift-storage</code></pre>
 <h3>Configuring Persistent Storage for the Red&nbsp;Hat OpenShift Monitoring Stack</h3>
 <ul>
   <li>By default, monitoring data storage is set to ephemeral. All the metrics are lost when the pods are restarted or re-created.</li>
@@ -261,6 +268,7 @@ data:
             requests:
               storage: 20Gi 5
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
