@@ -2,7 +2,7 @@
 title: Creating snapshots and clones
 description: 
 published: true
-date: 2026-03-22T13:13:55.330Z
+date: 2026-03-22T13:14:51.052Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-22T13:10:24.010Z
@@ -13,4 +13,8 @@ dateCreated: 2026-03-22T13:10:24.010Z
   <li>In cloning, OpenShift creates a volume snapshot of the volume and a clone of that snapshot. However, the temporary snapshot is not exposed on the OpenShift side.</li>
   <li>A volume snapshot is the state of a PV in the cluster at a particular time. Volume snapshots help with storage efficiency because you do not need to make a full PV copy each time.</li>
   <li>The CSI snapshot controller handles the binding of the <code>VolumeSnapshot</code> CRD with a <code>VolumeSnapshotContent</code> CRD, similarly to the binding of a PVC to a PV. The <code>VolumeSnapshotContent</code> CRD is a cluster resource that points to a real snapshot in the storage back end.</li>
+  <li>Volume snapshots are namespaced resources. By default, the deletion policy for the volume snapshot classes is set to <code>Delete</code>. Thus, if you delete the volume snapshot object or the namespace, then the volume snapshot content is deleted. To preserve the volume snapshot content if you delete the volume snapshot object, use the following command to change the deletion policy for the volume snapshot class to <code>Retain</code>:</li>
 </ul>
+<pre><code class="language-plaintext">oc patch \
+  volumesnapshotclass/ocs-storagecluster-cephfsplugin-snapclass \
+  --type merge -p '{"deletionPolicy":"Retain"}'</code></pre>
