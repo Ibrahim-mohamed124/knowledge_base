@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-22T09:49:01.189Z
+date: 2026-03-22T09:49:48.181Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -139,6 +139,11 @@ metadata:
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">oc get objectbucketclaim \
+  noobaa-registry -n openshift-storage \
+  -o jsonpath='{.spec.bucketName}{"\n"}'
+
+oc get route/s3 -n openshift-storage</code></pre>
 <pre><code class="language-plaintext">oc edit configs.imageregistry.operator.openshift.io cluster
 apiVersion: imageregistry.operator.openshift.io/v1
 kind: Config
@@ -197,11 +202,7 @@ spec:
   --from-literal=REGISTRY_STORAGE_S3_ACCESSKEY=myaccesskey \
   --from-literal=REGISTRY_STORAGE_S3_SECRETKEY=mysecretkey \
   --namespace openshift-image-registry</code></pre>
-<pre><code class="language-plaintext">oc get objectbucketclaim \
-  noobaa-registry -n openshift-storage \
-  -o jsonpath='{.spec.bucketName}{"\n"}'</code></pre>
-<pre><code class="language-plaintext">oc get route/s3 -n openshift-storage</code></pre>
-<h3>Configuring Persistent Storage for the Red&nbsp;Hat OpenShift Monitoring Stack</h3>
+<h2>Configuring Persistent Storage for the Red&nbsp;Hat OpenShift Monitoring Stack</h2>
 <ul>
   <li>By default, monitoring data storage is set to ephemeral. All the metrics are lost when the pods are restarted or re-created.</li>
   <li>You can configure either block or file storage for the monitoring stack. The following table summarizes the recommended and configurable storage options:</li>
