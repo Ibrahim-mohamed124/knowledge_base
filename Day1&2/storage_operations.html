@@ -2,7 +2,7 @@
 title: Day 2 storage operations 
 description: 
 published: true
-date: 2026-03-22T09:52:01.339Z
+date: 2026-03-22T10:22:13.323Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-21T18:32:52.224Z
@@ -207,6 +207,23 @@ spec:
   --from-literal=REGISTRY_STORAGE_S3_ACCESSKEY=myaccesskey \
   --from-literal=REGISTRY_STORAGE_S3_SECRETKEY=mysecretkey \
   --namespace openshift-image-registry</code></pre>
+<ul>
+  <li>script to check the image registry configuration&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">#!/bin/bash
+set -e
+
+# Getting image registry storage type
+oc get deployment/image-registry \
+  -n openshift-image-registry \
+  -o jsonpath='{.spec.template.spec.containers[*].env}' | \
+jq -r '.[] | select(.name == "REGISTRY_STORAGE") | [.name , .value] | @tsv'
+
+# Retrieving image registry S3 storage parameters
+oc get deployment/image-registry \
+  -n openshift-image-registry \
+  -o jsonpath='{.spec.template.spec.containers[*].env}' | \
+jq -r '.[] | select(.name | startswith("REGISTRY_STORAGE_S3")) | [.name , .value] | @tsv'</code></pre>
 <h2>Configuring Persistent Storage for the Red&nbsp;Hat OpenShift Monitoring Stack</h2>
 <ul>
   <li>By default, monitoring data storage is set to ephemeral. All the metrics are lost when the pods are restarted or re-created.</li>
