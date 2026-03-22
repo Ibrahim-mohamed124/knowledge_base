@@ -2,7 +2,7 @@
 title: Creating snapshots and clones
 description: 
 published: true
-date: 2026-03-22T13:17:39.341Z
+date: 2026-03-22T13:19:45.201Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-22T13:10:24.010Z
@@ -102,5 +102,71 @@ spec:
     </tbody>
   </table>
 </figure>
+<h4>Volume Cloning</h4>
+<ul>
+  <li>A volume clone is a duplicate of an existing storage volume. You create a clone of a volume to make a point-in-time copy of the data. The back-end device creates an exact duplicate of the specified volume instead of an empty volume.</li>
+  <li>You can create a clone of a PVC by referencing the source PVC in the <code>dataSource</code> parameter as follows:</li>
+</ul>
+<pre><code class="language-plaintext">---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: 1
+  name: postgresql-clone
+  namespace: backup-volume
+  labels:
+    app: postgresql-data-clone
+spec:
+  accessModes: 2
+    - ReadWriteOnce
+  storageClassName: ocs-storagecluster-ceph-rbd 3
+  dataSource: 4
+    kind: PersistentVolumeClaim
+    name: postgresql-data
+  resources:
+    requests:
+      storage: 1Gi
+      </code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The PVC name and the target namespace. The target namespace must be the same as the original PVC namespace.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The requested access mode for the PV.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The storage class for the PVC. You can use a different storage class for the clone PVC, but the storage class provisioner must be the same.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The reference to the source PVC to take the clone from.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
