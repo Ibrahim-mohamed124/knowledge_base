@@ -2,7 +2,7 @@
 title: Storage Consumption
 description: 
 published: true
-date: 2026-03-21T10:47:46.306Z
+date: 2026-03-23T18:54:55.524Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-20T13:07:17.815Z
@@ -356,8 +356,8 @@ ocs-storagecluster-cephblockpool-rack2   Ready  ...</code></pre>
 </ul>
 <h4>Multicloud Object Gateway</h4>
 <ul>
-  <li>Its back end any Amazon S3-compatible storage from a public or private cloud.&nbsp;</li>
-  <li>The NooBaa MCG abstracts the specific parameters for the backing S3 storage and provides a unique endpoint to connect the applications and consume object storage.&nbsp;</li>
+  <li>Its back end any Amazon S3-compatible storage from a public or private cloud.</li>
+  <li>The NooBaa MCG abstracts the specific parameters for the backing S3 storage and provides a unique endpoint to connect the applications and consume object storage.</li>
 </ul>
 <h4>Choosing Between Ceph RGW and NooBaa MCG</h4>
 <ul>
@@ -489,6 +489,7 @@ metadata:
 spec:
   storageClassName: openshift-storage.noobaa.io 3
   generateBucketName: my-object-bucket-claim 4</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -541,7 +542,97 @@ spec:
   </li>
   <li>The S3 service from NooBaa MCG uses the HTTPS protocol on port 443 by default. The internal endpoint is the name of the <code>s3</code> service in the <code>openshift-storage</code> namespace.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Monitoring OpenShift Data Foundation Object Buckets</h3>
+<figure class="table" style="width:1170px;">
+  <table style="background-color:rgb(255, 255, 255);">
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Metric identifier</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_total_usage</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Disk usage of NooBaa MCG object buckets</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_providers_logical_size</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Disk usage of the raw data</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_providers_physical_size</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Disk usage of the compressed data</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_providers_bandwidth_read_size</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Transferred bytes on read requests</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_providers_bandwidth_write_size</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Transferred bytes on write requests</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_num_objects_buckets_claims</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of objects in all buckets</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_providers_ops_read_num</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of read operations</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_providers_ops_write_num</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of write operations</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>NooBaa_bucket_used_bytes</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Used bytes for each bucket</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<figure class="table" style="width:1170px;">
+  <table style="background-color:rgb(255, 255, 255);">
+    <thead>
+      <tr>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Metric Identifier</th>
+        <th style="border-bottom:2px solid rgb(221, 221, 221);border-top:0px;padding:8px;vertical-align:top;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_get</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of retrieved objects from all buckets</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_put</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of uploaded objects to all buckets</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_req</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of requests to the RADOS Object Gateway endpoint</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_get_b</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Bytes on transferred read requests</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_put_b</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Bytes on transferred write requests</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_qlen</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Length of queue for requests</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_qactive</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of active requests</td>
+      </tr>
+      <tr>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;"><code>ceph_rgw_failed_req</code></td>
+        <td style="border-top:1px solid rgb(221, 221, 221);padding:8px;vertical-align:top;">Number of failed requests</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
