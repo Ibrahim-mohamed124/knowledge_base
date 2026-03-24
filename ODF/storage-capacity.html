@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T07:34:26.139Z
+date: 2026-03-24T07:34:49.680Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -123,11 +123,11 @@ spec:
   <li>If you delete a volume or a snapshot with a <code>Retain</code> reclaim policy from the OpenShift cluster, then the volume is deleted from the OpenShift cluster but not from the OpenShift Data Foundation cluster.</li>
   <li>To identify orphaned volumes, you must<mark class="marker-yellow"> compare the volumes in OpenShift with the volumes in OpenShift Data Foundation.</mark> If OpenShift Data Foundation has more volumes than OpenShift, then you have orphaned volumes that you must clean.</li>
   <li>Reclaim space operations are supported only on <mark class="marker-yellow">Ceph RBD volumes.</mark></li>
-  <li>You can use the following methods to reclaim the space from RBD volumes:<ul>
+  <li>You can use the following methods to reclaim the space from RBD volumes:<ol>
       <li>Use a reclaim space job</li>
       <li>Use a reclaim space cron job</li>
-      <li>Use the reclaim space annotation on the PVC</li>
-    </ul>
+      <li>Use the reclaim space annotation on the PVC (Recommended)</li>
+    </ol>
   </li>
 </ul>
 <p>&nbsp;</p>
