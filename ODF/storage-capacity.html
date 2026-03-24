@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T07:31:13.591Z
+date: 2026-03-24T07:34:26.139Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -54,7 +54,7 @@ dateCreated: 2026-03-24T07:18:33.444Z
 </figure>
 <ul>
   <li>By using the <code><i>storage-class-name</i>.storageclass.storage.k8s.io</code> prefixes, you<mark class="marker-yellow"> can specify the resource quota for a storage class</mark>. With this approach, specialized storage classes, such as those with faster throughput disks or larger storage pools, can have stricter constraints.</li>
-  <li>You can set resource quotas across projects to enforce a baseline storage allocation for the applications in each project.&nbsp;</li>
+  <li>You can set resource quotas across projects to enforce a baseline storage allocation for the applications in each project.</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: quota.openshift.io/v1
 kind: ClusterResourceQuota
@@ -68,6 +68,7 @@ spec:
     annotations: 2
       openshift.io/requester: username
     labels: null 3</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -116,9 +117,19 @@ spec:
       <li>Orphaned volumes can eventually fill the storage cluster, which leads to a storage-full scenario. Therefore, you should identify and delete volumes and snapshots from the Ceph cluster.</li>
     </ul>
   </li>
-  <li>&nbsp;</li>
 </ul>
-<p>&nbsp;</p>
+<h4>Remove Orphaned Volumes</h4>
+<ul>
+  <li>If you delete a volume or a snapshot with a <code>Retain</code> reclaim policy from the OpenShift cluster, then the volume is deleted from the OpenShift cluster but not from the OpenShift Data Foundation cluster.</li>
+  <li>To identify orphaned volumes, you must<mark class="marker-yellow"> compare the volumes in OpenShift with the volumes in OpenShift Data Foundation.</mark> If OpenShift Data Foundation has more volumes than OpenShift, then you have orphaned volumes that you must clean.</li>
+  <li>Reclaim space operations are supported only on <mark class="marker-yellow">Ceph RBD volumes.</mark></li>
+  <li>You can use the following methods to reclaim the space from RBD volumes:<ul>
+      <li>Use a reclaim space job</li>
+      <li>Use a reclaim space cron job</li>
+      <li>Use the reclaim space annotation on the PVC</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
