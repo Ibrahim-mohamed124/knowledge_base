@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T07:46:46.730Z
+date: 2026-03-24T07:49:38.358Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -250,7 +250,9 @@ spec:
 </figure>
 <pre><code class="language-plaintext"> oc get reclaimspacecronjobs</code></pre>
 <h5>Use the Reclaim Space Annotation</h5>
-<p>&nbsp;</p>
+<ul>
+  <li>You can use the <code>reclaimspace.csiaddons.openshift.io/schedule</code> annotation to the PVC so that OpenShift reclaims space automatically based on a given schedule. This operation creates a <code>ReclaimSpaceCronJob</code> resource <mark class="marker-yellow">based on the schedule that you provide in the annotation.</mark></li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
