@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T11:22:10.594Z
+date: 2026-03-24T11:23:57.250Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -331,8 +331,33 @@ status:
     vendor: QEMU
 ...output omitted...
   discoveredTimeStamp: "2024-11-07T10:27:57Z"</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>To enable the available disks, you create a <code>LocalVolume</code> object, the <code>spec.storageClassDevices.devicePaths</code> field contains the device IDs of the disks on each node.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: local.storage.openshift.io/v1
+kind: LocalVolume
+metadata:
+  name: expanded-local-block
+  namespace: openshift-local-storage
+spec:
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+        - key: cluster.ocs.openshift.io/openshift-storage
+          operator: In
+          values:
+          - ""
+  storageClassDevices:
+    - storageClassName: localvolume
+      volumeMode: Block
+      devicePaths:
+        - /dev/disk/by-id/scsi-0QEMU_QEMU_...7caa6
+        - /dev/disk/by-id/scsi-0QEMU_QEMU_...0b545
+        - /dev/disk/by-id/scsi-0QEMU_QEMU_...c1cd4</code></pre>
+<ul>
+  <li>The local storage operator creates a PV for each available device:</li>
+</ul>
+<pre><code class="language-plaintext">oc get pv -n openshift-local-storage</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
