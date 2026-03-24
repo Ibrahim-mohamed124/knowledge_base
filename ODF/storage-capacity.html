@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T07:21:57.348Z
+date: 2026-03-24T07:26:07.139Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -93,8 +93,22 @@ spec:
   </table>
 </figure>
 <pre><code class="language-plaintext">oc describe appliedclusterresourcequotas</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Persistent Volume Claim Expansion</h3>
+<ul>
+  <li>You can expand the following PVC types:<ul>
+      <li>PVC with <code>ReadWriteOnce</code> or <code>ReadWriteMany</code> access that is based on Ceph File System with the <code>Filesystem</code> volume mode.</li>
+      <li>PVC with <code>ReadWriteOnce</code> access that is based on Ceph RADOS Block Devices with the <code>Filesystem</code> volume mode.</li>
+      <li>PVC with <code>ReadWriteOnce</code> access that is based on Ceph RADOS Block Devices with the <code>Block</code> volume mode.</li>
+      <li>PVC with <code>ReadWriteOncePod</code> that is based on Ceph File System or Network File System with the <code>Filesystem</code> volume mode.</li>
+      <li>PVC with <code>ReadWriteOncePod</code> access that is based on Ceph RADOS Block Devices with the <code>Filesystem</code> volume mode. With <code>ReadWriteOncePod</code> access mode, you mount the volume as read-write by a single pod on a single node.</li>
+    </ul>
+  </li>
+  <li>PVC expansion does not support the following scenarios:<ul>
+      <li>Recovering from failure when expanding volumes</li>
+      <li>PVC shrinking</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
