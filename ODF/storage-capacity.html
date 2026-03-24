@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T11:13:03.529Z
+date: 2026-03-24T11:21:31.908Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -272,6 +272,52 @@ spec:
 <blockquote>
   <p>When enabling or adding unused disks to nodes, or adding new nodes, the new disks must be the same size and type as the disks that are used during the deployment, because OpenShift Data Foundation does not support heterogeneous disks.</p>
 </blockquote>
+<blockquote>
+  <p>You can use a maximum of nine storage devices per node. The high number of storage devices leads to a higher recovery time during the loss of a node.</p>
+</blockquote>
+<h4>Enabling Existing Disks</h4>
+<ul>
+  <li>The<mark class="marker-yellow"> local storage operator discovers disks for each node and creates PVs that the Rook-Ceph operator uses to create or extend the Ceph cluster.&nbsp;</mark>
+    <ul>
+      <li>The local storage operator creates <code>LocalVolumeDiscoveryResult</code> objects from the nodes that are included in the <code>nodeSelector</code> field of the <code>LocalVolumeDiscovery</code> object.</li>
+    </ul>
+  </li>
+</ul>
+<pre><code class="language-plaintext">oc get localvolumediscovery auto-discover-devices \
+  -n openshift-local-storage -oyaml
+...output omitted...
+spec:
+  nodeSelector:
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: node-role.kubernetes.io/worker
+        operator: Exists
+status:
+  conditions:
+  - lastTransitionTime: "2024-11-07T10:22:58Z"
+    message: successfully running 3 out of 3 discovery daemons
+    status: "True"
+    type: Available
+  observedGeneration: 1
+  phase: Discovering</code></pre>
+<ul>
+  <li>A <code>LocalVolumeDiscoveryResult</code> object is created for each discovered node and contains the set of disks that are discovered for that node:</li>
+</ul>
+<pre><code class="language-plaintext"> oc get localvolumediscoveryresult \
+  -n openshift-local-storage
+NAME                        AGE
+discovery-result-worker01   5h15m
+discovery-result-worker02   5h15m
+discovery-result-worker03   5h15</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
