@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T07:51:30.322Z
+date: 2026-03-24T11:10:40.747Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -260,7 +260,15 @@ spec:
 </ul>
 <pre><code class="language-plaintext">oc annotate namespace test \
   reclaimspace.csiaddons.openshift.io/schedule=@weekly</code></pre>
-<p>&nbsp;</p>
+<h2>Adding Disks to the OpenShift Data Foundation Cluster</h2>
+<ul>
+  <li>For internal deployments that use local storage devices, OpenShift Data Foundation enables you to scale by adding disks to the storage nodes or by adding storage nodes.<ul>
+      <li>Adding disks to the nodes</li>
+      <li>Adding nodes</li>
+      <li>Enabling any existing unused disks on the nodes</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
