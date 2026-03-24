@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T07:20:03.735Z
+date: 2026-03-24T07:21:57.348Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -54,4 +54,61 @@ dateCreated: 2026-03-24T07:18:33.444Z
 </figure>
 <ul>
   <li>By using the <code><i>storage-class-name</i>.storageclass.storage.k8s.io</code> prefixes, you<mark class="marker-yellow"> can specify the resource quota for a storage class</mark>. With this approach, specialized storage classes, such as those with faster throughput disks or larger storage pools, can have stricter constraints.</li>
+  <li>You can set resource quotas across projects to enforce a baseline storage allocation for the applications in each project.&nbsp;</li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: quota.openshift.io/v1
+kind: ClusterResourceQuota
+metadata:
+  name: for-user
+spec:
+  quota: 1
+    hard:
+      persistentvolumeclaims: "2"
+  selector:
+    annotations: 2
+      openshift.io/requester: username
+    labels: null 3</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The <code>ResourceQuotaSpec</code> object that is applied to the selected projects</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">A key-value selector for annotations</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">A label selector to select projects</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<pre><code class="language-plaintext">oc describe appliedclusterresourcequotas</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
