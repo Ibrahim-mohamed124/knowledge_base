@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T11:26:06.741Z
+date: 2026-03-24T11:27:17.696Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -364,9 +364,23 @@ spec:
 <blockquote>
   <p>For each set of three disks, you increment the count by one when flexible scaling is not enabled. If flexible scaling is enabled, then you set the value to the total number of disks, for example <code>6</code>.</p>
 </blockquote>
+<pre><code class="language-plaintext">apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: ocs-storagecluster
+  namespace: openshift-storage
+spec:
+  flexibleScaling: false
+  monDataDirHostPath: /var/lib/rook
+  storageDeviceSets:
+  - count: 2
+    dataPVCTemplate:
+...output omitted...</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>new Ceph OSD pods are created to provide extended storage. &nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">oc get pods -n openshift-storage -l app=rook-ceph-osd</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
