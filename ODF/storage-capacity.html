@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T07:18:33.444Z
+date: 2026-03-24T07:19:24.608Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -12,3 +12,43 @@ dateCreated: 2026-03-24T07:18:33.444Z
 <ul>
   <li>OpenShift provides two types of quotas to manage the resource consumption, one for single projects and another for multiple projects, To create a resource quota for multiple projects, define a shared cluster resource quota to restrict resource usage across more than one namespace.</li>
 </ul>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th style="padding:5px;vertical-align:top;">Resource name</th>
+        <th style="padding:5px;vertical-align:top;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>requests.storage</code></td>
+        <td style="padding:5px;vertical-align:top;">The sum of storage requests across all PVCs in any state cannot exceed this value.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>persistentvolumeclaims</code></td>
+        <td style="padding:5px;vertical-align:top;">The maximum number of PVCs that can exist in the project.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code><i>storage-class-name</i>.storageclass.storage.k8s.io/requests.storage</code></td>
+        <td style="padding:5px;vertical-align:top;">The sum of storage requests, across all PVCs with a matching storage class in any state, cannot exceed this value.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code><i>storage-class-name</i>.storageclass.storage.k8s.io/persistentvolumeclaims</code></td>
+        <td style="padding:5px;vertical-align:top;">The maximum number of PVCs with a matching storage class that can exist in the project.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>ephemeral-storage</code></td>
+        <td style="padding:5px;vertical-align:top;">The sum of ephemeral storage requests across all pods in a non-terminal state cannot exceed this value.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>requests.ephemeral-storage</code></td>
+        <td style="padding:5px;vertical-align:top;">Same as <code>ephemeral-storage</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:5px;vertical-align:top;"><code>limits.ephemeral-storage</code></td>
+        <td style="padding:5px;vertical-align:top;">The sum of ephemeral storage limits across all pods in a non-terminal state cannot exceed this value.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
