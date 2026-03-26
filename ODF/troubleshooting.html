@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:31:37.696Z
+date: 2026-03-26T17:32:40.667Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -191,7 +191,10 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 <ul>
   <li>OpenShift Data Foundation<mark class="marker-yellow"> creates a job template</mark> in the <code>openshift-storage</code> namespace that you can use to remove OSDs from the storage cluster. This job validates the storage configuration and ensures that the OSDs can be safely removed from the cluster without impacting the data.</li>
   <li>When Ceph removes an OSD from the cluster, the data is redistributed to the remaining OSDs to achieve the expected number of replicas.</li>
-  <li>If the data cannot meet the expected number of replicas after the redistribution, then OpenShift Data Foundation denies the removal of the OSD.</li>
+  <li>If the data cannot meet the expected number of replicas after the redistribution, then OpenShift Data Foundation denies the removal of the OSD.<ul>
+      <li>force the removal of the OSD by setting the <code>FORCE_OSD_REMOVAL</code> job parameter to <code>true</code>.</li>
+    </ul>
+  </li>
 </ul>
 <pre><code class="language-plaintext"> oc describe template ocs-osd-removal -n openshift-storage</code></pre>
 <p>&nbsp;</p>
