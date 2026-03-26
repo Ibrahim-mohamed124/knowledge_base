@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:13:45.303Z
+date: 2026-03-26T17:14:38.046Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -138,7 +138,14 @@ odf get rook status  ==  oc describe cephcluster</code></pre>
 </ul>
 <pre><code class="language-plaintext">ceph crash archive 2024-07-10T20:34:31.245716Z...f366</code></pre>
 <h6>Data Corruption</h6>
-<p>&nbsp;</p>
+<ul>
+  <li>Ceph periodically verifies the integrity of your data by scrubbing placement groups (PG).</li>
+  <li>Ceph performs two types of scrubbing:<ol>
+      <li>Daily light scrubbing that checks the object size and attributes on all replicas.</li>
+      <li>Weekly deep scrubbing that reads the data and ensures data integrity by using checksums.</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
