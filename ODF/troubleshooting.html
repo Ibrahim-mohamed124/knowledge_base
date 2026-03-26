@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:41:15.305Z
+date: 2026-03-26T17:41:55.003Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -235,7 +235,10 @@ oc delete pv local-pv-34c29212
 </ul>
 <pre><code class="language-plaintext">oc get pod -l app=rook-ceph-osd \
   --field-selector spec.nodeName=worker05</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>verify that the new OSD is now part of the Ceph configuration from the Ceph toolbox:</li>
+</ul>
+<pre><code class="language-plaintext">ceph osd tree</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
