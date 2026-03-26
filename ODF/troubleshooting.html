@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:33:50.837Z
+date: 2026-03-26T17:34:18.408Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -207,4 +207,6 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 </ul>
 <pre><code class="language-plaintext"> oc process ocs-osd-removal \
   -p FAILED_OSD_IDS=7 -p FORCE_OSD_REMOVAL=true | oc create -f -</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>The job removes the Ceph OSD deployment, the OSD PVC, and the OSD from the Ceph configuration. If the OSD is the last one on the node, then the job also removes the node from the Ceph configuration.</li>
+</ul>
