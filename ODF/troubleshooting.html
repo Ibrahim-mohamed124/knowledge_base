@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:45:34.038Z
+date: 2026-03-26T17:46:44.103Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -255,7 +255,11 @@ oc delete pv local-pv-34c29212
   <li>Add the node to the OpenShift Data Foundation cluster.</li>
 </ol>
 <h2>Troubleshooting OpenShift Data Foundation Capacity Alerts</h2>
-<p>&nbsp;</p>
+<ul>
+  <li>At 75% of storage capacity, the cluster fires the <code>CephClusterNearFull</code> alert. At the same time, the cluster enters the warning state, and fires the associated <code>CephClusterWarningState</code> alert. It is common to see the <code>CephOSDNearFull</code> alert, which indicates that one or more Ceph OSDs exceed 75% of storage capacity.</li>
+  <li>At 80% of storage capacity, the cluster fires the <code>CephClusterCriticallyFull</code> alert. This alert is the last one before the storage cluster locks itself in read-only mode. You must expand the storage capacity or free up space as soon as possible.</li>
+  <li>At 85% of storage capacity, the cluster storage is considered full and is now in read-only mode. The cluster fires both the <code>CephClusterReadOnly</code> and <code>CephClusterErrorState</code> alerts.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
