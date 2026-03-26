@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T16:45:24.850Z
+date: 2026-03-26T16:47:04.197Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -39,10 +39,26 @@ dateCreated: 2026-03-26T10:58:57.645Z
   </ol>
 </blockquote>
 <ol>
-  <li><strong>Object Storage Daemons</strong></li>
-  <li><strong>Managers</strong></li>
-  <li><strong>Metadata Servers</strong></li>
-  <li><strong>RADOS Gateway</strong></li>
+  <li><strong>Object Storage Daemons</strong>
+    <ul>
+      <li>Ceph Object Storage Daemons (OSDs) store data and handle data replication, recovery, and rebalancing. On a bare metal deployment, each OSD represents a dedicated disk on a compute node.</li>
+    </ul>
+  </li>
+  <li><strong>Managers</strong>
+    <ul>
+      <li>Ceph Managers (MGRs) track runtime metrics and expose cluster information through a REST API. OpenShift then uses that API to show the storage cluster status and metrics on the web console.</li>
+    </ul>
+  </li>
+  <li><strong>Metadata Servers</strong>
+    <ul>
+      <li>Ceph Metadata Servers (MDSes) store metadata that CephFS uses so that clients can run POSIX commands efficiently.</li>
+    </ul>
+  </li>
+  <li><strong>RADOS Gateway</strong>
+    <ul>
+      <li>Ceph RADOS Gateway (RGW), which is also known as Ceph Object Gateway, provides an object storage interface that supports the Amazon S3 API.</li>
+    </ul>
+  </li>
 </ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
