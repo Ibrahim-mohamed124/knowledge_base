@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:33:24.052Z
+date: 2026-03-26T17:33:50.837Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -202,5 +202,9 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 </ul>
 <pre><code class="language-plaintext"> oc scale -n openshift-storage \
   deploy/rook-ceph-osd-7 --replicas 0</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Then, you can use the job template to remove the OSD from the storage cluster:</li>
+</ul>
+<pre><code class="language-plaintext"> oc process ocs-osd-removal \
+  -p FAILED_OSD_IDS=7 -p FORCE_OSD_REMOVAL=true | oc create -f -</code></pre>
 <p>&nbsp;</p>
