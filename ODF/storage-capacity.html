@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-26T18:17:54.551Z
+date: 2026-03-26T18:18:18.500Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -307,6 +307,7 @@ spec:
 <pre><code class="language-plaintext">oc get localvolumediscoveryresults \
   -n openshift-local-storage</code></pre>
 <ul>
+  <li>Inspect the <code>discovery-result-xx</code> <code>LocalVolumeDiscoveryResult</code> resource and verify that the <code>/dev/sdx</code> disk status is set to available.</li>
   <li>The<mark class="marker-yellow"> local storage operator discovers disks for each node and creates PVs that the Rook-Ceph operator uses to create or extend the Ceph cluster.&nbsp;</mark>
     <ul>
       <li>The local storage operator creates <code>LocalVolumeDiscoveryResult</code> objects from the nodes that are included in the <code>nodeSelector</code> field of the <code>LocalVolumeDiscovery</code> object.</li>
