@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:25:24.047Z
+date: 2026-03-26T17:27:34.310Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -182,7 +182,11 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 </ul>
 <pre><code class="language-plaintext">ceph device query-daemon-health-metrics osd.8</code></pre>
 <h3>Replacing a Failing OSD Device</h3>
-<p>&nbsp;</p>
+<ol>
+  <li>Remove or replace the underlying storage device from the node.</li>
+  <li>Remove the relevant Ceph OSD from the storage cluster.</li>
+  <li>Add and configure the replacement device.</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
