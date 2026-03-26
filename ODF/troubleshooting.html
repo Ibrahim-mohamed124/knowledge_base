@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T16:43:09.897Z
+date: 2026-03-26T16:45:24.850Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -27,6 +27,18 @@ dateCreated: 2026-03-26T10:58:57.645Z
       <li>A cluster of Ceph MONs is spread across the storage nodes to ensure high availability if a node fails.</li>
     </ul>
   </li>
+</ol>
+<blockquote>
+  <p>In Ceph’s decentralized architecture, MONs don't actually handle the storage of user data—that’s the job of the OSDs (Object Storage Daemons). Instead, MONs manage the <strong>Cluster Map</strong>, which is the master blueprint of the system's health and configuration.</p>
+  <ol>
+    <li><strong>The Monitor Map:</strong> Tracks which MONs are currently active and their IP addresses.</li>
+    <li><strong>The OSD Map:</strong> Records which OSDs are "up" (running) and "in" (distributing data), along with their network locations.</li>
+    <li><strong>The PG Map:</strong> Tracks the status of Placement Groups (the logical "buckets" data lives in).</li>
+    <li><strong>The CRUSH Map:</strong> This is the "brain" of Ceph. It contains the physical hierarchy of your hardware (which OSDs are in which server, which servers are in which rack) and the rules for how data should be replicated.</li>
+    <li><strong>The MDS Map:</strong> Only used if you are using the Ceph File System (CephFS), tracking the Metadata Servers.</li>
+  </ol>
+</blockquote>
+<ol>
   <li><strong>Object Storage Daemons</strong></li>
   <li><strong>Managers</strong></li>
   <li><strong>Metadata Servers</strong></li>
