@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-26T18:02:14.612Z
+date: 2026-03-26T18:17:54.551Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -296,6 +296,16 @@ spec:
   <p>You can use a maximum of nine storage devices per node. The high number of storage devices leads to a higher recovery time during the loss of a node.</p>
 </blockquote>
 <h4>Enabling Existing Disks</h4>
+<ul>
+  <li>List the Ceph object storage daemons (Ceph OSDs) that the storage cluster created.</li>
+</ul>
+<pre><code class="language-plaintext">oc get pods -n openshift-storage \
+  -l app=rook-ceph-osd</code></pre>
+<ul>
+  <li>List the <code>LocalVolumeDiscoveryResult</code> resources that were created for each compute node in the <code>LocalVolumeDiscovery</code> resource during the storage cluster installation.</li>
+</ul>
+<pre><code class="language-plaintext">oc get localvolumediscoveryresults \
+  -n openshift-local-storage</code></pre>
 <ul>
   <li>The<mark class="marker-yellow"> local storage operator discovers disks for each node and creates PVs that the Rook-Ceph operator uses to create or extend the Ceph cluster.&nbsp;</mark>
     <ul>
