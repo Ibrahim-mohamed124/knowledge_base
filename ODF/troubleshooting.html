@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:41:55.003Z
+date: 2026-03-26T17:43:35.650Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -239,8 +239,13 @@ oc delete pv local-pv-34c29212
   <li>verify that the new OSD is now part of the Ceph configuration from the Ceph toolbox:</li>
 </ul>
 <pre><code class="language-plaintext">ceph osd tree</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>the storage cluster rebalances the data across all available disks to spread the capacity and achieve the intended number of replicas. You can monitor the recovery process on the web console on the <strong>Storage</strong> → <strong>Data Foundation</strong> → <strong>ocs-storagecluster-storagesystem</strong> page.</p>
+</blockquote>
+<ul>
+  <li><code>ceph status -w</code> or the <code>ceph -w</code> command to watch the progress.</li>
+</ul>
+<pre><code class="language-plaintext">ceph -w</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
