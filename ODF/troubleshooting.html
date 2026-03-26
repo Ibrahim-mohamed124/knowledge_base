@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T16:48:51.990Z
+date: 2026-03-26T16:49:50.590Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -66,7 +66,13 @@ dateCreated: 2026-03-26T10:58:57.645Z
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/odf/rook-ceph_architecture.svg"></figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>In addition to Ceph daemons, the operator manages the CSI drivers for the storage classes. For each storage class that Ceph manages, two set of pods are deployed:<ol>
+      <li>The CSI plug-in pods run on all compute nodes and manage access to the Ceph volumes for applications that run on those nodes.</li>
+      <li>The CSI provisioner pods monitor PVCs and create, resize, and handle snapshots for the matching volumes on the Ceph cluster.</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
