@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T16:58:11.585Z
+date: 2026-03-26T17:00:20.792Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -86,6 +86,35 @@ dateCreated: 2026-03-26T10:58:57.645Z
 </ul>
 <pre><code class="language-plaintext"> oc adm must-gather \
   --image=registry.redhat.io/odf4/odf-must-gather-rhel9:v4.16</code></pre>
+<blockquote>
+  <p>By default, the <code>oc adm must-gather</code> command writes to a <code>must-gather.local.<i>identifier</i></code> directory on your local system. To write to a specific local directory, you can also use the <code>--dest-dir</code> option.</p>
+</blockquote>
+<h4>Using the Ceph Toolbox</h4>
+<ul>
+  <li>To use the Ceph CLI, you must first enable the Ceph toolbox. Modify the storage cluster resource with <code>oc edit</code> and add the <code>enableCephTools</code> setting as follows:</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: ocs.openshift.io/v1
+kind: StorageCluster
+metadata:
+  name: ocs-storagecluster
+  namespace: openshift-storage
+...output omitted...
+spec:
+  enableCephTools: true</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
