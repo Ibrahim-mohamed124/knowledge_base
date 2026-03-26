@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:08:59.262Z
+date: 2026-03-26T17:10:50.230Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -122,8 +122,12 @@ odf get rook status  ==  oc describe cephcluster</code></pre>
   <li>OpenShift Data Foundation reports any Ceph OSD that cannot service I/O operations per second (IOPS) in the queue within a certain baseline. In such scenarios, the storage cluster fires a <code>SLOW_OPS</code> alert, and the <code>ceph health detail</code> command lists the impacted OSDs:</li>
 </ul>
 <pre><code class="language-plaintext">ceph health detail</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Crashing OSDs</h6>
+<pre><code class="language-plaintext">ceph status
+ cluster:
+    id:     6642...0c1b
+    health: HEALTH_WARN
+            20 daemons have recently crashed</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
