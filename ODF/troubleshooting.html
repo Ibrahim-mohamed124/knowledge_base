@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:08:03.531Z
+date: 2026-03-26T17:08:59.262Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -117,7 +117,11 @@ odf get rook status  ==  oc describe cephcluster</code></pre>
 <ul>
   <li>disks should be replaced when they show <mark class="marker-yellow">slow I/O, crashing OSDs, or data corruption</mark>.</li>
 </ul>
-<p>&nbsp;</p>
+<h6>Slow I/O</h6>
+<ul>
+  <li>OpenShift Data Foundation reports any Ceph OSD that cannot service I/O operations per second (IOPS) in the queue within a certain baseline. In such scenarios, the storage cluster fires a <code>SLOW_OPS</code> alert, and the <code>ceph health detail</code> command lists the impacted OSDs:</li>
+</ul>
+<pre><code class="language-plaintext">ceph health detail</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
