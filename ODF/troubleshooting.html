@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T16:41:57.792Z
+date: 2026-03-26T16:43:09.897Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -20,7 +20,13 @@ dateCreated: 2026-03-26T10:58:57.645Z
 <figure class="image"><img src="/odf/ceph-components.svg"></figure>
 <p>The Ceph storage cluster has the following daemons:</p>
 <ol>
-  <li><strong>Monitors</strong></li>
+  <li><strong>Monitors</strong>
+    <ul>
+      <li>Ceph Monitors (MONs) maintain maps of the cluster data and information about all other components.&nbsp;</li>
+      <li>Ceph MON is the brain of the storage cluster and helps the other daemons to coordinate with each other.&nbsp;</li>
+      <li>A cluster of Ceph MONs is spread across the storage nodes to ensure high availability if a node fails.</li>
+    </ul>
+  </li>
   <li><strong>Object Storage Daemons</strong></li>
   <li><strong>Managers</strong></li>
   <li><strong>Metadata Servers</strong></li>
