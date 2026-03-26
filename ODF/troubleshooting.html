@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:20:21.259Z
+date: 2026-03-26T17:22:54.713Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -168,7 +168,11 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 </ul>
 <pre><code class="language-plaintext">journalctl --since "Jul 10 20:30:00" -k</code></pre>
 <h3>Identifying Physical Devices</h3>
-<p>&nbsp;</p>
+<ul>
+  <li><mark class="marker-yellow">OpenShift Data Foundation uses an OSD identifier to represent a dedicated disk on a compute node.&nbsp;</mark></li>
+  <li>From the Ceph toolbox, you can use the <code>ceph device</code> command to list and get information about OSD devices.</li>
+</ul>
+<pre><code class="language-plaintext">ceph device ls</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
