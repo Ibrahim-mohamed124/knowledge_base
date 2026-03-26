@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:43:35.650Z
+date: 2026-03-26T17:44:09.517Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -246,7 +246,14 @@ oc delete pv local-pv-34c29212
   <li><code>ceph status -w</code> or the <code>ceph -w</code> command to watch the progress.</li>
 </ul>
 <pre><code class="language-plaintext">ceph -w</code></pre>
-<p>&nbsp;</p>
+<h3>Replacing a Failing Node</h3>
+<ol>
+  <li>Remove all Ceph OSDs that are on the failing node by using the <code>ocs-osd-removal</code> job template or the <code>odf</code> CLI.</li>
+  <li>Remove the node from OpenShift with the <code>oc delete node</code> command.</li>
+  <li>Add a node to the OpenShift cluster.</li>
+  <li>Configure the local storage operator to detect disks on that node, if needed.</li>
+  <li>Add the node to the OpenShift Data Foundation cluster.</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
