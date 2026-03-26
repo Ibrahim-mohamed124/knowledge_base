@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-24T11:31:35.365Z
+date: 2026-03-26T17:58:38.825Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -111,6 +111,15 @@ spec:
   </li>
 </ul>
 <h3>Reclaim Space from the OpenShift Data Foundation Cluster</h3>
+<blockquote>
+  <p>In the world of Ceph, an <strong>RBD (RADOS Block Device) Image</strong> is essentially a virtual block device—think of it as a virtual hard drive or a LUN (Logical Unit Number) that you can attach to a virtual machine or a physical server.</p>
+</blockquote>
+<pre><code class="language-plaintext">oc get pv -o \
+  custom-columns="NAME:.metadata.name,\
+  NAMESPACE:.spec.claimRef.namespace,\
+  PVC:.spec.claimRef.name,\
+  RBD_IMAGE:.spec.csi.volumeAttributes.imageName" \
+  | grep -E "^NAME|csi"</code></pre>
 <ul>
   <li>OpenShift does not automatically remove from the back-end storage the volumes and the snapshots with a <code>Retain</code> reclaim policy. To delete the data from these volumes and snapshots to free space, you <mark class="marker-yellow">must manually act in OpenShift Data Foundation.</mark>
     <ul>
@@ -146,6 +155,7 @@ spec:
   timeout: 360 2
   backOffLimit: 10 3
   retryDeadlineSeconds: 900 4</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -194,6 +204,7 @@ spec:
   concurrencyPolicy: Forbid 6
   failedJobsHistoryLimit: 1 7
   successfulJobsHistoryLimit: 3 8</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -255,6 +266,7 @@ spec:
 </ul>
 <pre><code class="language-plaintext"> oc annotate pvc data \
   reclaimspace.csiaddons.openshift.io/schedule="0 0 * * 0"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>You can also use the <code>reclaimspace.csiaddons.openshift.io/schedule</code> annotation to the namespace so that OpenShift reclaims space automatically based on a given schedule for all the PVCs that you create in the namespace.</li>
 </ul>
@@ -300,6 +312,7 @@ status:
     type: Available
   observedGeneration: 1
   phase: Discovering</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>A <code>LocalVolumeDiscoveryResult</code> object is created for each discovered node and contains the set of disks that are discovered for that node:</li>
 </ul>
@@ -309,6 +322,7 @@ NAME                        AGE
 discovery-result-worker01   5h15m
 discovery-result-worker02   5h15m
 discovery-result-worker03   5h15</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc get \
   localvolumediscoveryresult discovery-result-worker01 \
   -n openshift-local-storage -oyaml
@@ -331,6 +345,7 @@ status:
     vendor: QEMU
 ...output omitted...
   discoveredTimeStamp: "2024-11-07T10:27:57Z"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To enable the available disks, you create a <code>LocalVolume</code> object, the <code>spec.storageClassDevices.devicePaths</code> field contains the device IDs of the disks on each node.</li>
 </ul>
@@ -354,12 +369,14 @@ spec:
         - /dev/disk/by-id/scsi-0QEMU_QEMU_...7caa6
         - /dev/disk/by-id/scsi-0QEMU_QEMU_...0b545
         - /dev/disk/by-id/scsi-0QEMU_QEMU_...c1cd4</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The local storage operator creates a PV for each available device:</li>
 </ul>
 <pre><code class="language-plaintext">oc get pv -n openshift-local-storage</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>To add the available disks to the cluster, set the <code>spec.storageDeviceSets.count</code> value on the <code>storagecluster/ocs-storagecluster</code> object to <code>2</code>.&nbsp;</li>
+  <li>To add the available disks to the cluster, set the <code>spec.storageDeviceSets.count</code> value on the <code>storagecluster/ocs-storagecluster</code> object to <code>2</code>.</li>
 </ul>
 <blockquote>
   <p>For each set of three disks, you increment the count by one when flexible scaling is not enabled. If flexible scaling is enabled, then you set the value to the total number of disks, for example <code>6</code>.</p>
@@ -378,7 +395,7 @@ spec:
 ...output omitted...</code></pre>
 <p>&nbsp;</p>
 <ul>
-  <li>new Ceph OSD pods are created to provide extended storage. &nbsp;</li>
+  <li>new Ceph OSD pods are created to provide extended storage.</li>
 </ul>
 <pre><code class="language-plaintext">oc get pods -n openshift-storage -l app=rook-ceph-osd</code></pre>
 <h4>Adding Nodes</h4>
@@ -394,6 +411,7 @@ spec:
 </ul>
 <pre><code class="language-plaintext">oc label nodes \
   -l node-role.kubernetes.io/worker= cluster.ocs.openshift.io/openshift-storage=</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The <code>LocalVolumeDiscovery</code> object and the <code>LocalVolumeSet</code> object use the <mark class="marker-yellow">OpenShift Data Foundation labe</mark>l in the <code>nodeSelector</code> field. The local volume discovery automatically detects the disks in the new nodes, and the local volume set automatically provisions the disks on the new nodes.</li>
 </ul>
@@ -410,6 +428,7 @@ spec:
       - key: cluster.ocs.openshift.io/openshift-storage
         operator: Exists
 ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">---
 apiVersion: local.storage.openshift.io/v1alpha1
 kind: LocalVolumeSet
@@ -423,6 +442,7 @@ spec:
     - matchExpressions:
       - key: cluster.ocs.openshift.io/openshift-storage
         operator: Exists</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>inspect the <code>LocalVolumeSet</code> object to verify the number of provisioned devices.</li>
 </ul>
@@ -430,6 +450,7 @@ spec:
   -o custom-columns='"NAME:metadata.name,STORAGECLASS:spec.storageClassName,\
   PROVISIONED:status.totalProvisionedDeviceCount,VOLUME_MODE:spec.volumeMode"' \
   -n openshift-local-storage</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>Verify that within the <code>openshift-storage</code> namespace, at least the following pods on the new nodes display a status of <code>Running</code>:</p>
   <p><code>csi-cephfsplugin-*</code></p>
