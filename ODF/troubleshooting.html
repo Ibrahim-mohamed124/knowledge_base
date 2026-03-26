@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:12:15.522Z
+date: 2026-03-26T17:12:57.827Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -134,7 +134,9 @@ odf get rook status  ==  oc describe cephcluster</code></pre>
 <pre><code class="language-plaintext">ceph crash ls-new or ls</code></pre>
 <ul>
   <li>OpenShift Data Foundation collects crash logs and stores them on the node in the <code>/var/lib/rook/openshift-storage/crash/posted/<i>&lt;crash-id&gt;</i></code> path.&nbsp;</li>
+  <li><code>ceph crash archive</code> command archives a specific crash, and the <code>ceph crash archive-all</code> command archives all new crashes.</li>
 </ul>
+<pre><code class="language-plaintext">ceph crash archive 2024-07-10T20:34:31.245716Z...f366</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
