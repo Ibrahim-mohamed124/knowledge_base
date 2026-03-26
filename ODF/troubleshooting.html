@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:38:27.709Z
+date: 2026-03-26T17:38:49.411Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -221,7 +221,10 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 <ul>
   <li>When using the local storage operator, the PV that represents the disk device is left in the <code>released</code> state until the operator removes it, which can take a few minutes.</li>
 </ul>
-<pre><code class="language-plaintext">oc get pv -L kubernetes.io/hostname | grep Released</code></pre>
+<pre><code class="language-plaintext">oc get pv -L kubernetes.io/hostname | grep Released
+oc delete pv local-pv-34c29212
+</code></pre>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
