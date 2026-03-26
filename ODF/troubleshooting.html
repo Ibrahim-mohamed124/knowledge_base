@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:40:34.287Z
+date: 2026-03-26T17:41:15.305Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -230,7 +230,11 @@ oc delete pv local-pv-34c29212
   <li>The OSD initialization job verifies the state of the device and prepares the disk for the storage cluster.</li>
 </ul>
 <pre><code class="language-plaintext">oc get pod -l app=rook-ceph-osd-prepare -owide</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>After the OSD initialization job is complete, the operator creates the Ceph OSD deployment and adds the disk to the storage cluster configuration.</li>
+</ul>
+<pre><code class="language-plaintext">oc get pod -l app=rook-ceph-osd \
+  --field-selector spec.nodeName=worker05</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
