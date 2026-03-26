@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-26T18:37:50.593Z
+date: 2026-03-26T18:42:45.415Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -12,7 +12,18 @@ dateCreated: 2026-03-26T18:37:50.593Z
   <li>View the health status of the Ceph cluster by using the <code>oc get</code> command.</li>
 </ul>
 <pre><code class="language-plaintext">oc get cephcluster</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>View the cluster health details by using the <code>oc describe</code> command.</li>
 </ul>
 <pre><code class="language-plaintext">oc describe cephcluster | grep "^Status" -A15</code></pre>
+<blockquote>
+  <h3><strong>Note</strong></h3>
+  <p>Ceph periodically checks the integrity of your data by scrubbing placement groups. A <i>scrub</i> error indicates that Ceph detects a consistency error in your data.</p>
+</blockquote>
+<ul>
+  <li>View the Ceph MON logs by using the <code>oc logs</code> command with the <code>app=rook-ceph-mon</code> label.</li>
+</ul>
+<pre><code class="language-plaintext">oc logs -l app=rook-ceph-mon --tail=-1 --since=1h \
+  | grep ERR</code></pre>
+<p>&nbsp;</p>
