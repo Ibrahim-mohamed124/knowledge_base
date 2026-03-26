@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-26T18:48:53.633Z
+date: 2026-03-26T18:51:28.096Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -41,3 +41,11 @@ dateCreated: 2026-03-26T18:37:50.593Z
   <li>Obtain the cluster health with the <code>ceph health</code> command.</li>
 </ul>
 <pre><code class="language-plaintext">ceph  health detail</code></pre>
+<ul>
+  <li>Use the <code>rados list-inconsistent-obj</code> command to get more information about the inconsistency.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext"> rados list-inconsistent-obj x.0 | jq .inconsistents[].shards</code></pre>
+<blockquote>
+  <p>One or more causes can lead to PG inconsistencies. A PG repair can be dangerous in some cases and might result in a complete data loss.</p>
+  <p>Always consult with Red&nbsp;Hat support before attempting a PG repair.</p>
+</blockquote>
