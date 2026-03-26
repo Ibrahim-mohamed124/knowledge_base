@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:22:54.713Z
+date: 2026-03-26T17:23:43.800Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -173,7 +173,10 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
   <li>From the Ceph toolbox, you can use the <code>ceph device</code> command to list and get information about OSD devices.</li>
 </ul>
 <pre><code class="language-plaintext">ceph device ls</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>use the <code>ceph device ls-by-daemon</code> command to get the node name and device that a specific OSD uses. The <code>ceph device ls-by-host</code> command lists all devices on a specific node.</li>
+</ul>
+<pre><code class="language-plaintext">ceph device ls-by-daemon osd.7</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
