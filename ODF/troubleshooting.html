@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:17:46.660Z
+date: 2026-03-26T17:19:44.175Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -163,7 +163,10 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 2024-07-10T20:47:28...  0 pidfile_write: ignore empty --pid-file
 2024-07-10T20:47:28... -1 bluestore(/var/lib/ceph/osd/ceph-7/block) _read_bdev_label failed to open /var/lib/ceph/osd/ceph-7/block: (6) No such device or address
 2024-07-10T20:47:28... -1   ERROR: unable to open OSD superblock on /var/lib/ceph/osd/ceph-7: (2) No such file or directory</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>inspect the node logs</li>
+</ul>
+<pre><code class="language-plaintext">journalctl --since "Jul 10 20:30:00" -k</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
