@@ -1,0 +1,18 @@
+<!--
+title: trouble-lab1
+description: 
+published: true
+date: 2026-03-26T18:37:50.593Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-03-26T18:37:50.593Z
+-->
+
+<ul>
+  <li>View the health status of the Ceph cluster by using the <code>oc get</code> command.</li>
+</ul>
+<pre><code class="language-plaintext">oc get cephcluster</code></pre>
+<ul>
+  <li>View the cluster health details by using the <code>oc describe</code> command.</li>
+</ul>
+<pre><code class="language-plaintext">oc describe cephcluster | grep "^Status" -A15</code></pre>
