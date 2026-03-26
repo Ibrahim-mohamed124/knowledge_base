@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T16:49:50.590Z
+date: 2026-03-26T16:53:47.293Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -73,9 +73,11 @@ dateCreated: 2026-03-26T10:58:57.645Z
     </ol>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Inspecting Ceph Components Logs</h4>
+<pre><code class="language-plaintext">oc logs -n openshift-storage -l ceph_daemon_type=mon</code></pre>
+<ul>
+  <li>Regardless of whether a logging stack is deployed on the OpenShift cluster, OpenShift Data Foundation stores the Ceph component logs on the storage nodes for persistence, in the <code><mark class="marker-yellow">/var/lib/rook/openshift-storage/log</mark></code> path.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
