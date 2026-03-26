@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:31:22.246Z
+date: 2026-03-26T17:31:37.696Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -193,8 +193,7 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
   <li>When Ceph removes an OSD from the cluster, the data is redistributed to the remaining OSDs to achieve the expected number of replicas.</li>
   <li>If the data cannot meet the expected number of replicas after the redistribution, then OpenShift Data Foundation denies the removal of the OSD.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext"> oc describe template ocs-osd-removal -n openshift-storage</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
