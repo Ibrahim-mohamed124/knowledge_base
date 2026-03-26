@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:46:44.103Z
+date: 2026-03-26T17:47:20.078Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -260,6 +260,8 @@ oc delete pv local-pv-34c29212
   <li>At 80% of storage capacity, the cluster fires the <code>CephClusterCriticallyFull</code> alert. This alert is the last one before the storage cluster locks itself in read-only mode. You must expand the storage capacity or free up space as soon as possible.</li>
   <li>At 85% of storage capacity, the cluster storage is considered full and is now in read-only mode. The cluster fires both the <code>CephClusterReadOnly</code> and <code>CephClusterErrorState</code> alerts.</li>
 </ul>
-<p>&nbsp;</p>
+<blockquote>
+  <p>When you unlock the cluster, if the storage capacity exceeds 97%, then you might not be able to recover the cluster without losing data.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
