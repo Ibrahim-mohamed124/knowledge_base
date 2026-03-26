@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:14:38.046Z
+date: 2026-03-26T17:15:14.899Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -145,7 +145,12 @@ odf get rook status  ==  oc describe cephcluster</code></pre>
       <li>Weekly deep scrubbing that reads the data and ensures data integrity by using checksums.</li>
     </ol>
   </li>
+  <li>A <i>scrub error</i> indicates that Ceph detects a consistency error in your data. In such situations, the storage cluster fires the <code>OSD_SCRUB_ERRORS</code> alert and enters the <code>HEALTH_ERR</code> state.</li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">ceph health detail
+HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
+[ERR] OSD_SCRUB_ERRORS: 1 scrub errors
+[ERR] PG_DAMAGED: Possible data damage: 1 pg inconsistent
+    pg 8.0 is active+clean+inconsistent, acting [0,2,1]</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
