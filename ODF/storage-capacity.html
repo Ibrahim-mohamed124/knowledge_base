@@ -2,7 +2,7 @@
 title: Managing Storage Capacity
 description: 
 published: true
-date: 2026-03-26T17:58:38.825Z
+date: 2026-03-26T18:01:44.370Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-24T07:18:33.444Z
@@ -120,6 +120,10 @@ spec:
   PVC:.spec.claimRef.name,\
   RBD_IMAGE:.spec.csi.volumeAttributes.imageName" \
   | grep -E "^NAME|csi"</code></pre>
+<ul>
+  <li>Use the <code>ceph df</code> command to show information about the total cluster capacity and the usage for each storage pool. Note the used storage for the Ceph RBD pool (ocs-storagecluster-cephblockpool) in the toolbox</li>
+</ul>
+<pre><code class="language-plaintext">ceph df</code></pre>
 <ul>
   <li>OpenShift does not automatically remove from the back-end storage the volumes and the snapshots with a <code>Retain</code> reclaim policy. To delete the data from these volumes and snapshots to free space, you <mark class="marker-yellow">must manually act in OpenShift Data Foundation.</mark>
     <ul>
