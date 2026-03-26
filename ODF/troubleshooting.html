@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:15:14.899Z
+date: 2026-03-26T17:17:46.660Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -152,5 +152,28 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
 [ERR] OSD_SCRUB_ERRORS: 1 scrub errors
 [ERR] PG_DAMAGED: Possible data damage: 1 pg inconsistent
     pg 8.0 is active+clean+inconsistent, acting [0,2,1]</code></pre>
+<h6>OSD Failing to Start</h6>
+<ul>
+  <li>when the disk become unresponsive, the Ceph OSD fails to start and enters the <code>CrashLoopBackOff</code> state.</li>
+  <li>OpenShift Data Foundation might show the <code>CephOSDDiskUnavailable</code> or the <code>CephOSDDiskNotResponding</code> alert on the web console.</li>
+</ul>
+<pre><code class="language-plaintext">2024-07-10T20:43:06... -1   ERROR: osd init failed: (5) Input/output error
+2024-07-10T20:47:28...  0 set uid:gid to 167:167 (ceph:ceph)
+2024-07-10T20:47:28...  0 ceph version 17.2.6-216.el9cp (2787...a156) quincy (stable), process ceph-osd, pid 2649
+2024-07-10T20:47:28...  0 pidfile_write: ignore empty --pid-file
+2024-07-10T20:47:28... -1 bluestore(/var/lib/ceph/osd/ceph-7/block) _read_bdev_label failed to open /var/lib/ceph/osd/ceph-7/block: (6) No such device or address
+2024-07-10T20:47:28... -1   ERROR: unable to open OSD superblock on /var/lib/ceph/osd/ceph-7: (2) No such file or directory</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
