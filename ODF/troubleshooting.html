@@ -2,7 +2,7 @@
 title: Troubleshooting 
 description: 
 published: true
-date: 2026-03-26T17:32:40.667Z
+date: 2026-03-26T17:33:24.052Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T10:58:57.645Z
@@ -197,6 +197,10 @@ HEALTH_ERR 1 scrub errors; Possible data damage: 1 pg inconsistent
   </li>
 </ul>
 <pre><code class="language-plaintext"> oc describe template ocs-osd-removal -n openshift-storage</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To remove a Ceph OSD from the cluster storage, you must first stop the Ceph OSD pod.&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext"> oc scale -n openshift-storage \
+  deploy/rook-ceph-osd-7 --replicas 0</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
