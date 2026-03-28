@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T15:55:51.118Z
+date: 2026-03-28T16:02:18.712Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -110,7 +110,6 @@ dateCreated: 2026-03-26T18:37:50.593Z
 <pre><code class="language-plaintext">[student@workstation ~]$ oc get deployments -l app=rook-ceph-osd \
   -l failure-domain=node_name
 </code></pre>
-<p>Confirm that the OSD ID matches the one that you identified in the previous steps. Review the output from the Ceph toolbox terminal if needed.</p>
 <p>Scale down the Ceph OSD deployment from the previous step.</p>
 <ol>
   <li>[student@workstation ~]$ <code><strong>oc scale deploy/rook-ceph-osd-</strong><i><strong>0</strong></i><strong> --replicas 0</strong></code>
