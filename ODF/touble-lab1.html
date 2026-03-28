@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:21:14.224Z
+date: 2026-03-28T16:22:07.986Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -178,14 +178,10 @@ debug ... -1  * ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-
 <pre><code class="language-plaintext">[student@workstation ~]$ oc debug no/worker03 -- chroot /host ls -1 /dev/sd* </code></pre>
 <p>&nbsp;</p>
 <ul>
-  <li>Remove the faulty OSD from OpenShift Data Foundation, by using the job template</li>
+  <li><mark class="marker-yellow">Remove the faulty OSD from OpenShift Data Foundation, by using the job template</mark></li>
+  <li>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that the node and the associated Ceph OSD are removed from the OpenShift Data Foundation configuration.</li>
 </ul>
-<p>&nbsp;</p>
-<p>Note the OSD PVC name, which you use in the next step to clean up the persistent volume.</p>
-<p>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that the node and the associated Ceph OSD are removed from the OpenShift Data Foundation configuration.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code> ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.29306 &nbsp;root default -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01 1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000 -5 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker02 0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000</li>
-</ol>
+<pre><code class="language-plaintext">sh-5.1$ ceph osd tree </code></pre>
 <p>Switch to the other terminal. Verify that the Ceph OSD PV is in the <code>released</code> state. Use the PVC name from the previous step.</p>
 <ol>
   <li>[student@workstation ~]$ <code><strong>oc get pv | grep localvolume-0-data-</strong><i><strong>1pbzwp</strong></i></code> local-pv-<code><i><strong>34c29212</strong></i></code> &nbsp;... &nbsp;<code><strong>Released</strong></code> &nbsp; openshift-storage/localvolume-0-data-<code><i><strong>1pbzwp</strong></i></code></li>
