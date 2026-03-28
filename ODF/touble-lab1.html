@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:18:21.226Z
+date: 2026-03-28T16:18:33.895Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -166,7 +166,9 @@ debug ...  0 set uid:gid to 167:167 (ceph:ceph)
 debug ...  0 ceph version 18.2.1-229.el9cp (ef6...4e0) reef (stable), process ceph-osd, pid 8991 
 debug ...  0 pidfile_write: ignore empty --pid-file debug ... -1 bluestore(/var/lib/ceph/osd/ceph-2/block) _read_bdev_label bad crc on label, expected 3299287777 != actual 2703911461 
 debug ... -1  * ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-2: (2) No such file or directory + wait 8991 + ceph_osd_rc=1 + '[' 1 -eq 0 ']' + exit 1</code></pre>
-<p>The Ceph OSD is failing due to a missing block device.</p>
+<blockquote>
+  <p>The Ceph OSD is failing due to a missing block device.</p>
+</blockquote>
 <p>In the Ceph toolbox terminal, retrieve the device name that is attached to the faulty OSD by using the <code>ceph device ls-by-daemon</code> command. Use the OSD identifier from the previous steps.</p>
 <ol>
   <li>sh-5.1$ <code><strong>ceph device ls-by-daemon osd.</strong><i><strong>2</strong></i></code> DEVICE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;HOST:DEV &nbsp; &nbsp; &nbsp;EXPECTED FAILURE QEMU_QEMU_HARDDISK_de3c...d413e &nbsp;<code><strong>worker03:sdb</strong></code></li>
