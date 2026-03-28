@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:24:05.871Z
+date: 2026-03-28T16:28:43.481Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -193,34 +193,14 @@ debug ... -1  * ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-
 <blockquote>
   <p>Replace the faulty drive on the compute node.&nbsp;</p>
 </blockquote>
-<p>Set the node into maintenance mode by using the <code>oc adm drain</code> command. Use the node name from the previous steps.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc adm drain no/</strong><i><strong>worker03</strong></i><strong> \ &nbsp;--ignore-daemonsets --delete-emptydir-data</strong></code> node/<code><i><strong>worker03</strong></i></code> cordoned ... node/<code><i><strong>worker03</strong></i></code> drained</li>
-</ol>
-<p>Reboot the compute node by using the <code>oc debug</code> command. Use the node name from the previous steps.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc debug no/</strong><i><strong>worker03</strong></i><strong> -- chroot /host shutdown -r</strong></code> <i>...output omitted...</i> Reboot scheduled for Thu 2024-09-05 14:19:09 UTC, use 'shutdown -c' to cancel. <i>...output omitted...</i></li>
-</ol>
-<p>Wait until the node restarts and is in the <code>Ready</code> state. During the shutdown sequence, the node goes into the <code>NotReady</code> state. It takes a few minutes for the node to reboot.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>watch oc get no </strong><i><strong>worker03</strong></i></code> worker03 &nbsp; Ready,SchedulingDisabled &nbsp; worker &nbsp; &nbsp;24h &nbsp; v1.29.6+aba1e8d</li>
-</ol>
-<p>Use <strong>Ctrl</strong>+<strong>C</strong> to exit the <code>watch</code> command.</p>
-<p>Remove the maintenance mode.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc adm uncordon </strong><i><strong>worker03</strong></i></code> node/<code><i><strong>worker03</strong></i></code> uncordoned</li>
-</ol>
-<p>Monitor the recovery process of the storage cluster.</p>
-<p>Wait until the local storage operator provisions the new disk.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get pv | grep localvolume</strong></code> local-pv-<code><i><strong>34c29212</strong></i></code> ... &nbsp;<code><strong>Available</strong></code> local-pv-<code><i><strong>9149825c</strong></i></code> ... &nbsp;Bound &nbsp; &nbsp; &nbsp; openshift-storage/localvolume-0-data-... local-pv-<code><i><strong>d986efa1</strong></i></code> ... &nbsp;Bound &nbsp; &nbsp; &nbsp; openshift-storage/localvolume-0-data-...</li>
-</ol>
-<h3><strong>Note</strong></h3>
-<p>The volume might be in the <code>Bound</code> state in your environment if the Ceph OSD is already created.</p>
-<p>Wait until OpenShift Data Foundation creates the Ceph OSD pod.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get pod -l app=rook-ceph-osd \ &nbsp;--field-selector spec.nodeName=</strong><i><strong>worker03</strong></i></code> rook-ceph-osd-0-d99d4ddf8-zhdx7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2/2 &nbsp; &nbsp; Running &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;32s rook-ceph-osd-prepare-localvolume-0-data-52qhxx-gm5mb &nbsp; 0/1 &nbsp; &nbsp; Completed &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;19m</li>
-</ol>
+<ul>
+  <li>Wait until the local storage operator provisions the new disk.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc get pv</code></pre>
+<ul>
+  <li>Wait until OpenShift Data Foundation creates the Ceph OSD pod.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc get pod -l app=rook-ceph-osd \  --field-selector spec.nodeName=node_name </code></pre>
 <p>In the Ceph toolbox terminal, verify the status of the storage cluster and monitor the recovery progress.</p>
 <h3><strong>Note</strong></h3>
 <p>If you lost access to the Ceph toolbox, you can reconnect with the following command:</p>
