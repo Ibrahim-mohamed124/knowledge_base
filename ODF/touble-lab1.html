@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:12:53.117Z
+date: 2026-03-28T16:15:21.650Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -133,19 +133,19 @@ dateCreated: 2026-03-26T18:37:50.593Z
 </ul>
 <pre><code class="language-plaintext">sh-5.1$ ceph osd tree </code></pre>
 <h6>Add the replacement node to the OpenShift cluster.</h6>
-<p>Configure the node storage with the local storage operator and add the node to the OpenShift Data Foundation cluster.</p>
-<p>In the lab environment, the local volume operator automatically creates volumes on all compute nodes. Confirm that the local volume operator creates another PV in the cluster.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get pv | grep localvolume</strong></code> local-pv-1ed0f222 &nbsp; &nbsp;100Gi ... &nbsp;Bound &nbsp; &nbsp; &nbsp;... &nbsp; localvolume &nbsp; &lt;unset&gt; &nbsp; 22h local-pv-409ad507 &nbsp; &nbsp;100Gi ... &nbsp;Bound &nbsp; &nbsp; &nbsp;... &nbsp; localvolume &nbsp; &lt;unset&gt; &nbsp; 22h local-pv-542ff0d8 &nbsp; &nbsp;100Gi ... &nbsp;<code><strong>Available</strong></code> &nbsp;... &nbsp; localvolume &nbsp; &lt;unset&gt; &nbsp; 6m27s</li>
-</ol>
-<p>Add the <code>cluster.ocs.openshift.io/openshift-storage</code> label to the node to deploy the OpenShift Data Foundation components on that node. Use the node name from the previous steps.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc label no </strong><i><strong>worker02</strong></i><strong> \ &nbsp;cluster.ocs.openshift.io/openshift-storage=""</strong></code> node/<code><i><strong>worker02</strong></i></code> labeled</li>
-</ol>
-<p>Confirm that OpenShift schedules the OpenShift Data Foundation components on the node. Wait until both the OSD and MON pods are running.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get po -owide | grep </strong><i><strong>worker02</strong></i></code> csi-cephfsplugin-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2/2 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02 csi-nfsplugin-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2/2 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02 csi-rbdplugin-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;3/3 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02 rook-ceph-crashcollector-<code><i><strong>worker02</strong></i></code>-... &nbsp; &nbsp;1/1 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02 rook-ceph-exporter-<code><i><strong>worker02</strong></i></code>-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1/1 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02 <code><strong>rook-ceph-mon</strong></code>-a-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>2/2</strong></code> &nbsp; &nbsp;&nbsp;<code><strong>Running</strong></code> &nbsp; &nbsp;... &nbsp; worker02 <code><strong>rook-ceph-osd</strong></code>-1-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>2/2</strong></code> &nbsp; &nbsp;&nbsp;<code><strong>Running</strong></code> &nbsp; &nbsp;... &nbsp; worker02 rook-ceph-osd-prepare-localvolume-... &nbsp; &nbsp;0/1 &nbsp; &nbsp; Completed &nbsp;... &nbsp; worker02</li>
-</ol>
+<ul>
+  <li>Configure the node storage with the local storage operator and add the node to the OpenShift Data Foundation cluster.</li>
+  <li>Confirm that the local volume operator creates another PV in the cluster.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc get pv </code></pre>
+<ul>
+  <li>Add the <code>cluster.ocs.openshift.io/openshift-storage</code> label to the node to deploy the OpenShift Data Foundation components on that node.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc label no worker02 \  cluster.ocs.openshift.io/openshift-storage="" node/node_name labeled</code></pre>
+<ul>
+  <li>Confirm that OpenShift schedules the OpenShift Data Foundation components on the node. Wait until both the OSD and MON pods are running.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc get po -owide | grep node_name</code></pre>
 <p>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that both the new node and the associated Ceph OSD are in the OpenShift Data Foundation configuration.</p>
 <ol>
   <li>sh-5.1$ <code><strong>ceph osd tree</strong></code> ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.29306 &nbsp;root default -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01 1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000 -5 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host <code><strong>worker02</strong></code> 0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>osd.0</strong></code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>up</strong></code> &nbsp; 1.00000 &nbsp;1.00000 -7 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker03 2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.2 &nbsp; &nbsp; &nbsp; &nbsp;down &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp;1.00000</li>
