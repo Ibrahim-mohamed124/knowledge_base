@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-26T20:19:13.049Z
+date: 2026-03-28T15:52:12.704Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -17,6 +17,7 @@ dateCreated: 2026-03-26T18:37:50.593Z
   <li>View the cluster health details by using the <code>oc describe</code> command.</li>
 </ul>
 <pre><code class="language-plaintext">oc describe cephcluster | grep "^Status" -A15</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <h3><strong>Note</strong></h3>
   <p>Ceph periodically checks the integrity of your data by scrubbing placement groups. A <i>scrub</i> error indicates that Ceph detects a consistency error in your data.</p>
@@ -26,13 +27,15 @@ dateCreated: 2026-03-26T18:37:50.593Z
 </ul>
 <pre><code class="language-plaintext">oc logs -l app=rook-ceph-mon --tail=-1 --since=1h \
   | grep ERR</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>View the Ceph OSD logs by specifying the <code>app=rook-ceph-osd</code> label for the <code>oc logs</code> command. Filter the log with the <code>ERR</code> flag.</li>
 </ul>
 <pre><code class="language-plaintext">oc logs -l app=rook-ceph-osd --tail=-1 --since=1h \
   | grep ERR</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>Create a Must-Gather archive&nbsp;</li>
+  <li>Create a Must-Gather archive</li>
 </ul>
 <pre><code class="language-plaintext">oc adm must-gather \
   --image=registry.ocp4.example.com:8443/odf4/odf-must-gather-rhel9:v4.16 \
@@ -41,16 +44,455 @@ dateCreated: 2026-03-26T18:37:50.593Z
   <li>Obtain the cluster health with the <code>ceph health</code> command.</li>
 </ul>
 <pre><code class="language-plaintext">ceph  health detail</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>Use the <code>rados list-inconsistent-obj</code> command to get more information about the inconsistency.&nbsp;</li>
+  <li>Use the <code>rados list-inconsistent-obj</code> command to get more information about the inconsistency.</li>
 </ul>
 <pre><code class="language-plaintext"> rados list-inconsistent-obj x.0 | jq .inconsistents[].shards</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>One or more causes can lead to PG inconsistencies. A PG repair can be dangerous in some cases and might result in a complete data loss.</p>
   <p>Always consult with Red&nbsp;Hat support before attempting a PG repair.</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h2>Identify and Replace a Failing Drive and Node</h2>
+<ul>
+  <li>View the health status of the Ceph cluster by using the <code>oc get</code> command.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc get cephcluster
+</code></pre>
+<ul>
+  <li>&nbsp;enter the Ceph toolbox with the <code>oc rsh</code> command.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc rsh deploy/rook-ceph-tools
+</code></pre>
+<ul>
+  <li>In the Ceph toolbox terminal, use the <code>ceph status</code> command to get more information about the storage cluster health.</li>
+</ul>
+<pre><code class="language-plaintext">sh-5.1$ ceph status
+  cluster:
+    id:     1b1e995b-f561-4699-b0f7-dbe012a15339
+    health: HEALTH_WARN 
+     2 osds down
+ data:
+   pgs:     100.000% pgs not active </code></pre>
+<figure class="table" style="width:1120.41px;">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The cluster reports multiple errors. The cluster status might change from <code>HEALTH_WARN</code> to <code>HEALTH_ERR</code> after a while in the lab environment if the problem is not solved.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The cluster reports that two Ceph OSDs are down.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">All PGs are inactive and data is no longer accessible.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>List the Ceph OSD with the <code>ceph osd tree</code> command.</p>
+<ol>
+  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code>
+    ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF
+    -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.29306 &nbsp;root default
+    -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01
+    1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000
+    -5 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host <code><strong>worker02</strong></code>
+    0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>osd.0</strong></code> &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>down</strong></code> &nbsp; 1.00000 &nbsp;1.00000
+    -7 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host <code><strong>worker03</strong></code>
+    2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>osd.2</strong></code> &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>down</strong></code> &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp;1.00000</li>
+</ol>
+<p>In this example, the two failing Ceph OSDs are OSD 0 on <code>worker02</code> and OSD 2 on <code>worker03</code>. The node and OSD ID might be different in your environment.</p>
+<p>Because only one Ceph OSD is available and the Ceph cluster cannot replicate the data, the cluster disables access to all PGs until at least two OSDs are back online.</p>
+<p>Identify the storage node that the OpenShift administrator removed from the cluster and remove it from the OpenShift Data Foundation configuration.</p>
+<p>Switch to the other terminal. List the OpenShift nodes and compare the result with the previous step.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get nodes</strong></code>
+    NAME &nbsp; &nbsp; &nbsp; STATUS &nbsp; ROLES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; &nbsp; VERSION
+    master01 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
+    master02 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
+    master03 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
+    worker01 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6d21h &nbsp; v1.29.6+aba1e8d
+    worker03 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28h &nbsp; &nbsp; v1.29.6+aba1e8d</li>
+</ol>
+<p>In this example, the <code>worker02</code> node is no longer shown as part of the OpenShift cluster, although it is still in the OpenShift Data Foundation configuration. The missing node might be different in your environment.</p>
+<p>List the Ceph OSD deployment that is attached to the missing node that you identified in the previous step. In this example, the missing node is <code>worker02</code>.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get deployments -l app=rook-ceph-osd \
+        &nbsp;-l failure-domain=</strong><i><strong>worker02</strong></i></code>
+    NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;READY &nbsp; UP-TO-DATE &nbsp; AVAILABLE &nbsp; AGE
+    rook-ceph-osd-<code><i><strong>0</strong></i></code> &nbsp; 0/1 &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 21h</li>
+</ol>
+<p>Confirm that the OSD ID matches the one that you identified in the previous steps. Review the output from the Ceph toolbox terminal if needed.</p>
+<p>Scale down the Ceph OSD deployment from the previous step.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc scale deploy/rook-ceph-osd-</strong><i><strong>0</strong></i><strong> --replicas 0</strong></code>
+    deployment.apps/rook-ceph-osd-<code><i><strong>0</strong></i></code> scaled</li>
+</ol>
+<p>Remove the Ceph OSD from the OpenShift Data Foundation cluster by using the <code>ocs-osd-removal</code> job template. Set the <code>FAILED_OSD_IDS</code> parameter to the value of the OSD ID from the previous steps.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc process ocs-osd-removal -p FAILED_OSD_IDS=</strong><i><strong>0</strong></i><strong> \
+        &nbsp;-p FORCE_OSD_REMOVAL=true | oc create -f -</strong></code>
+    job.batch/ocs-osd-removal-job created</li>
+</ol>
+<h3><strong>Note</strong></h3>
+<p>OpenShift Data Foundation removes the OSD only if it can keep three replicas of the data in the cluster. On a cluster with three nodes, you must set the <code>FORCE_OSD_REMOVAL</code> parameter to <code>true</code> to remove an OSD.</p>
+<p>Confirm that the job removes the Ceph OSD from the OpenShift Data Foundation configuration.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc logs -l job-name=ocs-osd-removal-job -f \
+        &nbsp;| grep -i 'completed removal'</strong></code>
+    2024-09-04 13:31:01.327281 I | cephosd: completed removal of OSD <code><i><strong>0</strong></i></code></li>
+</ol>
+<p>Clean up the <code>ocs-osd-removal-job</code> resource.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc delete job ocs-osd-removal-job</strong></code>
+    job.batch "ocs-osd-removal-job" deleted</li>
+</ol>
+<p>In the Ceph toolbox terminal, confirm that the failing node and the associated Ceph OSD are removed from the configuration by using the <code>ceph osd tree</code> command.</p>
+<ol>
+  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code>
+    ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF
+    -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.19537 &nbsp;root default
+    -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01
+    1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000
+    -7 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker03
+    2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.2 &nbsp; &nbsp; &nbsp; &nbsp;down &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp;1.00000</li>
+</ol>
+<p>Add the replacement node to the OpenShift cluster.</p>
+<p>From the <strong>Lab Environment</strong> tab, identify the node in the <code>Stopped</code> state and start it by clicking <strong>Action</strong> → <strong>Start</strong>.</p>
+<p>The node is preconfigured to register with the OpenShift cluster when it starts.</p>
+<figure class="table" style="width:1120.41px;">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;">
+          <figure class="image"><img src="https://static.ole.redhat.com/rhls/courses/do370-4.16/images/troubleshoot/replace/assets/start_vm.png"></figure>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>Switch to the other terminal. Use the <code>watch</code> command to monitor new certificate signing requests (CSRs) from the compute node. It might take a few minutes for the node to start and request those certificates.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>watch oc get csr</strong></code>
+    NAME &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; SIGNERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;... &nbsp; CONDITION
+    csr-6wxpj &nbsp; 47s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Pending
+    csr-k7ckz &nbsp; 58s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Pending
+    <i>...output omitted...</i>
+  </li>
+</ol>
+<p>Use <strong>Ctrl</strong>+<strong>C</strong> to exit the <code>watch</code> command.</p>
+<p>Approve all the pending CSRs by using the following <code>oc adm</code> command. Use the CSR names from the previous step.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc adm certificate approve csr-</strong><i><strong>6wxpj</strong></i><strong> csr-</strong><i><strong>k7ckz</strong></i></code>
+    certificatesigningrequest.certificates.k8s.io/csr-<code><i><strong>6wxpj</strong></i></code> approved
+    certificatesigningrequest.certificates.k8s.io/csr-<code><i><strong>k7ckz</strong></i></code> approved</li>
+</ol>
+<h3><strong>Note</strong></h3>
+<p>Alternatively, use the following command to approve all pending certificates:</p>
+<p>[student@workstation ~]$ <code><strong>oc get csr -o go-template='
+      &nbsp;{{range .items}}
+      &nbsp; &nbsp;{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}
+      &nbsp;{{end}}' \
+      &nbsp;| xargs --no-run-if-empty oc adm certificate approve</strong></code></p>
+<p>Repeat the operation for the kubelet certificate.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get csr</strong></code>
+    NAME &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; &nbsp; SIGNERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;... &nbsp; CONDITION
+    csr-6wxpj &nbsp; 2m35s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Approved,Issued
+    <code><strong>csr-8kdt7</strong></code> &nbsp; 1s &nbsp; &nbsp; &nbsp;kubernetes.io/kubelet-serving &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ... &nbsp;&nbsp;<code><strong>Pending</strong></code>
+    csr-k7ckz &nbsp; 2m46s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Approved,Issued
+    <i>...output omitted...</i>[student@workstation ~]$ <code><strong>oc adm certificate approve csr-</strong><i><strong>8kdt7</strong></i></code>
+    certificatesigningrequest.certificates.k8s.io/csr-<code><i><strong>8kdt7</strong></i></code> approved
+  </li>
+</ol>
+<p>Wait until the node joins the cluster and is in the <code>Ready</code> state.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get nodes</strong></code>
+    NAME &nbsp; &nbsp; &nbsp; STATUS &nbsp; ROLES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; &nbsp; VERSION
+    master01 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
+    master02 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
+    master03 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
+    worker01 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6d21h &nbsp; v1.29.6+aba1e8d
+    <code><strong>worker02</strong></code> &nbsp;&nbsp;<code><strong>Ready</strong></code> &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3m37s &nbsp; v1.29.6+aba1e8d
+    worker03 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28h &nbsp; &nbsp; v1.29.6+aba1e8d
+  </li>
+</ol>
+<p>Configure the node storage with the local storage operator and add the node to the OpenShift Data Foundation cluster.</p>
+<p>In the lab environment, the local volume operator automatically creates volumes on all compute nodes. Confirm that the local volume operator creates another PV in the cluster.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get pv | grep localvolume</strong></code>
+    local-pv-1ed0f222 &nbsp; &nbsp;100Gi ... &nbsp;Bound &nbsp; &nbsp; &nbsp;... &nbsp; localvolume &nbsp; &lt;unset&gt; &nbsp; 22h
+    local-pv-409ad507 &nbsp; &nbsp;100Gi ... &nbsp;Bound &nbsp; &nbsp; &nbsp;... &nbsp; localvolume &nbsp; &lt;unset&gt; &nbsp; 22h
+    local-pv-542ff0d8 &nbsp; &nbsp;100Gi ... &nbsp;<code><strong>Available</strong></code> &nbsp;... &nbsp; localvolume &nbsp; &lt;unset&gt; &nbsp; 6m27s</li>
+</ol>
+<p>Add the <code>cluster.ocs.openshift.io/openshift-storage</code> label to the node to deploy the OpenShift Data Foundation components on that node. Use the node name from the previous steps.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc label no </strong><i><strong>worker02</strong></i><strong> \
+        &nbsp;cluster.ocs.openshift.io/openshift-storage=""</strong></code>
+    node/<code><i><strong>worker02</strong></i></code> labeled</li>
+</ol>
+<p>Confirm that OpenShift schedules the OpenShift Data Foundation components on the node. Wait until both the OSD and MON pods are running.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get po -owide | grep </strong><i><strong>worker02</strong></i></code>
+    csi-cephfsplugin-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2/2 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02
+    csi-nfsplugin-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2/2 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02
+    csi-rbdplugin-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;3/3 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02
+    rook-ceph-crashcollector-<code><i><strong>worker02</strong></i></code>-... &nbsp; &nbsp;1/1 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02
+    rook-ceph-exporter-<code><i><strong>worker02</strong></i></code>-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1/1 &nbsp; &nbsp; Running &nbsp; &nbsp;... &nbsp; worker02
+    <code><strong>rook-ceph-mon</strong></code>-a-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>2/2</strong></code> &nbsp; &nbsp;&nbsp;<code><strong>Running</strong></code> &nbsp; &nbsp;... &nbsp; worker02
+    <code><strong>rook-ceph-osd</strong></code>-1-... &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>2/2</strong></code> &nbsp; &nbsp;&nbsp;<code><strong>Running</strong></code> &nbsp; &nbsp;... &nbsp; worker02
+    rook-ceph-osd-prepare-localvolume-... &nbsp; &nbsp;0/1 &nbsp; &nbsp; Completed &nbsp;... &nbsp; worker02
+  </li>
+</ol>
+<p>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that both the new node and the associated Ceph OSD are in the OpenShift Data Foundation configuration.</p>
+<ol>
+  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code>
+    ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF
+    -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.29306 &nbsp;root default
+    -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01
+    1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000
+    -5 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host <code><strong>worker02</strong></code>
+    0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>osd.0</strong></code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>up</strong></code> &nbsp; 1.00000 &nbsp;1.00000
+    -7 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker03
+    2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.2 &nbsp; &nbsp; &nbsp; &nbsp;down &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp;1.00000</li>
+</ol>
+<p>Notice that one OSD (in this example, OSD 2 on the <code>worker03</code> node) is still down. You fix that OSD later in this exercise.</p>
+<p>In the Ceph toolbox terminal, review the cluster status with the <code>ceph status</code> command.</p>
+<ol>
+  <li>sh-5.1$ <code><strong>ceph status</strong></code>
+    &nbsp;cluster:
+    &nbsp; &nbsp;id: &nbsp; &nbsp; 1b1e995b-f561-4699-b0f7-dbe012a15339
+    &nbsp; &nbsp;health: <code><strong>HEALTH_WARN</strong></code>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1 OSDs or CRUSH {nodes, device-classes} have {NOUP,NODOWN,NOIN,NOOUT} flags set
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Degraded data redundancy: 2306/6918 objects degraded (33.333%), 85 pgs degraded, 201 pgs undersized
+
+    &nbsp;services:
+    &nbsp; &nbsp;mon: 3 daemons, quorum a,d,e (age 14m)
+    &nbsp; &nbsp;mgr: a(active, since 38m), standbys: b
+    &nbsp; &nbsp;mds: 1/1 daemons up, 1 hot standby
+    &nbsp; &nbsp;osd: 3 osds: 2 up (since 14m), 2 in (since 14m)
+    &nbsp; &nbsp;rgw: 1 daemon active (1 hosts, 1 zones)
+
+    &nbsp;data:
+    &nbsp; &nbsp;volumes: 1/1 healthy
+    &nbsp; &nbsp;pools: &nbsp; 13 pools, 201 pgs
+    &nbsp; &nbsp;objects: 2.31k objects, 7.2 GiB
+    &nbsp; &nbsp;usage: &nbsp; 14 GiB used, 186 GiB / 200 GiB avail
+    &nbsp; &nbsp;pgs: &nbsp; &nbsp; 2306/6918 objects degraded (33.333%)
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<code><strong>116 active+undersized</strong></code>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<code><strong>85 &nbsp;active+undersized+degraded</strong></code>
+
+    &nbsp;io:
+    &nbsp; &nbsp;client: &nbsp; 938 B/s rd, 2.0 KiB/s wr, 1 op/s rd, 0 op/s wr</li>
+</ol>
+<p>Two OSDs are online and all PGs are active. Applications can now access the data. The cluster is still in the <code>HEALTH_WARN</code> state, because one OSD is down and the data redundancy does not meet the expectation of three replicas.</p>
+<p>Identify the remaining issue on the storage cluster.</p>
+<p>Switch to the other terminal. Verify the status of the Ceph pods.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get pods -o wide | grep -v Running</strong></code>
+    NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; READY &nbsp; STATUS &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RESTARTS &nbsp; &nbsp; &nbsp;... &nbsp;NODE
+    rook-ceph-osd-2-765...ctw &nbsp;1/2 &nbsp; &nbsp; CrashLoopBackOff &nbsp;23 (109s ago) ... &nbsp;worker03
+    <i>...output omitted...</i>
+  </li>
+</ol>
+<p>View the Ceph OSD logs by using the <code>oc logs</code> command with the pod name from the previous step.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc logs rook-ceph-osd-2-</strong><i><strong>76555bfd4f-j9ctw</strong></i></code>
+    <i>...output omitted...</i>
+    debug ... &nbsp;0 set uid:gid to 167:167 (ceph:ceph)
+    debug ... &nbsp;0 ceph version 18.2.1-229.el9cp (ef6...4e0) reef (stable), process ceph-osd, pid 8991
+    debug ... &nbsp;0 pidfile_write: ignore empty --pid-file
+    debug ... -1 bluestore(/var/lib/ceph/osd/ceph-2/block) _read_bdev_label bad crc on label, expected 3299287777 != actual 2703911461
+    debug ... -1 &nbsp;<code><strong>* ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-2: (2) No such file or directory</strong></code>
+    + wait 8991
+    + ceph_osd_rc=1
+    + '[' 1 -eq 0 ']'
+    + exit 1
+  </li>
+</ol>
+<p>The Ceph OSD is failing due to a missing block device.</p>
+<p>In the Ceph toolbox terminal, retrieve the device name that is attached to the faulty OSD by using the <code>ceph device ls-by-daemon</code> command. Use the OSD identifier from the previous steps.</p>
+<ol>
+  <li>sh-5.1$ <code><strong>ceph device ls-by-daemon osd.</strong><i><strong>2</strong></i></code>
+    DEVICE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;HOST:DEV &nbsp; &nbsp; &nbsp;EXPECTED FAILURE
+    QEMU_QEMU_HARDDISK_de3c...d413e &nbsp;<code><strong>worker03:sdb</strong></code></li>
+</ol>
+<p>In the other terminal, connect to the compute node from the previous step by using the <code>oc debug</code> command and list the available disk devices in the <code>/dev/</code> path.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc debug no/worker03 -- chroot /host ls -1 /dev/sd</strong></code>*
+    <i>...output omitted...</i>
+    /dev/sda
+    /dev/sda1
+    /dev/sda2
+    /dev/sda3
+    /dev/sda4
+    <i>...output omitted...</i>
+  </li>
+</ol>
+<p>The <code>sdb</code>, <code>sdc</code>, and <code>sdd</code> devices are not listed and are no longer available on that compute node.</p>
+<h3><strong>Note</strong></h3>
+<p>In the lab environment, the OpenShift cluster runs in a virtualized environment. For this exercise, the virtual disks were removed to simulate a hardware failure. Restarting the node re-creates empty disks.</p>
+<p>On a bare metal environment, a hardware failure can take many forms and might require more investigation to find the root cause and the device that needs replacing.</p>
+<p>Remove the faulty OSD from OpenShift Data Foundation.</p>
+<p>Use the ODF CLI to remove the Ceph OSD by using the <code>odf purge-osd</code> command. Use the OSD identifier from the previous step.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>odf purge-osd </strong><i><strong>2</strong></i></code>
+    Warning: Are you sure you want to purge osd.2? The OSD is <code><strong>not</strong></code> safe to destroy. This may lead to data loss. If you are sure the OSD should be purged, enter 'yes-force-destroy-osd'
+    <code><strong>yes-force-destroy-osd</strong></code>
+    Info: Running purge osd command
+    <i>...output omitted...</i>
+    ... I | op-k8sutil: removing deployment rook-ceph-osd-2 if it exists
+    ... I | op-k8sutil: Removed deployment rook-ceph-osd-2
+    ... I | op-k8sutil: "rook-ceph-osd-2" still found. waiting...
+    ... I | op-k8sutil: confirmed rook-ceph-osd-2 does not exist
+    ... I | cephosd: removing the osd prepare job "rook-ceph-osd-prepare-localvolume-0-data-1pbzwp"
+    ... I | cephosd: <code><strong>removing the OSD PVC "localvolume-0-data-1pbzwp"</strong></code>
+    ... I | cephosd: purging osd.2
+    ... I | cephosd: attempting to remove host "worker03" from crush map if not in use
+    ... I | cephosd: removed CRUSH host "worker03"
+    ... I | cephosd: no ceph crash to silence
+    ... I | cephosd: <code><strong>completed removal of OSD 2</strong></code>
+  </li>
+</ol>
+<p>Note the OSD PVC name, which you use in the next step to clean up the persistent volume.</p>
+<p>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that the node and the associated Ceph OSD are removed from the OpenShift Data Foundation configuration.</p>
+<ol>
+  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code>
+    ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF
+    -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.29306 &nbsp;root default
+    -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01
+    1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000
+    -5 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker02
+    0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000</li>
+</ol>
+<p>Switch to the other terminal. Verify that the Ceph OSD PV is in the <code>released</code> state. Use the PVC name from the previous step.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get pv | grep localvolume-0-data-</strong><i><strong>1pbzwp</strong></i></code>
+    local-pv-<code><i><strong>34c29212</strong></i></code> &nbsp;... &nbsp;<code><strong>Released</strong></code> &nbsp; openshift-storage/localvolume-0-data-<code><i><strong>1pbzwp</strong></i></code></li>
+</ol>
+<p>Delete the persistent volume from the previous step.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc delete pv local-pv-</strong><i><strong>34c29212</strong></i></code>
+    persistentvolume "local-pv-<code><i><strong>34c29212</strong></i></code>" deleted</li>
+</ol>
+<p>Replace the faulty drive on the compute node. In this lab environment, restarting the node re-creates the missing devices.</p>
+<p>Set the node into maintenance mode by using the <code>oc adm drain</code> command. Use the node name from the previous steps.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc adm drain no/</strong><i><strong>worker03</strong></i><strong> \
+        &nbsp;--ignore-daemonsets --delete-emptydir-data</strong></code>
+    node/<code><i><strong>worker03</strong></i></code> cordoned
+    ...
+    node/<code><i><strong>worker03</strong></i></code> drained</li>
+</ol>
+<p>Reboot the compute node by using the <code>oc debug</code> command. Use the node name from the previous steps.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc debug no/</strong><i><strong>worker03</strong></i><strong> -- chroot /host shutdown -r</strong></code>
+    <i>...output omitted...</i>
+    Reboot scheduled for Thu 2024-09-05 14:19:09 UTC, use 'shutdown -c' to cancel.
+
+    <i>...output omitted...</i>
+  </li>
+</ol>
+<p>Wait until the node restarts and is in the <code>Ready</code> state. During the shutdown sequence, the node goes into the <code>NotReady</code> state. It takes a few minutes for the node to reboot.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>watch oc get no </strong><i><strong>worker03</strong></i></code>
+    worker03 &nbsp; Ready,SchedulingDisabled &nbsp; worker &nbsp; &nbsp;24h &nbsp; v1.29.6+aba1e8d</li>
+</ol>
+<p>Use <strong>Ctrl</strong>+<strong>C</strong> to exit the <code>watch</code> command.</p>
+<p>Remove the maintenance mode.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc adm uncordon </strong><i><strong>worker03</strong></i></code>
+    node/<code><i><strong>worker03</strong></i></code> uncordoned</li>
+</ol>
+<p>Monitor the recovery process of the storage cluster.</p>
+<p>Wait until the local storage operator provisions the new disk.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get pv | grep localvolume</strong></code>
+    local-pv-<code><i><strong>34c29212</strong></i></code> ... &nbsp;<code><strong>Available</strong></code>
+    local-pv-<code><i><strong>9149825c</strong></i></code> ... &nbsp;Bound &nbsp; &nbsp; &nbsp; openshift-storage/localvolume-0-data-...
+    local-pv-<code><i><strong>d986efa1</strong></i></code> ... &nbsp;Bound &nbsp; &nbsp; &nbsp; openshift-storage/localvolume-0-data-...</li>
+</ol>
+<h3><strong>Note</strong></h3>
+<p>The volume might be in the <code>Bound</code> state in your environment if the Ceph OSD is already created.</p>
+<p>Wait until OpenShift Data Foundation creates the Ceph OSD pod.</p>
+<ol>
+  <li>[student@workstation ~]$ <code><strong>oc get pod -l app=rook-ceph-osd \
+        &nbsp;--field-selector spec.nodeName=</strong><i><strong>worker03</strong></i></code>
+    rook-ceph-osd-0-d99d4ddf8-zhdx7 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2/2 &nbsp; &nbsp; Running &nbsp; &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;32s
+    rook-ceph-osd-prepare-localvolume-0-data-52qhxx-gm5mb &nbsp; 0/1 &nbsp; &nbsp; Completed &nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;19m</li>
+</ol>
+<p>In the Ceph toolbox terminal, verify the status of the storage cluster and monitor the recovery progress.</p>
+<h3><strong>Note</strong></h3>
+<p>If you lost access to the Ceph toolbox, you can reconnect with the following command:</p>
+<p>[student@workstation ~]$ &nbsp;<code><strong>oc rsh deploy/rook-ceph-tools</strong></code>
+  sh-5.1$</p>
+<ol>
+  <li>sh-5.1$ <code><strong>ceph status -w</strong></code>
+    &nbsp;cluster:
+    &nbsp; &nbsp;id: &nbsp; &nbsp; 1b1e995b-f561-4699-b0f7-dbe012a15339
+    &nbsp; &nbsp;health: HEALTH_WARN
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Degraded data redundancy: 8143/24486 objects degraded (33.256%), 39 pgs degraded, 39 pgs undersized
+
+    <i>...output omitted...</i>
+
+    ... [WRN] Health check update: Degraded data redundancy: 8143/24486 objects degraded (33.256%), 39 pgs degraded, 39 pgs undersized (PG_DEGRADED)
+    ... [WRN] Health check update: Degraded data redundancy: 7976/24486 objects degraded (32.574%), 38 pgs degraded, 39 pgs undersized (PG_DEGRADED)
+    <i>...output omitted...</i>
+    ... [WRN] Health check update: Degraded data redundancy: 238/24486 objects degraded (0.972%), 2 pgs degraded, 2 pgs undersized (PG_DEGRADED)
+    ... [WRN] Health check update: Degraded data redundancy: 136/24486 objects degraded (0.555%), 2 pgs degraded, 2 pgs undersized (PG_DEGRADED)
+    ... [WRN] Health check update: Degraded data redundancy: 1 pg undersized (PG_DEGRADED)
+    ... [INF] Health check cleared: PG_DEGRADED (was: Degraded data redundancy: 1 pg undersized)
+    ... [INF] <code><strong>Cluster is now healthy</strong></code>
+    ... [INF] overall <code><strong>HEALTH_OK</strong></code>
+  </li>
+</ol>
+<figure class="image image_resized" style="width:15px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+<ol>
+  <li>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1 filesystem is degraded
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1 MDSs report slow metadata IOs
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1/3 mons down, quorum d,e
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>2 osds down</strong></code>&nbsp;</li>
+</ol>
+<figure class="image image_resized" style="width:15px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+<ol>
+  <li>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1 OSDs or CRUSH {nodes, device-classes} have {NOUP,NODOWN,NOIN,NOOUT} flags set
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;2 hosts (2 osds) down
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Reduced data availability: 201 pgs inactive
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Degraded data redundancy: 4612/6918 objects degraded (66.667%), 85 pgs degraded, 201 pgs undersized
+
+    &nbsp;services:
+    &nbsp; &nbsp;mon: 3 daemons, quorum d,e (age 7m), out of quorum: a
+    &nbsp; &nbsp;mgr: a(active, since 4h), standbys: b
+    &nbsp; &nbsp;mds: 1/1 daemons up, 1 standby
+    &nbsp; &nbsp;osd: 3 osds: 1 up (since 5m), 3 in (since 4h)
+    &nbsp; &nbsp;rgw: 1 daemon active (1 hosts, 1 zones)
+
+    &nbsp;data:
+    &nbsp; &nbsp;volumes: 0/1 healthy, 1 recovering
+    &nbsp; &nbsp;pools: &nbsp; 13 pools, 201 pgs
+    &nbsp; &nbsp;objects: 2.31k objects, 7.2 GiB
+    &nbsp; &nbsp;usage: &nbsp; 17 GiB used, 283 GiB / 300 GiB avail
+    &nbsp; &nbsp;pgs: &nbsp; &nbsp;&nbsp;<code><strong>100.000% pgs not active</strong></code>&nbsp;</li>
+</ol>
+<figure class="image image_resized" style="width:15px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+<ol>
+  <li>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 4612/6918 objects degraded (66.667%)
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 116 undersized+peered
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 85 &nbsp;undersized+degraded+peered</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
