@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T15:52:12.704Z
+date: 2026-03-28T15:55:51.118Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -82,7 +82,7 @@ dateCreated: 2026-03-26T18:37:50.593Z
         <td style="padding:0px;vertical-align:top;">
           <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
         </td>
-        <td style="padding:0px;vertical-align:top;">The cluster reports multiple errors. The cluster status might change from <code>HEALTH_WARN</code> to <code>HEALTH_ERR</code> after a while in the lab environment if the problem is not solved.</td>
+        <td style="padding:0px;vertical-align:top;">The cluster reports multiple errors.&nbsp;</td>
       </tr>
       <tr>
         <td style="padding:0px;vertical-align:top;">
@@ -99,39 +99,17 @@ dateCreated: 2026-03-26T18:37:50.593Z
     </tbody>
   </table>
 </figure>
-<p>List the Ceph OSD with the <code>ceph osd tree</code> command.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code>
-    ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF
-    -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.29306 &nbsp;root default
-    -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01
-    1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000
-    -5 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host <code><strong>worker02</strong></code>
-    0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>osd.0</strong></code> &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>down</strong></code> &nbsp; 1.00000 &nbsp;1.00000
-    -7 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host <code><strong>worker03</strong></code>
-    2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>osd.2</strong></code> &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>down</strong></code> &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp;1.00000</li>
-</ol>
-<p>In this example, the two failing Ceph OSDs are OSD 0 on <code>worker02</code> and OSD 2 on <code>worker03</code>. The node and OSD ID might be different in your environment.</p>
-<p>Because only one Ceph OSD is available and the Ceph cluster cannot replicate the data, the cluster disables access to all PGs until at least two OSDs are back online.</p>
-<p>Identify the storage node that the OpenShift administrator removed from the cluster and remove it from the OpenShift Data Foundation configuration.</p>
-<p>Switch to the other terminal. List the OpenShift nodes and compare the result with the previous step.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get nodes</strong></code>
-    NAME &nbsp; &nbsp; &nbsp; STATUS &nbsp; ROLES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; &nbsp; VERSION
-    master01 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
-    master02 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
-    master03 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d
-    worker01 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6d21h &nbsp; v1.29.6+aba1e8d
-    worker03 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28h &nbsp; &nbsp; v1.29.6+aba1e8d</li>
-</ol>
-<p>In this example, the <code>worker02</code> node is no longer shown as part of the OpenShift cluster, although it is still in the OpenShift Data Foundation configuration. The missing node might be different in your environment.</p>
-<p>List the Ceph OSD deployment that is attached to the missing node that you identified in the previous step. In this example, the missing node is <code>worker02</code>.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get deployments -l app=rook-ceph-osd \
-        &nbsp;-l failure-domain=</strong><i><strong>worker02</strong></i></code>
-    NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;READY &nbsp; UP-TO-DATE &nbsp; AVAILABLE &nbsp; AGE
-    rook-ceph-osd-<code><i><strong>0</strong></i></code> &nbsp; 0/1 &nbsp; &nbsp; 1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 21h</li>
-</ol>
+<ul>
+  <li>List the Ceph OSD with the <code>ceph osd tree</code> command.</li>
+</ul>
+<pre><code class="language-plaintext">sh-5.1$ ceph osd tree
+</code></pre>
+<ul>
+  <li>List the Ceph OSD deployment that is attached to the missing node.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc get deployments -l app=rook-ceph-osd \
+  -l failure-domain=node_name
+</code></pre>
 <p>Confirm that the OSD ID matches the one that you identified in the previous steps. Review the output from the Ceph toolbox terminal if needed.</p>
 <p>Scale down the Ceph OSD deployment from the previous step.</p>
 <ol>
