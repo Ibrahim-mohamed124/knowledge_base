@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:11:04.171Z
+date: 2026-03-28T16:11:50.989Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -124,14 +124,14 @@ dateCreated: 2026-03-26T18:37:50.593Z
   <li>Confirm that the job removes the Ceph OSD from the OpenShift Data Foundation configuration.</li>
 </ul>
 <pre><code class="language-plaintext">[student@workstation ~]$ oc logs -l job-name=ocs-osd-removal-job -f \  | grep -i "'completed removal'  cephosd: completed removal of OSD"</code></pre>
-<p>Clean up the <code>ocs-osd-removal-job</code> resource.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc delete job ocs-osd-removal-job</strong></code> job.batch "ocs-osd-removal-job" deleted</li>
-</ol>
-<p>In the Ceph toolbox terminal, confirm that the failing node and the associated Ceph OSD are removed from the configuration by using the <code>ceph osd tree</code> command.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code> ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.19537 &nbsp;root default -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01 1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000 -7 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker03 2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.2 &nbsp; &nbsp; &nbsp; &nbsp;down &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp;1.00000</li>
-</ol>
+<ul>
+  <li>Clean up the <code>ocs-osd-removal-job</code> resource.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc delete job ocs-osd-removal-job job.batch "ocs-osd-removal-job" </code></pre>
+<ul>
+  <li>In the Ceph toolbox terminal, confirm that the failing node and the associated Ceph OSD are removed from the configuration by using the <code>ceph osd tree</code> command.</li>
+</ul>
+<pre><code class="language-plaintext">sh-5.1$ ceph osd tree </code></pre>
 <p>Add the replacement node to the OpenShift cluster.</p>
 <p>From the <strong>Lab Environment</strong> tab, identify the node in the <code>Stopped</code> state and start it by clicking <strong>Action</strong> → <strong>Start</strong>.</p>
 <p>The node is preconfigured to register with the OpenShift cluster when it starts.</p>
