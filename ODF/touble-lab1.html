@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:36:00.819Z
+date: 2026-03-28T16:37:24.698Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -245,38 +245,23 @@ Info: Successfully set 'full-ratio' to '0.9'</code></pre>
 </blockquote>
 <pre><code class="language-plaintext">sh-5.1$ ceph health
 </code></pre>
-<p>Use the <code>rbd sparsify</code> command to reclaim space on the RBD volume from the previous step. Use the RBD image name from the previous step.</p>
-<p>The command takes a few minutes to complete.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>rbd sparsify ocs-storagecluster-cephblockpool/</strong><i><strong>csi-vol-cb9c...5703</strong></i></code>
-    Image sparsify: 100% complete...done.</li>
-</ol>
-<h3><strong>Note</strong></h3>
-<p>If the command fails with the following message, then wait a few seconds and try to run the command again.</p>
-<p>should_complete: encountered error: (30) Read-only file system</p>
-<p>Verify the capacity usage of the RBD images. Notice the lower capacity usage of the RBD image from which you reclaimed space.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>rbd du -p ocs-storagecluster-cephblockpool</strong></code>
-    NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;PROVISIONED &nbsp;<code><strong>USED</strong></code>
-    csi-vol-090305c3-2d5e-4c1d-9cc0-0b9bac480984 &nbsp; &nbsp; &nbsp; 50 GiB &nbsp;356 MiB
-    csi-vol-cb9c6927-61dd-42a4-b49a-a6f0e5b65703 &nbsp; &nbsp; &nbsp;100 GiB &nbsp;<code><strong>272 MiB</strong></code>
-    &lt;TOTAL&gt; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 150 GiB &nbsp;628 MiB</li>
-</ol>
-<p>Verify the storage cluster's capacity usage, which is now below 75%.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph osd df</strong></code>
-    ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; REWEIGHT &nbsp;SIZE &nbsp; &nbsp; RAW USE &nbsp;... &nbsp;AVAIL &nbsp; &nbsp;<code><strong>%USE</strong></code> &nbsp;...
-    2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; 1.00000 &nbsp;100 GiB &nbsp; 60 GiB &nbsp;... &nbsp; 40 GiB &nbsp;60.21 ...
-    1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; 1.00000 &nbsp;100 GiB &nbsp; 60 GiB &nbsp;... &nbsp; 40 GiB &nbsp;60.17 ...
-    0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; 1.00000 &nbsp;100 GiB &nbsp; 60 GiB &nbsp;... &nbsp; 40 GiB &nbsp;60.19 ...
-    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TOTAL &nbsp;300 GiB &nbsp;181 GiB &nbsp;... &nbsp;119 GiB &nbsp;<code><strong>60.19</strong></code>
-    MIN/MAX VAR: 1.00/1.00 &nbsp;STDDEV: 0.02</li>
-</ol>
-<p>Verify the cluster health and confirm that the cluster is now in the <code>HEALTH_OK</code> state.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph health</strong></code>
-    HEALTH_OK</li>
-</ol>
+<ul>
+  <li>Use the <code>rbd sparsify</code> command to reclaim space on the RBD volume from the previous step. Use the RBD image name from the previous step.</li>
+</ul>
+<pre><code class="language-plaintext">sh-5.1$ rbd sparsify ocs-storagecluster-cephblockpool/csi-vol-cb9c...5703
+Image sparsify: 100% complete...done.</code></pre>
+<blockquote>
+  <p>If the command fails with the following message, then wait a few seconds and try to run the command again.</p>
+</blockquote>
+<p>&nbsp;</p>
+<ul>
+  <li>Verify the capacity usage of the RBD images. Notice the lower capacity usage of the RBD image from which you reclaimed space.</li>
+</ul>
+<pre><code class="language-plaintext">sh-5.1$ rbd du -p ocs-storagecluster-cephblockpool
+NAME                                          PROVISIONED  USED
+csi-vol-090305c3-2d5e-4c1d-9cc0-0b9bac480984       50 GiB  356 MiB
+csi-vol-cb9c6927-61dd-42a4-b49a-a6f0e5b65703      100 GiB  272 MiB
+&lt;TOTAL&gt;                                           150 GiB  628 MiB</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
