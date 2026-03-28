@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:19:34.209Z
+date: 2026-03-28T16:21:14.224Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -159,7 +159,7 @@ dateCreated: 2026-03-26T18:37:50.593Z
 <ul>
   <li>View the Ceph OSD logs by using the <code>oc logs</code> command with the pod name from the previous step.</li>
 </ul>
-<pre><code class="language-plaintext">[student@workstation ~]$ oc logs rook-ceph-osd-2-76555bfd4f-j9ctw 
+<pre><code class="language-plaintext">[student@workstation ~]$ oc logs rook-ceph-osd-x 
 ...output omitted... 
 debug ...  0 set uid:gid to 167:167 (ceph:ceph) 
 debug ...  0 ceph version 18.2.1-229.el9cp (ef6...4e0) reef (stable), process ceph-osd, pid 8991 
@@ -172,19 +172,15 @@ debug ... -1  * ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-
   <li>In the Ceph toolbox terminal, retrieve the device name that is attached to the faulty OSD by using the <code>ceph device ls-by-daemon</code> command. Use the OSD identifier from the previous steps.</li>
 </ul>
 <pre><code class="language-plaintext">sh-5.1$ ceph device ls-by-daemon osd.x</code></pre>
-<p>In the other terminal, connect to the compute node from the previous step by using the <code>oc debug</code> command and list the available disk devices in the <code>/dev/</code> path.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc debug no/worker03 -- chroot /host ls -1 /dev/sd</strong></code>* <i>...output omitted...</i> /dev/sda /dev/sda1 /dev/sda2 /dev/sda3 /dev/sda4 <i>...output omitted...</i></li>
-</ol>
-<p>The <code>sdb</code>, <code>sdc</code>, and <code>sdd</code> devices are not listed and are no longer available on that compute node.</p>
-<h3><strong>Note</strong></h3>
-<p>In the lab environment, the OpenShift cluster runs in a virtualized environment. For this exercise, the virtual disks were removed to simulate a hardware failure. Restarting the node re-creates empty disks.</p>
-<p>On a bare metal environment, a hardware failure can take many forms and might require more investigation to find the root cause and the device that needs replacing.</p>
-<p>Remove the faulty OSD from OpenShift Data Foundation.</p>
-<p>Use the ODF CLI to remove the Ceph OSD by using the <code>odf purge-osd</code> command. Use the OSD identifier from the previous step.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>odf purge-osd </strong><i><strong>2</strong></i></code> Warning: Are you sure you want to purge osd.2? The OSD is <code><strong>not</strong></code> safe to destroy. This may lead to data loss. If you are sure the OSD should be purged, enter 'yes-force-destroy-osd' <code><strong>yes-force-destroy-osd</strong></code> Info: Running purge osd command <i>...output omitted...</i> ... I | op-k8sutil: removing deployment rook-ceph-osd-2 if it exists ... I | op-k8sutil: Removed deployment rook-ceph-osd-2 ... I | op-k8sutil: "rook-ceph-osd-2" still found. waiting... ... I | op-k8sutil: confirmed rook-ceph-osd-2 does not exist ... I | cephosd: removing the osd prepare job "rook-ceph-osd-prepare-localvolume-0-data-1pbzwp" ... I | cephosd: <code><strong>removing the OSD PVC "localvolume-0-data-1pbzwp"</strong></code> ... I | cephosd: purging osd.2 ... I | cephosd: attempting to remove host "worker03" from crush map if not in use ... I | cephosd: removed CRUSH host "worker03" ... I | cephosd: no ceph crash to silence ... I | cephosd: <code><strong>completed removal of OSD 2</strong></code></li>
-</ol>
+<ul>
+  <li>In the other terminal, connect to the compute node from the previous step by using the <code>oc debug</code> command and list the available disk devices in the <code>/dev/</code> path.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc debug no/worker03 -- chroot /host ls -1 /dev/sd* </code></pre>
+<p>&nbsp;</p>
+<ul>
+  <li>Remove the faulty OSD from OpenShift Data Foundation, by using the job template</li>
+</ul>
+<p>&nbsp;</p>
 <p>Note the OSD PVC name, which you use in the next step to clean up the persistent volume.</p>
 <p>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that the node and the associated Ceph OSD are removed from the OpenShift Data Foundation configuration.</p>
 <ol>
