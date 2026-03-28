@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:15:21.650Z
+date: 2026-03-28T16:18:21.226Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -146,25 +146,26 @@ dateCreated: 2026-03-26T18:37:50.593Z
   <li>Confirm that OpenShift schedules the OpenShift Data Foundation components on the node. Wait until both the OSD and MON pods are running.</li>
 </ul>
 <pre><code class="language-plaintext">[student@workstation ~]$ oc get po -owide | grep node_name</code></pre>
-<p>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that both the new node and the associated Ceph OSD are in the OpenShift Data Foundation configuration.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph osd tree</strong></code> ID &nbsp;CLASS &nbsp;WEIGHT &nbsp; TYPE NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;STATUS &nbsp;REWEIGHT &nbsp;PRI-AFF -1 &nbsp; &nbsp; &nbsp; &nbsp; 0.29306 &nbsp;root default -3 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker01 1 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.1 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;up &nbsp; 1.00000 &nbsp;1.00000 -5 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host <code><strong>worker02</strong></code> 0 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>osd.0</strong></code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<code><strong>up</strong></code> &nbsp; 1.00000 &nbsp;1.00000 -7 &nbsp; &nbsp; &nbsp; &nbsp; 0.09769 &nbsp; &nbsp; &nbsp;host worker03 2 &nbsp; &nbsp;ssd &nbsp;0.09769 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;osd.2 &nbsp; &nbsp; &nbsp; &nbsp;down &nbsp; &nbsp; &nbsp; &nbsp; 0 &nbsp;1.00000</li>
-</ol>
-<p>Notice that one OSD (in this example, OSD 2 on the <code>worker03</code> node) is still down. You fix that OSD later in this exercise.</p>
-<p>In the Ceph toolbox terminal, review the cluster status with the <code>ceph status</code> command.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph status</strong></code> &nbsp;cluster: &nbsp; &nbsp;id: &nbsp; &nbsp; 1b1e995b-f561-4699-b0f7-dbe012a15339 &nbsp; &nbsp;health: <code><strong>HEALTH_WARN</strong></code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1 OSDs or CRUSH {nodes, device-classes} have {NOUP,NODOWN,NOIN,NOOUT} flags set &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Degraded data redundancy: 2306/6918 objects degraded (33.333%), 85 pgs degraded, 201 pgs undersized &nbsp;services: &nbsp; &nbsp;mon: 3 daemons, quorum a,d,e (age 14m) &nbsp; &nbsp;mgr: a(active, since 38m), standbys: b &nbsp; &nbsp;mds: 1/1 daemons up, 1 hot standby &nbsp; &nbsp;osd: 3 osds: 2 up (since 14m), 2 in (since 14m) &nbsp; &nbsp;rgw: 1 daemon active (1 hosts, 1 zones) &nbsp;data: &nbsp; &nbsp;volumes: 1/1 healthy &nbsp; &nbsp;pools: &nbsp; 13 pools, 201 pgs &nbsp; &nbsp;objects: 2.31k objects, 7.2 GiB &nbsp; &nbsp;usage: &nbsp; 14 GiB used, 186 GiB / 200 GiB avail &nbsp; &nbsp;pgs: &nbsp; &nbsp; 2306/6918 objects degraded (33.333%) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<code><strong>116 active+undersized</strong></code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<code><strong>85 &nbsp;active+undersized+degraded</strong></code> &nbsp;io: &nbsp; &nbsp;client: &nbsp; 938 B/s rd, 2.0 KiB/s wr, 1 op/s rd, 0 op/s wr</li>
-</ol>
-<p>Two OSDs are online and all PGs are active. Applications can now access the data. The cluster is still in the <code>HEALTH_WARN</code> state, because one OSD is down and the data redundancy does not meet the expectation of three replicas.</p>
-<p>Identify the remaining issue on the storage cluster.</p>
-<p>Switch to the other terminal. Verify the status of the Ceph pods.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get pods -o wide | grep -v Running</strong></code> NAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; READY &nbsp; STATUS &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RESTARTS &nbsp; &nbsp; &nbsp;... &nbsp;NODE rook-ceph-osd-2-765...ctw &nbsp;1/2 &nbsp; &nbsp; CrashLoopBackOff &nbsp;23 (109s ago) ... &nbsp;worker03 <i>...output omitted...</i></li>
-</ol>
-<p>View the Ceph OSD logs by using the <code>oc logs</code> command with the pod name from the previous step.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc logs rook-ceph-osd-2-</strong><i><strong>76555bfd4f-j9ctw</strong></i></code> <i>...output omitted...</i> debug ... &nbsp;0 set uid:gid to 167:167 (ceph:ceph) debug ... &nbsp;0 ceph version 18.2.1-229.el9cp (ef6...4e0) reef (stable), process ceph-osd, pid 8991 debug ... &nbsp;0 pidfile_write: ignore empty --pid-file debug ... -1 bluestore(/var/lib/ceph/osd/ceph-2/block) _read_bdev_label bad crc on label, expected 3299287777 != actual 2703911461 debug ... -1 &nbsp;<code><strong>* ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-2: (2) No such file or directory</strong></code> + wait 8991 + ceph_osd_rc=1 + '[' 1 -eq 0 ']' + exit 1</li>
-</ol>
+<ul>
+  <li>In the Ceph toolbox terminal, list the Ceph OSD with the <code>ceph osd tree</code> command. Confirm that both the new node and the associated Ceph OSD are in the OpenShift Data Foundation configuration.</li>
+</ul>
+<pre><code class="language-plaintext">sh-5.1$ ceph osd tree </code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h4>Identify the remaining issue on the storage cluster.</h4>
+<ul>
+  <li>Switch to the other terminal. Verify the status of the Ceph pods.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc get pods -o wide | grep -v Running </code></pre>
+<ul>
+  <li>View the Ceph OSD logs by using the <code>oc logs</code> command with the pod name from the previous step.</li>
+</ul>
+<pre><code class="language-plaintext">[student@workstation ~]$ oc logs rook-ceph-osd-2-76555bfd4f-j9ctw 
+...output omitted... 
+debug ...  0 set uid:gid to 167:167 (ceph:ceph) 
+debug ...  0 ceph version 18.2.1-229.el9cp (ef6...4e0) reef (stable), process ceph-osd, pid 8991 
+debug ...  0 pidfile_write: ignore empty --pid-file debug ... -1 bluestore(/var/lib/ceph/osd/ceph-2/block) _read_bdev_label bad crc on label, expected 3299287777 != actual 2703911461 
+debug ... -1  * ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-2: (2) No such file or directory + wait 8991 + ceph_osd_rc=1 + '[' 1 -eq 0 ']' + exit 1</code></pre>
 <p>The Ceph OSD is failing due to a missing block device.</p>
 <p>In the Ceph toolbox terminal, retrieve the device name that is attached to the faulty OSD by using the <code>ceph device ls-by-daemon</code> command. Use the OSD identifier from the previous steps.</p>
 <ol>
