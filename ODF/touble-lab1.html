@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:23:48.961Z
+date: 2026-03-28T16:24:05.871Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -190,7 +190,9 @@ debug ... -1  * ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-
   <li>Delete the persistent volume from the previous step.</li>
 </ul>
 <pre><code class="language-plaintext">[student@workstation ~]$ oc delete pv </code></pre>
-<p>Replace the faulty drive on the compute node. In this lab environment, restarting the node re-creates the missing devices.</p>
+<blockquote>
+  <p>Replace the faulty drive on the compute node.&nbsp;</p>
+</blockquote>
 <p>Set the node into maintenance mode by using the <code>oc adm drain</code> command. Use the node name from the previous steps.</p>
 <ol>
   <li>[student@workstation ~]$ <code><strong>oc adm drain no/</strong><i><strong>worker03</strong></i><strong> \ &nbsp;--ignore-daemonsets --delete-emptydir-data</strong></code> node/<code><i><strong>worker03</strong></i></code> cordoned ... node/<code><i><strong>worker03</strong></i></code> drained</li>
