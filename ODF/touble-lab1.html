@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:18:33.895Z
+date: 2026-03-28T16:19:34.209Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -151,7 +151,6 @@ dateCreated: 2026-03-26T18:37:50.593Z
 </ul>
 <pre><code class="language-plaintext">sh-5.1$ ceph osd tree </code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
 <h4>Identify the remaining issue on the storage cluster.</h4>
 <ul>
   <li>Switch to the other terminal. Verify the status of the Ceph pods.</li>
@@ -169,10 +168,10 @@ debug ... -1  * ERROR: *unable to open OSD superblock on /var/lib/ceph/osd/ceph-
 <blockquote>
   <p>The Ceph OSD is failing due to a missing block device.</p>
 </blockquote>
-<p>In the Ceph toolbox terminal, retrieve the device name that is attached to the faulty OSD by using the <code>ceph device ls-by-daemon</code> command. Use the OSD identifier from the previous steps.</p>
-<ol>
-  <li>sh-5.1$ <code><strong>ceph device ls-by-daemon osd.</strong><i><strong>2</strong></i></code> DEVICE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;HOST:DEV &nbsp; &nbsp; &nbsp;EXPECTED FAILURE QEMU_QEMU_HARDDISK_de3c...d413e &nbsp;<code><strong>worker03:sdb</strong></code></li>
-</ol>
+<ul>
+  <li>In the Ceph toolbox terminal, retrieve the device name that is attached to the faulty OSD by using the <code>ceph device ls-by-daemon</code> command. Use the OSD identifier from the previous steps.</li>
+</ul>
+<pre><code class="language-plaintext">sh-5.1$ ceph device ls-by-daemon osd.x</code></pre>
 <p>In the other terminal, connect to the compute node from the previous step by using the <code>oc debug</code> command and list the available disk devices in the <code>/dev/</code> path.</p>
 <ol>
   <li>[student@workstation ~]$ <code><strong>oc debug no/worker03 -- chroot /host ls -1 /dev/sd</strong></code>* <i>...output omitted...</i> /dev/sda /dev/sda1 /dev/sda2 /dev/sda3 /dev/sda4 <i>...output omitted...</i></li>
