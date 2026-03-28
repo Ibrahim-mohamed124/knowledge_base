@@ -2,7 +2,7 @@
 title: trouble-lab1
 description: 
 published: true
-date: 2026-03-28T16:11:50.989Z
+date: 2026-03-28T16:12:53.117Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-26T18:37:50.593Z
@@ -132,30 +132,7 @@ dateCreated: 2026-03-26T18:37:50.593Z
   <li>In the Ceph toolbox terminal, confirm that the failing node and the associated Ceph OSD are removed from the configuration by using the <code>ceph osd tree</code> command.</li>
 </ul>
 <pre><code class="language-plaintext">sh-5.1$ ceph osd tree </code></pre>
-<p>Add the replacement node to the OpenShift cluster.</p>
-<p>From the <strong>Lab Environment</strong> tab, identify the node in the <code>Stopped</code> state and start it by clicking <strong>Action</strong> → <strong>Start</strong>.</p>
-<p>The node is preconfigured to register with the OpenShift cluster when it starts.</p>
-<p>&nbsp;</p>
-<p>Switch to the other terminal. Use the <code>watch</code> command to monitor new certificate signing requests (CSRs) from the compute node. It might take a few minutes for the node to start and request those certificates.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>watch oc get csr</strong></code> NAME &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; SIGNERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;... &nbsp; CONDITION csr-6wxpj &nbsp; 47s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Pending csr-k7ckz &nbsp; 58s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Pending <i>...output omitted...</i></li>
-</ol>
-<p>Use <strong>Ctrl</strong>+<strong>C</strong> to exit the <code>watch</code> command.</p>
-<p>Approve all the pending CSRs by using the following <code>oc adm</code> command. Use the CSR names from the previous step.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc adm certificate approve csr-</strong><i><strong>6wxpj</strong></i><strong> csr-</strong><i><strong>k7ckz</strong></i></code> certificatesigningrequest.certificates.k8s.io/csr-<code><i><strong>6wxpj</strong></i></code> approved certificatesigningrequest.certificates.k8s.io/csr-<code><i><strong>k7ckz</strong></i></code> approved</li>
-</ol>
-<h3><strong>Note</strong></h3>
-<p>Alternatively, use the following command to approve all pending certificates:</p>
-<p>[student@workstation ~]$ <code><strong>oc get csr -o go-template=' &nbsp;{{range .items}} &nbsp; &nbsp;{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}} &nbsp;{{end}}' \ &nbsp;| xargs --no-run-if-empty oc adm certificate approve</strong></code></p>
-<p>Repeat the operation for the kubelet certificate.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get csr</strong></code> NAME &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; &nbsp; SIGNERNAME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;... &nbsp; CONDITION csr-6wxpj &nbsp; 2m35s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Approved,Issued <code><strong>csr-8kdt7</strong></code> &nbsp; 1s &nbsp; &nbsp; &nbsp;kubernetes.io/kubelet-serving &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ... &nbsp;&nbsp;<code><strong>Pending</strong></code> csr-k7ckz &nbsp; 2m46s &nbsp; kubernetes.io/kube-apiserver-client-kubelet &nbsp; ... &nbsp; Approved,Issued <i>...output omitted...</i>[student@workstation ~]$ <code><strong>oc adm certificate approve csr-</strong><i><strong>8kdt7</strong></i></code> certificatesigningrequest.certificates.k8s.io/csr-<code><i><strong>8kdt7</strong></i></code> approved</li>
-</ol>
-<p>Wait until the node joins the cluster and is in the <code>Ready</code> state.</p>
-<ol>
-  <li>[student@workstation ~]$ <code><strong>oc get nodes</strong></code> NAME &nbsp; &nbsp; &nbsp; STATUS &nbsp; ROLES &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AGE &nbsp; &nbsp; VERSION master01 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d master02 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d master03 &nbsp; Ready &nbsp; &nbsp;control-plane,master &nbsp; 48d &nbsp; &nbsp; v1.29.6+aba1e8d worker01 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 6d21h &nbsp; v1.29.6+aba1e8d <code><strong>worker02</strong></code> &nbsp;&nbsp;<code><strong>Ready</strong></code> &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 3m37s &nbsp; v1.29.6+aba1e8d worker03 &nbsp; Ready &nbsp; &nbsp;worker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 28h &nbsp; &nbsp; v1.29.6+aba1e8d</li>
-</ol>
+<h6>Add the replacement node to the OpenShift cluster.</h6>
 <p>Configure the node storage with the local storage operator and add the node to the OpenShift Data Foundation cluster.</p>
 <p>In the lab environment, the local volume operator automatically creates volumes on all compute nodes. Confirm that the local volume operator creates another PV in the cluster.</p>
 <ol>
