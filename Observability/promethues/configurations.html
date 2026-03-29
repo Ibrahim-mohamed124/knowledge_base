@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-12T19:27:29.572Z
+date: 2026-03-29T18:32:00.628Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -226,12 +226,23 @@ if __name__  == '__main__':
       <li>the name should always follow the snake_case</li>
       <li>the first word is for the package that will be monitored (http, postgres, node)</li>
       <li>the second part should be the metric name</li>
-      <li>the last part should be the measuring unit (expect the counters) &nbsp;</li>
+      <li>the last part should be the measuring unit (expect the counters)</li>
     </ul>
   </li>
 </ul>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>Service discovery&nbsp;</h4>
+<ul>
+  <li>Automatically discover targets to scrape<ul>
+      <li>Like cloud providers, kubernetes, and others</li>
+    </ul>
+  </li>
+  <li>type:<ul>
+      <li>static: manually entering the targets</li>
+      <li>file: import a list of targets from a json or yaml file</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
