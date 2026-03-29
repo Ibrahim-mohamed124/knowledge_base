@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-29T18:53:12.441Z
+date: 2026-03-29T18:54:16.901Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -254,7 +254,7 @@ if __name__  == '__main__':
    relabel_configs:  &gt;&gt; Relabeling occurs before the scrape occurs and only has access to the labels added by the serice discovery
       source_labels: [label, labels2]
       regex: value of the original label;value of the other label
-      action: keep|drop|replace(need the replacement and target_label to specifiy the value and the name of the new label)
+      action: keep|drop|labeldrop|labelkeep|replace(need the replacement and target_label to specifiy the value and the name of the new label)
       seperator: to change the delimiter
     metric_relabel_configs:Relabeling occurs aftr the scrape
    ec2_sd_configs:
