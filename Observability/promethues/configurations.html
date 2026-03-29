@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-29T18:42:33.069Z
+date: 2026-03-29T18:45:02.708Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -248,6 +248,11 @@ if __name__  == '__main__':
 <h6>Relabeling</h6>
 <ul>
   <li>allows to classify or filter promethues targets by <mark class="marker-yellow">rewriting their label sets</mark>, which have been discovered automatically.&nbsp;</li>
-  <li>&nbsp;</li>
 </ul>
+<pre><code class="language-plaintext">scrape_configs:
+ - job_name: EC2
+   relabel_configs:  &gt;&gt; Relabeling occurs before the scrape occurs and only has access to the labels added by the serice discovery
+   metric_relabel_configs:Relabeling occurs aftr the scrape
+   ec2_sd_configs:
+   </code></pre>
 <p>&nbsp;</p>
