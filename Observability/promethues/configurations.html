@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-30T18:31:46.280Z
+date: 2026-03-30T18:36:00.755Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -285,7 +285,20 @@ if __name__  == '__main__':
     file_sd_configs:
       - files:
         - file-sd.json</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To replace a label with another one</li>
+</ul>
+<pre><code class="language-plaintext">scrape_configs:
+  - job_name: "test"
+    relabel_configs:
+      - source: [env, team]
+        regex: (.*);(.*) &gt;&gt; the prenthases to make the values as  variables called in replacement attribute as $x
+        action: replace
+        target_label: info &gt;&gt; new label name
+        replacement: $1-$2 &gt;&gt; the value of the new label
+    file_sd_configs:
+      - files:
+        - file-sd.json</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
