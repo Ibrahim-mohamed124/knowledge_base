@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-29T18:57:50.089Z
+date: 2026-03-30T18:31:46.280Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -259,4 +259,41 @@ if __name__  == '__main__':
     metric_relabel_configs:Relabeling occurs aftr the scrape
    ec2_sd_configs:
    </code></pre>
+<p>Relabeling demo:</p>
+<ul>
+  <li>Relabel configs: <mark class="marker-yellow">before the scrape</mark>&nbsp;</li>
+  <li>To scrape targets of a specific environment&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">scrape_configs:
+  - job_name: "test"
+    relabel_configs:
+      - source: [env]
+        regex: prod 
+        action: keep
+    file_sd_configs:
+      - files:
+        - file-sd.json</code></pre>
+<ul>
+  <li>To scrape all the environment expect one</li>
+</ul>
+<pre><code class="language-plaintext">scrape_configs:
+  - job_name: "test"
+    relabel_configs:
+      - source: [env]
+        regex: prod 
+        action: drop
+    file_sd_configs:
+      - files:
+        - file-sd.json</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
