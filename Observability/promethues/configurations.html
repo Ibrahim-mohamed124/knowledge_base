@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-30T18:43:09.933Z
+date: 2026-03-30T19:08:16.560Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -267,7 +267,7 @@ if __name__  == '__main__':
 <pre><code class="language-plaintext">scrape_configs:
   - job_name: "test"
     relabel_configs:
-      - source: [env]
+      - source_labels: [env]
         regex: prod 
         action: keep
     file_sd_configs:
@@ -279,7 +279,7 @@ if __name__  == '__main__':
 <pre><code class="language-plaintext">scrape_configs:
   - job_name: "test"
     relabel_configs:
-      - source: [env]
+      - source_labels: [env]
         regex: prod 
         action: drop
     file_sd_configs:
@@ -291,7 +291,7 @@ if __name__  == '__main__':
 <pre><code class="language-plaintext">scrape_configs:
   - job_name: "test"
     relabel_configs:
-      - source: [env, team]
+      - source_labels: [env, team]
         regex: (.*);(.*) &gt;&gt; the prenthases to make the values as  variables called in replacement attribute as $x
         action: replace
         target_label: info &gt;&gt; new label name
