@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-30T18:41:45.356Z
+date: 2026-03-30T18:43:09.933Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -319,7 +319,7 @@ if __name__  == '__main__':
     - source_labels: [__name__]
       regex: node_cpu_seconds_total
       action: replace
-      replacement: new_name
+      replacement: host_cpu_seconds_total
       target_label: __name__
     file_sd_configs:
       - files:
