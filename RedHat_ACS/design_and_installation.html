@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:22:18.357Z
+date: 2026-03-31T14:25:13.989Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -291,8 +291,26 @@ provided-password</code></pre>
   <pre><code class="language-plaintext">oc -n stackrox extract secrets/central-htpasswd \
   --keys password --to -</code></pre>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>specifying the pod's placement and resource allocation attributes.</li>
+</ul>
+<pre><code class="language-plaintext">  central:
+    nodeSelector:
+      node-role.kubernetes.io/infra: ""    
+    tolerations:
+      - key: infra-node
+        operator: Exists
+        effect: NoSchedule                 
+    resources:
+      requests:
+        memory: 18Gi
+        cpu: 6
+      limits:
+        memory: 48Gi
+        cpu: 12</code></pre>
+<ul>
+  <li>If the database is provided externally, then you must set the <code>spec.central.db.connectionString</code> attribute to point to the correct server and <code>spec.central.db.passwordSecret.name</code> attribute to point to a secret in the same namespace as Central, where a <code>password</code> key stores the database password</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
