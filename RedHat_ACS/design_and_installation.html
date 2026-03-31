@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:20:51.592Z
+date: 2026-03-31T13:22:28.715Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -42,6 +42,10 @@ dateCreated: 2026-03-31T09:35:26.671Z
       </li>
       <li>scanner (stackrox scanner) and its database<ul>
           <li>The database service that Scanner uses stores image vulnerability data on an ephemeral volume for caching purposes.</li>
+        </ul>
+      </li>
+      <li>scanner V4<ul>
+          <li>Scanner V4. The later scanner version consists of <mark class="marker-yellow">three components:</mark> Indexer, Matcher, and a database service. The database service in Scanner V4 uses a persistent volume. Scanner V4 adds support for new package databases and better vulnerability recognition to the existing StackRox Scanner service.</li>
         </ul>
       </li>
     </ol>
