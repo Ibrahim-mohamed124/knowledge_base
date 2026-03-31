@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:44:30.744Z
+date: 2026-03-31T13:49:52.503Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -61,7 +61,14 @@ dateCreated: 2026-03-31T09:35:26.671Z
 <blockquote>
   <p>In secured clusters that use registries that are not accessible to the central Scanner, you must also deploy the Scanner component. One such example is when the internal OpenShift image registry in a secured cluster is not exposed for external access.</p>
 </blockquote>
-<p>&nbsp;</p>
+<p>Sensor :</p>
+<ol>
+  <li>distribute active policies to Admission Controller and to Collector.</li>
+  <li>Sensor requests any data for policies and vulnerability definitions from Central.</li>
+</ol>
+<blockquote>
+  <p>If Scanner is deployed in a secured cluster, then Sensor sends vulnerability definitions to it.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
