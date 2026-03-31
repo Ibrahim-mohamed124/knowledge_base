@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:25:13.989Z
+date: 2026-03-31T14:25:55.370Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -310,8 +310,16 @@ provided-password</code></pre>
         cpu: 12</code></pre>
 <ul>
   <li>If the database is provided externally, then you must set the <code>spec.central.db.connectionString</code> attribute to point to the correct server and <code>spec.central.db.passwordSecret.name</code> attribute to point to a secret in the same namespace as Central, where a <code>password</code> key stores the database password</li>
+  <li>change the <code>spec.central.db.persistence</code> attribute</li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">spec:
+  central:
+    db:
+      persistence:
+        persistentVolumeClaim:
+          claimName: central-db-claim     
+          size: 200Gi                     
+          storageClassName: ssd-storage   </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
