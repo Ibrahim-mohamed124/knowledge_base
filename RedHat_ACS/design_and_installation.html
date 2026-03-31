@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:12:59.831Z
+date: 2026-03-31T14:13:28.882Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -240,6 +240,22 @@ spec:
 <ul>
   <li>enable OpenShift monitoring integration by setting the <code>monitoring</code> attribute and configuring monitoring endpoints of any services to expose.</li>
 </ul>
+<pre><code class="language-plaintext">spec:
+  monitoring:
+    openshift:
+      enabled: true
+
+  central:
+    monitoring:
+      exposeEndpoint: Enabled
+
+  scanner:
+    monitoring:
+      exposeEndpoint: Enabled
+
+  scannerV4:
+    monitoring:
+      exposeEndpoint: Disabled</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
