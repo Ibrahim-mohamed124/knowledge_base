@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:56:40.464Z
+date: 2026-03-31T13:57:23.938Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -65,6 +65,7 @@ dateCreated: 2026-03-31T09:35:26.671Z
 <ol>
   <li>distribute active policies to Admission Controller and to Collector.</li>
   <li>Sensor requests any data for policies and vulnerability definitions from Central.</li>
+  <li>Sensor forwards to Central any data that Admission Controller and Collector report to it.</li>
 </ol>
 <blockquote>
   <p>If Scanner is deployed in a secured cluster, then Sensor sends vulnerability definitions to it.</p>
