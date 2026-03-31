@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-03-31T17:41:25.000Z
+date: 2026-03-31T17:46:11.903Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -22,7 +22,7 @@ dateCreated: 2026-01-25T17:14:44.674Z
 </ul>
 <pre><code class="language-plaintext">openssl rsa -in $CANAME.key -pubout</code></pre>
 <p>&nbsp; 3. create a root certificate for CA&nbsp;</p>
-<pre><code class="language-plaintext">openssl req -x509 -new -nodes -key $CANAME.key -sha256 -days 1826 -out ca.crt</code></pre>
+<pre><code class="language-plaintext">openssl req -x509 -new -nodes -key $CANAME.key -sha256 -days 1826 -out $CANAME.crt</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>provide the data about the organization</li>
