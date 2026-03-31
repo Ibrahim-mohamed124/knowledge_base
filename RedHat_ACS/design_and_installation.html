@@ -1,0 +1,17 @@
+<!--
+title: Architecture of Red Hat Advanced Cluster Security
+description: 
+published: true
+date: 2026-03-31T09:35:26.671Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-03-31T09:35:26.671Z
+-->
+
+<p>Kubernetes security can be implemented on four levels:</p>
+<ol>
+  <li>In development, by integrating security testing early in <mark class="marker-yellow">continuous integration pipelines. (code)</mark></li>
+  <li>In distribution, by ensuring that the software supply chain is safe by verifying the<mark class="marker-yellow"> integrity of workload components. (containers and registry)</mark></li>
+  <li>At deployment time, by <mark class="marker-yellow">validating workload attributes such as security parameters</mark>, and by using approved container images. (container, cluster)</li>
+  <li>At runtime, by monitoring all elements of container runtime: the host operating system, network, storage, and container runtime; and ultimately restricting container activity to only sanctioned processes that are prevented from accessing unauthorized resources and from engaging in disallowed network communication.( container, cluster, cloud)</li>
+</ol>
