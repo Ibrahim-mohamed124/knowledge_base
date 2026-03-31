@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:00:41.831Z
+date: 2026-03-31T14:09:10.491Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -161,6 +161,81 @@ spec:
         replicas: 1
     scannerComponent: Enabled
 </code></pre>
+<h3>Implementation</h3>
+<ul>
+  <li>Install the RHACS operator in the <mark class="marker-yellow">rhacs-operator</mark> namespace</li>
+  <li>Create the stackrox project</li>
+  <li>Create the central CR</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: platform.stackrox.io/v1alpha1
+kind: Central
+metadata:
+  name: central
+  namespace: stackrox
+spec:
+  central:
+    exposure:
+      route:
+        enabled: true           1
+  scanner:
+    analyzer:
+      scaling:
+        autoScaling: Enabled    2
+        minReplicas: 1
+        maxReplicas: 3
+  scannerV4:
+    indexer:
+      scaling:
+        autoScaling: Enabled    3
+        minReplicas: 1
+        maxReplicas: 3
+    matcher:
+      scaling:
+        autoScaling: Disabled   4
+        replicas: 2
+    scannerComponent: Enabled   5
+            </code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">You can use a load balancer, a node port service, or a route mechanism to expose the Central web interface. Use the <code>route</code> mechanism for OpenShift Container Platform.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">For Scanner and Scanner V4, you can control the minimum and maximum number of replicas that any component is allowed to create.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/4.svg" alt="4"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">In contrast, if you want to prevent autoscaling, then set the <code>autoScaling</code> attribute to <code>Disabled</code> and provide a fixed number of replicas. In this example, the Scanner V4 matcher component runs with two pods.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/5.svg" alt="5"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Scanner V4 is not automatically deployed even if it is defined. You must set this attribute to <code>Enabled</code> to deploy and use Scanner V4.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
