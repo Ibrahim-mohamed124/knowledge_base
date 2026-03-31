@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:58:39.340Z
+date: 2026-03-31T14:00:41.831Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -91,7 +91,76 @@ dateCreated: 2026-03-31T09:35:26.671Z
     </ol>
   </li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: platform.stackrox.io/v1alpha1
+kind: Central
+metadata:
+  name: central
+  namespace: stackrox
+spec:
+  central:
+    db:
+      isEnabled: Default
+      persistence:
+        persistentVolumeClaim:
+          claimName: central-db
+          size: 10Gi
+      resources:
+        limits:
+          cpu: 1
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+    exposure:
+      route:
+        enabled: true
+    resources:
+      limits:
+        cpu: 1
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+  monitoring:
+    openshift:
+      enabled: false
+  network:
+    policies: Enabled
+  scanner:
+    scannerComponent: Enabled
+  scannerV4:
+    db:
+      resources:
+        limits:
+          cpu: 1
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+    indexer:
+      resources:
+        limits:
+          cpu: 500m
+          memory: 1Gi
+        requests:
+          cpu: 250m
+          memory: 512Mi
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+    matcher:
+      resources:
+        limits:
+          cpu: 1
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          memory: 768Mi
+      scaling:
+        autoScaling: Disabled
+        replicas: 1
+    scannerComponent: Enabled
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
