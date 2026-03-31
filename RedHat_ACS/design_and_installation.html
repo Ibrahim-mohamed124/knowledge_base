@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:16:09.549Z
+date: 2026-03-31T14:21:46.880Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -277,7 +277,15 @@ spec:
       route:
         enabled: true
         host: custom-hostname.my.cluster.com</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>supply a custom password</li>
+</ul>
+<pre><code class="language-plaintext">oc -n stackrox create secret generic provided-password \
+  --from-literal password=verysecretpassword
+secret/provided-password created
+
+[user@host ~]$ yq r central.yaml spec.central.adminPasswordSecret.name
+provided-password</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
