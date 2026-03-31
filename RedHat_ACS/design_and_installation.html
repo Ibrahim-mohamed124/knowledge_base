@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:14:16.943Z
+date: 2026-03-31T14:16:09.549Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -267,7 +267,16 @@ spec:
           -----BEGIN CERTIFICATE-----
 
           -----END CERTIFICATE-----</code></pre>
-<p>&nbsp;</p>
+<p>Central Settings:</p>
+<ul>
+  <li>To use a custom hostname</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  central:
+    exposure:
+      route:
+        enabled: true
+        host: custom-hostname.my.cluster.com</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
