@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:38:09.909Z
+date: 2026-03-31T13:42:05.631Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -38,10 +38,12 @@ dateCreated: 2026-03-31T09:35:26.671Z
   <li>Central service has two components&nbsp;<ol>
       <li>central and its database<ul>
           <li>The database service that Central uses stores all configuration settings and runtime data on a persistent volume.</li>
+          <li>Central can validate workloads during deployment, and can monitor pods during operations, across the entire secured infrastructure.&nbsp;</li>
         </ul>
       </li>
       <li>scanner (stackrox scanner) and its database<ul>
           <li>The database service that Scanner uses stores image vulnerability data on an ephemeral volume for caching purposes.</li>
+          <li>The Scanner service collects configuration and software package information from every layer of every image that it is requested to scan.</li>
         </ul>
       </li>
       <li>scanner V4<ul>
