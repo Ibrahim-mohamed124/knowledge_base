@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:12:22.400Z
+date: 2026-03-31T14:12:59.831Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -227,11 +227,9 @@ spec:
   </table>
 </figure>
 <p>Global settings:</p>
+<p>The global Central component settings control internet connectivity and several integration aspects of the underlying platform.</p>
 <ul>
-  <li>&nbsp; -The global Central component settings control internet connectivity and several integration aspects of the underlying platform.<ul>
-      <li>The default deployment mode for the RHACS control plane is <code>Online</code>, which means that it works with external services from Red&nbsp;Hat to periodically download and update vulnerability definitions and collector eBPF modules. To deploy it in offline mode, you must set the <code>connectivityPolicy</code> attribute to <code>Offline</code>.</li>
-    </ul>
-  </li>
+  <li>The default deployment mode for the RHACS control plane is <code>Online</code>, which means that it works with external services from Red&nbsp;Hat to periodically download and update vulnerability definitions and collector eBPF modules. To deploy it in offline mode, you must set the <code>connectivityPolicy</code> attribute to <code>Offline</code>.</li>
 </ul>
 <pre><code class="language-plaintext">spec:
   egress:
@@ -239,7 +237,9 @@ spec:
   central:
     telemetry:
       enabled: false</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>enable OpenShift monitoring integration by setting the <code>monitoring</code> attribute and configuring monitoring endpoints of any services to expose.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
