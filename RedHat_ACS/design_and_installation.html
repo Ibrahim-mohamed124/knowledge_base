@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:57:23.938Z
+date: 2026-03-31T13:58:39.340Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -83,7 +83,14 @@ dateCreated: 2026-03-31T09:35:26.671Z
   <li>uses policies to determine what kind of behavior is acceptable and reports to Sensor any policy violations.</li>
   <li>terminate offending pods if it is configured to do so. When Sensor requests it, Collector pods can scan their nodes and workloads for compliance.</li>
 </ol>
-<p>&nbsp;</p>
+<ul>
+  <li>You can install RHACS with any of these methods:<ol>
+      <li>A Kubernetes operator</li>
+      <li>Helm charts</li>
+      <li>The <code>roxctl</code> utility</li>
+    </ol>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
