@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-03-31T17:50:01.905Z
+date: 2026-03-31T19:56:19.826Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -44,4 +44,12 @@ subjectAltName = @alt_names
 DNS.1 = localhost</code></pre>
 <p>&nbsp; &nbsp;6. sign the CSR using the CA private key&nbsp;</p>
 <pre><code class="language-plaintext"> openssl x509 -req -in $MYCERT.csr -CA  $CANAME.crt -CAkey  $CANAME.key -CAcreateserial -out promethues.crt -days 10 -sha256 -extfile $MYCERT.ext</code></pre>
-<p>&nbsp;</p>
+<p>&nbsp; 7. to renew an expired certificate with the same CA</p>
+<ul>
+  <li><strong>Generate a new Key and CSR:</strong></li>
+</ul>
+<pre><code class="language-plaintext">openssl x509 -req -in portworx_new.csr -CA $CANAME.crt -CAkey $CANAME.key -CAcreateserial -out portworx_new.crt -days 365 -sha256 -extfile anyname.ext</code></pre>
+<ul>
+  <li>Sign it with the CA</li>
+</ul>
+<pre><code class="language-plaintext">openssl req -new -nodes -newkey rsa:4096 -keyout portworx_new.key -out portworx_new.csr</code></pre>
