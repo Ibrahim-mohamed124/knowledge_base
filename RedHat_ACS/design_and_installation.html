@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:13:28.882Z
+date: 2026-03-31T14:14:16.943Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -256,7 +256,17 @@ spec:
   scannerV4:
     monitoring:
       exposeEndpoint: Disabled</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>provide a list of CA certificates to trust, in the <code>tls.additionalCAs</code> attribute.</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  tls:
+    additionalCAs:
+      - name: internal-ca
+        content: |
+          -----BEGIN CERTIFICATE-----
+
+          -----END CERTIFICATE-----</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
