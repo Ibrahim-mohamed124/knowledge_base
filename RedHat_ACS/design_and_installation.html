@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:42:05.631Z
+date: 2026-03-31T13:44:30.744Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -54,8 +54,13 @@ dateCreated: 2026-03-31T09:35:26.671Z
   </li>
 </ul>
 <figure class="image image_resized" style="width:100%;"><img src="/redhat_acs/central-architecture.svg"></figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Secured Cluster Services Architecture</h6>
+<ul>
+  <li>RHACS Secured Cluster services consist of three required components: Sensor, Admission Controller, and Collector.</li>
+</ul>
+<blockquote>
+  <p>In secured clusters that use registries that are not accessible to the central Scanner, you must also deploy the Scanner component. One such example is when the internal OpenShift image registry in a secured cluster is not exposed for external access.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
