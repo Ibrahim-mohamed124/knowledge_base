@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T13:50:44.533Z
+date: 2026-03-31T13:56:40.464Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -70,8 +70,18 @@ dateCreated: 2026-03-31T09:35:26.671Z
   <p>If Scanner is deployed in a secured cluster, then Sensor sends vulnerability definitions to it.</p>
 </blockquote>
 <figure class="image image_resized" style="width:100%;"><img src="/redhat_acs/scluster-architecture.svg"></figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>Admission Controller:</p>
+<ol>
+  <li>validation plug-in for the Kubernetes and OpenShift API servers</li>
+  <li>uses the policies from Sensor to detect whether a workload is violating any configuration requirements</li>
+  <li>requests image scan data from Sensor to verify that images that workloads use do not violate any policies</li>
+</ol>
+<p>Collector :</p>
+<ol>
+  <li>monitors running containers for processes that they execute and for network communication that they engage in at the Linux kernel level.</li>
+  <li>uses policies to determine what kind of behavior is acceptable and reports to Sensor any policy violations.</li>
+  <li>terminate offending pods if it is configured to do so. When Sensor requests it, Collector pods can scan their nodes and workloads for compliance.</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
