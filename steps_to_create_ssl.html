@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-03-31T19:58:08.362Z
+date: 2026-04-01T09:24:30.489Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -49,7 +49,20 @@ DNS.1 = localhost</code></pre>
   <li><strong>Generate a new Key and CSR:</strong></li>
 </ul>
 <pre><code class="language-plaintext">openssl req -new -nodes -newkey rsa:4096 -keyout portworx_new.key -out portworx_new.csr</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Sign it with the CA</li>
 </ul>
 <pre><code class="language-plaintext">openssl x509 -req -in portworx_new.csr -CA $CANAME.crt -CAkey $CANAME.key -CAcreateserial -out portworx_new.crt -days 365 -sha256 -extfile anyname.ext</code></pre>
+<h4>useful commands</h4>
+<ul>
+  <li>To read a certificate</li>
+</ul>
+<pre><code class="language-plaintext">openssl x509 -in certificate.crt -text -noout</code></pre>
+<ul>
+  <li><code>openssl x509</code> command to display the SAN attribute of a custom certificate</li>
+</ul>
+<pre><code class="language-plaintext">openssl x509 -ext subjectAltName -noout -in mycert.pem</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
