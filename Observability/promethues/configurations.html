@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-04-01T14:33:48.220Z
+date: 2026-04-01T14:34:45.751Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -380,3 +380,4 @@ WantedBy=multi-user.target
 <p>&lt;job_name&gt; will be the job label of the metrics pushed</p>
 <p>&lt;label&gt;/&lt;value&gt; allows for grouping metrics together to do operations at once</p>
 <pre><code class="language-plaintext">echo "example_metric 444" | curl --data-binary @- http://localhost:9091/metrics/job/db_backup</code></pre>
+<p>--data-binary @- send the data in a binary format and read the data from the standard input</p>
