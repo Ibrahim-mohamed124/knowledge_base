@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:34:49.389Z
+date: 2026-04-01T08:37:58.461Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -425,7 +425,25 @@ spec:
 <pre><code class="language-plaintext">spec:
   imagePullSecrets:
     - name: internal-registry-credentials</code></pre>
-<p>&nbsp;</p>
+<p>Sensor Settings:</p>
+<ul>
+  <li>set its pod placement and resource restriction properties.</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  sensor:
+    nodeSelector:
+      node-role.kubernetes.io/infra: ""    
+    tolerations:
+      - key: infra-node
+        operator: Exists
+        effect: NoSchedule                 
+    resources:
+      requests:                            
+        memory: 6Gi
+        cpu: 3
+      limits:                              
+        memory: 12Gi
+        cpu: 6</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
