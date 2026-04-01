@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T09:22:00.424Z
+date: 2026-04-01T09:26:16.728Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -563,8 +563,23 @@ spec:
 </ul>
 <h6>Configuring Central with a Custom TLS Certificate</h6>
 <ul>
-  <li>&nbsp;</li>
+  <li>The <code>central</code> deployment is configured to mount certificates from secret resources.</li>
 </ul>
+<pre><code class="language-plaintext">oc set volume deployment/central -n stackrox
+ central
+
+  empty directory as central-etc-pki-volume
+    mounted at /etc/pki/ca-trust
+  secret/central-tls as central-certs-volume
+    mounted at /run/secrets/stackrox.io/certs/
+  secret/central-default-tls-cert as central-default-tls-cert-volume  &gt;&gt; here
+    mounted at /run/secrets/stackrox.io/default-tls-cert/
+  secret/central-htpasswd as central-htpasswd-volume
+    mounted at /run/secrets/stackrox.io/htpasswd/
+  secret/central-tls as central-jwt-volume
+    mounted at /run/secrets/stackrox.io/jwt/
+  secret/additional-ca as additional-ca-volume
+    mounted at /usr/local/share/ca-certificates/</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
