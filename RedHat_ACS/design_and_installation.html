@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:30:54.279Z
+date: 2026-04-01T08:31:59.707Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -393,7 +393,13 @@ spec:
   </table>
 </figure>
 <h3>Global Secured Cluster Settings</h3>
-<p>&nbsp;</p>
+<ul>
+  <li>enable OpenShift monitoring integration</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  monitoring:
+    openshift:
+      enabled: true</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
