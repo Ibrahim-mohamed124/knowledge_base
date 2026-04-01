@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-03-30T19:08:16.560Z
+date: 2026-04-01T14:14:50.732Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -261,8 +261,8 @@ if __name__  == '__main__':
    </code></pre>
 <p>Relabeling demo:</p>
 <ul>
-  <li>Relabel configs: <mark class="marker-yellow">before the scrape</mark>&nbsp;</li>
-  <li>To scrape targets of a specific environment&nbsp;</li>
+  <li>Relabel configs: <mark class="marker-yellow">before the scrape</mark></li>
+  <li>To scrape targets of a specific environment</li>
 </ul>
 <pre><code class="language-plaintext">scrape_configs:
   - job_name: "test"
@@ -273,6 +273,7 @@ if __name__  == '__main__':
     file_sd_configs:
       - files:
         - file-sd.json</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To scrape all the environment expect one</li>
 </ul>
@@ -285,6 +286,7 @@ if __name__  == '__main__':
     file_sd_configs:
       - files:
         - file-sd.json</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To replace a label with another one</li>
 </ul>
@@ -299,6 +301,7 @@ if __name__  == '__main__':
     file_sd_configs:
       - files:
         - file-sd.json</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To drop one label</li>
 </ul>
@@ -310,6 +313,7 @@ if __name__  == '__main__':
     file_sd_configs:
       - files:
         - file-sd.json</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To rename a metric:</li>
 </ul>
@@ -324,7 +328,11 @@ if __name__  == '__main__':
     file_sd_configs:
       - files:
         - file-sd.json</code></pre>
-<p>&nbsp;</p>
+<h3>Push gateway</h3>
+<ul>
+  <li>Install the binary</li>
+</ul>
+<pre><code class="language-plaintext">wget https://github.com/prometheus/pushgateway/releases/download/v1.11.2/pushgateway-1.11.2.linux-amd64.tar.gz </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
