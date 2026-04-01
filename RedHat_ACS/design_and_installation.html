@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-03-31T14:25:55.370Z
+date: 2026-04-01T08:01:21.080Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -35,10 +35,10 @@ dateCreated: 2026-03-31T09:35:26.671Z
 </blockquote>
 <h6>Central Services Architecture</h6>
 <ul>
-  <li>Central service has two components&nbsp;<ol>
+  <li>Central service has two components<ol>
       <li>central and its database<ul>
           <li>The database service that Central uses stores all configuration settings and runtime data on a persistent volume.</li>
-          <li>Central can validate workloads during deployment, and can monitor pods during operations, across the entire secured infrastructure.&nbsp;</li>
+          <li>Central can validate workloads during deployment, and can monitor pods during operations, across the entire secured infrastructure.</li>
         </ul>
       </li>
       <li>scanner (stackrox scanner) and its database<ul>
@@ -237,6 +237,7 @@ spec:
   central:
     telemetry:
       enabled: false</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>enable OpenShift monitoring integration by setting the <code>monitoring</code> attribute and configuring monitoring endpoints of any services to expose.</li>
 </ul>
@@ -256,6 +257,7 @@ spec:
   scannerV4:
     monitoring:
       exposeEndpoint: Disabled</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>provide a list of CA certificates to trust, in the <code>tls.additionalCAs</code> attribute.</li>
 </ul>
@@ -277,6 +279,7 @@ spec:
       route:
         enabled: true
         host: custom-hostname.my.cluster.com</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>supply a custom password</li>
 </ul>
@@ -286,10 +289,12 @@ secret/provided-password created
 
 [user@host ~]$ yq r central.yaml spec.central.adminPasswordSecret.name
 provided-password</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>to get the default password</p>
   <pre><code class="language-plaintext">oc -n stackrox extract secrets/central-htpasswd \
   --keys password --to -</code></pre>
+  <p>&nbsp;</p>
 </blockquote>
 <ul>
   <li>specifying the pod's placement and resource allocation attributes.</li>
@@ -308,6 +313,7 @@ provided-password</code></pre>
       limits:
         memory: 48Gi
         cpu: 12</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>If the database is provided externally, then you must set the <code>spec.central.db.connectionString</code> attribute to point to the correct server and <code>spec.central.db.passwordSecret.name</code> attribute to point to a secret in the same namespace as Central, where a <code>password</code> key stores the database password</li>
   <li>change the <code>spec.central.db.persistence</code> attribute</li>
@@ -320,7 +326,20 @@ provided-password</code></pre>
           claimName: central-db-claim     
           size: 200Gi                     
           storageClassName: ssd-storage   </code></pre>
-<p>&nbsp;</p>
+<p>StackRox Scanner Settings:</p>
+<ul>
+  <li>The StackRox Scanner component has two groups of settings: for the <mark class="marker-yellow">Analyzer service and for its database.</mark></li>
+  <li>The main group of Analyzer settings defines the intended number of replicas of the pod and whether to scale those replicas dynamically based on CPU load.</li>
+</ul>
+<pre><code class="language-plaintext">...output omitted...
+spec:
+  scanner:
+    scaling:
+      autoScaling: Enabled    
+      minReplicas: 1          
+      maxReplicas: 3          
+      replicas: 2             
+  ...output omitted...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
