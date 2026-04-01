@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:34:02.461Z
+date: 2026-04-01T08:34:49.389Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -349,6 +349,9 @@ spec:
   <li>Scanner V4 database, however, must be configured with a persistent volume claim. Refer to the Central DB configuration settings for a description of the <code>spec.scannerV4.db.persistence</code> attribute.</li>
 </ul>
 <h3>Importing Secured Clusters into RHACS</h3>
+<blockquote>
+  <p>One notable difference is that for Scanner V4, the Matcher component is not required in secured clusters. No settings for Matcher are therefore available in the <code>SecuredCluster</code> custom resource.</p>
+</blockquote>
 <ol>
   <li>In the central cluster, you must create a set of authentication certificates (an init bundle) that secured clusters use to connect to the Central application.<ul>
       <li>Central also exposes a REST API endpoint to automate generating these bundles for large-scale deployments, by using either the <code>roxctl</code> utility or an HTTP client such as <code>curl</code> or the Ansible <code>ansible.builtin.uri</code> module.</li>
