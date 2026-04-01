@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-04-01T14:36:05.661Z
+date: 2026-04-01T14:46:31.634Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -384,3 +384,8 @@ curl localhost:9091/metric
 example_metric{instance="",job="db_backup"} 444
 </code></pre>
 <p>--data-binary @- send the data in a binary format and read the data from the standard input</p>
+<ul>
+  <li>At post request, only the label with the same name as the new metric will be replaced ( including the labels)</li>
+  <li>At put request, all the metrics in the same group (the label part from the url) will be replaced</li>
+  <li>At delete request, all the metrics in the same group will be deleted</li>
+</ul>
