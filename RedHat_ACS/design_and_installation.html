@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T09:26:16.728Z
+date: 2026-04-01T09:29:51.878Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -580,7 +580,11 @@ spec:
     mounted at /run/secrets/stackrox.io/jwt/
   secret/additional-ca as additional-ca-volume
     mounted at /usr/local/share/ca-certificates/</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Use the <code>central-default-tls-cert</code> secret to store your custom TLS certificate. When this secret does not exist, which is the case by default, the <code>central</code> deployment uses the certificate that the RHACS built-in CA issues.</li>
+</ul>
+<pre><code class="language-plaintext"> oc create secret tls central-default-tls-cert -n stackrox \
+  --cert mycert.pem --key mycert-key.pem</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
