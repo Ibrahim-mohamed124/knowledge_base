@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:07:56.852Z
+date: 2026-04-01T08:08:42.868Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -350,7 +350,10 @@ spec:
 </ul>
 <h3>Importing Secured Clusters into RHACS</h3>
 <ol>
-  <li>In the central cluster, you must create a set of authentication certificates (an init bundle) that secured clusters use to connect to the Central application.</li>
+  <li>In the central cluster, you must create a set of authentication certificates (an init bundle) that secured clusters use to connect to the Central application.<ul>
+      <li>Central also exposes a REST API endpoint to automate generating these bundles for large-scale deployments, by using either the <code>roxctl</code> utility or an HTTP client such as <code>curl</code> or the Ansible <code>ansible.builtin.uri</code> module.</li>
+    </ul>
+  </li>
   <li>In secured clusters, you must apply the init bundle, install the RHACS operator, and create a <code>SecuredCluster</code> custom resource that deploys all the required services.</li>
 </ol>
 <figure class="image image_resized" style="width:100%;"><img src="/redhat_acs/scluster-architecture.svg"></figure>
