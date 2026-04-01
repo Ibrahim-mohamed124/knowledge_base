@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:01:21.080Z
+date: 2026-04-01T08:01:57.350Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -340,6 +340,8 @@ spec:
       maxReplicas: 3          
       replicas: 2             
   ...output omitted...</code></pre>
-<p>&nbsp;</p>
+<blockquote>
+  <p>The Analyzer's database pod must be managed by the operator and uses an <code>emptyDir</code> volume. Therefore, this pod has no database-specific settings in the <code>spec.scanner.db</code> attribute.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
