@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:44:02.411Z
+date: 2026-04-01T08:45:19.362Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -504,5 +504,29 @@ spec:
     </tbody>
   </table>
 </figure>
-<p>&nbsp;</p>
+<ul>
+  <li>the Admission Controller can be configured to automatically contact a Scanner and to request an image scan.</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  admissionControl:
+    contactImageScanners: ScanIfMissing     1
+    timeoutSeconds: 5                       2</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The allowed values are <code>ScanIfMissing</code> and <code>DoNotScanInline</code>.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">If Admission Controller requests external data to be supplied to it, then it waits for up to 5 seconds before it fails. The overall outcome of the operation is still successful even if a scan times out. You can change the default open-fail behavior by reconfiguring the low-level settings of the Admission Controller's validating webhook configuration.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
