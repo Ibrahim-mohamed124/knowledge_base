@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T09:07:32.073Z
+date: 2026-04-01T09:22:00.424Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -340,6 +340,7 @@ spec:
       maxReplicas: 3          
       replicas: 2             
   ...output omitted...</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>The Analyzer's database pod must be managed by the operator and uses an <code>emptyDir</code> volume. Therefore, this pod has no database-specific settings in the <code>spec.scanner.db</code> attribute.</p>
 </blockquote>
@@ -371,6 +372,7 @@ spec:
   clusterLabels:                                              3
     cluster-group: east
     cluster-purpose: development</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -403,8 +405,9 @@ spec:
   monitoring:
     openshift:
       enabled: true</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>provide a list of CA certificates to trust&nbsp;</li>
+  <li>provide a list of CA certificates to trust</li>
 </ul>
 <pre><code class="language-plaintext">spec:
   tls:
@@ -413,12 +416,14 @@ spec:
         content: |
           -----BEGIN CERTIFICATE-----
           -----END CERTIFICATE-----</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>certain types of policies can react to Kubernetes audit log entries.&nbsp;</li>
+  <li>certain types of policies can react to Kubernetes audit log entries.</li>
 </ul>
 <pre><code class="language-plaintext">spec:
   auditLogs:
     collection: Auto</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>provide a list of pull secrets in the <code>spec.imagePullSecrets</code> attribute.</li>
 </ul>
@@ -456,6 +461,7 @@ spec:
     listenOnCreates: false        1
     listenOnUpdates: false        2
     listenOnEvents: false         3</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -486,12 +492,14 @@ spec:
 <pre><code class="language-plaintext">spec:
   admissionControl:
     replicas: 2</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The Admission Controller <code>bypass</code> attribute determines whether the secured cluster that it is running in allows such means of bypassing restrictions of the security policies.</li>
 </ul>
 <pre><code class="language-plaintext">spec:
   admissionControl:
     bypass: BreakGlassAnnotation  1</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -511,6 +519,7 @@ spec:
   admissionControl:
     contactImageScanners: ScanIfMissing     1
     timeoutSeconds: 5                       2</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -536,6 +545,7 @@ spec:
 <pre><code class="language-plaintext">spec:
   perNode:
     taintToleration: AvoidTaints</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>Each Collector pod runs three containers: <code>collector</code>, which collects activity data; <code>compliance</code>, which collects host configuration data during a compliance scan; and <code>nodeInventory</code>, which scans a node's file system.</p>
 </blockquote>
@@ -551,8 +561,10 @@ spec:
 <ul>
   <li>generate a must gather bundle from the web console <strong>Platform Configuration</strong> → <strong>System Health</strong> and click <strong>Generate diagnostic bundle</strong>.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Configuring Central with a Custom TLS Certificate</h6>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
