@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T09:02:58.689Z
+date: 2026-04-01T09:03:22.756Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -545,7 +545,8 @@ spec:
 <pre><code class="language-plaintext">spec:
   perNode:
     collector:
-      collection: CORE_BPF </code></pre>
+      collection: CORE_BPF &gt; CORE_BPF is the default and recommended value. Set this value to NoCollection to turn off activity monitoring for the entire cluster.
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
