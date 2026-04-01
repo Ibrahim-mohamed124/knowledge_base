@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:05:24.732Z
+date: 2026-04-01T08:06:20.953Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -349,3 +349,22 @@ spec:
   <li>Scanner V4 database, however, must be configured with a persistent volume claim. Refer to the Central DB configuration settings for a description of the <code>spec.scannerV4.db.persistence</code> attribute.</li>
 </ul>
 <h3>Importing Secured Clusters into RHACS</h3>
+<ol>
+  <li>In the central cluster, you must create a set of authentication certificates (an init bundle) that secured clusters use to connect to the Central application.</li>
+  <li>In secured clusters, you must apply the init bundle, install the RHACS operator, and create a <code>SecuredCluster</code> custom resource that deploys all the required services.</li>
+</ol>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
