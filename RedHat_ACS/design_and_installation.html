@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:43:14.225Z
+date: 2026-04-01T08:44:02.411Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -489,5 +489,20 @@ spec:
 <ul>
   <li>The Admission Controller <code>bypass</code> attribute determines whether the secured cluster that it is running in allows such means of bypassing restrictions of the security policies.</li>
 </ul>
+<pre><code class="language-plaintext">spec:
+  admissionControl:
+    bypass: BreakGlassAnnotation  1</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The two possible values for this attribute are <code>BreakGlassAnnotation</code> and <code>Disabled</code>. <code>BreakGlassAnnotation</code> enables you to use a special <code>admission.stackrox.io/break-glass</code> annotation to (temporarily) disable enforcement. (The use of break-glass annotation is a policy violation and is always reported.) If you set this attribute to <code>Disabled</code>, then it prevents any kind of bypassing behavior and makes policy enforcement mandatory.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
