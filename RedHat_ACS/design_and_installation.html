@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:37:58.461Z
+date: 2026-04-01T08:40:58.627Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -444,8 +444,42 @@ spec:
       limits:                              
         memory: 12Gi
         cpu: 6</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>Admission Controller Settings:</p>
+<blockquote>
+  <p>The purpose of Admission Controller is to inspect every resource that is created through the API server of the secured cluster. Admission Controller reports the creation and compliance level to Sensor, which in turn forwards that information to Central. Optionally, Admission Controller can prevent creating a resource if it violates policies.</p>
+</blockquote>
+<ul>
+  <li>control what kinds of events in the API server it is intercepting.</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  admissionControl:
+    listenOnCreates: false        1
+    listenOnUpdates: false        2
+    listenOnEvents: false         3</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Do not collect and react to resource creation events. Turning off this setting also implicitly turns off the update function.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Do not listen for resource change (update) events. By enabling create events but disabling updates, someone might initially create a compliant workload resource (such as a Deployment) and then subsequently change it to violate one or more policies.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Ignore any port-forward or exec events that OpenShift cluster users initiate in pods. By turning off this setting, you prevent some runtime policies that guard against such actions from working in the secured cluster at hand.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
