@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T09:01:44.290Z
+date: 2026-04-01T09:02:58.689Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -536,7 +536,16 @@ spec:
 <pre><code class="language-plaintext">spec:
   perNode:
     taintToleration: AvoidTaints</code></pre>
-<p>&nbsp;</p>
+<blockquote>
+  <p>Each Collector pod runs three containers: <code>collector</code>, which collects activity data; <code>compliance</code>, which collects host configuration data during a compliance scan; and <code>nodeInventory</code>, which scans a node's file system.</p>
+</blockquote>
+<ul>
+  <li>The <code>collector</code> container has an additional <code>collection</code> attribute, where you can turn off its activity monitoring.</li>
+</ul>
+<pre><code class="language-plaintext">spec:
+  perNode:
+    collector:
+      collection: CORE_BPF </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
