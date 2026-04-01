@@ -2,7 +2,7 @@
 title: Configurations
 description: 
 published: true
-date: 2026-04-01T14:15:51.844Z
+date: 2026-04-01T14:23:23.818Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-06T21:46:57.577Z
@@ -337,9 +337,28 @@ if __name__  == '__main__':
   <li>untar the file</li>
 </ul>
 <pre><code class="language-plaintext">tar xvf pushgateway-1.11.2.linux-amd64.tar.gz</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>Run this script</li>
+</ul>
+<pre><code class="language-plaintext">#!/bin/bash
+sudo useradd --no-create-home --shell /bin/false pushgateway
+sudo cp pushgateway /usr/local/bin/
+</code></pre>
+<pre><code class="language-plaintext">sudo vim /etc/systemd/system/pushgateway.service
+[Unit]
+Description=Prometheus Pushgateway
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=pushgateway
+Group=pushgateway
+Type=simple
+ExecStart=/usr/local/bin/pushgateway
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
