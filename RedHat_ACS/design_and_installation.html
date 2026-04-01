@@ -2,7 +2,7 @@
 title: Architecture of Red Hat Advanced Cluster Security
 description: 
 published: true
-date: 2026-04-01T08:08:42.868Z
+date: 2026-04-01T08:23:55.170Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-03-31T09:35:26.671Z
@@ -357,8 +357,41 @@ spec:
   <li>In secured clusters, you must apply the init bundle, install the RHACS operator, and create a <code>SecuredCluster</code> custom resource that deploys all the required services.</li>
 </ol>
 <figure class="image image_resized" style="width:100%;"><img src="/redhat_acs/scluster-architecture.svg"></figure>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  name: managed-cluster
+  namespace: stackrox
+spec:
+  centralEndpoint: central-stackrox.apps.ocp4.example.com:443 1
+  clusterName: managed-cluster                                2
+  clusterLabels:                                              3
+    cluster-group: east
+    cluster-purpose: development</code></pre>
+<figure class="table">
+  <table style="background-color:rgb(255, 255, 255);">
+    <tbody>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/1.svg" alt="1"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The endpoint that Sensor must connect to when registering with Central. This attribute can also be set to an <code>https://</code> or a <code>wss://</code> URL. Sensor defaults to the gRPC protocol if you do not specify a schema. You must use the <code>wss://</code> schema if the central cluster cannot accept gRPC connections. This schema configures Sensor to use WebSocket protocol instead of gRPC. In the central cluster, you can set this value to an empty string (<code>''</code>). With this configuration value, Sensor tries to connect to the <code>central</code> service in the same namespace.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/2.svg" alt="2"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">The name that the cluster is registered with in Central. The name must be unique, and can be changed only by deleting and redeploying all the secured cluster services.</td>
+      </tr>
+      <tr>
+        <td style="padding:0px;vertical-align:top;">
+          <figure class="image image_resized" style="width:22px;"><img src="https://rol.redhat.com/rol/static/roc/Common_Content/images/3.svg" alt="3"></figure>
+        </td>
+        <td style="padding:0px;vertical-align:top;">Any labels that must be assigned to the cluster in the RHACS control plane. These labels can be edited after the secured cluster is imported either through the Central web interface or by using the REST API.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
