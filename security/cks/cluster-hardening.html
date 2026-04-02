@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T19:11:04.719Z
+date: 2026-04-02T19:11:35.192Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -29,4 +29,16 @@ dateCreated: 2026-04-02T18:33:08.733Z
 <ul>
   <li>Run a test</li>
 </ul>
-<pre><code class="language-plaintext">kube-bench run</code></pre>
+<pre><code class="language-plaintext">kube-bench run
+.....
+== Summary policies ==
+5 checks PASS
+4 checks FAIL
+26 checks WARN
+0 checks INFO
+
+== Summary total ==
+67 checks PASS
+15 checks FAIL
+48 checks WARN
+0 checks INFO</code></pre>
