@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T19:14:43.255Z
+date: 2026-04-02T20:03:42.683Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -11,24 +11,20 @@ dateCreated: 2026-04-02T18:33:08.733Z
 <ul>
   <li>CIS benchmarks:<ul>
       <li>security benchmark: the baseline practices to secure an environment</li>
-      <li>CIS: center for Internet security&nbsp;</li>
+      <li>CIS: center for Internet security</li>
     </ul>
   </li>
-  <li>Kubernetes CIS benchmarks: &nbsp; Best practices for the cluster&nbsp;</li>
-  <li>kube-bench: automation tool to automatically scan k8s clusters against CIS benchmarks&nbsp;</li>
+  <li>Kubernetes CIS benchmarks: &nbsp; Best practices for the cluster</li>
+  <li>kube-bench: automation tool to automatically scan k8s clusters against CIS benchmarks</li>
 </ul>
 <h6>kube-bench</h6>
 <ul>
   <li>Download the binary</li>
 </ul>
 <pre><code class="language-plaintext">curl -L https://github.com/aquasecurity/kube-bench/releases/download/v0.12.0/kube-bench_0.12.0_linux_amd64.deb -o kube-bench_0.12.0_linux_amd64.deb</code></pre>
-<ul>
-  <li>For ubuntu download it using the dpkg command</li>
-</ul>
+<p>&nbsp;For ubuntu download it using the dpkg command</p>
 <pre><code class="language-plaintext">sudo dpkg -i kube-bench_0.12.0_linux_amd64.deb</code></pre>
-<ul>
-  <li>Run a test</li>
-</ul>
+<p>&nbsp;Run a test</p>
 <pre><code class="language-plaintext">kube-bench run
 .....
 == Summary policies ==
@@ -42,7 +38,8 @@ dateCreated: 2026-04-02T18:33:08.733Z
 15 checks FAIL
 48 checks WARN
 0 checks INFO</code></pre>
-<ul>
-  <li>To check one point</li>
-</ul>
+<p>&nbsp;To check one point</p>
 <pre><code class="language-plaintext">kube-bench --check="1.3.1"</code></pre>
+<blockquote>
+  <p><a href="https://dev.to/imransaifi/step-by-step-guide-to-creating-a-kubernetes-user-and-adding-it-to-a-kubeconfig-file-rbac-3eo3">Step-by-Step Guide to Creating a Kubernetes User and Adding It to a Kubeconfig File (RBAC) - DEV Community</a></p>
+</blockquote>
