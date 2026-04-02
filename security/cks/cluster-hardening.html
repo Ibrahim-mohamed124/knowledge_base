@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T19:01:24.124Z
+date: 2026-04-02T19:10:17.468Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -17,3 +17,16 @@ dateCreated: 2026-04-02T18:33:08.733Z
   <li>Kubernetes CIS benchmarks: &nbsp; Best practices for the cluster&nbsp;</li>
   <li>kube-bench: automation tool to automatically scan k8s clusters against CIS benchmarks&nbsp;</li>
 </ul>
+<h6>kube-bench</h6>
+<ul>
+  <li>Download the binary</li>
+</ul>
+<pre><code class="language-plaintext">curl -L https://github.com/aquasecurity/kube-bench/releases/download/v0.12.0/kube-bench_0.12.0_linux_amd64.deb -o kube-bench_0.12.0_linux_amd64.deb</code></pre>
+<ul>
+  <li>For ubuntu download it using the dpkg command</li>
+</ul>
+<pre><code class="language-plaintext">sudo dpkg -i kube-bench_0.12.0_linux_amd64.deb</code></pre>
+<ul>
+  <li>verify</li>
+</ul>
+<pre><code class="language-plaintext">kube-bench version</code></pre>
