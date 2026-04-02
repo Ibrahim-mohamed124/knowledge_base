@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:29:21.152Z
+date: 2026-04-02T20:40:10.422Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -87,7 +87,10 @@ kubectl get csr &lt;name&gt; -o yaml &gt;&gt; the signed certificate is in the s
 <pre><code class="language-plaintext">    - --cluster-signing-cert-file=/etc/kubernetes/pki/ca.crt
     - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
 </code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To access the kube-api server from a remote host but using the kubeconfig credentials in a curl command</li>
+</ul>
+<pre><code class="language-plaintext">kubectl proxy &gt;&gt; startes a proxy on port 8001</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
