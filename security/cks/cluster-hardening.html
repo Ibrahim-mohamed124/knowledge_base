@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:50:51.362Z
+date: 2026-04-02T20:52:26.309Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -109,7 +109,11 @@ kubectl get csr &lt;name&gt; -o yaml &gt;&gt; the signed certificate is in the s
 <pre><code class="language-plaintext">cat &lt;&lt;EOF &gt; /etc/kubernetes/abac/abac-policy.jsonl
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user": "system:serviceaccount:default:john", "namespace": "default", "resource": "pods", "apiGroup": "*" , "readonly": true}}
 EOF</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li><strong>Configuring the API Server to Use ABAC, Node authorization, RBAC</strong></li>
+</ul>
+<pre><code class="language-plaintext">  --authorization-policy-file=/path/to/abac-policy.jsonl
+  --authorization-mode=Node,RBAC,ABAC</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
