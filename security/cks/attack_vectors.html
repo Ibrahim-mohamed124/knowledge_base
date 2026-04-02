@@ -1,0 +1,21 @@
+<!--
+title: Attack Vectors in kubernetes 
+description: 
+published: true
+date: 2026-04-02T18:20:21.621Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-04-02T18:20:21.621Z
+-->
+
+<p>Notes:</p>
+<ul>
+  <li>docker can run on remote hosts with IP</li>
+</ul>
+<pre><code class="language-plaintext">vim /usr/lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://10.100.100.200:2375</code></pre>
+<pre><code class="language-plaintext">docker -H &lt;remote_host_ip&gt;</code></pre>
+<p>The Attack service:</p>
+<ul>
+  <li>&nbsp;</li>
+</ul>
