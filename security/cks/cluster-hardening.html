@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:06:01.039Z
+date: 2026-04-02T20:08:43.069Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -44,13 +44,24 @@ dateCreated: 2026-04-02T18:33:08.733Z
   <p><a href="https://dev.to/imransaifi/step-by-step-guide-to-creating-a-kubernetes-user-and-adding-it-to-a-kubeconfig-file-rbac-3eo3">Step-by-Step Guide to Creating a Kubernetes User and Adding It to a Kubeconfig File (RBAC) - DEV Community</a></p>
 </blockquote>
 <h6>Security Pillars&nbsp;</h6>
+<p>&nbsp;</p>
 <ol>
-  <li>Authentication<ul>
-      <li>Tokens, certificates, basic credentials, node authorization&nbsp;</li>
-    </ul>
+  <li>API server<ol>
+      <li>Authentication<ul>
+          <li>Tokens, certificates, basic credentials, static files</li>
+        </ul>
+      </li>
+      <li>Authorization<ul>
+          <li>RBAC, node authorization, ABAC, webhooks</li>
+        </ul>
+      </li>
+      <li>Network Policies&nbsp;</li>
+    </ol>
   </li>
-  <li>Authorization &gt; RBAC</li>
-  <li>Network Policies&nbsp;</li>
+  <li>Cluster Nodes:&nbsp;<ol>
+      <li>SSH hardening, IAM control</li>
+    </ol>
+  </li>
 </ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
