@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:58:48.061Z
+date: 2026-04-02T21:00:47.244Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -162,7 +162,8 @@ kubectl get secret john-secret -o jsonpath='{.data.token}' | base64 --decode
 
 # Save the token to a file
 kubectl get secret john-secret -o jsonpath='{.data.token}' | base64 --decode &gt; john-secret.txt</code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">export SA_TOKEN=$(cat john-secret.txt)
+kubectl config set-credentials john --token=$SA_TOKEN</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
