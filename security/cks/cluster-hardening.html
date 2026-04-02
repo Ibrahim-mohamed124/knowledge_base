@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:27:22.855Z
+date: 2026-04-02T20:29:21.152Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -81,7 +81,12 @@ spec:
 <pre><code class="language-plaintext">kubectl get csr
 kubectl certificate approve &lt;name&gt;
 kubectl get csr &lt;name&gt; -o yaml &gt;&gt; the signed certificate is in the status 64 base coded</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>The controller manager is the responsible component for signing the requests so the CA key and cert can be found in the kube-controller-manager manifest file</li>
+</ul>
+<pre><code class="language-plaintext">    - --cluster-signing-cert-file=/etc/kubernetes/pki/ca.crt
+    - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
