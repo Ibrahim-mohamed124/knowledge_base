@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:26:05.875Z
+date: 2026-04-02T20:27:22.855Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -78,7 +78,9 @@ spec:
   usages:
   - client auth</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">kubectl get csr
+kubectl certificate approve &lt;name&gt;
+kubectl get csr &lt;name&gt; -o yaml &gt;&gt; the signed certificate is in the status 64 base coded</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
