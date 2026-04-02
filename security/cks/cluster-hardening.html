@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:56:27.781Z
+date: 2026-04-02T20:58:18.326Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -131,7 +131,26 @@ volumes:
 <blockquote>
   <p>The pods logs are saved under /var/log/pods/</p>
 </blockquote>
-<p>&nbsp;</p>
+<h6>Tokens for SA</h6>
+<ul>
+  <li>To create a token for a SA</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: john
+  namespace: default
+secrets: 
+  - name: john-secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: john-secret
+  namespace: default
+  annotations:
+    kubernetes.io/service-account.name: john
+type: kubernetes.io/service-account-token</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
