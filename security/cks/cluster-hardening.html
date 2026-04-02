@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:25:29.915Z
+date: 2026-04-02T20:26:05.875Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -73,7 +73,7 @@ kind: CertificateSigningRequest
 metadata:
   name: user1-csr
 spec:
-  request: $(cat user1.csr | base64 | tr -d '\n')
+  request: $(cat user1.csr | base64 | tr -d '\n') &gt;&gt; the user creates his  own key and csr files
   signerName: kubernetes.io/kube-apiserver-client
   usages:
   - client auth</code></pre>
