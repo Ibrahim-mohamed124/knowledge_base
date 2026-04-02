@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T20:52:26.309Z
+date: 2026-04-02T20:56:27.781Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -114,8 +114,23 @@ EOF</code></pre>
 </ul>
 <pre><code class="language-plaintext">  --authorization-policy-file=/path/to/abac-policy.jsonl
   --authorization-mode=Node,RBAC,ABAC</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext"># /etc/kubernetes/manifests/kube-apiserver.yaml
+
+volumeMounts:
+# Other volume mounts...
+- name: abac-policy
+  mountPath: /etc/kubernetes/abac
+  readOnly: true
+
+volumes:
+# Other volumes...
+- name: abac-policy
+  hostPath:
+    path: /etc/kubernetes/abac
+    type: DirectoryOrCreate</code></pre>
+<blockquote>
+  <p>The pods logs are saved under /var/log/pods/</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
