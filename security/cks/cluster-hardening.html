@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-03T15:29:14.600Z
+date: 2026-04-03T15:31:50.726Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -356,6 +356,17 @@ export DOCKER_TLS_VERIFY=true</code></pre>
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+  - level: None
+    verbs: 
+    - get
+    - list
+    resources:
+    - group: ""
+    - resources:
+      - pods</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
