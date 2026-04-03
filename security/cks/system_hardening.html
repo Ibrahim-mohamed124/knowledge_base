@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-03T15:49:50.477Z
+date: 2026-04-03T16:00:43.830Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -24,3 +24,36 @@ dateCreated: 2026-04-03T15:40:06.403Z
 <pre><code class="language-plaintext">modprobe &lt;modeule&gt; </code></pre>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* To list all the loaded modules</p>
 <pre><code class="language-plaintext">lsmod</code></pre>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;* To backlist a module put its name in /etc/modprobe.d/blacklist.conf file then reboot the node</p>
+<pre><code class="language-plaintext">vim  /etc/modprobe.d/blacklist.conf
+blacklist sctp
+blacklist dccp</code></pre>
+<p>&nbsp;* Identify and disable open ports</p>
+<pre><code class="language-plaintext">[root@k8s-master ~]# netstat -an  | grep -w LISTEN
+tcp        0      0 127.0.0.1:10257         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:10259         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:10249         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:10248         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:2379          0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:2381          0.0.0.0:*               LISTEN
+tcp        0      0 10.200.130.134:2380     0.0.0.0:*               LISTEN
+tcp        0      0 10.200.130.134:2379     0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:36617         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:11386         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:19760         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN
+tcp        0      0 0.0.0.0:9964            0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:9891          0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:9890          0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:9879          0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:9878          0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:9234          0.0.0.0:*               LISTEN
+tcp        0      0 0.0.0.0:8200            0.0.0.0:*               LISTEN
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN
+tcp        0      0 10.200.130.134:7946     0.0.0.0:*               LISTEN
+tcp        0      0 10.200.130.134:7472     0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:37695         0.0.0.0:*               LISTEN
+tcp        0      0 10.200.130.134:4240     0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:12502         0.0.0.0:*               LISTEN
+tcp        0      0 127.0.0.1:6010          0.0.0.0:*               LISTEN
+</code></pre>
