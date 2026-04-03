@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-03T16:02:58.313Z
+date: 2026-04-03T16:13:01.525Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -28,7 +28,10 @@ dateCreated: 2026-04-03T15:40:06.403Z
 <pre><code class="language-plaintext">vim  /etc/modprobe.d/blacklist.conf
 blacklist sctp
 blacklist dccp</code></pre>
-<p>&nbsp;* Identify and disable open ports</p>
+<h6>&nbsp;Identify and disable open ports</h6>
+<ul>
+  <li>use netstat</li>
+</ul>
 <pre><code class="language-plaintext">[root@k8s-master ~]# netstat -an  | grep -w LISTEN
 tcp        0      0 127.0.0.1:10257         0.0.0.0:*               LISTEN
 tcp        0      0 127.0.0.1:10259         0.0.0.0:*               LISTEN
@@ -57,7 +60,12 @@ tcp        0      0 10.200.130.134:4240     0.0.0.0:*               LISTEN
 tcp        0      0 127.0.0.1:12502         0.0.0.0:*               LISTEN
 tcp        0      0 127.0.0.1:6010          0.0.0.0:*               LISTEN
 </code></pre>
-<p>&nbsp; &nbsp;* To know what &nbsp;these ports are &nbsp;used for</p>
+<ul>
+  <li>&nbsp;To know what &nbsp;these ports are &nbsp;used for</li>
+</ul>
 <pre><code class="language-plaintext">cat /etc/services</code></pre>
-<p>&nbsp;</p>
+<h6>Restrict systemcalls&nbsp;</h6>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
