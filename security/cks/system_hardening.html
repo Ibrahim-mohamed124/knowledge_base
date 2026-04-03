@@ -2,12 +2,25 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-03T15:40:06.403Z
+date: 2026-04-03T15:49:50.477Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
 -->
 
 <ul>
-  <li><mark class="marker-yellow">The least privilege &nbsp;concept is used to reduce the surface of attack&nbsp;</mark></li>
+  <li><mark class="marker-yellow">The least privilege &nbsp;concept is used to reduce the surface of attack&nbsp;</mark>
+    <ul>
+      <li>SSH &nbsp;hardening</li>
+      <li>Privilege escalation</li>
+      <li>Remove Obsolete packages and services&nbsp;</li>
+      <li>Restricting kernel modules<ul>
+          <li>To load a new module into the kernel&nbsp;</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
 </ul>
+<pre><code class="language-plaintext">modprobe &lt;modeule&gt; </code></pre>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* To list all the loaded modules</p>
+<pre><code class="language-plaintext">lsmod</code></pre>
