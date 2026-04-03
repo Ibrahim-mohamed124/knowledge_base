@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-03T11:41:17.936Z
+date: 2026-04-03T14:06:23.109Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -319,5 +319,13 @@ spec:
 </ul>
 <pre><code class="language-plaintext">Apr 03 07:39:17 bastion dockerd[792132]: unable to configure the Docker daemon with file /etc/docker/daemon.json: the following directives are specified both as a flag and in the configuration file: hosts: (from flag: [fd:// tcp://10.100.100.200:2375], from file: [tcp://172.0.0.1:2375 10.100.100.200:2374])
 Apr 03 07:39:17 bastion systemd[1]: docker.service: Main process exited, code=exited, status=1/FAILURE</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>TLS encryption for dockerd engine&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">{
+"hosts": ["tcp://172.0.0.1:2375", "10.100.100.200:2374"],
+"tls": true,
+"tlscert": "/path/to/cert/",
+"tlskey": "/path/to/key"
+}</code></pre>
 <p>&nbsp;</p>
