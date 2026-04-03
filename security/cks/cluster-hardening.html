@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-03T07:54:00.258Z
+date: 2026-04-03T07:55:29.658Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -270,7 +270,9 @@ root        2699 12.9  5.2 2201796 843300 ?      Ssl  Apr02  94:19 kube-apiserve
       <li>webhook &gt; use the kube-api as a webhook</li>
     </ul>
   </li>
+  <li>To disable the metrics endpoint on port 10255</li>
 </ul>
+<pre><code class="language-plaintext">readOnlyPort: 0</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
