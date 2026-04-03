@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-03T14:06:23.109Z
+date: 2026-04-03T14:07:07.052Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -328,4 +328,5 @@ Apr 03 07:39:17 bastion systemd[1]: docker.service: Main process exited, code=ex
 "tlscert": "/path/to/cert/",
 "tlskey": "/path/to/key"
 }</code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">export DOCKER_TLS=true
+export DOCKER_HOST="tcp://ip:port"</code></pre>
