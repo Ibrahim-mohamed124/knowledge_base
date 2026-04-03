@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-03T07:36:27.421Z
+date: 2026-04-03T07:37:06.294Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -246,7 +246,7 @@ RestartSec=10
 WantedBy=multi-user.target
 </code></pre>
 <ul>
-  <li>The flags specified in the command line overrides the configuration in the config.yaml. So to inspect the configuration of the kuelet, &nbsp;look at this file or use ps -aux</li>
+  <li>The flags specified in the command line overrides the configuration in the config.yaml. So to inspect the configuration of the kuelet, &nbsp;look at this file or use ps -aux and observe the --config flag</li>
 </ul>
 <pre><code class="language-plaintext">[root@k8s-master ~]# ps -aux | grep kubelet
 root        2385  3.5  0.7 2333608 126768 ?      Ssl  Apr02  25:40 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --pod-infra-container-image=registry.k8s.io/pause:3.10
