@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-02T21:00:47.244Z
+date: 2026-04-03T07:27:47.708Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -40,6 +40,7 @@ dateCreated: 2026-04-02T18:33:08.733Z
 0 checks INFO</code></pre>
 <p>&nbsp;To check one point</p>
 <pre><code class="language-plaintext">kube-bench --check="1.3.1"</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><a href="https://dev.to/imransaifi/step-by-step-guide-to-creating-a-kubernetes-user-and-adding-it-to-a-kubeconfig-file-rbac-3eo3">Step-by-Step Guide to Creating a Kubernetes User and Adding It to a Kubeconfig File (RBAC) - DEV Community</a></p>
 </blockquote>
@@ -55,10 +56,10 @@ dateCreated: 2026-04-02T18:33:08.733Z
           <li>RBAC, node authorization, ABAC, webhooks</li>
         </ul>
       </li>
-      <li>Network Policies&nbsp;</li>
+      <li>Network Policies</li>
     </ol>
   </li>
-  <li>Cluster Nodes:&nbsp;<ol>
+  <li>Cluster Nodes:<ol>
       <li>SSH hardening, IAM control</li>
     </ol>
   </li>
@@ -81,6 +82,7 @@ spec:
 <pre><code class="language-plaintext">kubectl get csr
 kubectl certificate approve &lt;name&gt;
 kubectl get csr &lt;name&gt; -o yaml &gt;&gt; the signed certificate is in the status 64 base coded</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>The controller manager is the responsible component for signing the requests so the CA key and cert can be found in the kube-controller-manager manifest file</li>
 </ul>
@@ -93,7 +95,7 @@ kubectl get csr &lt;name&gt; -o yaml &gt;&gt; the signed certificate is in the s
 <pre><code class="language-plaintext">kubectl proxy &gt;&gt; startes a proxy on port 8001</code></pre>
 <h3>ABAC test</h3>
 <ul>
-  <li>uses JSON objects per line (JSONL) to create policies&nbsp;</li>
+  <li>uses JSON objects per line (JSONL) to create policies</li>
 </ul>
 <pre><code class="language-plaintext">{"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"group":"system:authenticated",  "nonResourcePath": "*", "readonly": true}}
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"group":"system:unauthenticated", "nonResourcePath": "*", "readonly": true}}
@@ -106,14 +108,17 @@ kubectl get csr &lt;name&gt; -o yaml &gt;&gt; the signed certificate is in the s
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"kubelet",   "namespace": "*",              "resource": "events"                                       }}
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"alice",     "namespace": "projectCaribou", "resource": "*",         "apiGroup": "*"                   }}
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user":"bob",       "namespace": "projectCaribou", "resource": "*",         "apiGroup": "*", "readonly": true }}</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">cat &lt;&lt;EOF &gt; /etc/kubernetes/abac/abac-policy.jsonl
 {"apiVersion": "abac.authorization.kubernetes.io/v1beta1", "kind": "Policy", "spec": {"user": "system:serviceaccount:default:john", "namespace": "default", "resource": "pods", "apiGroup": "*" , "readonly": true}}
 EOF</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Configuring the API Server to Use ABAC, Node authorization, RBAC</strong></li>
 </ul>
 <pre><code class="language-plaintext">  --authorization-policy-file=/path/to/abac-policy.jsonl
   --authorization-mode=Node,RBAC,ABAC</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext"># /etc/kubernetes/manifests/kube-apiserver.yaml
 
 volumeMounts:
@@ -128,6 +133,7 @@ volumes:
   hostPath:
     path: /etc/kubernetes/abac
     type: DirectoryOrCreate</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>The pods logs are saved under /var/log/pods/</p>
 </blockquote>
@@ -151,6 +157,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: john
 type: kubernetes.io/service-account-token</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Retrieve the service account token:</li>
 </ul>
@@ -162,10 +169,14 @@ kubectl get secret john-secret -o jsonpath='{.data.token}' | base64 --decode
 
 # Save the token to a file
 kubectl get secret john-secret -o jsonpath='{.data.token}' | base64 --decode &gt; john-secret.txt</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">export SA_TOKEN=$(cat john-secret.txt)
 kubectl config set-credentials john --token=$SA_TOKEN</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Kubelet security&nbsp;</h6>
+<ul>
+  <li>The kubelet registers the node to the cluster, create pods, monitor the state of the pods.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
