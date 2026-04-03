@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-03T14:08:44.398Z
+date: 2026-04-03T14:10:16.625Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -331,4 +331,6 @@ Apr 03 07:39:17 bastion systemd[1]: docker.service: Main process exited, code=ex
 "tlscacert" "/path/to/ca.crt" &gt;&gt; used to verify the certificates of the clients
 }</code></pre>
 <pre><code class="language-plaintext">export DOCKER_TLS=true
-export DOCKER_HOST="tcp://ip:port"</code></pre>
+export DOCKER_HOST="tcp://ip:port"
+export DOCKER_TLS_VERIFY=true</code></pre>
+<pre><code class="language-plaintext">docker --tlscert= --tlskey= --tlscacert=  &gt; in the client side</code></pre>
