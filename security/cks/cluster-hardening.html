@@ -2,7 +2,7 @@
 title: Cluster Hardening 
 description: 
 published: true
-date: 2026-04-03T14:18:44.645Z
+date: 2026-04-03T14:33:44.653Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-02T18:33:08.733Z
@@ -169,6 +169,8 @@ kubectl get secret john-secret -o jsonpath='{.data.token}' | base64 --decode
 
 # Save the token to a file
 kubectl get secret john-secret -o jsonpath='{.data.token}' | base64 --decode &gt; john-secret.txt</code></pre>
+<pre><code class="language-plaintext"># Access node metadata
+kubectl exec -it api-test-pod -n default -- /bin/bash -c 'curl -k https://kubernetes.default.svc/api/v1/nodes -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"'</code></pre>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">export SA_TOKEN=$(cat john-secret.txt)
 kubectl config set-credentials john --token=$SA_TOKEN</code></pre>
