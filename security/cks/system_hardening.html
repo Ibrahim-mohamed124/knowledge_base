@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-03T16:13:17.700Z
+date: 2026-04-03T16:13:35.799Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -22,9 +22,13 @@ dateCreated: 2026-04-03T15:40:06.403Z
   <li>To load a new module into the kernel&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">modprobe &lt;modeule&gt; </code></pre>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;* To list all the loaded modules</p>
+<ul>
+  <li>To list all the loaded modules</li>
+</ul>
 <pre><code class="language-plaintext">lsmod</code></pre>
-<p>&nbsp; &nbsp; &nbsp; &nbsp;* To backlist a module put its name in /etc/modprobe.d/blacklist.conf file then reboot the node</p>
+<ul>
+  <li>To backlist a module put its name in /etc/modprobe.d/blacklist.conf file then reboot the node</li>
+</ul>
 <pre><code class="language-plaintext">vim  /etc/modprobe.d/blacklist.conf
 blacklist sctp
 blacklist dccp</code></pre>
