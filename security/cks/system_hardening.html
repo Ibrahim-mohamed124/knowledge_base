@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T08:39:29.647Z
+date: 2026-04-04T08:40:01.103Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -156,7 +156,7 @@ exit_group(0)                           = ?
 </ul>
 <pre><code class="language-plaintext">strace -p &lt;pid&gt; </code></pre>
 <ul>
-  <li>To trace the system calls of containers use aquasec tracee, which uses ePBF programs to trace the system calls of the containers</li>
+  <li>To trace the system calls of containers use aquasec tracee, which<mark class="marker-yellow"> uses ePBF programs to trace the system calls of the containers</mark></li>
   <li>To trace system calls of the host</li>
 </ul>
 <pre><code class="language-plaintext">podman run --name tracee --rm -it \
