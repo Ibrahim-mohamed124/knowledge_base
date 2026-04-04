@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T19:32:54.471Z
+date: 2026-04-04T19:38:19.929Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -391,7 +391,9 @@ deny /** w,}</code></pre>
 <ul>
   <li>In a different window run the program so that the command can scan for the events and generate the profile</li>
   <li>use the aa-status to verify that the generated profile is loaded in the kernel</li>
+  <li>to load profiles into the kernel&nbsp;</li>
 </ul>
+<pre><code class="language-plaintext">apparmor_parser -q /etc/apparmor.d/usr.sbin.nginx</code></pre>
 <p><i><strong><u>AppArmor in k8s:</u></strong></i></p>
 <ul>
   <li>AppArmor kernel module must be supported</li>
