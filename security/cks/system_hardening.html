@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T08:37:14.466Z
+date: 2026-04-04T08:38:49.672Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -156,8 +156,19 @@ exit_group(0)                           = ?
 </ul>
 <pre><code class="language-plaintext">strace -p &lt;pid&gt; </code></pre>
 <ul>
-  <li>To trace the system calls of containers use aquasec tracee</li>
+  <li>To trace the system calls of containers use aquasec tracee, which uses ePBF programs to trace the system calls of the containers</li>
+  <li>To trace system calls of the host</li>
 </ul>
+<pre><code class="language-plaintext">podman run --name tracee --rm -it \
+  --pid=host \
+  --cgroupns=host \
+  --privileged \
+  -v /etc/os-release:/etc/os-release-host:ro \
+  -v /boot:/boot:ro \
+  aquasec/tracee:latest</code></pre>
+<blockquote>
+  <p><code><strong>--pid=host</strong></code><strong> &amp; </strong><code><strong>--cgroupns=host</strong></code>: Allows Tracee to see processes running outside its own container (essential for monitoring the whole node).</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
