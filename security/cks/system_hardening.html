@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T08:59:49.655Z
+date: 2026-04-04T12:09:45.368Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -192,11 +192,14 @@ exit_group(0)                           = ?
   aquasec/tracee:latest --scope comm=ls</code></pre>
 <h6>Use SECCOMP to restrict system calls</h6>
 <ul>
+  <li>Seccomp is a Linux kernel feature to restrict which system calls a process can make</li>
   <li>To check if secomp is supported by the Linux kernel&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">grep -i secomp /boot/config-$(uname -r)
 CONFIG_SECOMP=y</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
