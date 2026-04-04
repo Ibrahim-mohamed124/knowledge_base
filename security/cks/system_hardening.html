@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-03T16:19:56.979Z
+date: 2026-04-04T08:37:14.466Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -12,17 +12,18 @@ dateCreated: 2026-04-03T15:40:06.403Z
 <ul>
   <li>SSH &nbsp;hardening</li>
   <li>Privilege escalation</li>
-  <li>Remove Obsolete packages and services&nbsp;</li>
+  <li>Remove Obsolete packages and services</li>
 </ul>
 <h6>Restricting kernel modules</h6>
 <ul>
-  <li>To load a new module into the kernel&nbsp;</li>
+  <li>To load a new module into the kernel</li>
 </ul>
 <pre><code class="language-plaintext">modprobe &lt;modeule&gt; </code></pre>
 <ul>
   <li>To list all the loaded modules</li>
 </ul>
 <pre><code class="language-plaintext">lsmod</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To backlist a module put its name in /etc/modprobe.d/blacklist.conf file then reboot the node</li>
 </ul>
@@ -62,7 +63,7 @@ tcp        0      0 127.0.0.1:12502         0.0.0.0:*               LISTEN
 tcp        0      0 127.0.0.1:6010          0.0.0.0:*               LISTEN
 </code></pre>
 <ul>
-  <li>&nbsp;To know what &nbsp;these ports are &nbsp;used for</li>
+  <li>To know what &nbsp;these ports are &nbsp;used for</li>
 </ul>
 <pre><code class="language-plaintext">cat /etc/services</code></pre>
 <h6>Restrict systemcalls&nbsp;</h6>
@@ -151,11 +152,31 @@ exit_group(0)                           = ?
 </ul>
 <pre><code class="language-plaintext">pidof etcd</code></pre>
 <ul>
-  <li>Then use the process id with strace</li>
+  <li>&nbsp;Then use the process id with strace</li>
 </ul>
 <pre><code class="language-plaintext">strace -p &lt;pid&gt; </code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <ul>
-  <li>&nbsp;</li>
+  <li>To trace the system calls of containers use aquasec tracee</li>
 </ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
