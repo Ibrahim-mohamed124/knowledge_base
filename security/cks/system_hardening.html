@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T13:31:17.427Z
+date: 2026-04-04T13:31:32.036Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -318,7 +318,7 @@ spec:
       type: RuntimeDefault 
   containers:
   - name: test
-    image: nginx          
+    image: amicontained
     securityContext:
       allowPrivilegeEscalation: false </code></pre>
 <pre><code class="language-plaintext">[root@k8s-master ~]# kubectl logs amicontained
