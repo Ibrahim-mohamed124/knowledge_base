@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T08:38:49.672Z
+date: 2026-04-04T08:39:29.647Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -169,6 +169,17 @@ exit_group(0)                           = ?
 <blockquote>
   <p><code><strong>--pid=host</strong></code><strong> &amp; </strong><code><strong>--cgroupns=host</strong></code>: Allows Tracee to see processes running outside its own container (essential for monitoring the whole node).</p>
 </blockquote>
+<ul>
+  <li>Running Tracee with Container Filtering</li>
+</ul>
+<pre><code class="language-plaintext">podman run --name tracee --rm -it \
+  --pid=host \
+  --cgroupns=host \
+  --privileged \
+  -v /etc/os-release:/etc/os-release-host:ro \
+  -v /boot:/boot:ro \
+  aquasec/tracee:latest \
+  --scope container=new</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
