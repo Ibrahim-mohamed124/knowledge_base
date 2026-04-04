@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T12:16:39.951Z
+date: 2026-04-04T12:18:20.785Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -208,46 +208,39 @@ CONFIG_SECOMP=y</code></pre>
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">cat /usr/share/containers/seccomp.json{
-        "defaultAction": "SCMP_ACT_ERRNO",
-        "defaultErrnoRet": 38,
-        "defaultErrno": "ENOSYS",
-        "archMap": [
-                {
-                        "architecture": "SCMP_ARCH_X86_64",
-                        "subArchitectures": [
-                                "SCMP_ARCH_X86",
-                                "SCMP_ARCH_X32"
-                        ]
-                },
-                {
-                        "architecture": "SCMP_ARCH_AARCH64",
-                        "subArchitectures": [
-                                "SCMP_ARCH_ARM"
-                        ]
-                },
-                {
-                        "architecture": "SCMP_ARCH_MIPS64",
-                        "subArchitectures": [
-                                "SCMP_ARCH_MIPS",
-                                "SCMP_ARCH_MIPS64N32"
-                        ]
-                },
-                {
-                        "architecture": "SCMP_ARCH_MIPS64N32",
-                        "subArchitectures": [
-                                "SCMP_ARCH_MIPS",
-                                "SCMP_ARCH_MIPS64"
-                        ]
-                },
-                {
-                        "architecture": "SCMP_ARCH_MIPSEL64",
-                        "subArchitectures": [
-                                "SCMP_ARCH_MIPSEL",
-                                "SCMP_ARCH_MIPSEL64N32"
-                        ]
-                },
-....</code></pre>
+<pre><code class="language-plaintext">{
+  "defaultAction": "SCMP_ACT_ERRNO",
+  "architectures": [
+    "SCMP_ARCH_X86_64",
+    "SCMP_ARCH_X86",
+    "SCMP_ARCH_X32"
+  ],
+  "syscalls": [
+    {
+      "names": [
+        "read",
+        "write",
+        "openat",
+        "close",
+        "fstat",
+        "epoll_pwait",
+        "epoll_ctl",
+        "futex",
+        "nanosleep",
+        "gettid",
+        "clone",
+        "socket",
+        "connect",
+        "getsockopt",
+        "brk",
+        "mmap",
+        "munmap",
+        "rt_sigreturn"
+      ],
+      "action": "SCMP_ACT_ALLOW"
+    }
+  ]
+}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
