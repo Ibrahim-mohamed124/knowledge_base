@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T12:29:24.889Z
+date: 2026-04-04T12:31:49.273Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -300,7 +300,10 @@ CONFIG_SECOMP=y</code></pre>
 # mkdir test
 mkdir: cannot create directory 'test': Operation not permitted
 </code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To allow &nbsp;all syscalls for a container ( disable seccomp )&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">podman run -it --rm --security-opt seccomp=unconfined docker/whalesay /bin/sh</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
