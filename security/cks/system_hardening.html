@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T13:31:32.036Z
+date: 2026-04-04T13:33:53.302Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -306,7 +306,7 @@ mkdir: cannot create directory 'test': Operation not permitted
 <pre><code class="language-plaintext">podman run -it --rm --security-opt seccomp=unconfined docker/whalesay /bin/sh</code></pre>
 <p><strong><u>SECCOMP in K8S</u></strong></p>
 <ul>
-  <li>K8S does not apply seccomp profiles by default. It is needed to configure the pods to use &nbsp;it by adding the secompprofile field and security context and prevent privilege escalation&nbsp;</li>
+  <li>K8S does not apply seccomp profiles by default (unconfined). It is needed to configure the pods to use &nbsp;it by adding the secompprofile field and security context and prevent privilege escalation&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">kind: Pod
 apiVersion: v1
@@ -315,7 +315,7 @@ metadata:
 spec:
   securityContext:        
     seccompProfile:
-      type: RuntimeDefault 
+      type: RuntimeDefault | unconfined
   containers:
   - name: test
     image: amicontained
@@ -334,7 +334,13 @@ Blocked Syscalls (55):
         MSGRCV SYSLOG SETPGID SETSID USELIB USTAT SYSFS VHANGUP PIVOT_ROOT _SYSCTL ACCT SETTIMEOFDAY MOUNT UMOUNT2 SWAPON SWAPOFF REBOOT SETHOSTNAME SETDOMAINNAME IOPL IOPERM CREATE_MODULE INIT_MODULE DELETE_MODULE GET_KERNEL_SYMS QUERY_MODULE QUOTACTL NFSSERVCTL GETPMSG PUTPMSG AFS_SYSCALL TUXCALL SECURITY LOOKUP_DCOOKIE CLOCK_SETTIME VSERVER MBIND SET_MEMPOLICY GET_MEMPOLICY KEXEC_LOAD ADD_KEY REQUEST_KEY KEYCTL MIGRATE_PAGES UNSHARE MOVE_PAGES PERF_EVENT_OPEN FANOTIFY_INIT OPEN_BY_HANDLE_AT SETNS KCMP FINIT_MODULE KEXEC_FILE_LOAD BPF USERFAULTFD
 Looking for Docker.sock
 </code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To &nbsp;use a custom profile&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">  securityContext:        
+    seccompProfile:
+      type: Localhost
+      localhostProfile: /path/to/custom.json  which is relative to the default profile location on all nodes  /var/lib/kubelet/seccomp/</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
