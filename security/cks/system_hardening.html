@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T08:40:01.103Z
+date: 2026-04-04T08:42:22.883Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -180,7 +180,16 @@ exit_group(0)                           = ?
   -v /boot:/boot:ro \
   aquasec/tracee:latest \
   --scope container=new</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To trace one command syscals from the host</li>
+</ul>
+<pre><code class="language-plaintext">podman run --name tracee --rm -it \
+  --pid=host \
+  --cgroupns=host \
+  --privileged \
+  -v /etc/os-release:/etc/os-release-host:ro \
+  -v /boot:/boot:ro \
+  aquasec/tracee:latest --trace comm=ls</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
