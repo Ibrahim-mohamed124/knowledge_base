@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T19:21:43.392Z
+date: 2026-04-04T19:22:45.689Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -408,7 +408,10 @@ deny /** w,}</code></pre>
 <h6>Linux capabilities</h6>
 <ul>
   <li>In legacy Linux, process are segregated to two types Privileged that run by UID 0 (root) and Unprivileged</li>
-  <li>Now, the super user privileges &nbsp;are separated into capabilities that can be attached or detached to processes</li>
+  <li>Now, the super user privileges &nbsp;are separated into capabilities that can be attached or detached to processes<ul>
+      <li>Every capability allow the process to do certain privileged actions on the system like changing time</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
