@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T18:45:14.648Z
+date: 2026-04-04T18:58:33.099Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -371,8 +371,26 @@ Looking for Docker.sock
 file,
 # To Deny all file writes under /.
 deny /** w,}</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<ul>
+  <li>AppArmor operate at three modes:<ul>
+      <li>enforce</li>
+      <li>complain</li>
+      <li>unconfined</li>
+    </ul>
+  </li>
+</ul>
+<p><strong><u>AppArmor utiliy:</u></strong></p>
+<ul>
+  <li>install the utility&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apt-get install -y apparmor-utils</code></pre>
+<ul>
+  <li>use the aa-genprof command to create a profile</li>
+</ul>
+<pre><code class="language-plaintext">aa-genprof /path/to/program</code></pre>
+<ul>
+  <li>In a different window run the program so that the command can scan for the events and generate the profile</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
