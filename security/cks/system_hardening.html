@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T18:43:02.606Z
+date: 2026-04-04T18:44:57.354Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -365,7 +365,12 @@ Looking for Docker.sock
 </blockquote>
 <ul>
   <li>In Ubuntu find the default profiles under /sys/kernel/security/apparmor/profiles</li>
+  <li>apparmor policy</li>
 </ul>
+<pre><code class="language-plaintext">profile apparmor-deny-write flags=(attach_disconnected) {
+file,
+# To Deny all file writes.
+deny /** w,}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
