@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T08:48:03.533Z
+date: 2026-04-04T08:49:40.846Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -190,7 +190,9 @@ exit_group(0)                           = ?
   -v /etc/os-release:/etc/os-release-host:ro \
   -v /boot:/boot:ro \
   aquasec/tracee:latest --scope comm=ls</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Use SECCOMP to restrict system calls&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
