@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T12:18:20.785Z
+date: 2026-04-04T12:20:33.902Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -202,13 +202,15 @@ CONFIG_SECOMP=y</code></pre>
       <li>mode 0 = disabled</li>
       <li>mode 1 = &nbsp;strict &gt; all sys calls are denied except write, read, exit, and sigreturn functions &nbsp;(To return from a signal handler (essential for the process to handle stack frames after a signal).</li>
       <li>mode 2 &nbsp;= Filtered ( use the docker seccomp built in profiles)<ul>
-          <li>example:</li>
+          <li>examples</li>
         </ul>
       </li>
     </ul>
   </li>
 </ul>
-<pre><code class="language-plaintext">{
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">a white list of syscalls
+{
   "defaultAction": "SCMP_ACT_ERRNO",
   "architectures": [
     "SCMP_ARCH_X86_64",
@@ -241,7 +243,40 @@ CONFIG_SECOMP=y</code></pre>
     }
   ]
 }</code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">a black list of syscalls
+{
+  "defaultAction": "SCMP_ACT_ALLOW",
+  "architectures": [
+    "SCMP_ARCH_X86_64",
+    "SCMP_ARCH_X86",
+    "SCMP_ARCH_X32"
+  ],
+  "syscalls": [
+    {
+      "names": [
+        "read",
+        "write",
+        "openat",
+        "close",
+        "fstat",
+        "epoll_pwait",
+        "epoll_ctl",
+        "futex",
+        "nanosleep",
+        "gettid",
+        "clone",
+        "socket",
+        "connect",
+        "getsockopt",
+        "brk",
+        "mmap",
+        "munmap",
+        "rt_sigreturn"
+      ],
+      "action": "SCMP_ACT_ERRNO"
+    }
+  ]
+}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
