@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T14:14:21.620Z
+date: 2026-04-05T14:18:42.622Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -70,7 +70,23 @@ dateCreated: 2026-04-05T13:58:43.849Z
   <li>routing: &nbsp;what alert get sent to who ?</li>
   <li>notification engine: send alerts</li>
 </ul>
-<p>&nbsp;</p>
+<p><i><strong><u>Installation:</u></strong></i></p>
+<ul>
+  <li>Get the binray</li>
+</ul>
+<pre><code class="language-plaintext">wget https://github.com/prometheus/alertmanager/releases/download/v0.31.1/alertmanager-0.31.1.linux-amd64.tar.gz
+tar -xvaf alertmanager-0.31.1.linux-amd64.tar.gz</code></pre>
+<ul>
+  <li>configure promethues to use alert manager:</li>
+</ul>
+<pre><code class="language-plaintext">global:
+alerting:
+ alertmanagers:
+ - static_configs:
+   - targets:
+     - alertmanager_IP:9093
+rule_files:
+ - "rules.yaml"</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
