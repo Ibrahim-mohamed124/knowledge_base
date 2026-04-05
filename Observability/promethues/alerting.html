@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T14:03:04.003Z
+date: 2026-04-05T14:04:23.628Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -31,3 +31,11 @@ dateCreated: 2026-04-05T13:58:43.849Z
      - alert: NodeDown
        expr: up{job="node"} == 0
        for: 10m</code></pre>
+<ul>
+  <li>Alert states:<ul>
+      <li>Inactive: the condition is false</li>
+      <li>Pending: the condition is true but waiting for the for period to end</li>
+      <li>Firing: condition is true</li>
+    </ul>
+  </li>
+</ul>
