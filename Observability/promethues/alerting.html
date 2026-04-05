@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T14:04:23.628Z
+date: 2026-04-05T14:08:33.157Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -38,4 +38,24 @@ dateCreated: 2026-04-05T13:58:43.849Z
       <li>Firing: condition is true</li>
     </ul>
   </li>
+  <li>To add a label to an alert</li>
 </ul>
+<pre><code class="language-plaintext">groups:
+  - name: node
+    interval: 15s
+    rules:
+     - record: ...
+     - alert: NodeDown
+       expr: up{job="node"} == 0
+       for: 10m
+       labels:
+         severity: high
+       annotations:
+         test: "only for describtion that are able to use go templating language"</code></pre>
+<ul>
+  <li>To access the labels in annotations&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">{{.Labels}} &gt; to get access to alert labels
+{{.Lables.instance}}  &gt; to get acess to instance labels
+{{.Value}} &gt; to get the metric value when the alert is firing </code></pre>
+<p>&nbsp;</p>
