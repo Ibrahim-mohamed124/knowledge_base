@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T15:17:05.657Z
+date: 2026-04-05T15:19:13.799Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -150,7 +150,12 @@ WantedBy=multi-user.target
 <ul>
   <li>receiver: global receiver</li>
   <li>group_by: &nbsp;grouping</li>
-  <li>routes: override the global receiver and group_by&nbsp;</li>
+  <li>routes: override the global receiver and group_by&nbsp;<ul>
+      <li>match_re: like matchers but use regex</li>
+      <li>matchers: the labels based on which the routing will happen</li>
+      <li>receiver: the specific receiver to this labels</li>
+    </ul>
+  </li>
 </ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
