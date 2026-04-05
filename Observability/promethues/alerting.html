@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T14:39:56.305Z
+date: 2026-04-05T14:40:48.091Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -116,7 +116,9 @@ Checking /etc/prometheus/rules.yml
 <pre><code class="language-plaintext">useradd --no-create-home --shell /bin/false alertmanager
 mkdir /etc/alertmanager
 mv alertmanager.yml /etc/alertmanager/
-chown -R alertmanager:alertmanager /etc/alertmanager</code></pre>
+chown -R alertmanager:alertmanager /etc/alertmanager
+mkdir /var/lib/alertmanager 
+chown -R alertmanager:alertmanager /var/lib/alertmanager &gt; to store the data</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
