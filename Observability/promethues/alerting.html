@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T14:01:13.990Z
+date: 2026-04-05T14:03:04.003Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -20,3 +20,14 @@ dateCreated: 2026-04-05T13:58:43.849Z
      - record: ...
      - alert: LowMemory
        expr: node_memory_memFree_percent &lt; 20</code></pre>
+<ul>
+  <li>To tell promethues to evaluate the condition for some time before firing the alert use the for attribute&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">groups:
+  - name: node
+    interval: 15s
+    rules:
+     - record: ...
+     - alert: NodeDown
+       expr: up{job="node"} == 0
+       for: 10m</code></pre>
