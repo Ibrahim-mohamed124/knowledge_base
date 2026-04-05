@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T14:34:30.242Z
+date: 2026-04-05T14:36:20.883Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -27,10 +27,9 @@ dateCreated: 2026-04-05T13:58:43.849Z
   - name: node
     interval: 15s
     rules:
-     - record: ...
      - alert: NodeDown
-       expr: up{job="node"} == 0
-       for: 10m</code></pre>
+       expr: up{job="nodes"} == 0
+</code></pre>
 <ul>
   <li>Alert states:<ul>
       <li>Inactive: the condition is false</li>
