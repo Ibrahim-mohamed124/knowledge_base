@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-04T19:45:06.786Z
+date: 2026-04-08T18:46:40.841Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -151,8 +151,9 @@ exit_group(0)                           = ?
   <li>To get the ID of a process &nbsp;use pidof &lt;process&gt;</li>
 </ul>
 <pre><code class="language-plaintext">pidof etcd</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>&nbsp;Then use the process id with strace</li>
+  <li>Then use the process id with strace</li>
 </ul>
 <pre><code class="language-plaintext">strace -p &lt;pid&gt; </code></pre>
 <ul>
@@ -166,6 +167,7 @@ exit_group(0)                           = ?
   -v /etc/os-release:/etc/os-release-host:ro \
   -v /boot:/boot:ro \
   aquasec/tracee:latest --scope pid=new</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><code><strong>--pid=host</strong></code><strong> &amp; </strong><code><strong>--cgroupns=host</strong></code>: Allows Tracee to see processes running outside its own container (essential for monitoring the whole node).</p>
 </blockquote>
@@ -180,6 +182,7 @@ exit_group(0)                           = ?
   -v /boot:/boot:ro \
   aquasec/tracee:latest \
   --scope container=new</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To trace one command syscals from the host</li>
 </ul>
@@ -193,10 +196,11 @@ exit_group(0)                           = ?
 <h6>Use SECCOMP to restrict system calls</h6>
 <ul>
   <li>Seccomp is a Linux kernel feature to restrict which system calls a process can make</li>
-  <li>To check if secomp is supported by the Linux kernel&nbsp;</li>
+  <li>To check if secomp is supported by the Linux kernel</li>
 </ul>
 <pre><code class="language-plaintext">grep -i secomp /boot/config-$(uname -r)
 CONFIG_SECOMP=y</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Seccomp work in different modes<ul>
       <li>mode 0 = disabled</li>
@@ -243,6 +247,7 @@ CONFIG_SECOMP=y</code></pre>
     }
   ]
 }</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">a black list of syscalls
 {
   "defaultAction": "SCMP_ACT_ALLOW",
@@ -277,6 +282,7 @@ CONFIG_SECOMP=y</code></pre>
     }
   ]
 }</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To &nbsp;create a container with custom seccomp profile</li>
 </ul>
@@ -296,17 +302,18 @@ CONFIG_SECOMP=y</code></pre>
     }
   ]
 }</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">podman run -it --rm --security-opt seccomp=custom.json docker/whalesay /bin/sh
 # mkdir test
 mkdir: cannot create directory 'test': Operation not permitted
 </code></pre>
 <ul>
-  <li>To allow &nbsp;all syscalls for a container ( disable seccomp )&nbsp;</li>
+  <li>To allow &nbsp;all syscalls for a container ( disable seccomp )</li>
 </ul>
 <pre><code class="language-plaintext">podman run -it --rm --security-opt seccomp=unconfined docker/whalesay /bin/sh</code></pre>
 <p><strong><u>SECCOMP in K8S</u></strong></p>
 <ul>
-  <li>K8S does not apply seccomp profiles by default (unconfined). It is needed to configure the pods to use &nbsp;it by adding the secompprofile field and security context and prevent privilege escalation&nbsp;</li>
+  <li>K8S does not apply seccomp profiles by default (unconfined). It is needed to configure the pods to use &nbsp;it by adding the secompprofile field and security context and prevent privilege escalation</li>
 </ul>
 <pre><code class="language-plaintext">kind: Pod
 apiVersion: v1
@@ -335,7 +342,7 @@ Blocked Syscalls (55):
 Looking for Docker.sock
 </code></pre>
 <ul>
-  <li>To &nbsp;use a custom profile&nbsp;<ul>
+  <li>To &nbsp;use a custom profile<ul>
       <li>create a profile directory <mark class="marker-yellow">/var/lib/kubelet/seccomp/profiles</mark></li>
       <li>create a audit profile that logs all syscalls by &nbsp;containers</li>
       <li>locate the logs at<mark class="marker-yellow"> /var/log/audit/ every syscall has a standarded ID&nbsp;</mark></li>
@@ -345,11 +352,14 @@ Looking for Docker.sock
 <pre><code class="language-plaintext">{
   "defaultAction": "SCMP_ACT_LOG"
 }</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">  securityContext:        
     seccompProfile:
       type: Localhost
       localhostProfile: profiles/audit.json  which is relative to the default profile location on all nodes  /var/lib/kubelet/seccomp/</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext"> ausearch -m SECCOMP -ts recent &gt;&gt; on the node the  pods runs on</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To reject &nbsp;all syscalls from a container</li>
 </ul>
@@ -371,6 +381,7 @@ Looking for Docker.sock
 file,
 # To Deny all file writes under /.
 deny /** w,}</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>AppArmor operate at three modes:<ul>
       <li>enforce</li>
@@ -381,17 +392,19 @@ deny /** w,}</code></pre>
 </ul>
 <p><strong><u>AppArmor utiliy:</u></strong></p>
 <ul>
-  <li>install the utility&nbsp;</li>
+  <li>install the utility</li>
 </ul>
 <pre><code class="language-plaintext">apt-get install -y apparmor-utils</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>use the aa-genprof command to create a profile interactively&nbsp;</li>
+  <li>use the aa-genprof command to create a profile interactively</li>
 </ul>
 <pre><code class="language-plaintext">aa-genprof /path/to/program</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>In a different window run the program so that the command can scan for the events and generate the profile</li>
   <li>use the aa-status to verify that the generated profile is loaded in the kernel</li>
-  <li>to load profiles into the kernel&nbsp;</li>
+  <li>to load profiles into the kernel</li>
 </ul>
 <pre><code class="language-plaintext">apparmor_parser -q /etc/apparmor.d/usr.sbin.nginx</code></pre>
 <p><i><strong><u>AppArmor in k8s:</u></strong></i></p>
@@ -424,10 +437,13 @@ deny /** w,}</code></pre>
     drop: []</code></pre>
 <h6>securityContexts</h6>
 <ul>
-  <li>to run the pod as a user use runAsUser or runAsGroup&nbsp;</li>
+  <li>to run the pod as a user use runAsUser or runAsGroup</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Admission Controllers</h6>
+<ul>
+  <li>To show the default enabled admission controllers</li>
+</ul>
+<pre><code class="language-plaintext">kube-apiserver --enable-admission-plugins</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
