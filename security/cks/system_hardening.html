@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-08T18:46:40.841Z
+date: 2026-04-08T19:03:55.761Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -443,8 +443,16 @@ deny /** w,}</code></pre>
 <ul>
   <li>To show the default enabled admission controllers</li>
 </ul>
-<pre><code class="language-plaintext">kube-apiserver --enable-admission-plugins</code></pre>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">kube-apiserver -h | grep enable-admission-plugins</code></pre>
+<ul>
+  <li>Admission controllers are responsible for every thing on request refusal or mutations and run as webhooks<ul>
+      <li>namespace does not exist</li>
+      <li>default storageclass</li>
+      <li>and other defaults in k8s</li>
+    </ul>
+  </li>
+  <li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
