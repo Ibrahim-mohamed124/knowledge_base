@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-08T19:26:20.234Z
+date: 2026-04-08T19:30:24.444Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -476,4 +476,23 @@ Error from server (Forbidden): pods "test" is forbidden: violates PodSecurity "r
 <blockquote>
   <p>PSA is an integrated solution within Kubernetes that offers built-in capabilities for governing pod security. The solution incorporates a webhook project designed for admission controllers, which ensures enforcement of the controls outlined in the Pod Security Standards (PSS). This admission controller approach bears similarity to the functioning of PAC (Policy as Code) systems.</p>
 </blockquote>
+<pre><code class="language-plaintext">apiVersion: admissionregistration.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+  - name: PodSecurity
+    configuration:
+      apiVersion: pod-security.admission.config.k8s.io/v1
+      kind: PodSecurityConfiguration
+      defaults:
+        enforce: baseline
+        enforce-version: latest
+        audit: restricted
+        audit-version: latest
+        warn: restricted
+        warn-version: latest
+      exemptions:
+        usernames: []
+        runtimeClassNames: []
+        namespaces: [my-namespace]
+~                                    </code></pre>
 <p>&nbsp;</p>
