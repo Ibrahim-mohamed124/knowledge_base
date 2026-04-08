@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-08T19:21:13.061Z
+date: 2026-04-08T19:22:37.150Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -460,11 +460,15 @@ deny /** w,}</code></pre>
           <li>pre-configured profiles that restrict the pods security contexts</li>
           <li>Three profiles: restricted, privileged, baseline</li>
           <li>Three modes: enforce, audit, warn</li>
+          <li>To enforce the PSA profile in an namespace</li>
         </ul>
       </li>
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">kubectl label namespace  waves pod-security.kubernetes.io/enforce=restricted</code></pre>
+<pre><code class="language-plaintext">kubectl run test --image ubuntu --privileged -n waves
+Error from server (Forbidden): pods "test" is forbidden: violates PodSecurity "restricted:latest": privileged (container "test" must not set securityContext.privileged=true), allowPrivilegeEscalation != false (container "test" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "test" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "test" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "test" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
