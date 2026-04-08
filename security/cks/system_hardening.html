@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-08T19:25:25.687Z
+date: 2026-04-08T19:26:20.234Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -456,10 +456,12 @@ deny /** w,}</code></pre>
 <p>PodSecurityPolicy serves as an admission controller within Kubernetes, enabling cluster administrators to effectively manage security-related aspects of the Pod specification.</p>
 <ul>
   <li>there are two policies:<ul>
-      <li>pod security standard&nbsp;</li>
+      <li>pod security standard&nbsp;<ul>
+          <li>Three profiles: restricted, privileged, baseline</li>
+        </ul>
+      </li>
       <li>pod security admission: enabled by default admission controller (PodSecurity)<ul>
           <li>pre-configured profiles that restrict the pods security contexts</li>
-          <li>Three profiles: restricted, privileged, baseline</li>
           <li>Three modes: enforce, audit, warn</li>
           <li>To enforce the PSA profile in an namespace</li>
         </ul>
