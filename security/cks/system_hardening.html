@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-08T19:30:24.444Z
+date: 2026-04-10T08:10:36.079Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -444,6 +444,7 @@ deny /** w,}</code></pre>
   <li>To show the default enabled admission controllers</li>
 </ul>
 <pre><code class="language-plaintext">kube-apiserver -h | grep enable-admission-plugins</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Admission controllers are responsible for every thing on request refusal or mutations and run as webhooks<ul>
       <li>namespace does not exist</li>
@@ -456,7 +457,7 @@ deny /** w,}</code></pre>
 <p>PodSecurityPolicy serves as an admission controller within Kubernetes, enabling cluster administrators to effectively manage security-related aspects of the Pod specification.</p>
 <ul>
   <li>there are two policies:<ul>
-      <li>pod security standard&nbsp;<ul>
+      <li>pod security standard<ul>
           <li>Three profiles: restricted, privileged, baseline</li>
         </ul>
       </li>
@@ -470,6 +471,7 @@ deny /** w,}</code></pre>
   </li>
 </ul>
 <pre><code class="language-plaintext">kubectl label namespace  waves pod-security.kubernetes.io/enforce=restricted</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">kubectl run test --image ubuntu --privileged -n waves
 Error from server (Forbidden): pods "test" is forbidden: violates PodSecurity "restricted:latest": privileged (container "test" must not set securityContext.privileged=true), allowPrivilegeEscalation != false (container "test" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "test" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "test" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "test" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
 </code></pre>
@@ -493,6 +495,5 @@ plugins:
       exemptions:
         usernames: []
         runtimeClassNames: []
-        namespaces: [my-namespace]
-~                                    </code></pre>
+        namespaces: [my-namespace]</code></pre>
 <p>&nbsp;</p>
