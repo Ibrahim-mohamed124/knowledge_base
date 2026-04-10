@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-10T09:23:30.665Z
+date: 2026-04-10T09:33:19.844Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -549,6 +549,7 @@ allow {
 </ul>
 <p><strong>To create hard coded Rego policies: Plain OPA &nbsp;+ kube-mgmt</strong></p>
 <ul>
+  <li>Can be installed via helm chart <a href="https://github.com/open-policy-agent/kube-mgmt/blob/master/charts/opa-kube-mgmt/README.md">here</a></li>
   <li>Policies can be loaded into OPA dynamically via ConfigMap objects using the <a href="https://github.com/open-policy-agent/kube-mgmt">kube-mgmt</a> sidecar container. The kube-mgmt sidecar container can also load any other Kubernetes object into OPA as JSON under <code>data</code>.&nbsp;</li>
   <li><code>kube-mgmt</code> assumes a <code>ConfigMap</code> contains policy or JSON data if the <code>ConfigMap</code> is:<ul>
       <li>Created in a namespace listed in the <code>--namespaces</code> option. If you specify <code>--namespaces=*</code> then <code>kube-mgmt</code> will look for policies in ALL namespaces.</li>
@@ -556,6 +557,7 @@ allow {
       <li>Labelled with <code>openpolicyagent.org/data=opa</code> for JSON data</li>
     </ul>
   </li>
+  <li>When a <code>ConfigMap</code> has been successfully loaded into OPA, the <code>openpolicyagent.org/kube-mgmt-status</code> annotation is set to <code>{"status": "ok"}</code>.</li>
   <li>create a configmap with the Rego policy&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">cat untrusted-registry.rego
