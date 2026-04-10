@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-10T09:00:11.671Z
+date: 2026-04-10T09:23:30.665Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -547,8 +547,15 @@ allow {
     </ul>
   </li>
 </ul>
-<p><strong>To create hard coded Rego policies:</strong></p>
+<p><strong>To create hard coded Rego policies: Plain OPA &nbsp;+ kube-mgmt</strong></p>
 <ul>
+  <li>Policies can be loaded into OPA dynamically via ConfigMap objects using the <a href="https://github.com/open-policy-agent/kube-mgmt">kube-mgmt</a> sidecar container. The kube-mgmt sidecar container can also load any other Kubernetes object into OPA as JSON under <code>data</code>.&nbsp;</li>
+  <li><code>kube-mgmt</code> assumes a <code>ConfigMap</code> contains policy or JSON data if the <code>ConfigMap</code> is:<ul>
+      <li>Created in a namespace listed in the <code>--namespaces</code> option. If you specify <code>--namespaces=*</code> then <code>kube-mgmt</code> will look for policies in ALL namespaces.</li>
+      <li>Labelled with <code>openpolicyagent.org/policy=rego</code> for policies</li>
+      <li>Labelled with <code>openpolicyagent.org/data=opa</code> for JSON data</li>
+    </ul>
+  </li>
   <li>create a configmap with the Rego policy&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">cat untrusted-registry.rego
@@ -561,7 +568,10 @@ deny[msg] {
   msg := sprintf("image '%v' comes from untrusted registry", [image])
 }</code></pre>
 <pre><code class="language-plaintext">kubectl create configmap untrusted-registry --from-file=untrusted-registry.rego</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>To install OPA on k8s</li>
+</ul>
+<pre><code class="language-plaintext">&nbsp;</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
