@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-10T09:37:55.368Z
+date: 2026-04-10T09:42:18.489Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -575,7 +575,38 @@ deny[msg] {
   <li>Install the CRDs and operator</li>
 </ul>
 <pre><code class="language-plaintext">kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/v3.22.0/deploy/gatekeeper.yaml</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>create &nbsp;Constraint template</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate                    
+metadata:
+  name: k8srequiredlabels
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredLabels                                 
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            labels:
+              type: array
+              items:
+                type: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |                                     
+        package k8srequiredlabels
+
+        violation[{"msg": msg, "details": {"missing_labels": missing}}] {
+          provided := {label | input.review.object.metadata.labels[label]}
+          required := {label | label := input.parameters.labels[_]}
+          missing := required - provided
+          count(missing) &gt; 0
+          msg := sprintf("you must provide labels: %v", [missing])
+        }</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
