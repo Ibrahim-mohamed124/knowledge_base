@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-10T09:42:18.489Z
+date: 2026-04-10T09:46:23.830Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -607,7 +607,18 @@ spec:
           count(missing) &gt; 0
           msg := sprintf("you must provide labels: %v", [missing])
         }</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>create a constraint&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: require-tech-label
+spec:
+  match:
+    namespaces: ["engineering"]
+  parameters:
+    labels: ["tech"]</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
