@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-10T08:50:31.409Z
+date: 2026-04-10T09:00:11.671Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -547,7 +547,20 @@ allow {
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<p><strong>To create hard coded Rego policies:</strong></p>
+<ul>
+  <li>create a configmap with the Rego policy&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">cat untrusted-registry.rego
+package kubernetes.admission
+
+deny[msg] {
+  input.request.kind.kind == "Pod"
+  image := input.request.object.spec.containers[_].image
+  not startswith(image, "hooli.com/")
+  msg := sprintf("image '%v' comes from untrusted registry", [image])
+}</code></pre>
+<pre><code class="language-plaintext">kubectl create configmap untrusted-registry --from-file=untrusted-registry.rego</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
