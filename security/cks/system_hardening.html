@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-10T08:25:21.813Z
+date: 2026-04-10T08:30:14.325Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -501,8 +501,26 @@ plugins:
   <li>Authorization layer controls the action on resources like https endpoints via rego policies&nbsp;</li>
   <li>OPA has libraries in many languages to enable applications to call the engine for authorization.&nbsp;</li>
   <li>On microservices, OPA works as a webhook that consulted by the application to authorize actions. &nbsp;</li>
+  <li>To install OPA server</li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext"># Find the given version of OPA from the release page.
+export VERSION=v0.38.1
+curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/${VERSION}/opa_linux_amd64
+
+chmod 755 ./opa
+
+./opa run -s &amp;</code></pre>
+<ul>
+  <li>OPA runs on 8181 port by default</li>
+  <li>Simple Rego policy&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">package httpapi.authz
+import input
+default allow = false
+allow {
+ input.path == "home"
+ input.user == "Kedar"
+ }</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
