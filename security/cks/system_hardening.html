@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T15:13:05.674Z
+date: 2026-04-13T15:42:55.191Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -797,8 +797,48 @@ EOF</code></pre>
 </ul>
 <h6>API Priority and Fairness</h6>
 <ul>
-  <li>&nbsp;</li>
+  <li>Define which resources need priority over others&nbsp;</li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: flowcontrol.apiserver.k8s.io/v1
+kind: PriorityLevelConfiguration
+metadata:
+  name: high-level
+spec:
+  type: Limited
+  limited:
+    nominalConcurrencyShares: 10
+    limitResponse:
+      type: Queue
+      queuing:
+        queues: 64
+        handSize: 8
+        queueLengthLimit: 50</code></pre>
+<ul>
+  <li>To associate priority level configuration to a namespace for example create a flow schema&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: flowcontrol.apiserver.k8s.io/v1
+kind: FlowSchema
+metadata:
+  name: high-level-test-namespace
+spec:
+  # Lower number means higher priority for the FlowSchema evaluation
+  matchingPrecedence: 500
+  # Ties this schema to your previously created PriorityLevelConfiguration
+  priorityLevelConfiguration:
+    name: high-level
+  rules:
+    - subjects:
+        # This matches all authenticated users/service accounts
+        - kind: Group
+          group:
+            name: system:authenticated
+      resourceRules:
+        # This specifically targets actions happening in the "test" namespace
+        - namespaces: ["test"]
+          apiGroups: ["*"]
+          resources: ["*"]
+          verbs: ["*"]</code></pre>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
