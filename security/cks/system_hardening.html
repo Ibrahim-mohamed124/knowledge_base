@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T10:05:05.367Z
+date: 2026-04-13T10:07:33.862Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -648,7 +648,13 @@ resources:
       - configmaps
       - pandas.awesome.bears.example # a custom resource API
     providers:
-    - identity: {}</code></pre>
+      - aescbc:
+          keys:
+            - name: key1
+              # See the following text for more details about the secret value
+              secret: &lt;head -c 32 /dev/urandom  | base64&gt;
+      - identity: {} # this fallback allows reading unencrypted secrets;
+                     # for example, during initial migration</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
