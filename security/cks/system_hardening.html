@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T11:13:14.818Z
+date: 2026-04-13T11:20:39.462Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -715,5 +715,13 @@ spec:
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<h6>Container Runtimes</h6>
+<ul>
+  <li>The lower level layer that is responsible for creating the container on linux kernels</li>
+</ul>
+<figure class="image"><img src="/cks/runtimes.png"></figure>
+<ul>
+  <li>to use different runtime with docker&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">docker run nginx --runtime runsc|kata</code></pre>
 <p>&nbsp;</p>
