@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T15:46:04.368Z
+date: 2026-04-13T15:47:46.012Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -796,8 +796,11 @@ EOF</code></pre>
   </li>
 </ul>
 <h6>API Priority and Fairness</h6>
+<blockquote>
+  <p>The short answer is: <strong>API Priority and Fairness (APF)</strong> protects the Kubernetes <i>Control Plane</i> from being overwhelmed by API requests, while <strong>Pod Priority and Preemption</strong> protects your <i>Workloads</i> by ensuring critical applications get the CPU and Memory they need on the worker nodes.</p>
+</blockquote>
 <ul>
-  <li>Define which resources need priority over others&nbsp;</li>
+  <li>Define which resources need priority over others to talk with the api-server&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: flowcontrol.apiserver.k8s.io/v1
 kind: PriorityLevelConfiguration
