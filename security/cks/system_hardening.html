@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T10:23:16.979Z
+date: 2026-04-13T10:27:28.346Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -638,7 +638,7 @@ get /registry/secrets/default/secret_name | hexdump -C</code></pre>
 </ul>
 <pre><code class="language-plaintext">the --encryption-provider-config must be passed to the kube-api server </code></pre>
 <ul>
-  <li>To enable encryption create EncryptionConfiguration resource and pass it to the kube-api server using this flag</li>
+  <li>To enable encryption in the etcd at rest create EncryptionConfiguration resource and pass it to the kube-api server using this flag&nbsp;</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: apiserver.config.k8s.io/v1
 kind: EncryptionConfiguration
