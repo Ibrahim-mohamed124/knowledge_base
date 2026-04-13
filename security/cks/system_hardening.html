@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T10:07:33.862Z
+date: 2026-04-13T10:17:06.854Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -655,7 +655,28 @@ resources:
               secret: &lt;head -c 32 /dev/urandom  | base64&gt;
       - identity: {} # this fallback allows reading unencrypted secrets;
                      # for example, during initial migration</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>move this file under /etc/kubernetes/enc/ and mount that path to the kube-api serve then add the flag</li>
+</ul>
+<pre><code class="language-plaintext">....
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --encryption-provider-config=/etc/kubernetes/enc/enc.yaml
+.....
+    volumeMounts:
+    - mountPath: /etc/kubernetes/enc/enc.yaml
+      name: enc
+
+
+  volumes:
+  - hostPath:
+      path: /etc/kubernetes/enc/
+      type: DirectoryOrCreate
+    name: enc
+......
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
