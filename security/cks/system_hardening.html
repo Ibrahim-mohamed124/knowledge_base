@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T10:37:14.780Z
+date: 2026-04-13T10:38:05.174Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -680,7 +680,11 @@ spec:
 <h6>Container Sandboxing</h6>
 <ul>
   <li>Sandboxing: are &nbsp;techniques that is used to isolate processes in the system<ul>
-      <li>like: seccomp, AppArmor, SELinux, … (white listing and black listing)&nbsp;</li>
+      <li>like:&nbsp;<ul>
+          <li>seccomp, AppArmor, SELinux, … (white listing and black listing)&nbsp;</li>
+          <li>linux namespaces PID, and others</li>
+        </ul>
+      </li>
     </ul>
   </li>
 </ul>
