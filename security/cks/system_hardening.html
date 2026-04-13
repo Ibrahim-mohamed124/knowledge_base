@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-10T09:46:23.830Z
+date: 2026-04-13T10:05:05.367Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -498,9 +498,9 @@ plugins:
         namespaces: [my-namespace]</code></pre>
 <h6>Open Policy Agent&nbsp;</h6>
 <ul>
-  <li>Authorization layer controls the action on resources like https endpoints via rego policies&nbsp;</li>
-  <li>OPA has libraries in many languages to enable applications to call the engine for authorization.&nbsp;</li>
-  <li>On microservices, OPA works as a webhook that consulted by the application to authorize actions. &nbsp;</li>
+  <li>Authorization layer controls the action on resources like https endpoints via rego policies</li>
+  <li>OPA has libraries in many languages to enable applications to call the engine for authorization.</li>
+  <li>On microservices, OPA works as a webhook that consulted by the application to authorize actions.</li>
   <li>To install OPA server</li>
 </ul>
 <pre><code class="language-plaintext"># Find the given version of OPA from the release page.
@@ -510,9 +510,10 @@ curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/${VERS
 chmod 755 ./opa
 
 ./opa run -s &amp;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>OPA runs on 8181 port by default</li>
-  <li>Simple Rego policy&nbsp;</li>
+  <li>Simple Rego policy</li>
 </ul>
 <pre><code class="language-plaintext">package httpapi.authz
 import input
@@ -521,6 +522,7 @@ allow {
  input.path == "home"
  input.user == "Kedar"
  }</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To load a rego policy to OPA server</li>
 </ul>
@@ -542,7 +544,7 @@ allow {
 <figure class="image"><img src="/cks/gateway.png"></figure>
 <p>&nbsp;</p>
 <ul>
-  <li>Constraint templates: define CRDs, targets, and Rego policies.&nbsp;<ul>
+  <li>Constraint templates: define CRDs, targets, and Rego policies.<ul>
       <li><mark class="marker-yellow">CRDs will be used to create CRs to pass parameters to the Rego policies&nbsp;</mark></li>
     </ul>
   </li>
@@ -550,7 +552,7 @@ allow {
 <p><strong>To create hard coded Rego policies: Plain OPA &nbsp;+ kube-mgmt</strong></p>
 <ul>
   <li>Can be installed via helm chart <a href="https://github.com/open-policy-agent/kube-mgmt/blob/master/charts/opa-kube-mgmt/README.md">here</a></li>
-  <li>Policies can be loaded into OPA dynamically via ConfigMap objects using the <a href="https://github.com/open-policy-agent/kube-mgmt">kube-mgmt</a> sidecar container. The kube-mgmt sidecar container can also load any other Kubernetes object into OPA as JSON under <code>data</code>.&nbsp;</li>
+  <li>Policies can be loaded into OPA dynamically via ConfigMap objects using the <a href="https://github.com/open-policy-agent/kube-mgmt">kube-mgmt</a> sidecar container. The kube-mgmt sidecar container can also load any other Kubernetes object into OPA as JSON under <code>data</code>.</li>
   <li><code>kube-mgmt</code> assumes a <code>ConfigMap</code> contains policy or JSON data if the <code>ConfigMap</code> is:<ul>
       <li>Created in a namespace listed in the <code>--namespaces</code> option. If you specify <code>--namespaces=*</code> then <code>kube-mgmt</code> will look for policies in ALL namespaces.</li>
       <li>Labelled with <code>openpolicyagent.org/policy=rego</code> for policies</li>
@@ -558,7 +560,7 @@ allow {
     </ul>
   </li>
   <li>When a <code>ConfigMap</code> has been successfully loaded into OPA, the <code>openpolicyagent.org/kube-mgmt-status</code> annotation is set to <code>{"status": "ok"}</code>.</li>
-  <li>create a configmap with the Rego policy&nbsp;</li>
+  <li>create a configmap with the Rego policy</li>
 </ul>
 <pre><code class="language-plaintext">cat untrusted-registry.rego
 package kubernetes.admission
@@ -569,12 +571,14 @@ deny[msg] {
   not startswith(image, "hooli.com/")
   msg := sprintf("image '%v' comes from untrusted registry", [image])
 }</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">kubectl create configmap untrusted-registry --from-file=untrusted-registry.rego</code></pre>
 <p><i><strong><u>Installing Gatekeeper:</u></strong></i></p>
 <ul>
   <li>Install the CRDs and operator</li>
 </ul>
 <pre><code class="language-plaintext">kubectl apply -f https://raw.githubusercontent.com/open-policy-agent/gatekeeper/v3.22.0/deploy/gatekeeper.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>create &nbsp;Constraint template</li>
 </ul>
@@ -607,8 +611,9 @@ spec:
           count(missing) &gt; 0
           msg := sprintf("you must provide labels: %v", [missing])
         }</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>create a constraint&nbsp;</li>
+  <li>create a constraint</li>
 </ul>
 <pre><code class="language-plaintext">apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sRequiredLabels
@@ -619,9 +624,31 @@ spec:
     namespaces: ["engineering"]
   parameters:
     labels: ["tech"]</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Manage secrets</h6>
+<ul>
+  <li>To check how normal secrets are stored in the etcd</li>
+</ul>
+<pre><code class="language-plaintext">kubectl exec -it -n kube-system etcd-k8s-master --  etcdctl  \
+--cacert=/etc/kubernetes/pki/etcd/ca.crt \
+--cert=/etc/kubernetes/pki/etcd/server.crt \
+--key=/etc/kubernetes/pki/etcd/server.key \
+get /registry/secrets/default/secret_name | hexdump -C</code></pre>
+<ul>
+  <li>To check if secrets encryption is enabled&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">the --encryption-provider-config must be passed to the kube-api server </code></pre>
+<ul>
+  <li>To enable encryption create EncryptionConfiguration resource and pass it to the kube-api server using this flag</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+      - secrets
+      - configmaps
+      - pandas.awesome.bears.example # a custom resource API
+    providers:
+    - identity: {}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
