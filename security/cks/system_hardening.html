@@ -2,7 +2,7 @@
 title: System Hardening 
 description: 
 published: true
-date: 2026-04-13T15:47:46.012Z
+date: 2026-04-13T15:58:43.464Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-03T15:40:06.403Z
@@ -844,7 +844,16 @@ spec:
 <h6>Pod Priority and Preemption</h6>
 <ul>
   <li>Ensure that critical pods are given priority over less critical ones when the cluster is under pressure, and to preempt the less critical pods when needed to make room for the critical ones.&nbsp;</li>
+  <li>Priority classes</li>
 </ul>
+<pre><code class="language-plaintext">apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: critical-workload
+value: 1000000
+preemptionPolicy: PreemptLowerPriority
+globalDefault: false
+description: "Used for crucial production applications."</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
