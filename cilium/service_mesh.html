@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2025-12-28T11:40:38.912Z
+date: 2026-04-14T13:01:21.670Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -113,6 +113,14 @@ spec:
 <h6>Gateway API</h6>
 <ul>
   <li>Enable it by setting gatewayAPI.enabled to true in the values.yaml file and installing the API gateway CRDs from its documentation the<mark class="marker-yellow"> experimental channel not the standard one</mark></li>
+</ul>
+<pre><code class="language-plaintext">cilium upgrade --set gatewayAPI.enabled=true</code></pre>
+<pre><code class="language-plaintext">kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml</code></pre>
+<ul>
+  <li>Then restart the cilium-operator</li>
+</ul>
+<pre><code class="language-plaintext">kubectl rollout restart deployment cilium-operator -n kube-system</code></pre>
+<ul>
   <li>Separation of Concerns:<ul>
       <li>GatewayClass: what type of gateway controller will be used?? Nginx, others?? built by the infra team</li>
       <li>Gateway: configure an instance of the gateway controller &nbsp;built by platform operator</li>
