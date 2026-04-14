@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2026-04-14T13:02:08.700Z
+date: 2026-04-14T13:04:40.138Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-19T20:00:13.689Z
@@ -116,6 +116,13 @@ spec:
 </ul>
 <pre><code class="language-plaintext">cilium upgrade --set gatewayAPI.enabled=true</code></pre>
 <pre><code class="language-plaintext">kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.0/experimental-install.yaml</code></pre>
+<ul>
+  <li>enable node-port&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">helm upgrade cilium cilium/cilium \
+  --namespace kube-system \
+  --reuse-values \
+  --set nodePort.enabled=true</code></pre>
 <ul>
   <li>Then restart the cilium-operator</li>
 </ul>
