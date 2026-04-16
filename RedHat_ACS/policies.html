@@ -2,7 +2,7 @@
 title: Policy Management
 description: 
 published: true
-date: 2026-04-16T12:42:27.573Z
+date: 2026-04-16T12:50:44.884Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-16T12:00:21.610Z
@@ -84,8 +84,14 @@ spec:
   <li><i>Hard enforcement: </i>the OpenShift API server blocks all noncompliant deployments.</li>
   <li><i>Soft enforcement: </i>It executes the enforcement by scaling down replicas to zero for deployments that violate a policy, and prevents pods from being scheduled.</li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h3>Runtime Policies</h3>
+<ul>
+  <li>configure runtime policies to trigger policy violations based on the following events:<ul>
+      <li>Deployments: RHACS triggers policy violations when event sources include process and network activity, such as executing a command in a pod and pod port forwarding.</li>
+      <li>Audit logs: RHACS triggers policy violations when event sources match Kubernetes audit log records.</li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
