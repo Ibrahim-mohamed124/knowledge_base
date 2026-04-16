@@ -2,7 +2,7 @@
 title: Policy Management
 description: 
 published: true
-date: 2026-04-16T12:00:21.610Z
+date: 2026-04-16T12:02:28.453Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-16T12:00:21.610Z
@@ -12,11 +12,11 @@ dateCreated: 2026-04-16T12:00:21.610Z
 <ul>
   <li>The default policy configuration is a baseline posture for detecting the most common risks in your environment.</li>
   <li>When customizing default policies, it is a good practice to first clone the existing policy, apply any customizations to the new clone, and disable the original default policy.</li>
-  <li>Each policy falls into one of the categories that RHACS organizes by type and function.&nbsp;</li>
+  <li>Each policy falls into one of the categories that RHACS organizes by type and function.</li>
 </ul>
 <h3>Enforcing a Deploy-time Policy</h3>
 <ul>
-  <li>RHACS works with admission plug-ins in openshfit &nbsp;to enforce policies before the their persistent in the ETCD and after the authentication and authorization layer.&nbsp;</li>
+  <li>RHACS works with admission plug-ins in openshfit &nbsp;to enforce policies before the their persistent in the ETCD and after the authentication and authorization layer.</li>
   <li>RHACS uses the <code>ValidatingAdmissionWebhook</code> controller to verify that the resource that is being provisioned complies with the specified security policies. RHACS creates a <code>ValidatingWebhookConfiguration</code> object, which contains multiple webhook rules.</li>
   <li>When the Kubernetes or OpenShift API server receives a request that matches one of the webhook rules, the API server sends an <code>AdmissionReview</code> request to RHACS. Then, RHACS accepts or rejects the request, based on the configured security policies.</li>
   <li>Complementing the admission controller, the Collector component analyzes and monitors container activity on the cluster nodes, including Linux kernel-level activity, container runtime activity, host network traffic, and file systems.</li>
@@ -24,3 +24,13 @@ dateCreated: 2026-04-16T12:00:21.610Z
 <blockquote>
   <p>The Collector operates during run time, and the admission controller enforces policies during workload deployment.</p>
 </blockquote>
+<pre><code class="language-plaintext">apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  name: managed-cluster
+  namespace: stackrox
+spec:
+  admissionControl:
+    listenOnCreates: true 1
+    listenOnEvents: true 2
+    listenOnUpdates: true 3</code></pre>
