@@ -2,7 +2,7 @@
 title: Policy Management
 description: 
 published: true
-date: 2026-04-16T12:04:12.398Z
+date: 2026-04-16T12:04:42.374Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-16T12:00:21.610Z
@@ -64,7 +64,18 @@ spec:
 </ul>
 <pre><code class="language-plaintext">  annotations:
     admission.stackrox.io/break-glass: "ticket-1234"</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>disable the use of the break glass annotation in your secured cluster by setting the <code>spec.admissionControl.bypass</code> attribute to <code>Disabled</code>.</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  name: managed-cluster
+  namespace: stackrox
+spec:
+  admissionControl:
+    bypass: Disabled
+...output omitted...</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
