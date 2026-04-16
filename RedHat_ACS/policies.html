@@ -2,7 +2,7 @@
 title: Policy Management
 description: 
 published: true
-date: 2026-04-16T12:04:42.374Z
+date: 2026-04-16T12:42:27.573Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-16T12:00:21.610Z
@@ -77,8 +77,13 @@ spec:
     bypass: Disabled
 ...output omitted...</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>With deploy-time enforcement, RHACS works with Kubernetes admission controllers and OpenShift admission plug-ins. RHACS prevents OpenShift from creating or updating workloads, for example, deployments, daemon sets or jobs, that match the conditions of the policy.&nbsp;</p>
+</blockquote>
+<ul>
+  <li><i>Hard enforcement: </i>the OpenShift API server blocks all noncompliant deployments.</li>
+  <li><i>Soft enforcement: </i>It executes the enforcement by scaling down replicas to zero for deployments that violate a policy, and prevents pods from being scheduled.</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
