@@ -2,7 +2,7 @@
 title: Policy Management
 description: 
 published: true
-date: 2026-04-16T15:36:15.256Z
+date: 2026-04-21T10:17:37.371Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-16T12:00:21.610Z
@@ -34,6 +34,7 @@ spec:
     listenOnCreates: true 1
     listenOnEvents: true 2
     listenOnUpdates: true 3</code></pre>
+<p>&nbsp;</p>
 <figure class="table">
   <table style="background-color:rgb(255, 255, 255);">
     <tbody>
@@ -64,6 +65,7 @@ spec:
 </ul>
 <pre><code class="language-plaintext">  annotations:
     admission.stackrox.io/break-glass: "ticket-1234"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>disable the use of the break glass annotation in your secured cluster by setting the <code>spec.admissionControl.bypass</code> attribute to <code>Disabled</code>.</li>
 </ul>
@@ -91,10 +93,10 @@ spec:
       <li>Audit logs: RHACS triggers policy violations when event sources match Kubernetes audit log records.</li>
     </ul>
   </li>
-  <li>When a runtime policy uses the <code>Inform and enforce</code> enforcement method, RHACS deletes the pods for which an event matches the criteria of the policy.&nbsp;</li>
+  <li>When a runtime policy uses the <code>Inform and enforce</code> enforcement method, RHACS deletes the pods for which an event matches the criteria of the policy.</li>
   <li>setting the scope of the policy enforcement to explicitly include or exclude deployments.</li>
+  <li>RHACS first discovers existing processes and creates a baseline. On locking the baseline, RHACS operates in a deny-all mode and allows only processes that are listed in the baseline to run.</li>
 </ul>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
