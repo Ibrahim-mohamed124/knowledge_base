@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-22T18:23:40.396Z
+date: 2026-04-22T18:34:47.548Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -171,6 +171,8 @@ WantedBy=multi-user.target
 </ul>
 <pre><code class="language-plaintext">route:
  receiver: team
+global:
+  smtp_from: source@mail
 receivers: 
  - name: team
    slack_configs:
@@ -183,7 +185,27 @@ receivers:
      auth_username: source@mail
      auth_identity: source@mail
      auth_password: "password"</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Global configurations: to config all the receivers</li>
+  <li>To customize the notification use Go templating language with:<ul>
+      <li>GroupLabels &gt; contains the group labels of the nofitication</li>
+      <li>CommonLabels &gt; labels that are common across all alerts in the notification</li>
+      <li>CommonAnnotations&nbsp;</li>
+      <li>ExternalURL &gt; URL of the Alertmanager</li>
+      <li>Status &gt; will be set to firing if at least one alert in the notification is firing</li>
+      <li>resolved &gt; if all alerts are resolved</li>
+      <li>Receiver &gt; name of the receiver</li>
+      <li>Alerts &gt; List of all the alerts in the notification<ul>
+          <li>Labels &gt; labels of the alert</li>
+          <li>Annotations&nbsp;</li>
+          <li>status</li>
+          <li>StartsAt</li>
+          <li>EndsAt</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
