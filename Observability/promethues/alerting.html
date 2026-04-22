@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-05T15:23:22.851Z
+date: 2026-04-22T18:20:24.180Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -11,7 +11,7 @@ dateCreated: 2026-04-05T13:58:43.849Z
 <p>Alert Manager:</p>
 <ul>
   <li>Prometheus generates alerts based on conditions written in PromQL, then alert manager takes these alerts and routes them to a notification mechanism.</li>
-  <li>Alerting rules are used by promethues to write the conditions, on which Prometheus will generate alerts&nbsp;</li>
+  <li>Alerting rules are used by promethues to write the conditions, on which Prometheus will generate alerts</li>
 </ul>
 <pre><code class="language-plaintext">groups:
   - name: node
@@ -20,8 +20,9 @@ dateCreated: 2026-04-05T13:58:43.849Z
      - record: ...
      - alert: LowMemory
        expr: node_memory_memFree_percent &lt; 20</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>To tell promethues to evaluate the condition for some time before firing the alert use the for attribute&nbsp;</li>
+  <li>To tell promethues to evaluate the condition for some time before firing the alert use the for attribute</li>
 </ul>
 <pre><code class="language-plaintext">groups:
   - name: node
@@ -51,8 +52,9 @@ dateCreated: 2026-04-05T13:58:43.849Z
          severity: high
        annotations:
          description: "only for describtion that are able to use go templating language"</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>To access the labels in annotations&nbsp;</li>
+  <li>To access the labels in annotations</li>
 </ul>
 <pre><code class="language-plaintext">{{.Labels}} &gt; to get access to alert labels
 {{.Lables.instance}}  &gt; to get acess to instance labels
@@ -75,6 +77,7 @@ dateCreated: 2026-04-05T13:58:43.849Z
 </ul>
 <pre><code class="language-plaintext">wget https://github.com/prometheus/alertmanager/releases/download/v0.31.1/alertmanager-0.31.1.linux-amd64.tar.gz
 tar -xvaf alertmanager-0.31.1.linux-amd64.tar.gz</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>configure promethues to use alert manager:</li>
 </ul>
@@ -85,6 +88,7 @@ alerting:
    - targets:
      - alertmanager_IP:9093
  - "rules.yml"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To check rules syntax</li>
 </ul>
@@ -120,6 +124,7 @@ mkdir /var/lib/alertmanager
 chown -R alertmanager:alertmanager /var/lib/alertmanager &gt; to store the data
 mv alertmanager amtool /usr/local/bin/
 chown alertmanager:alertmanager  /usr/local/bin/alertmanager  /usr/local/bin/amtool</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">[Unit]
 Description=Alertmanager
 Wants=network-online.target
@@ -150,11 +155,11 @@ WantedBy=multi-user.target
 <ul>
   <li>receiver: global receiver</li>
   <li>group_by: &nbsp;grouping</li>
-  <li>routes: override the global receiver and group_by&nbsp;<ul>
+  <li>routes: override the global receiver and group_by<ul>
       <li>match_re: like matchers but use regex</li>
       <li>matchers: the labels based on which the routing will happen</li>
       <li>receiver: the specific receiver to this labels</li>
-      <li>subroutes: to take an alert from the group and send it to different notifier&nbsp;</li>
+      <li>subroutes: to take an alert from the group and send it to different notifier</li>
       <li>continue: true to send the same alert to more than one receiver</li>
     </ul>
   </li>
