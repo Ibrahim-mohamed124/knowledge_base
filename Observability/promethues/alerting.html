@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-22T18:44:46.049Z
+date: 2026-04-22T18:55:27.139Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -169,14 +169,28 @@ WantedBy=multi-user.target
   <li>Notifiers: responsible for sending these notifications to targets</li>
 </ul>
 <pre><code class="language-plaintext">route:
- receiver: team
+ receiver: 'web.hook'
+ group_by:
+ - alertname
+ group_wait: 39s
+ group_interval: 30m
+ repeat_interval: 2m
+ routes:
+ - match_re: 
+    job: (node|db1|db2)
+    group_by: ['team', 'env']
+    receiver: team
 global:
   smtp_from: source@mail
 receivers: 
+ - name: web.hook
+   webhook_configs:
+    - url: 'http://ip:port'
  - name: team
    slack_configs:
    - api_url: "url"
      channel: "channel"
+     title: '{{.GroupLabels.team}}
    email_configs:
    - to: target@mail
      from: source@mail
