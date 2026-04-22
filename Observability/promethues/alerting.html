@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-22T18:34:47.548Z
+date: 2026-04-22T18:35:34.724Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -188,10 +188,10 @@ receivers:
 <ul>
   <li>Global configurations: to config all the receivers</li>
   <li>To customize the notification use Go templating language with:<ul>
-      <li>GroupLabels &gt; contains the group labels of the nofitication</li>
+      <li>GroupLabels &gt; contains the group labels of the notification</li>
       <li>CommonLabels &gt; labels that are common across all alerts in the notification</li>
       <li>CommonAnnotations&nbsp;</li>
-      <li>ExternalURL &gt; URL of the Alertmanager</li>
+      <li>ExternalURL &gt; URL of the Alert manager</li>
       <li>Status &gt; will be set to firing if at least one alert in the notification is firing</li>
       <li>resolved &gt; if all alerts are resolved</li>
       <li>Receiver &gt; name of the receiver</li>
@@ -206,6 +206,6 @@ receivers:
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">{{.CommonLabels.label}}</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
