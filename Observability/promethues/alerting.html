@@ -2,7 +2,7 @@
 title: Alert Manager
 description: 
 published: true
-date: 2026-04-22T18:20:35.974Z
+date: 2026-04-22T18:23:40.396Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-05T13:58:43.849Z
@@ -164,9 +164,25 @@ WantedBy=multi-user.target
     </ul>
   </li>
 </ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>j</p>
+<h6>Receivers and Notifiers</h6>
+<ul>
+  <li>Receivers: responsible for taking a group of alerts and making notifications</li>
+  <li>Notifiers: responsible for sending these notifications to targets</li>
+</ul>
+<pre><code class="language-plaintext">route:
+ receiver: team
+receivers: 
+ - name: team
+   slack_configs:
+   - api_url: "url"
+     channel: "channel"
+   email_configs:
+   - to: target@mail
+     from: source@mail
+     smarthost: mail_server
+     auth_username: source@mail
+     auth_identity: source@mail
+     auth_password: "password"</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
