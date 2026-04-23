@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-23T18:08:55.192Z
+date: 2026-04-23T19:40:56.430Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -30,3 +30,45 @@ dateCreated: 2026-04-23T17:20:20.781Z
     </ul>
   </li>
 </ul>
+<p>Service Discovery:</p>
+<ul>
+  <li>Endpoints: a list &nbsp;of endpoints (ip &nbsp;+ port)</li>
+</ul>
+<h6>Additional scrape configs</h6>
+<ul>
+  <li>To add custom scrape configs and append them to the scrape configs made by the &nbsp;operator in the values.yaml file of the helm chart</li>
+</ul>
+<pre><code class="language-plaintext">    additionalScrapeConfigs: []
+    # - job_name: kube-etcd
+    #   kubernetes_sd_configs:
+    #     - role: node
+    #   scheme: https
+    #   tls_config:
+    #     ca_file:   /etc/prometheus/secrets/etcd-client-cert/etcd-ca
+    #     cert_file: /etc/prometheus/secrets/etcd-client-cert/etcd-client
+    #     key_file:  /etc/prometheus/secrets/etcd-client-cert/etcd-client-key
+    #   relabel_configs:
+    #   - action: labelmap
+    #     regex: __meta_kubernetes_node_label_(.+)
+    #   - source_labels: [__address__]
+    #     action: replace
+    #     target_label: __address__
+    #     regex: ([^:;]+):(\d+)
+    #     replacement: ${1}:2379
+    #   - source_labels: [__meta_kubernetes_node_name]
+    #     action: keep
+    #     regex: .*mst.*
+    #   - source_labels: [__meta_kubernetes_node_name]
+    #     action: replace
+    #     target_label: node
+    #     regex: (.*)
+    #     replacement: ${1}
+    #   metric_relabel_configs:
+    #   - regex: (kubernetes_io_hostname|failure_domain_beta_kubernetes_io_region|beta_kubernetes_io_os|beta_kubernetes_io_arch|beta_kubernetes_io_instance_type|failure_domain_beta_kubernetes_io_zone)
+    #     action: labeldrop
+    #
+</code></pre>
+<ul>
+  <li>&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
