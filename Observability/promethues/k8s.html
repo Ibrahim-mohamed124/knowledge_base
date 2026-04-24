@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T12:51:33.530Z
+date: 2026-04-24T12:57:16.779Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -148,7 +148,27 @@ spec:
 </code></pre>
 <p>&nbsp;</p>
 <figure class="image"><img src="/observability/ms.png"></figure>
-<p>&nbsp;</p>
+<h6>prometheusrules</h6>
+<ul>
+  <li>To add rules to prometheus</li>
+</ul>
+<pre><code class="language-plaintext">apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: prometheus
+  name: api-rules
+  namespace: api
+spec:
+  groups:
+  - name: api
+    rules:
+    - alert: down
+      annotations:
+        description: {{$labels.instance}/{{$labels.pod}} 
+      expr: up == 0
+      labels:
+        severity: critical</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
