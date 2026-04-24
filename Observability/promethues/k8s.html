@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T12:57:16.779Z
+date: 2026-04-24T14:08:52.238Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -158,7 +158,7 @@ metadata:
   labels:
     release: prometheus
   name: api-rules
-  namespace: api
+  namespace: default #by default prometheus operator only picks prometheusrules in the default namespace but it can be modified in the values.yaml file
 spec:
   groups:
   - name: api
