@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:10:43.241Z
+date: 2026-04-24T18:14:21.526Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -262,5 +262,9 @@ remote_read:
     static_configs:
     - targets:
     sample_limit: 1000</code></pre>
-<p>&nbsp;</p>
+<h6>Prometheus Federation</h6>
+<ul>
+  <li>One global promethues server acts as a proxy for other promethues servers that collect metrics from different sites, leading to one UI with the metrics from all sites</li>
+</ul>
+<figure class="image"><img src="/observability/fed.png"></figure>
 <p>&nbsp;</p>
