@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:14:21.526Z
+date: 2026-04-24T18:19:06.002Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -267,4 +267,25 @@ remote_read:
   <li>One global promethues server acts as a proxy for other promethues servers that collect metrics from different sites, leading to one UI with the metrics from all sites</li>
 </ul>
 <figure class="image"><img src="/observability/fed.png"></figure>
+<pre><code class="language-plaintext">scrape_configs:
+- job_name: "federation"
+  honor_labels: true # to keep the original promethues labels
+  metrics_path: "/federate" # every promethues server exposes the metrics it collected in this endpoint
+  params:
+    match[]:
+    - 'job="only the jobs needed to be collected centrally"'
+  static_configs:
+  - targets: [promtheues endpoints list:9090]</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
