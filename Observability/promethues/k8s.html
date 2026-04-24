@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:21:07.450Z
+date: 2026-04-24T18:23:32.164Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -273,10 +273,18 @@ remote_read:
   metrics_path: "/federate" # every promethues server exposes the metrics it collected in this endpoint
   params:
     match[]:
-    - 'job="only the jobs needed to be collected centrally, which should be aggergate metrics using recording rules in the original promethueses"'
+    - 'only the jobs needed to be collected centrally, which should be aggergate metrics using recording rules in the original promethueses"'
+    -  'node:cpu_seconds:sum_rate5m'
   static_configs:
   - targets: [promtheues endpoints list:9090]</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>in each promethues</li>
+</ul>
+<pre><code class="language-plaintext">groups:
+- name: aggregated-node-metrics
+  rules:
+  - record: node:cpu_seconds:sum_rate5m
+    expr: sum(rate(node_cpu_seconds_total[5m])) by (job)</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
