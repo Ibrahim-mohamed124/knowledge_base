@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T17:20:25.845Z
+date: 2026-04-24T17:20:56.393Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -215,7 +215,7 @@ spec:
 </ul>
 <pre><code class="language-plaintext">Needed  Disk Space = Retention time in seconds * Ingested sampeles per seconds * 2 (Bytes per sample)</code></pre>
 <ul>
-  <li>Remote read and remote write allows to store data in remote locations&nbsp;</li>
+  <li>Remote read and remote write allows to store data in remote locations, which is used by Thanos and Garafana</li>
 </ul>
 <pre><code class="language-plaintext">remote_write: 
 - url: https://ip/api/prom/push
