@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:04:48.343Z
+date: 2026-04-24T18:10:43.241Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -254,6 +254,13 @@ remote_read:
 </ul>
 <figure class="image"><img src="/observability/aherzoal.png"></figure>
 <figure class="image"><img src="/observability/sharding.png"></figure>
-<p>&nbsp;</p>
+<ul>
+  <li>To limit the number of samples per a scrape</li>
+</ul>
+<pre><code class="language-plaintext">scrape_configs:
+  - job_name:
+    static_configs:
+    - targets:
+    sample_limit: 1000</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
