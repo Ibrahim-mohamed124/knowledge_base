@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T14:36:46.511Z
+date: 2026-04-24T17:20:25.845Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -207,10 +207,24 @@ spec:
       webhookConfigs:
         - url: "http://example.com"</code></pre>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6>Storage</h6>
+<pre><code class="language-plaintext">--storage.tsdb.retention.time: 15d
+--storage.tsdb.retention.size: 10G</code></pre>
+<ul>
+  <li>To calculate the capacity</li>
+</ul>
+<pre><code class="language-plaintext">Needed  Disk Space = Retention time in seconds * Ingested sampeles per seconds * 2 (Bytes per sample)</code></pre>
+<ul>
+  <li>Remote read and remote write allows to store data in remote locations&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">remote_write: 
+- url: https://ip/api/prom/push
+  write_relabel_configs:
+  - action: keep
+    source_labels: 
+    - team
+    regex: 'frontend'
+remote_read:
+ - url: https://ip/read</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
