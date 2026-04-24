@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:19:06.002Z
+date: 2026-04-24T18:21:07.450Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -273,7 +273,7 @@ remote_read:
   metrics_path: "/federate" # every promethues server exposes the metrics it collected in this endpoint
   params:
     match[]:
-    - 'job="only the jobs needed to be collected centrally"'
+    - 'job="only the jobs needed to be collected centrally, which should be aggergate metrics using recording rules in the original promethueses"'
   static_configs:
   - targets: [promtheues endpoints list:9090]</code></pre>
 <p>&nbsp;</p>
