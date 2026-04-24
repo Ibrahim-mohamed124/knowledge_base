@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T17:38:03.408Z
+date: 2026-04-24T17:41:47.264Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -238,7 +238,11 @@ remote_read:
   <li>Thanos &nbsp;Query servers the metrics to endpoints like Grafana and clients from different locations</li>
 </ul>
 <figure class="image"><img src="/observability/archthatnos.png"></figure>
-<p>&nbsp;</p>
+<ul>
+  <li>Disable promethues compaction &nbsp;by setting these two values to the same value, as thanos is not compatible with compaction&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">--storage.tsdb.min-block-duration 2hr
+--storage.tsdb.max-block-duration 2hr</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
