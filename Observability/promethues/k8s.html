@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:28:17.555Z
+date: 2026-04-24T18:30:53.629Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -264,7 +264,7 @@ remote_read:
     sample_limit: 1000</code></pre>
 <h6>Prometheus Federation</h6>
 <ul>
-  <li>One global promethues server acts as a proxy for other promethues servers that collect metrics from different sites, leading to one UI with the metrics from all sites</li>
+  <li>One global promethues server acts as a proxy for other promethues servers that collect metrics from different sites, leading to one UI with the metrics from all sites ( &nbsp;can be replaced with thanos)</li>
 </ul>
 <figure class="image"><img src="/observability/fed.png"></figure>
 <pre><code class="language-plaintext">scrape_configs:
@@ -291,7 +291,7 @@ remote_read:
 <pre><code class="language-plaintext">relabel_configs: # for all the metrics 
 - target_label: datacenter
   replacement: dc1</code></pre>
-<p>&nbsp;</p>
+<figure class="image"><img src="/observability/fedd.png"></figure>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
