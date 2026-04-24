@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T12:09:57.802Z
+date: 2026-04-24T12:45:24.972Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -64,6 +64,8 @@ kind: Service
 metadata:
   name: api-service
   namespace: api
+  labels:
+   app: service-api
 spec:
   selector:
     app: api
