@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:30:53.629Z
+date: 2026-04-24T18:36:20.186Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -254,6 +254,14 @@ remote_read:
 </ul>
 <figure class="image"><img src="/observability/aherzoal.png"></figure>
 <figure class="image"><img src="/observability/sharding.png"></figure>
+<blockquote>
+  <h3>How it Works</h3>
+  <p>The <code>hashmod</code> action performs a mathematical operation on a source label's value to produce a numeric result. Here is the logic it follows:</p>
+  <p><strong>Source:</strong> It takes the value of the label(s) specified in <code>source_labels</code>.</p>
+  <p><strong>Hash:</strong> It calculates a hash of that value (using MD5).</p>
+  <p><strong>Modulo:</strong> It applies a modulo operation (<code>%</code>) using the number provided in the <code>modulus</code> field.</p>
+  <p><strong>Target:</strong> It places the resulting remainder into the <code>target_label</code>.</p>
+</blockquote>
 <ul>
   <li>To limit the number of samples per a scrape</li>
 </ul>
