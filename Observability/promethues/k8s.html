@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T12:04:52.218Z
+date: 2026-04-24T12:07:19.316Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -67,6 +67,7 @@ metadata:
 spec:
   selector:
     app: api
+    job: node-api
   ports:
     - protocol: TCP
       port: 3000
@@ -123,11 +124,32 @@ spec:
   jobLabel: job
   endpoints:
   - interval: 30s
-    port: web
+    port: web #name
     path: /swagger-stats/metrics
 
   selector:
     matchLabels:
       app: service-api
+
 </code></pre>
+<ul>
+  <li>endpoints: provide the scrape_configs data</li>
+  <li>selector: to target specific services</li>
+  <li>jobLabels: to choose &nbsp;a custom label from the service &nbsp;to put its value in the job label in &nbsp;Prometheus</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
