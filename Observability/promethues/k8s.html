@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T14:27:38.855Z
+date: 2026-04-24T14:33:16.688Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -179,6 +179,13 @@ spec:
          resource: prometheus
 
 
+</code></pre>
+<pre><code class="language-plaintext">k describe alertmanagers.monitoring.coreos.com prometheus-kube-prometheus-alertmanager
+
+  Alertmanager Config Namespace Selector:
+  Alertmanager Config Selector:
+    Match Labels:
+      Resource:                     prometheus
 </code></pre>
 <figure class="image"><img src="/observability/alm.png"></figure>
 <p>&nbsp;</p>
