@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T14:33:16.688Z
+date: 2026-04-24T14:36:46.511Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -172,7 +172,7 @@ spec:
 <h6>alertmanagerrules</h6>
 <ul>
   <li>to add rules to the alertmanager</li>
-  <li>First, update the values.yaml file to create a selector &nbsp;for alertmanagerRules and upgrade the promethues release</li>
+  <li>First, update the values.yaml file to create a selector &nbsp;for alertmanager configs &nbsp;and upgrade the promethues release</li>
 </ul>
 <pre><code class="language-plaintext">    alertmanagerConfigSelector: {}
        matchLabels:
@@ -189,7 +189,23 @@ spec:
 </code></pre>
 <figure class="image"><img src="/observability/alm.png"></figure>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: api-alerts-config
+  labels:
+   resource: prometheus
+spec:
+  route:
+    groupBy: ['severity']
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 4h
+    receiver: 'webhook'
+  receivers:
+    - name: 'webhook'
+      webhookConfigs:
+        - url: "http://example.com"</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
