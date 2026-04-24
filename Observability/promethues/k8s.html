@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T18:23:32.164Z
+date: 2026-04-24T18:25:48.822Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -285,7 +285,12 @@ remote_read:
   rules:
   - record: node:cpu_seconds:sum_rate5m
     expr: sum(rate(node_cpu_seconds_total[5m])) by (job)</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Add a label to each promethues endpoint to make them unique&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">relabel_configs:
+- target_label: datacenter
+  replacement: dc1</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
