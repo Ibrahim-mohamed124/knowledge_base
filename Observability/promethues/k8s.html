@@ -2,7 +2,7 @@
 title: k8s monitoring 
 description: 
 published: true
-date: 2026-04-24T12:08:52.023Z
+date: 2026-04-24T12:09:57.802Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-23T17:20:20.781Z
@@ -138,7 +138,12 @@ spec:
   <li>jobLabels: to choose &nbsp;a custom label from the service &nbsp;to put its value in the job label in &nbsp;Prometheus</li>
   <li>The &nbsp;release: prometheus label tell the prometheus instance to use this service &nbsp;monitor # this label must exist</li>
 </ul>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">k get prometheuses.monitoring.coreos.com -o yaml
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector:
+      matchLabels:
+        release: prometheus
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
