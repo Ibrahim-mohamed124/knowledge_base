@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-03-06T21:00:30.491Z
+date: 2026-04-25T08:25:44.362Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-19T11:20:24.899Z
@@ -380,6 +380,7 @@ Checking /etc/prometheus/prometheus.yml
     </ul>
   </li>
 </ul>
+<pre><code class="language-plaintext">node_disk_read_bytes_total{job=~"web|node"}</code></pre>
 <h6>offset modifier&nbsp;</h6>
 <ul>
   <li>instead of getting the latest value, get a value from the history</li>
@@ -564,6 +565,7 @@ rate(request_latency_seconds_bucket_count{path="/articles"}[1m])</code></pre>
   <li>form:</li>
 </ul>
 <pre><code class="language-plaintext">curl -X POST http://server-ip:9090/api/v1/query --data 'query=metric{"labels"}'</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>--data ‘time=epochtime’</li>
 </ul>
