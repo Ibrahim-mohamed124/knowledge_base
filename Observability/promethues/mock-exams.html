@@ -2,7 +2,7 @@
 title: Mock exams
 description: 
 published: true
-date: 2026-04-25T08:21:46.555Z
+date: 2026-04-25T08:29:13.182Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-25T08:21:46.555Z
@@ -10,6 +10,15 @@ dateCreated: 2026-04-25T08:21:46.555Z
 
 <h1>Mock 1</h1>
 <ul>
-  <li>Use the offset key word to get values from the past.&nbsp;</li>
+  <li>Use the offset key word to get values from the past.</li>
 </ul>
 <pre><code class="language-plaintext">node_memeory_Active_bytes{instance="x"} offset 45m</code></pre>
+<ul>
+  <li>For histograms, quantiles must be calculated server side, thus they are less taxing on client libraries. whereas summary metrics are the opposite, as everything is calculated client side.</li>
+  <li>There are 3 ways to reload Prometheus configurations<ul>
+      <li>&nbsp;Restart prometheus</li>
+      <li>send a SIGUP signal to the prometheus process</li>
+      <li>SEND a POST/PUT request to /-/reload with the –web.enable-lifecycle flag</li>
+    </ul>
+  </li>
+</ul>
