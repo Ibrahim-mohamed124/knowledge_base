@@ -2,7 +2,7 @@
 title: Mock exams
 description: 
 published: true
-date: 2026-04-25T08:48:12.446Z
+date: 2026-04-25T08:59:31.437Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-25T08:21:46.555Z
@@ -24,4 +24,6 @@ dateCreated: 2026-04-25T08:21:46.555Z
   <li>The 3 main components of the Prometheus instance or retrieval node tsdb, and the HTTP server. The retrieval node is responsible for scraping targets and collecting metrics. After the metrics are scraped, they will be stored in a time series database. To retrieve scraped metrics a query can be sent to the HTTP server.</li>
   <li>rate() calculates the average &nbsp;rate over entire interval, irate() calculates the rate only between the last two datapoints in an interval</li>
   <li>For <code><strong>useful</strong></code> SLIs, you want to find metrics that accurately measure a user’s experience. So things like high CPU, memory, and disk utilization would make for poor SLIs, as a user <code><strong>may</strong></code> not experience any degradation of service during these events.</li>
+  <li>The avg aggregator is used to find the average across multiple time series. To aggregate along each instance to get the average temp across all CPUs on a per-node basis, we will use the <code><strong>by</strong></code> clause and aggregate along the <code><strong>instance</strong></code> label.</li>
+  <li>For histogram metrics, to calculate a quantile use the <code><strong>histogram_quantile</strong></code> function. The function takes two arguments, the desired percentile, and the histogram metric, make sure to pass in the _bucket sub metric.</li>
 </ul>
