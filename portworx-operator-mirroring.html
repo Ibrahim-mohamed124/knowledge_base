@@ -1,0 +1,48 @@
+<!--
+title: Portworx operator mirroring
+description: 
+published: true
+date: 2026-04-27T07:25:29.088Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-04-27T07:25:29.088Z
+-->
+
+<h6>Mirroring the operator bundle to internal quay</h6>
+<ul>
+  <li>First, create the<mark class="marker-yellow"> ImageSetConfiguration&nbsp;</mark></li>
+</ul>
+<pre><code class="language-plaintext">kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v1alpha2
+mirror:
+  operators:
+    - catalog: registry.redhat.io/redhat/certified-operator-index:v4.21
+      packages:
+        - name: portworx-certified # This name come from oc get sub, it will be under the package column
+          channels:
+            - name: stable # Or the specific channel you require</code></pre>
+<ul>
+  <li>Mirror the images</li>
+</ul>
+<pre><code class="language-plaintext">[root@mirror imageset]# oc-mirror -c imageset.yaml \
+  docker://mirror.ocp4.plus.local:8443 \
+  --v2 \
+  --workspace file:///oc-mirror-workspace #The files will be created here\
+  --dest-tls-verify=false \
+  --authfile config.json # you can get this file by using podman login and copy the auth file \
+  --remove-signatures \
+  --retry-times 10 \
+  --log-level debug</code></pre>
+<ul>
+  <li>In the disconnected cluster add the custom portworx catalog, these files will be created automatically by oc-mirror command in the worspace</li>
+</ul>
+<pre><code class="language-plaintext"># 1. Update the image pull redirects (triggers node rollouts)
+oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/idms-oc-mirror.yaml
+
+# 2. Add the Portworx catalog to OperatorHub
+oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/cs-certified-operator-index-v4-21.yaml</code></pre>
+<ul>
+  <li>If not set, disable the default catalogs</li>
+</ul>
+<pre><code class="language-plaintext">oc patch operatorhub cluster --type='json' -p='[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'</code></pre>
+<p>&nbsp;</p>
