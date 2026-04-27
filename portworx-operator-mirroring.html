@@ -2,7 +2,7 @@
 title: Portworx operator mirroring
 description: 
 published: true
-date: 2026-04-27T07:25:29.088Z
+date: 2026-04-27T07:30:39.609Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-27T07:25:29.088Z
@@ -21,6 +21,7 @@ mirror:
         - name: portworx-certified # This name come from oc get sub, it will be under the package column
           channels:
             - name: stable # Or the specific channel you require</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Mirror the images</li>
 </ul>
@@ -33,6 +34,7 @@ mirror:
   --remove-signatures \
   --retry-times 10 \
   --log-level debug</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>In the disconnected cluster add the custom portworx catalog, these files will be created automatically by oc-mirror command in the worspace</li>
 </ul>
@@ -41,8 +43,50 @@ oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/idms-oc-mirror.ya
 
 # 2. Add the Portworx catalog to OperatorHub
 oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/cs-certified-operator-index-v4-21.yaml</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>If not set, disable the default catalogs</li>
 </ul>
 <pre><code class="language-plaintext">oc patch operatorhub cluster --type='json' -p='[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'</code></pre>
+<h6>Preparing for portworx installation</h6>
+<ul>
+  <li>On your internet-connected host, set an environment variable for the Kubernetes version that you are using:</li>
+</ul>
+<pre><code class="language-plaintext">KBVER=$(oc version | awk -F'[v+_-]' '/Kubernetes/ {print $2}')</code></pre>
+<ul>
+  <li>Set an environment variable to the latest major version of Portworx:</li>
+</ul>
+<pre><code class="language-plaintext">PXVER=&lt;portworx-version&gt;</code></pre>
+<ul>
+  <li>On an internet-connected host with the same architecture and OS version as the Kubernetes cluster nodes intended for Portworx installation, download the air-gapped installation bootstrap script for the specified Kubernetes and Portworx versions:</li>
+</ul>
+<pre><code class="language-plaintext">curl -o px-ag-install.sh -L "https://install.portworx.com/$PXVER/air-gapped?kbver=$KBVER"</code></pre>
+<ul>
+  <li>Pull the container images required for the specified versions:</li>
+</ul>
+<pre><code class="language-plaintext">sh px-ag-install.sh pull</code></pre>
+<ul>
+  <li><a href="https://docs.openshift.com/container-platform/latest/registry/securing-exposing-registry.html#:~:text=Log%20in%20with%20podman%20using%20the%20default%20route%3A">Authenticate</a> to the internal registry</li>
+</ul>
+<pre><code class="language-plaintext">podman login -u -p https://mirror.ocp4.linux.plus:8443</code></pre>
+<ul>
+  <li>Push the container images to your internal &nbsp;cluster registry.</li>
+</ul>
+<pre><code class="language-plaintext">sh px-ag-install.sh push https://mirror.ocp4.linux.plus:8443</code></pre>
+<ul>
+  <li>Create a secret for the Operator to use that contains the registry credentials.</li>
+</ul>
+<pre><code class="language-plaintext">oc -n portworx create secret docker-registry px-image-repository \
+    --docker-server=mirror.ocp4.linux.plus:8443 \
+    --docker-username=admin \
+    --docker-password=passwrod</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
