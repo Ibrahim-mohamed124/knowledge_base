@@ -2,7 +2,7 @@
 title: Portworx operator mirroring
 description: 
 published: true
-date: 2026-04-27T07:30:39.609Z
+date: 2026-04-27T12:16:57.023Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-27T07:25:29.088Z
@@ -18,9 +18,11 @@ mirror:
   operators:
     - catalog: registry.redhat.io/redhat/certified-operator-index:v4.21
       packages:
-        - name: portworx-certified # This name come from oc get sub, it will be under the package column
+        - name: portworx-certified
           channels:
-            - name: stable # Or the specific channel you require</code></pre>
+            - name: stable
+              minVersion: '2.12.0' # Replace with your target version
+              maxVersion: '2.12.0'</code></pre>
 <p>&nbsp;</p>
 <ul>
   <li>Mirror the images</li>
@@ -53,26 +55,32 @@ oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/cs-certified-oper
   <li>On your internet-connected host, set an environment variable for the Kubernetes version that you are using:</li>
 </ul>
 <pre><code class="language-plaintext">KBVER=$(oc version | awk -F'[v+_-]' '/Kubernetes/ {print $2}')</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Set an environment variable to the latest major version of Portworx:</li>
 </ul>
 <pre><code class="language-plaintext">PXVER=&lt;portworx-version&gt;</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>On an internet-connected host with the same architecture and OS version as the Kubernetes cluster nodes intended for Portworx installation, download the air-gapped installation bootstrap script for the specified Kubernetes and Portworx versions:</li>
 </ul>
 <pre><code class="language-plaintext">curl -o px-ag-install.sh -L "https://install.portworx.com/$PXVER/air-gapped?kbver=$KBVER"</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Pull the container images required for the specified versions:</li>
 </ul>
 <pre><code class="language-plaintext">sh px-ag-install.sh pull</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><a href="https://docs.openshift.com/container-platform/latest/registry/securing-exposing-registry.html#:~:text=Log%20in%20with%20podman%20using%20the%20default%20route%3A">Authenticate</a> to the internal registry</li>
 </ul>
 <pre><code class="language-plaintext">podman login -u -p https://mirror.ocp4.linux.plus:8443</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Push the container images to your internal &nbsp;cluster registry.</li>
 </ul>
 <pre><code class="language-plaintext">sh px-ag-install.sh push https://mirror.ocp4.linux.plus:8443</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Create a secret for the Operator to use that contains the registry credentials.</li>
 </ul>
