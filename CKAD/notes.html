@@ -2,7 +2,7 @@
 title: Notes
 description: 
 published: true
-date: 2026-04-28T19:45:09.293Z
+date: 2026-04-28T19:45:59.192Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-28T19:34:38.925Z
@@ -15,7 +15,10 @@ dateCreated: 2026-04-28T19:34:38.925Z
 <ul>
   <li>CMD vs ENTRYPOINT<ul>
       <li>CMD is replaced if a new &nbsp;command is entered in the run</li>
-      <li>ENTRYPOINT, new &nbsp;commands will be appended &nbsp;only &nbsp;in the run</li>
+      <li>ENTRYPOINT, new &nbsp;commands will be appended &nbsp;only &nbsp;in the run<ul>
+          <li>to change the entrypoint use --entrypoint in docker</li>
+        </ul>
+      </li>
       <li>To configure a default argument to the entrypoint use CMD, and it will be changed if &nbsp;a new command is entered in the run&nbsp;</li>
     </ul>
   </li>
