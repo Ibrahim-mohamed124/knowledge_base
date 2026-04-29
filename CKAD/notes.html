@@ -2,7 +2,7 @@
 title: Notes
 description: 
 published: true
-date: 2026-04-28T19:48:59.680Z
+date: 2026-04-29T19:52:02.250Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-28T19:34:38.925Z
@@ -12,6 +12,7 @@ dateCreated: 2026-04-28T19:34:38.925Z
   <li>to get only the names of the resources</li>
 </ul>
 <pre><code class="language-plaintext">kubectl get po -o name</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>CMD vs ENTRYPOINT<ul>
       <li>CMD is replaced if a new &nbsp;command is entered in the run</li>
@@ -20,8 +21,21 @@ dateCreated: 2026-04-28T19:34:38.925Z
         </ul>
       </li>
       <li>To configure a default argument to the entrypoint use CMD, and it will be changed if &nbsp;a new command is entered in the run &nbsp;like &nbsp;args in the k8s (override the CMD)</li>
-      <li>command in k8s overrides the entrypoint&nbsp;</li>
+      <li>command in k8s overrides the entrypoint</li>
     </ul>
   </li>
 </ul>
 <figure class="image"><img src="/ckad/cm-arg-ent.png"></figure>
+<ul>
+  <li>Secrets are not encrypted, so it is not safer in that sense. However, some best practices around using secrets make it safer. As in best practices like:<ul>
+      <li>Not checking in secret object definition files to source code repositories.</li>
+      <li><a href="https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/"><u>Enabling Encryption at Rest</u></a>&nbsp;for Secrets so they are stored encrypted in ETCD.</li>
+    </ul>
+  </li>
+  <li>Also, the way Kubernetes handles secrets. Such as:<ul>
+      <li>A secret is only sent to a node if a pod on that node requires it.</li>
+      <li>Kubelet stores the secret into a tmpfs so that the secret is not written to disk storage.</li>
+      <li>Once the Pod that depends on the secret is deleted, kubelet will delete its local copy of the secret data as well.</li>
+    </ul>
+  </li>
+</ul>
