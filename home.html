@@ -2,7 +2,7 @@
 title: README
 description: 
 published: true
-date: 2026-04-23T12:39:20.586Z
+date: 2026-04-30T07:50:49.431Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-22T18:14:12.319Z
@@ -234,3 +234,23 @@ oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/idms-oc-mirror.ya
 oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/cs-certified-operator-index-v4-21.yaml</code></pre>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">oc patch operatorhub cluster --type='json' -p='[{"op": "add", "path": "/spec/disableAllDefaultSources", "value": true}]'</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: net-2-1
+spec:
+  desiredState:
+   interfaces:
+    - ipv4:
+        address:
+        - ip: 10.100.100.71
+          prefix-length: 8
+        enabled: true
+      name: ens224
+      state: up
+      type: ethernet
+  nodeSelector:
+    ord: '1'</code></pre>
