@@ -2,7 +2,7 @@
 title: README
 description: 
 published: true
-date: 2026-04-30T07:55:24.216Z
+date: 2026-04-30T09:09:13.895Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-22T18:14:12.319Z
@@ -252,5 +252,12 @@ spec:
       name: ens224
       state: up
       type: ethernet
+   routes:
+      config:
+        - destination: 0.0.0.0/0
+          metric: 150
+          next-hop-address: 10.100.100.11
+          next-hop-interface: ens224
+          table-id: 254
   nodeSelector:
     ord: '1'</code></pre>
