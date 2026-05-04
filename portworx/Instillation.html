@@ -2,7 +2,7 @@
 title: Instillation Environments
 description: 
 published: true
-date: 2026-05-04T08:36:46.797Z
+date: 2026-05-04T08:38:38.592Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-11-23T13:59:33.710Z
@@ -894,3 +894,16 @@ data:
   <li>Portworx runs on each node and creates a storage pool using volumes provisioned from FlashArray</li>
 </ul>
 <figure class="image"><img src="/portworx/faclouddisk.png"></figure>
+<ul>
+  <li>Supported features:<ul>
+      <li>Automatic provisioning of block volumes from the Portworx storage pool</li>
+      <li>Dynamic cluster expansion by adding or growing FlashArray-backed drives</li>
+      <li>Full support for PX-Backup, Autopilot, and PX-StoreV2</li>
+    </ul>
+  </li>
+  <li>Limitations:<ul>
+      <li>Volume groups are not supported</li>
+      <li>FlashArray host sharing with realms is not supported when using Secure Multi-Tenancy (SMT). You cannot mix hosts within a realm with hosts outside a realm on the same node. For example, using Boot from SAN with a host outside the realm is not supported.</li>
+    </ul>
+  </li>
+</ul>
