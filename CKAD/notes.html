@@ -2,7 +2,7 @@
 title: Notes
 description: 
 published: true
-date: 2026-04-29T19:52:02.250Z
+date: 2026-05-04T20:57:51.466Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-28T19:34:38.925Z
@@ -38,4 +38,8 @@ dateCreated: 2026-04-28T19:34:38.925Z
       <li>Once the Pod that depends on the secret is deleted, kubelet will delete its local copy of the secret data as well.</li>
     </ul>
   </li>
+</ul>
+<h6>The difference between docker root in a container and a root on the host</h6>
+<ul>
+  <li>Any process run by the root on the host have all Linux capabilities, unlike the root inside the container, which docker by default drop most of the capabilities.&nbsp;</li>
 </ul>
