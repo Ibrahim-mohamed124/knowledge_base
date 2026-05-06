@@ -2,7 +2,7 @@
 title: Portworx operator mirroring
 description: 
 published: true
-date: 2026-04-27T12:18:18.880Z
+date: 2026-05-06T13:18:06.108Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-27T07:25:29.088Z
@@ -88,7 +88,44 @@ oc apply -f /oc-mirror-workspace/working-dir/cluster-resources/cs-certified-oper
     --docker-server=mirror.ocp4.linux.plus:8443 \
     --docker-username=openshift\
     --docker-password=redhat123</code></pre>
+<h1>Enabling default openshift image registry</h1>
+<h2><strong>Phase 1: Enable the Internal Registry</strong></h2>
+<p>By default, the registry may be in a "Removed" state or lacks a public route.</p>
+<h3><strong>1. Set Management State to Managed</strong></h3>
+<p>Ensure the Image Registry Operator is actively managing the registry.</p>
+<pre><code class="language-plaintext">oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"managementState":"Managed"}}'</code></pre>
+<h3><strong>2. Configure Storage (The Fix for "Degraded" status)</strong></h3>
+<p>The registry requires a backend to store image layers. On Bare Metal, using a PVC is the standard approach.</p>
+<pre><code class="language-plaintext">oc patch configs.imageregistry.operator.openshift.io/cluster --type=merge --patch '{"spec":{"storage":{"pvc":{"claim":""}}}}'</code></pre>
+<p><i>Note: This creates a PVC named </i><code><i>image-registry-storage</i></code><i> using the cluster's default StorageClass.</i></p>
+<h3><strong>3. Expose the Default Route</strong></h3>
+<p>Create a public URL so external tools (like Docker/Podman) can reach the registry.</p>
+<p>Bash</p>
 <p>&nbsp;</p>
+<pre><code class="language-plaintext">oc patch configs.imageregistry.operator.openshift.io/cluster --patch '{"spec":{"defaultRoute":true}}' --type=merge</code></pre>
+<hr>
+<h2><strong>Phase 2: Prepare the Bastion Host</strong></h2>
+<p>Since the registry uses self-signed certificates, the bastion host must be configured to trust the cluster's Certificate Authority (CA).</p>
+<h3><strong>1. Trust the Cluster CA</strong></h3>
+<p>Extract the CA from the cluster and add it to the system trust store.</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext"># Extract CA
+oc get secret -n openshift-ingress-operator router-ca -o jsonpath='{.data.tls\.crt}' | base64 --decode &gt; cluster-ca.crt
+
+# Add to System Trust (RHEL/CentOS)
+sudo mv cluster-ca.crt /etc/pki/ca-trust/source/anchors/
+sudo update-ca-trust extract
+
+# Restart Docker to pick up changes
+sudo systemctl restart docker</code></pre>
+<h3><strong>2. Configure Insecure Registry (Optional Backup)</strong></h3>
+<ul>
+  <li>If SSL issues persist, add the route to <code>/etc/docker/daemon.json</code>:</li>
+  <li>If podman will be used instead of docker, you can bypass the ssl by using the --verify-ssl false flag</li>
+</ul>
+<pre><code class="language-plaintext">{
+  "insecure-registries": ["&lt;your-registry-route-url&gt;"] # for docker only
+  }</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
