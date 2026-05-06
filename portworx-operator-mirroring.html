@@ -2,7 +2,7 @@
 title: Portworx operator mirroring
 description: 
 published: true
-date: 2026-05-06T13:20:08.366Z
+date: 2026-05-06T13:20:47.750Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-27T07:25:29.088Z
@@ -237,7 +237,46 @@ spec:
         requests:
           storage: 5Gi
 </code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Write data into the posgres</li>
+</ul>
+<pre><code class="language-plaintext">#!/bin/bash
+
+# Configuration
+POD_NAME="postgres-0"
+DB_USER="postgres"
+
+echo "--- Starting Database Setup on $POD_NAME ---"
+
+# Combine all steps into a single SQL block for efficiency
+SQL_COMMANDS=$(cat &lt;&lt;EOF
+-- Step 1: Create Table
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Step 2: Write Data
+INSERT INTO users (username)
+SELECT 'user_' || seq
+FROM generate_series(1, 100) AS seq;
+
+-- Step 3: Force Hard Save (Checkpoint)
+CHECKPOINT;
+EOF
+)
+
+# Execute the SQL via oc exec
+echo "Executing SQL commands..."
+echo "$SQL_COMMANDS" | oc exec -i $POD_NAME -- psql -U $DB_USER
+
+if [ $? -eq 0 ]; then
+    echo "--- Success: Table created, data inserted, and disk synced. ---"
+else
+    echo "--- Error: Something went wrong during execution. ---"
+fi
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
