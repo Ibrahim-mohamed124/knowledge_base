@@ -2,7 +2,7 @@
 title: Portworx operator mirroring
 description: 
 published: true
-date: 2026-05-06T13:18:06.108Z
+date: 2026-05-06T13:20:08.366Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-04-27T07:25:29.088Z
@@ -126,8 +126,117 @@ sudo systemctl restart docker</code></pre>
 <pre><code class="language-plaintext">{
   "insecure-registries": ["&lt;your-registry-route-url&gt;"] # for docker only
   }</code></pre>
+<h2><strong>Phase 3: Push the Image</strong></h2>
+<h3><strong>1. Get the Registry URL</strong></h3>
+<p>Retrieve the newly created route:</p>
+<p>Bash</p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext">export REG_ROUTE=$(oc get route default-route -n openshift-image-registry -o jsonpath='{.spec.host}')
+echo $REG_ROUTE
+</code></pre>
+<h3><strong>2. Grant Permissions</strong></h3>
+<p>Grant your user permission to push images into your target project (e.g., postgres).</p>
+<pre><code class="language-plaintext">oc policy add-role-to-user system:image-writer $(oc whoami) -n postgres</code></pre>
+<h3><strong>3. Login, Tag, and Push</strong></h3>
+<pre><code class="language-plaintext"># Login using OpenShift Token
+docker login -u $(oc whoami) -p $(oc whoami -t) $REG_ROUTE
+
+# Tag the existing image
+docker tag postgres:15-alpine $REG_ROUTE/test/postgres:15-alpine
+
+# Push the image
+docker push $REG_ROUTE/test/postgres:15-alpine</code></pre>
+<hr>
+<h2><strong>Phase 4: Verification</strong></h2>
+<p>Verify that the image is now stored as an <strong>ImageStream</strong> in OpenShift.</p>
+<pre><code class="language-plaintext">oc get is -n test</code></pre>
+<h2>Apply the posgres sts yaml file</h2>
+<pre><code class="language-plaintext">
+---
+# 1. Secret to store the database password
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+type: Opaque
+stringData:
+  postgres-password: "StrongPassword123" # Change this!
+
+---
+# 2. Headless Service (Required for StatefulSet network identity)
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-headless
+  labels:
+    app: postgres
+spec:
+  ports:
+  - port: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: postgres
+
+---
+# 3. Public/Internal Service to expose the DB
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  type: ClusterIP # Change to LoadBalancer if on Cloud (AWS/GCP/Azure)
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: postgres
+
+---
+# 4. The StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: "postgres-headless"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: default-route-openshift-image-registry.apps.baremetal.plus.local/test/postgres:15-alpine
+         # change the image to the internal image registry that has been configured perviously
+         ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-storage
+    spec:
+      storageClassName:  px-csi-db
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
