@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:48:56.386Z
+date: 2026-05-11T08:32:45.749Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -18,7 +18,9 @@ sudo dnf install -y pcs pacemaker corosync fence-agents-all nfs-utils
 
 # Enable and start the cluster management service
 sudo systemctl enable --now pcsd
-sudo systemctl disable --now nfs-server</code></pre>
+sudo systemctl disable --now nfs-server
+systemctl enable --now pacemaker
+systemctl enable --now corosync</code></pre>
 <h6>Set Cluster Authentication</h6>
 <pre><code class="language-plaintext"># Set the hacluster user password on both nodes
 sudo passwd hacluster
@@ -124,7 +126,7 @@ sudo pcs resource create nfs_export ocf:heartbeat:exportfs \
 </ul>
 <pre><code class="language-plaintext">sudo pcs resource create nfs_lvm ocf:heartbeat:LVM-activate \
     vgname="nfs_vg" \
-    vg_access_mode="system_id" \
+    vg_access_mode="passthrough" \
     op monitor interval=30s
 sudo pcs resource group add nfs_vg nfs_lvm --before nfs_fs</code></pre>
 <p>&nbsp;</p>
