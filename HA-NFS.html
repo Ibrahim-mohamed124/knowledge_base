@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:10:22.205Z
+date: 2026-05-11T07:12:09.354Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -26,7 +26,7 @@ sudo passwd hacluster
 sudo pcs host auth node1.example.com node2.example.com -u hacluster</code></pre>
 <h6>partition the disk or use separate disks for the SBD and data</h6>
 <h6><strong>Configure Fencing</strong></h6>
-<pre><code class="language-plaintext">sudo systemctl stop sbd
+<pre><code class="language-plaintext">sudo systemctl stop sbd  # do all of this on both nodes
 sudo systemctl stop pacemaker
 sudo systemctl stop corosync</code></pre>
 <ul>
@@ -41,12 +41,12 @@ sudo systemctl stop corosync</code></pre>
   <p><strong>Warning:</strong> This will wipe the specific disk/partition you choose. Do this from <strong>one node only</strong>&nbsp;</p>
 </blockquote>
 <ul>
-  <li>edit the /etc/sysconfig/sbd</li>
+  <li>edit the /etc/sysconfig/sbd <code>#on both nodes</code></li>
 </ul>
-<pre><code class="language-plaintext">SBD_DEVICE="/dev/sdb1"
+<pre><code class="language-plaintext">SBD_DEVICE="/dev/sdb1" 
 SBD_WATCHDOG_DEV=/dev/watchdog</code></pre>
 <ul>
-  <li>Enable the watchdog dev</li>
+  <li>Enable the watchdog dev <code>#on both nodes</code></li>
 </ul>
 <pre><code class="language-plaintext">modprobe softdog
 echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
