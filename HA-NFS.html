@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:31:28.511Z
+date: 2026-05-11T07:41:27.007Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -76,8 +76,8 @@ sudo pcs status</code></pre>
 <h6><strong>Prepare Shared Storage&nbsp;</strong></h6>
 <p># On only one node</p>
 <pre><code class="language-plaintext"># (The physical volume must be on shared storage, e.g., iSCSI or SAN)
-sudo pvcreate /dev/sdb2
-sudo vgcreate nfs_vg /dev/sdb2
+sudo pvcreate /dev/sdc2
+sudo vgcreate nfs_vg /dev/sdc2
 sudo lvcreate -L 100G -n nfs_lv nfs_vg
 
 # Format on one node only
@@ -87,8 +87,45 @@ sudo mkfs.xfs /dev/nfs_vg/nfs_lv</code></pre>
 sudo vgscan
 sudo lvscan
 echo "- - -" | sudo tee /sys/class/scsi_host/host*/scan</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<pre><code class="language-plaintext"># 1. Refresh the partition table
+sudo partprobe /dev/sdc
+
+# 2. Tell LVM to scan all disks for new Physical Volumes
+sudo pvscan --cache
+
+# 3. Specifically look for new Volume Groups
+sudo vgscan
+echo "1" &gt; /sys/class/block/sdc/device/rescan
+sudo lvmdevices --adddev /dev/sdc2</code></pre>
+<h6><strong>Create Cluster Resources on one node</strong></h6>
+<pre><code class="language-plaintext"># Create the filesystem resource
+sudo pcs resource create nfs_fs ocf:heartbeat:Filesystem \
+    device="/dev/nfs_vg/nfs_lv" directory="/srv/nfs/shared" fstype="xfs" \
+    --group nfs_group
+
+# Create the virtual IP resource
+sudo pcs resource create nfs_vip ocf:heartbeat:IPaddr2 \
+    ip=192.168.1.100 cidr_netmask=24 \
+    --group nfs_group
+
+# Create the NFS server resource
+sudo pcs resource create nfs_server ocf:heartbeat:nfsserver \
+    nfs_shared_infodir=/srv/nfs/nfsinfo \
+    --group nfs_group
+
+# Create the NFS export resource
+sudo pcs resource create nfs_export ocf:heartbeat:exportfs \
+    clientspec="192.168.1.0/24" options="rw,sync,no_root_squash" \
+    directory="/srv/nfs/shared" fsid=1 \
+    --group nfs_group</code></pre>
+<ul>
+  <li>on node one create the lvm activation resource</li>
+</ul>
+<pre><code class="language-plaintext">sudo pcs resource create nfs_lvm ocf:heartbeat:LVM-activate \
+    vgname="nfs_vg" \
+    vg_access_mode="system_id" \
+    op monitor interval=30s
+sudo pcs resource group add nfs_vg nfs_lvm --before nfs_fs</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
