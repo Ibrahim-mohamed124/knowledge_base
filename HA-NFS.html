@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T12:38:00.449Z
+date: 2026-05-11T12:43:08.310Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -120,30 +120,21 @@ vgcreate --setautoactivation n my_vg /dev/sdb1</code></pre>
 <pre><code class="language-plaintext">dracut -H -f /boot/initramfs-$(uname -r).img $(uname -r)
 reboot # reboot the nodes</code></pre>
 <h6><strong>Create Cluster Resources on one node</strong></h6>
-<pre><code class="language-plaintext"># Create the filesystem resource
-sudo pcs resource create nfs_fs ocf:heartbeat:Filesystem \
-    device="/dev/my_vg/my_lv" directory="/srv/nfs/shared" fstype="xfs" \
-    --group nfs_group
-
-# Create the virtual IP resource
-sudo pcs resource create nfs_vip ocf:heartbeat:IPaddr2 \
-    ip=10.100.100.203 cidr_netmask=24 \
-    --group nfs_group
+<pre><code class="language-plaintext">#create lvm activate only once
+pcs resource create my_lvm ocf:heartbeat:LVM-activate vgname=my_vg vg_access_mode=system_id --group nfsgroup
+# Create the filesystem resource
+pcs resource create nfsshare Filesystem device=/dev/my_vg/my_lv directory=/nfsshare fstype=xfs --group nfsgroup
 
 # Create the NFS server resource
-sudo pcs resource create nfs_server ocf:heartbeat:nfsserver \
-    nfs_shared_infodir=/srv/nfs/nfsinfo \
-    --group nfs_group
 
+pcs resource create nfs-daemon nfsserver nfs_shared_infodir=/nfsshare/nfsinfo nfs_no_notify=true --group nfsgroup
 # Create the NFS export resource
-sudo pcs resource create nfs_export ocf:heartbeat:exportfs \
-    clientspec="10.100.100.0/24" options="rw,sync,no_root_squash" \
-    directory="/srv/nfs/shared" fsid=1 \
-    --group nfs_group</code></pre>
-<pre><code class="language-plaintext">sudo pcs resource create nfs_lvm ocf:heartbeat:LVM-activate \
-    vgname="nfs_vg" \
-    vg_access_mode="passthrough" \
-    op monitor interval=30s
+pcs resource create nfs-root exportfs clientspec=192.168.122.0/255.255.255.0 options=rw,sync,no_root_squash directory=/nfsshare/exports fsid=0 --group nfsgroup
+# Create the virtual IP resource
+pcs resource create nfs_ip IPaddr2 ip=192.168.122.200 cidr_netmask=24 --group nfsgroup
+
+
+
 </code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
