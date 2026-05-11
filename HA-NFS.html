@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:05:10.823Z
+date: 2026-05-11T07:09:30.744Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -24,6 +24,7 @@ sudo passwd hacluster
 
 # Authenticate the nodes (run on one node)
 sudo pcs host auth node1.example.com node2.example.com -u hacluster</code></pre>
+<h6>partition the disk or use separate disks for the SBD and data</h6>
 <h6><strong>Configure Fencing</strong></h6>
 <ul>
   <li>Install the SBD&nbsp;</li>
@@ -46,7 +47,10 @@ SBD_WATCHDOG_DEV=/dev/watchdog</code></pre>
 </ul>
 <pre><code class="language-plaintext">modprobe softdog
 echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li><strong>Verify the device</strong> (Run on <strong>both nodes</strong>):</li>
+</ul>
+<pre><code class="language-plaintext">sbd -d /dev/sdb dump</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
