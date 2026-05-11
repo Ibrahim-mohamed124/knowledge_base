@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:42:44.721Z
+date: 2026-05-11T07:48:56.386Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -17,7 +17,8 @@ dateCreated: 2026-05-11T06:51:36.698Z
 sudo dnf install -y pcs pacemaker corosync fence-agents-all nfs-utils
 
 # Enable and start the cluster management service
-sudo systemctl enable --now pcsd</code></pre>
+sudo systemctl enable --now pcsd
+sudo systemctl disable --now nfs-server</code></pre>
 <h6>Set Cluster Authentication</h6>
 <pre><code class="language-plaintext"># Set the hacluster user password on both nodes
 sudo passwd hacluster
@@ -59,7 +60,7 @@ echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
 <pre><code class="language-plaintext">sudo systemctl start sbd
 sudo systemctl start pacemaker
 sudo systemctl start corosync</code></pre>
-<h6>Configure fencing&nbsp;</h6>
+<h6>Configure fencing on node 1</h6>
 <pre><code class="language-plaintext">sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"</code></pre>
 <h6><strong>Create the Cluster on one node</strong></h6>
 <pre><code class="language-plaintext"># Create and start the cluster
