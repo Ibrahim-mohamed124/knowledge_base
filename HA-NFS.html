@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T12:43:08.310Z
+date: 2026-05-11T12:43:39.581Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -133,6 +133,9 @@ pcs resource create nfs-root exportfs clientspec=192.168.122.0/255.255.255.0 opt
 # Create the virtual IP resource
 pcs resource create nfs_ip IPaddr2 ip=192.168.122.200 cidr_netmask=24 --group nfsgroup
 
+# Add an nfsnotify resource for sending NFSv3 reboot notifications once the entire NFS deployment has initialized
+
+pcs resource create nfs-notify nfsnotify source_host=192.168.122.200 --group nfsgroup
 
 
 </code></pre>
