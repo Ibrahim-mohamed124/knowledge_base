@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T12:43:39.581Z
+date: 2026-05-11T12:44:31.280Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -135,12 +135,11 @@ pcs resource create nfs_ip IPaddr2 ip=192.168.122.200 cidr_netmask=24 --group nf
 
 # Add an nfsnotify resource for sending NFSv3 reboot notifications once the entire NFS deployment has initialized
 
-pcs resource create nfs-notify nfsnotify source_host=192.168.122.200 --group nfsgroup
-
-
-</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+pcs resource create nfs-notify nfsnotify source_host=192.168.122.200 --group nfsgroup</code></pre>
+<ul>
+  <li>For testing&nbsp;</li>
+</ul>
+<pre><code class="language-plaintext">pcs node standby</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
