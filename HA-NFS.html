@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T09:26:38.528Z
+date: 2026-05-11T12:37:05.846Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -66,7 +66,7 @@ sudo systemctl start corosync</code></pre>
 <pre><code class="language-plaintext">sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"</code></pre>
 <h6><strong>Create the Cluster on one node</strong></h6>
 <pre><code class="language-plaintext"># Create and start the cluster
-sudo pcs cluster setup ha-nfs node1.example.com node2.example.com
+sudo pcs cluster setup ha-nfs 10.100.100.200 10.100.100.202
 
 # Start the cluster on all nodes
 sudo pcs cluster start --all
@@ -77,33 +77,47 @@ sudo pcs cluster enable --all
 # Verify cluster status
 sudo pcs status</code></pre>
 <h6><strong>Prepare Shared Storage&nbsp;</strong></h6>
-<p># On only one node</p>
-<pre><code class="language-plaintext"># (The physical volume must be on shared storage, e.g., iSCSI or SAN)
-sudo pvcreate /dev/sdc2
-sudo vgcreate nfs_vg /dev/sdc2
-sudo lvcreate -L 100G -n nfs_lv nfs_vg
-
-# Format on one node only
-sudo mkfs.xfs /dev/nfs_vg/nfs_lv</code></pre>
-<p><strong># On the other node scan</strong></p>
-<pre><code class="language-plaintext">sudo pvscan
-sudo vgscan
-sudo lvscan
-echo "- - -" | sudo tee /sys/class/scsi_host/host*/scan</code></pre>
-<pre><code class="language-plaintext"># 1. Refresh the partition table
-sudo partprobe /dev/sdc
-
-# 2. Tell LVM to scan all disks for new Physical Volumes
-sudo pvscan --cache
-
-# 3. Specifically look for new Volume Groups
-sudo vgscan
-echo "1" &gt; /sys/class/block/sdc/device/rescan
-sudo lvmdevices --adddev /dev/sdc2</code></pre>
+<p># On both &nbsp;nodes</p>
+<pre><code class="language-plaintext"># Configuration option global/system_id_source.
+system_id_source = "uname"</code></pre>
+<p><strong># verify on both nodes</strong></p>
+<pre><code class="language-plaintext"># lvm systemid
+  system ID: z1.example.com
+# uname -n
+  z1.example.com</code></pre>
+<ul>
+  <li>On one node</li>
+</ul>
+<pre><code class="language-plaintext">pvcreate /dev/sdb1
+vgcreate --setautoactivation n my_vg /dev/sdb1</code></pre>
+<ul>
+  <li>Verify that the new volume group has the system ID of the node on which you are running and from which you created the volume group.</li>
+</ul>
+<pre><code class="language-plaintext">vgs -o+systemid
+  VG    #PV #LV #SN Attr   VSize  VFree  System ID
+  my_vg   1   0   0 wz--n- &lt;1.82t &lt;1.82t z1.example.com</code></pre>
+<ul>
+  <li>Create a logical volume using the volume group <code>my_vg on onde node</code></li>
+</ul>
+<pre><code class="language-plaintext">lvcreate -L450 -n my_lv my_vg
+  Rounding up size to full physical extent 452.00 MiB
+  Logical volume "my_lv" created</code></pre>
+<ul>
+  <li>Create an XFS file system on the logical volume <code>my_lv</code>.</li>
+</ul>
+<pre><code class="language-plaintext">mkfs.xfs /dev/my_vg/my_lv</code></pre>
+<ul>
+  <li>On the other node</li>
+</ul>
+<pre><code class="language-plaintext">lvmdevices --adddev /dev/sdb1</code></pre>
+<ul>
+  <li>on both nodes edit the lvm.conf to add all vg expect the one you created</li>
+</ul>
+<pre><code class="language-plaintext">auto_activation_volume_list = [ "rhel_root", "rhel_home" ]</code></pre>
 <h6><strong>Create Cluster Resources on one node</strong></h6>
 <pre><code class="language-plaintext"># Create the filesystem resource
 sudo pcs resource create nfs_fs ocf:heartbeat:Filesystem \
-    device="/dev/nfs_vg/nfs_lv" directory="/srv/nfs/shared" fstype="xfs" \
+    device="/dev/my_vg/my_lv" directory="/srv/nfs/shared" fstype="xfs" \
     --group nfs_group
 
 # Create the virtual IP resource
@@ -121,15 +135,11 @@ sudo pcs resource create nfs_export ocf:heartbeat:exportfs \
     clientspec="10.100.100.0/24" options="rw,sync,no_root_squash" \
     directory="/srv/nfs/shared" fsid=1 \
     --group nfs_group</code></pre>
-<ul>
-  <li>on node one create the lvm activation resource</li>
-</ul>
 <pre><code class="language-plaintext">sudo pcs resource create nfs_lvm ocf:heartbeat:LVM-activate \
     vgname="nfs_vg" \
     vg_access_mode="passthrough" \
     op monitor interval=30s
-sudo pcs resource group add nfs_group  nfs_lvm --before nfs_fs</code></pre>
-<p>&nbsp;</p>
+</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
