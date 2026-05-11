@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:12:09.354Z
+date: 2026-05-11T07:12:49.178Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -57,8 +57,18 @@ echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
 <pre><code class="language-plaintext">sudo systemctl start sbd
 sudo systemctl start pacemaker
 sudo systemctl start corosync</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h6><strong>Create the Cluster</strong></h6>
+<pre><code class="language-plaintext"># Create and start the cluster
+sudo pcs cluster setup ha-nfs node1.example.com node2.example.com
+
+# Start the cluster on all nodes
+sudo pcs cluster start --all
+
+# Enable cluster to start on boot
+sudo pcs cluster enable --all
+
+# Verify cluster status
+sudo pcs status</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
