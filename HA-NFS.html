@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:04:05.955Z
+date: 2026-05-11T07:05:10.823Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -41,7 +41,11 @@ sudo pcs host auth node1.example.com node2.example.com -u hacluster</code></pre>
 </ul>
 <pre><code class="language-plaintext">SBD_DEVICE="/dev/sdb"
 SBD_WATCHDOG_DEV=/dev/watchdog</code></pre>
-<p>&nbsp;</p>
+<ul>
+  <li>Enable the watchdog dev</li>
+</ul>
+<pre><code class="language-plaintext">modprobe softdog
+echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
