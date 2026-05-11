@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T08:32:45.749Z
+date: 2026-05-11T09:25:09.623Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -26,7 +26,7 @@ systemctl enable --now corosync</code></pre>
 sudo passwd hacluster
 
 # Authenticate the nodes (run on one node)
-sudo pcs host auth node1.example.com node2.example.com -u hacluster</code></pre>
+sudo pcs host auth 10.100.100.200 10.100.100.202 -u hacluster</code></pre>
 <blockquote>
   <p><span class="text-huge"><strong>partition the disk or use separate disks for the SBD and data</strong></span></p>
 </blockquote>
@@ -62,7 +62,7 @@ echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
 <pre><code class="language-plaintext">sudo systemctl start sbd
 sudo systemctl start pacemaker
 sudo systemctl start corosync</code></pre>
-<h6>Configure fencing on node 1</h6>
+<h6>Configure fencing on node 1 # after the following step and systemctl start pacemaker</h6>
 <pre><code class="language-plaintext">sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"</code></pre>
 <h6><strong>Create the Cluster on one node</strong></h6>
 <pre><code class="language-plaintext"># Create and start the cluster
@@ -108,7 +108,7 @@ sudo pcs resource create nfs_fs ocf:heartbeat:Filesystem \
 
 # Create the virtual IP resource
 sudo pcs resource create nfs_vip ocf:heartbeat:IPaddr2 \
-    ip=192.168.1.100 cidr_netmask=24 \
+    ip=10.100.100.203 cidr_netmask=24 \
     --group nfs_group
 
 # Create the NFS server resource
@@ -118,7 +118,7 @@ sudo pcs resource create nfs_server ocf:heartbeat:nfsserver \
 
 # Create the NFS export resource
 sudo pcs resource create nfs_export ocf:heartbeat:exportfs \
-    clientspec="192.168.1.0/24" options="rw,sync,no_root_squash" \
+    clientspec="10.100.100.0/24" options="rw,sync,no_root_squash" \
     directory="/srv/nfs/shared" fsid=1 \
     --group nfs_group</code></pre>
 <ul>
@@ -128,7 +128,7 @@ sudo pcs resource create nfs_export ocf:heartbeat:exportfs \
     vgname="nfs_vg" \
     vg_access_mode="passthrough" \
     op monitor interval=30s
-sudo pcs resource group add nfs_vg nfs_lvm --before nfs_fs</code></pre>
+sudo pcs resource group add nfs_group  nfs_lvm --before nfs_fs</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
