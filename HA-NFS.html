@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T07:12:49.178Z
+date: 2026-05-11T07:31:28.511Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -18,14 +18,16 @@ sudo dnf install -y pcs pacemaker corosync fence-agents-all nfs-utils
 
 # Enable and start the cluster management service
 sudo systemctl enable --now pcsd</code></pre>
-<h6><strong>Set Cluster Authentication</strong></h6>
+<h6>Set Cluster Authentication</h6>
 <pre><code class="language-plaintext"># Set the hacluster user password on both nodes
 sudo passwd hacluster
 
 # Authenticate the nodes (run on one node)
 sudo pcs host auth node1.example.com node2.example.com -u hacluster</code></pre>
-<h6>partition the disk or use separate disks for the SBD and data</h6>
-<h6><strong>Configure Fencing</strong></h6>
+<blockquote>
+  <p><span class="text-huge"><strong>partition the disk or use separate disks for the SBD and data</strong></span></p>
+</blockquote>
+<h6>Configure sbd</h6>
 <pre><code class="language-plaintext">sudo systemctl stop sbd  # do all of this on both nodes
 sudo systemctl stop pacemaker
 sudo systemctl stop corosync</code></pre>
@@ -36,14 +38,14 @@ sudo systemctl stop corosync</code></pre>
 <ul>
   <li>Initialize the SBD disk</li>
 </ul>
-<pre><code class="language-plaintext">sbd -d /dev/sdb1 create # on one node</code></pre>
+<pre><code class="language-plaintext">sbd -d /dev/sdc1 create # on one node</code></pre>
 <blockquote>
   <p><strong>Warning:</strong> This will wipe the specific disk/partition you choose. Do this from <strong>one node only</strong>&nbsp;</p>
 </blockquote>
 <ul>
   <li>edit the /etc/sysconfig/sbd <code>#on both nodes</code></li>
 </ul>
-<pre><code class="language-plaintext">SBD_DEVICE="/dev/sdb1" 
+<pre><code class="language-plaintext">SBD_DEVICE="/dev/sdc1" 
 SBD_WATCHDOG_DEV=/dev/watchdog</code></pre>
 <ul>
   <li>Enable the watchdog dev <code>#on both nodes</code></li>
@@ -53,11 +55,13 @@ echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
 <ul>
   <li><strong>Verify the device</strong> (Run on <strong>both nodes</strong>):</li>
 </ul>
-<pre><code class="language-plaintext">sbd -d /dev/sdb1 dump</code></pre>
+<pre><code class="language-plaintext">sbd -d /dev/sdc1 dump</code></pre>
 <pre><code class="language-plaintext">sudo systemctl start sbd
 sudo systemctl start pacemaker
 sudo systemctl start corosync</code></pre>
-<h6><strong>Create the Cluster</strong></h6>
+<h6>Configure fencing&nbsp;</h6>
+<pre><code class="language-plaintext">sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"</code></pre>
+<h6><strong>Create the Cluster on one node</strong></h6>
 <pre><code class="language-plaintext"># Create and start the cluster
 sudo pcs cluster setup ha-nfs node1.example.com node2.example.com
 
@@ -69,7 +73,20 @@ sudo pcs cluster enable --all
 
 # Verify cluster status
 sudo pcs status</code></pre>
-<p>&nbsp;</p>
+<h6><strong>Prepare Shared Storage&nbsp;</strong></h6>
+<p># On only one node</p>
+<pre><code class="language-plaintext"># (The physical volume must be on shared storage, e.g., iSCSI or SAN)
+sudo pvcreate /dev/sdb2
+sudo vgcreate nfs_vg /dev/sdb2
+sudo lvcreate -L 100G -n nfs_lv nfs_vg
+
+# Format on one node only
+sudo mkfs.xfs /dev/nfs_vg/nfs_lv</code></pre>
+<p><strong># On the other node scan</strong></p>
+<pre><code class="language-plaintext">sudo pvscan
+sudo vgscan
+sudo lvscan
+echo "- - -" | sudo tee /sys/class/scsi_host/host*/scan</code></pre>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
