@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T12:37:05.846Z
+date: 2026-05-11T12:38:00.449Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -114,6 +114,11 @@ vgcreate --setautoactivation n my_vg /dev/sdb1</code></pre>
   <li>on both nodes edit the lvm.conf to add all vg expect the one you created</li>
 </ul>
 <pre><code class="language-plaintext">auto_activation_volume_list = [ "rhel_root", "rhel_home" ]</code></pre>
+<ul>
+  <li>Rebuild the <code>initramfs</code> boot image to guarantee that the boot image will not try to activate a volume group controlled by the cluster. &nbsp;on both nodes</li>
+</ul>
+<pre><code class="language-plaintext">dracut -H -f /boot/initramfs-$(uname -r).img $(uname -r)
+reboot # reboot the nodes</code></pre>
 <h6><strong>Create Cluster Resources on one node</strong></h6>
 <pre><code class="language-plaintext"># Create the filesystem resource
 sudo pcs resource create nfs_fs ocf:heartbeat:Filesystem \
