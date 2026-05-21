@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-21T09:56:55.771Z
+date: 2026-05-21T10:01:10.960Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -70,11 +70,7 @@ echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
 <pre><code class="language-plaintext">sudo systemctl start sbd
 sudo systemctl start pacemaker
 sudo systemctl start corosync</code></pre>
-<h6>Configure fencing on node 1 # after the following step and systemctl enable --now pacemaker and corosync everytime before this command!!!!!!!!!!!</h6>
-<pre><code class="language-plaintext">sudo pcs cluster setup my_cluster sdel178 sdel179
-sudo pcs cluster start --all
-sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"</code></pre>
-<h6><strong>Create the Cluster on one node</strong></h6>
+<h3><strong>Create the Cluster on one node</strong></h3>
 <pre><code class="language-plaintext"># Create and start the cluster
 sudo pcs cluster setup ha-nfs 10.100.100.200 10.100.100.202
 
@@ -86,7 +82,10 @@ sudo pcs cluster enable --all
 
 # Verify cluster status
 sudo pcs status</code></pre>
-<h6><strong>Prepare Shared Storage&nbsp;</strong></h6>
+<h6>Configure fencing on node 1 #&nbsp;</h6>
+<pre><code class="language-plaintext">sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"
+</code></pre>
+<h3><code>Prepare Shared Storage&nbsp;</code></h3>
 <p># On both &nbsp;nodes</p>
 <pre><code class="language-plaintext"># Configuration option global/system_id_source.
 system_id_source = "uname"</code></pre>
