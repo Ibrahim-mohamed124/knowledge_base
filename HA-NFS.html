@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-11T12:44:31.280Z
+date: 2026-05-21T09:56:55.771Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -10,6 +10,7 @@ dateCreated: 2026-05-11T06:51:36.698Z
 
 <h6>Add the HA rhel repository on both nodes</h6>
 <pre><code class="language-plaintext">subscription-manager repos --list | grep -i rhel-9-for-x86_64-highavailability-rpms</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">subscription-manager repos --enable=rhel-9-for-x86_64-highavailability-rpms</code></pre>
 <h6><strong>Install Cluster Packages on both nodes</strong></h6>
 <pre><code class="language-plaintext"># Install Pacemaker, Corosync, and NFS packages
@@ -27,6 +28,7 @@ sudo passwd hacluster
 
 # Authenticate the nodes (run on one node)
 sudo pcs host auth 10.100.100.200 10.100.100.202 -u hacluster</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><span class="text-huge"><strong>partition the disk or use separate disks for the SBD and data</strong></span></p>
 </blockquote>
@@ -34,14 +36,17 @@ sudo pcs host auth 10.100.100.200 10.100.100.202 -u hacluster</code></pre>
 <pre><code class="language-plaintext">sudo systemctl stop sbd  # do all of this on both nodes
 sudo systemctl stop pacemaker
 sudo systemctl stop corosync</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>Install the SBD&nbsp;</li>
+  <li>Install the SBD</li>
 </ul>
 <pre><code class="language-plaintext">sudo dnf install sbd #on both nodes</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Initialize the SBD disk</li>
 </ul>
 <pre><code class="language-plaintext">sbd -d /dev/sdc1 create # on one node</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p><strong>Warning:</strong> This will wipe the specific disk/partition you choose. Do this from <strong>one node only</strong>&nbsp;</p>
 </blockquote>
@@ -50,20 +55,25 @@ sudo systemctl stop corosync</code></pre>
 </ul>
 <pre><code class="language-plaintext">SBD_DEVICE="/dev/sdc1" 
 SBD_WATCHDOG_DEV=/dev/watchdog</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Enable the watchdog dev <code>#on both nodes</code></li>
 </ul>
 <pre><code class="language-plaintext">modprobe softdog
 echo "softdog" &gt; /etc/modules-load.d/softdog.conf</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><strong>Verify the device</strong> (Run on <strong>both nodes</strong>):</li>
 </ul>
 <pre><code class="language-plaintext">sbd -d /dev/sdc1 dump</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">sudo systemctl start sbd
 sudo systemctl start pacemaker
 sudo systemctl start corosync</code></pre>
 <h6>Configure fencing on node 1 # after the following step and systemctl enable --now pacemaker and corosync everytime before this command!!!!!!!!!!!</h6>
-<pre><code class="language-plaintext">sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"</code></pre>
+<pre><code class="language-plaintext">sudo pcs cluster setup my_cluster sdel178 sdel179
+sudo pcs cluster start --all
+sudo pcs stonith create fence-sbd-storage fence_sbd devices="/dev/sdc1"</code></pre>
 <h6><strong>Create the Cluster on one node</strong></h6>
 <pre><code class="language-plaintext"># Create and start the cluster
 sudo pcs cluster setup ha-nfs 10.100.100.200 10.100.100.202
@@ -85,35 +95,42 @@ system_id_source = "uname"</code></pre>
   system ID: z1.example.com
 # uname -n
   z1.example.com</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>On one node</li>
 </ul>
 <pre><code class="language-plaintext">pvcreate /dev/sdb1
 vgcreate --setautoactivation n my_vg /dev/sdb1</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Verify that the new volume group has the system ID of the node on which you are running and from which you created the volume group.</li>
 </ul>
 <pre><code class="language-plaintext">vgs -o+systemid
   VG    #PV #LV #SN Attr   VSize  VFree  System ID
   my_vg   1   0   0 wz--n- &lt;1.82t &lt;1.82t z1.example.com</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Create a logical volume using the volume group <code>my_vg on onde node</code></li>
 </ul>
 <pre><code class="language-plaintext">lvcreate -L450 -n my_lv my_vg
   Rounding up size to full physical extent 452.00 MiB
   Logical volume "my_lv" created</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Create an XFS file system on the logical volume <code>my_lv</code>.</li>
 </ul>
 <pre><code class="language-plaintext">mkfs.xfs /dev/my_vg/my_lv</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>On the other node</li>
 </ul>
 <pre><code class="language-plaintext">lvmdevices --adddev /dev/sdb1</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>on both nodes edit the lvm.conf to add all vg expect the one you created</li>
 </ul>
 <pre><code class="language-plaintext">auto_activation_volume_list = [ "rhel_root", "rhel_home" ]</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>Rebuild the <code>initramfs</code> boot image to guarantee that the boot image will not try to activate a volume group controlled by the cluster. &nbsp;on both nodes</li>
 </ul>
@@ -136,8 +153,9 @@ pcs resource create nfs_ip IPaddr2 ip=192.168.122.200 cidr_netmask=24 --group nf
 # Add an nfsnotify resource for sending NFSv3 reboot notifications once the entire NFS deployment has initialized
 
 pcs resource create nfs-notify nfsnotify source_host=192.168.122.200 --group nfsgroup</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>For testing&nbsp;</li>
+  <li>For testing</li>
 </ul>
 <pre><code class="language-plaintext">pcs node standby</code></pre>
 <p>&nbsp;</p>
