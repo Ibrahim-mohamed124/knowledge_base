@@ -2,7 +2,7 @@
 title: HA NFS
 description: 
 published: true
-date: 2026-05-21T10:01:10.960Z
+date: 2026-05-21T10:49:26.465Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-05-11T06:51:36.698Z
@@ -147,7 +147,11 @@ pcs resource create nfs-daemon nfsserver nfs_shared_infodir=/nfsshare/nfsinfo nf
 # Create the NFS export resource
 pcs resource create nfs-root exportfs clientspec=192.168.122.0/255.255.255.0 options=rw,sync,no_root_squash directory=/nfsshare/exports fsid=0 --group nfsgroup
 # Create the virtual IP resource
-pcs resource create nfs_ip IPaddr2 ip=192.168.122.200 cidr_netmask=24 --group nfsgroup
+sudo pcs resource create nfs_ip ocf:heartbeat:IPaddr2 \
+  ip="10.13.203.216" \
+  cidr_netmask="24" \
+  --group nfsgroup \
+  --before fs_export
 
 # Add an nfsnotify resource for sending NFSv3 reboot notifications once the entire NFS deployment has initialized
 
