@@ -2,7 +2,7 @@
 title: features
 description: 
 published: true
-date: 2025-12-14T09:55:50.629Z
+date: 2026-06-09T06:48:10.048Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-09T18:50:53.314Z
@@ -249,6 +249,7 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
   <li>kubeProxyReplacement: “true”, k8sServiceHost: “api server IP”, k8sServicePort: “6443” and upgrading the helm chart, restarting the deployments</li>
 </ul>
 <pre><code class="language-plaintext">kubectl -n kube-system exec ds/cilium -- cilium-dbg status | grep KubeProxyReplacement</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>To delete the kubeproxy<ul>
       <li>delete the kubeproxy daemonset, kube-proxy configmap</li>
@@ -257,6 +258,7 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
   </li>
 </ul>
 <pre><code class="language-plaintext">iptables-save | grep -v KUBE | iptables-restore</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">kubectl -n kube-system exec ds/cilium -- cilium-dbg status --verbose</code></pre>
 <h3>Cilium Endpoints&nbsp;</h3>
 <ul>
@@ -266,23 +268,33 @@ Modules Health:          Stopped(13) Degraded(0) OK(74)
     </ul>
   </li>
 </ul>
+<blockquote>
+  <p><strong>The Rule:</strong> "Allow traffic from <code>10.244.1.5</code> (Frontend) to <code>10.244.2.11</code> (Backend)."</p>
+  <p><strong>The Event:</strong> You deploy an update, or a node fails. The frontend pod dies and a new one spins up.</p>
+  <p><strong>The Chaos:</strong> The new frontend pod gets a completely new IP: <code>10.244.3.89</code>.</p>
+  <p><strong>The Lag:</strong> The CNI must quickly notice this change, propagate it across the entire cluster, and rewrite the Linux <code>iptables</code> rules on every single node to remove the old IP and add the new one.</p>
+</blockquote>
 <h3>Useful commands</h3>
 <ul>
   <li>to show the eBPF programs on a NIC device</li>
 </ul>
 <pre><code class="language-plaintext">kubectl exec cilium-(agent on a node) -n kube-system bpftool net show</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>&nbsp;to show all the services in a cluster</li>
+  <li>to show all the services in a cluster</li>
 </ul>
 <pre><code class="language-plaintext">kubectl exec cilium-x -n kube-system cilium-dbg service list</code></pre>
+<p>&nbsp;</p>
 <ul>
-  <li>&nbsp;To get endpoint info</li>
+  <li>To get endpoint info</li>
 </ul>
 <pre><code class="language-plaintext">k exec -n kube-system cilium-x -- cilium endpoint get ID</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>configuration command</li>
 </ul>
 <pre><code class="language-plaintext">cilium config view</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li>set &nbsp;logging debug</li>
 </ul>
