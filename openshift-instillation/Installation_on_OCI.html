@@ -1,0 +1,20 @@
+<!--
+title: OCI
+description: 
+published: true
+date: 2026-08-03T07:50:09.839Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-08-03T07:50:09.839Z
+-->
+
+<h1>Cluster Architecture on OCI</h1>
+<ul>
+  <li>OCI provide DNS resolution service which is used by OCP &gt; OCI DNS</li>
+  <li>The compute nodes reside in Virtual Cloud Network VCNs<ol>
+      <li>Public subnet has external load balancer that route the traffic to the master and worker nodes</li>
+      <li>Private subnet has internal load balancer that the master nodes use to communicate&nbsp;</li>
+    </ol>
+  </li>
+</ul>
+<figure class="image"><img src="https://docs.oracle.com/en-us/iaas/Content/openshift-on-oci/images/OpenShift-Container-Platform.svg" alt="Illustration shows how traffic moves from OCI DNS through OCI Networking to OpenShift Container Platform cluster nodes"></figure>
