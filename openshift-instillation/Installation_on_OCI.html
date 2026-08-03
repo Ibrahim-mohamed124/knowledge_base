@@ -2,7 +2,7 @@
 title: OCI
 description: 
 published: true
-date: 2026-08-03T08:02:02.245Z
+date: 2026-08-03T09:35:13.161Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-08-03T07:50:09.839Z
@@ -34,10 +34,25 @@ dateCreated: 2026-08-03T07:50:09.839Z
   <p><strong>OCI Resource Manager</strong> is Oracle Cloud Infrastructure's fully managed <strong>Infrastructure as Code (IaC)</strong> service.</p>
   <p>It allows you to automate the provisioning, updating, and destroying of cloud infrastructure using <strong>HashiCorp Terraform</strong> without having to manage Terraform state files, backend storage, or execution environments yourself.</p>
 </blockquote>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<blockquote>
+  <p>In Oracle Cloud Infrastructure (OCI), a <strong>shape</strong> is simply the hardware profile or template that determines the capacity of a compute instance.</p>
+</blockquote>
+<h6>Autoscaling Compute Nodes</h6>
+<p>To use autoscaling, you'll need to create a worker image and upload it to Object Storage. You can enable autoscaling by either:</p>
+<ul>
+  <li>Creating a new OpenShift cluster on OCI with autoscaling enabled. This is useful when elastic worker capacity should be part of the cluster from the beginning.</li>
+  <li>Adding autoscaling to an existing OpenShift cluster, by deploying an Autoscaling Operator stack. This is useful for teams that already run OpenShift on OCI and want to introduce autoscaling without rebuilding the cluster.</li>
+</ul>
+<blockquote>
+  <p>Autoscaling workers use a Red Hat Enterprise Linux CoreOS (RHCOS) image that matches the OpenShift cluster version. You'll download the matching RHCOS OpenStack <code>qcow2</code> image, upload it to OCI Object Storage, and provide a read pre-authenticated request URL to the Terraform stack. For VM-based autoscaling, the downloaded <code>qcow2</code> image can be used directly. For bare metal autoscaling, the image must be prepared with iSCSI boot configuration before upload. A helper script is provided in the OCI OpenShift quickstart repository and should be run from a Linux host or Linux VM.</p>
+</blockquote>
+<h6>Prerequisites&nbsp;</h6>
+<blockquote>
+  <p>Before installing an OpenShift cluster on OCI, download and run the <code>create-resource-attribution-tags</code> stack from the <a href="https://github.com/oracle-quickstart/oci-openshift/releases"><u>OpenShift on OCI Releases</u></a> page on GitHub. This stack creates a tag namespace defined-tags (<code>openshift-tags)</code>and and defined tags <code>(openshift-resource)</code> required which are used to tag OpenShift resources. These are required before using other Terraform stacks.</p>
+</blockquote>
+<blockquote>
+  <p>To make changes to the manifests or Terraform code, you can clone the <a href="https://github.com/oracle-quickstart/oci-openshift"><u>oracle-quickstart / oci-openshift</u></a> GitHub repository and access the <code>custom_manifests</code> and <code>terraform-stacks</code> directories directly. Review the documentation in the repository and generate new Terraform stack zip files by running the <code>make</code> command.</p>
+</blockquote>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
