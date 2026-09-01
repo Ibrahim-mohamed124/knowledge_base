@@ -2,7 +2,7 @@
 title: custom Crts
 description: 
 published: true
-date: 2026-04-01T09:24:30.489Z
+date: 2026-09-01T08:52:08.647Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-01-25T17:14:44.674Z
@@ -12,7 +12,7 @@ dateCreated: 2026-01-25T17:14:44.674Z
 <ol>
   <li>Define the certificate authority name</li>
 </ol>
-<pre><code class="language-plaintext">CANAME="MY-ORG"</code></pre>
+<pre><code class="language-plaintext">CANAME=""</code></pre>
 <p>&nbsp; 2. create a private key for the CA</p>
 <pre><code class="language-plaintext">openssl genrsa -aes256 -out $CANAME.key 4096</code></pre>
 <p>&nbsp;</p>
@@ -29,7 +29,7 @@ dateCreated: 2026-01-25T17:14:44.674Z
   <li>copy the root ca certificate to /usr/local/share/ca-certificates and update-ca-trust</li>
   <li>define a MYCERT variable with the name of the certificate</li>
 </ul>
-<pre><code class="language-plaintext">MYCERT="anyname"</code></pre>
+<pre><code class="language-plaintext">MYCERT=""</code></pre>
 <p>&nbsp; 4. create new private key for the new certificate&nbsp;</p>
 <pre><code class="language-plaintext"> openssl req -new -nodes -out $MYCERT.csr -newkey rsa:4096 -keyout $MYCERT.key</code></pre>
 <p>&nbsp; 5. create a file to add the Subject Alternative Name (SAN) to SSL certificate</p>
@@ -43,7 +43,7 @@ subjectAltName = @alt_names
 [alt_names]
 DNS.1 = localhost</code></pre>
 <p>&nbsp; &nbsp;6. sign the CSR using the CA private key&nbsp;</p>
-<pre><code class="language-plaintext"> openssl x509 -req -in $MYCERT.csr -CA  $CANAME.crt -CAkey  $CANAME.key -CAcreateserial -out promethues.crt -days 10 -sha256 -extfile $MYCERT.ext</code></pre>
+<pre><code class="language-plaintext"> openssl x509 -req -in $MYCERT.csr -CA  $CANAME.crt -CAkey  $CANAME.key -CAcreateserial -out $MYCERT.crt -days 10 -sha256 -extfile $MYCERT.ext</code></pre>
 <p>&nbsp; 7. to renew an expired certificate with the same CA</p>
 <ul>
   <li><strong>Generate a new Key and CSR:</strong></li>
@@ -59,6 +59,7 @@ DNS.1 = localhost</code></pre>
   <li>To read a certificate</li>
 </ul>
 <pre><code class="language-plaintext">openssl x509 -in certificate.crt -text -noout</code></pre>
+<p>&nbsp;</p>
 <ul>
   <li><code>openssl x509</code> command to display the SAN attribute of a custom certificate</li>
 </ul>
