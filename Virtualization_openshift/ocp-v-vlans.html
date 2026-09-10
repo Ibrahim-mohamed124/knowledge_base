@@ -2,7 +2,7 @@
 title: VLANs Guide
 description: 
 published: true
-date: 2026-09-10T20:32:13.379Z
+date: 2026-09-10T20:33:04.718Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-09-10T20:32:13.379Z
@@ -37,8 +37,11 @@ spec:
           # CRITICAL: Allows OVN-Kubernetes to dynamically create internal patch ports
           allow-extra-patch-ports: true 
           port:
-            - name: $BOND_NAME # The physical bond interface attached to the bridge
-</code></pre>
+            - name: $BOND_NAME # The physical bond interface attached to the bridge</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <h2>2. Map the OVN Network to the Bridge (NodeNetworkConfigurationPolicy)</h2>
 <p>Once the OVS bridge exists, you must create a mapping that links a logical OVN network name (<code>localnet</code>) to the physical OVS bridge you just created.</p>
 <p>&nbsp;</p>
