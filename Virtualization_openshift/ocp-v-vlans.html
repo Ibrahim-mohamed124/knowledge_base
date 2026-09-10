@@ -1,0 +1,79 @@
+<!--
+title: VLANs Guide
+description: 
+published: true
+date: 2026-09-10T20:32:13.379Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-09-10T20:32:13.379Z
+-->
+
+<h1>OpenShift Virtualization: Adding a VLAN on a Bonded Interface</h1>
+<p>To expose a VLAN over a bonded interface to virtual machines in OpenShift Virtualization, you must configure the underlying nodes and expose the network to your cluster. This requires three distinct components:</p>
+<ol>
+  <li>An Open vSwitch (OVS) bridge on the nodes.</li>
+  <li>An OVN-Kubernetes bridge mapping.</li>
+  <li>A NetworkAttachmentDefinition (NAD) for the virtual machines.</li>
+</ol>
+<h2>1. Create the OVS Bridge (NodeNetworkConfigurationPolicy)</h2>
+<p>This policy instructs Nmstate to create an L2 OVS bridge on top of your existing bonded interface across your cluster nodes.</p>
+<pre><code class="language-plaintext">apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: br-vm-policy
+spec:
+  # Leave empty to apply to all nodes, or define labels to target specific workers
+  nodeSelector: {} 
+  desiredState:
+    interfaces:
+      - name: $BRIDGE_NAME       # The name of the new bridge you are creating
+        type: ovs-bridge    # Must be OVS; Linux bridges do not support OVN localnet
+        state: up
+        ipv4:
+          enabled: false    # Disabled so the host does not grab an IP
+        ipv6:
+          enabled: false
+        bridge:
+          # CRITICAL: Allows OVN-Kubernetes to dynamically create internal patch ports
+          allow-extra-patch-ports: true 
+          port:
+            - name: $BOND_NAME # The physical bond interface attached to the bridge
+</code></pre>
+<h2>2. Map the OVN Network to the Bridge (NodeNetworkConfigurationPolicy)</h2>
+<p>Once the OVS bridge exists, you must create a mapping that links a logical OVN network name (<code>localnet</code>) to the physical OVS bridge you just created.</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: ovs-bridge-mapping-$VLAN_ID
+spec:
+  nodeSelector: {}
+  desiredState:
+    ovn:
+      bridge-mappings:
+        # The logical name for your external network (referenced later in the NAD)
+        - localnet: $VLAN_NAME  
+          # Must exactly match the OVS bridge name created in Step 1
+          bridge: $BRIDGE_NAME     
+          state: present
+</code></pre>
+<h2>3. Define the Network Attachment (NetworkAttachmentDefinition)</h2>
+<p>The NetworkAttachmentDefinition (NAD) makes the mapped network available to virtual machines in a specific namespace.</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: $VLAN_NAME
+  # The namespace where your VMs live. VMs in other namespaces cannot see this.
+  namespace: default
+spec:
+  config: '{
+      "cniVersion": "0.4.0",
+      "name": "physnet-1708",         # MUST match the "localnet" name from Step 2
+      "type": "ovn-k8s-cni-overlay",  # The standard CNI plugin for OVN-Kubernetes
+      "netAttachDefName": "$NAMESPACE/$VLAN_NAME",  
+      "vlanID": $VLAN_ID,                 # Tags egress traffic with this VLAN ID
+      "ipam": {}     # Empty IPAM means VMs use static IPs or external DHCP
+    }'
+</code></pre>
+<p>&nbsp;</p>
