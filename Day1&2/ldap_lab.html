@@ -2,7 +2,7 @@
 title: ldap_lab
 description: 
 published: true
-date: 2025-12-09T08:56:49.953Z
+date: 2026-09-14T07:56:32.791Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-05T17:44:55.146Z
@@ -67,6 +67,31 @@ data:
   ca.crt: |
     &lt;CA_certificate_PEM&gt;</code></pre>
 <p>4. modify the oauth cluster</p>
+<pre><code class="language-plaintext">ldapsearch -H ldap://10.10.0.100:389   -D "cn=ocpenshift,cn=Managed Service Accounts,dc=linux-plus,dc=local"   -w 'P@ssw0rd' -x   -b "ou=IT OPS,ou=Users,ou=0172-COMPUTER,ou=01.RIYADH-HQ,ou=JB-OFFICES,ou=JARIR BOOKSTORE,dc=linux-plus,dc=local"   "(sAMAccountName=*)"</code></pre>
+<pre><code class="language-plaintext">apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: active_directory_it_ops
+    mappingMethod: claim
+    type: LDAP
+    ldap:
+      insecure: true
+      url: "ldap://10.10.0.100:389/ou=IT OPS,ou=Users,ou=0172-COMPUTER,ou=01.RIYADH-HQ,ou=JB-OFFICES,ou=JARIR BOOKSTORE,dc=linux-plus,dc=local?sAMAccountName?sub?(objectClass=person)"
+      bindDN: "cn=ocpenshift,cn=Managed Service Accounts,dc=linux-plus,dc=local"
+      bindPassword:
+        name: ldap-bind-password
+      attributes:
+        id:
+        - sAMAccountName
+        preferredUsername:
+        - sAMAccountName
+        name:
+        - cn
+        email:
+        - mail</code></pre>
 <pre><code class="language-plaintext">apiVersion: config.openshift.io/v1
 kind: OAuth
 metadata:
@@ -211,6 +236,7 @@ spec:
           activeDeadlineSeconds: 500
           dnsPolicy: "ClusterFirst"
           serviceAccountName: "ldap-group-syncer"</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>The secret must be created in the same namespace as the cornjob</p>
 </blockquote>
