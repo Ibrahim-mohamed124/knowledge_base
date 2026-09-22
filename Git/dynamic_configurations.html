@@ -1,0 +1,56 @@
+<!--
+title: k8s dynamic configurations
+description: 
+published: true
+date: 2026-09-22T06:22:46.071Z
+tags: 
+editor: ckeditor
+dateCreated: 2026-09-22T06:22:46.071Z
+-->
+
+<p>Kubernetes does not automatically send a signal (like <code>SIGHUP</code>) to your application process when a <code>ConfigMap</code> or <code>Secret</code> is modified. Instead, dynamic zero-downtime configuration updates rely on two mechanisms working in sync: <strong>Atomic Volume Mounts</strong> at the Kubernetes infrastructure level, and <strong>Dynamic File Reading</strong> at the application level.</p>
+<h3>Part 1: How Kubernetes Updates Files (Atomic Volume Mounts)</h3>
+<p>When you mount a <code>ConfigMap</code> or <code>Secret</code> as a volume into a Pod, Kubernetes creates a specific directory structure on the pod's filesystem using <strong>symlinks</strong>:</p>
+<p>Plaintext</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">/etc/config/ (Mounted Volume Path)
+├── app.json -&gt; ..data/app.json (Symlink to current dataset)
+├── ..data -&gt; ..2026_09_22_09_17_59.123456789 (Symlink to active timestamped directory)
+└── ..2026_09_22_09_17_59.123456789/ (Real directory containing files)
+    └── app.json
+</code></pre>
+<h4>The Atomic Update Process</h4>
+<p>When you update the ConfigMap via <code>kubectl apply</code>:</p>
+<p>The <strong>kubelet</strong> detects the change (typically within its sync period, ~60 seconds).</p>
+<p>It creates a <strong>new hidden directory</strong> containing the updated files (e.g., <code>..2026_09_22_09_25_00.987654321/</code>).</p>
+<p>It creates a temporary symlink pointing to this new directory.</p>
+<p>It performs an <strong>atomic swap</strong> on the <code>..data</code> symlink using the <code>rename()</code> system call.</p>
+<p>It cleans up the old timestamped directory.</p>
+<blockquote>
+  <p><strong>Why "Atomic"?</strong> The <code>rename()</code> operation is atomic at the OS kernel level. Your application will never read an incomplete, partially written, or corrupted file during an update. At any fraction of a millisecond, reading <code>app.json</code> will resolve to either 100% of the old config or 100% of the new config.</p>
+</blockquote>
+<h3>Part 2: How Applications Pick Up Changes (Dynamic File Reading)</h3>
+<p>Because Kubernetes only updates the filesystem contents, your application must be designed to react to those updates without restarting the container.</p>
+<h4>1. Inotify / File Watchers (Event-Driven)</h4>
+<p>Languages provide filesystem monitoring libraries (e.g., Node.js <code>fs.watch</code>, Go <code>fsnotify</code>, Java <code>WatchService</code>) that listen for OS kernel notifications.</p>
+<p><strong>Crucial Caveat:</strong> Do <strong>not</strong> watch the individual file directly (e.g., <code>/etc/config/app.json</code>). Because Kubernetes updates configs via symlink swaps, a watcher pinned to the specific file's inode will stop receiving events after the symlink is swapped.</p>
+<p><strong>The Fix:</strong> Watch the <strong>parent directory</strong> (<code>/etc/config</code>) or watch for changes to the <code>..data</code> symlink itself.</p>
+<h4>2. Read-on-Demand (Polling / Request Lifetime)</h4>
+<p>Instead of keeping configuration in static memory at startup, load config values per request or poll the file at set intervals:</p>
+<p>Python</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext"># Example: Reading configuration per incoming request or on-demand
+import json
+
+def get_config():
+    with open('/etc/config/app.json', 'r') as f:
+        return json.load(f)
+
+def handle_request():
+    config = get_config()  # Always fetches the latest atomic state from disk
+    # ... process request using dynamic config ...
+</code></pre>
+<h3>Important Exceptions &amp; Caveats</h3>
+<p><code><strong>subPath</strong></code><strong> Mounts break atomic updates:</strong> If you mount a ConfigMap using <code>subPath</code> (e.g., mounting a single file directly into an existing directory), Kubernetes loses the symlink structure. <strong>Files mounted via </strong><code><strong>subPath</strong></code><strong> will not update dynamically.</strong></p>
+<p><strong>Propagation Delay:</strong> ConfigMap updates are not instant. Kubelet sync period + local cache TTL means changes usually take between 10 to 90 seconds to reflect on disk inside the container.</p>
+<p><strong>Environment Variables do not update:</strong> If you inject ConfigMap keys into <code>env</code> or <code>envFrom</code> variables inside your Pod spec, they are set once at container creation time. Changes to the ConfigMap require a full Pod restart/rollout to update environment variables.</p>
