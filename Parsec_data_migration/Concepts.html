@@ -2,7 +2,7 @@
 title: Concepts
 description: 
 published: true
-date: 2026-09-28T06:42:54.396Z
+date: 2026-09-28T07:25:12.131Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-09-28T06:42:54.396Z
@@ -16,3 +16,15 @@ dateCreated: 2026-09-28T06:42:54.396Z
 <p><strong><u>Connection Points to a Storage Environment:</u></strong></p>
 <p><strong>Point 1 &nbsp; &nbsp;&nbsp;</strong>Initial State: Hosts are accessing shares/LUNs on the source storage (NAS/SAN).<br><strong>Point 2 &nbsp; &nbsp;&nbsp;</strong>Connect the Appliance to the network/fabric and configure access to both migration<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;sources and targets shares/LUNs.<br><strong>Point 3</strong> &nbsp; &nbsp; Configure and start/schedule the migrations from sources to targets shares/LUNs.<br><strong>Point 4</strong> &nbsp; &nbsp;Upon successful completion and validation of each migration, unmount/unmap the<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;original shares/LUNs from sources storage, and mount/map the shares/LUNs from targets storage.</p>
 <figure class="image image_resized" style="width:45.47%;"><img src="https://media.screensteps.com/image_assets/assets/010/184/444/original/6f9e969b-165b-4d8a-bccb-4ad7c440ffc3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAVNY36S4EK3YMWFAE%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20260928T064116Z&amp;X-Amz-Expires=660&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=4e39fe4b19f7ddab46ea46554c4e23a47155bad37a1391c96af30cf47554600c"></figure>
+<p><strong><u>Below are the requirements to ensure the features have the needed connectivity:</u></strong></p>
+<ul>
+  <li>Firewall rules must allow <u>outbound</u> connections to <strong><u>apollo.parseclabs.com</u></strong> on <strong>port 443</strong> ( Remote Support) and to <strong><u>et.parseclabs.com</u></strong> on <strong>port 443</strong> (Phone Home and Remote Firmware Upgrades).</li>
+  <li>If your enterprise uses a proxy, configure the appliance with the appropriate proxy information<br>(and credentials if applicable).</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
