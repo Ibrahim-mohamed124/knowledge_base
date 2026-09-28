@@ -2,7 +2,7 @@
 title: Loki_lab
 description: 
 published: true
-date: 2025-12-05T11:49:37.156Z
+date: 2026-09-28T07:39:37.115Z
 tags: 
 editor: ckeditor
 dateCreated: 2025-12-04T20:19:08.042Z
@@ -137,10 +137,11 @@ lokistack-query-frontend-6db57976d4-chhb4   1/1     Running   0          38m
 </code></pre>
 <h1>Create the ClusterLogForwarder</h1>
 <ol>
-  <li>&nbsp;Install the openshift logging operator</li>
+  <li>Install the openshift logging operator</li>
   <li>Create a service account for the collector. If you want to write logs to storage that requires a token for authentication, <mark class="marker-yellow">you must include a token in the service account</mark>.</li>
 </ol>
 <pre><code class="language-plaintext">oc create sa colloctor -n openshift-logging</code></pre>
+<p>&nbsp;</p>
 <blockquote>
   <p>serviceaccounts can have more than one token that are stored in secrets</p>
   <pre><code class="language-plaintext">oc describe sa tet
@@ -209,7 +210,7 @@ spec:
     name: logging-loki
     tls:
       ca:
-        configMapName: openshift-service-ca.crt 
+        configMapName: logging-loki-gateway-ca-bundle 
         key: service-ca.crt
     type: lokiStack
   pipelines:
@@ -221,6 +222,7 @@ spec:
     - logging-loki
   serviceAccount:
     name: collector</code></pre>
+<p>&nbsp;</p>
 <pre><code class="language-plaintext">oc get po -n openshift-logging
 NAME                                        READY   STATUS    RESTARTS   AGE
 cluster-logging-operator-565f5d5c56-rx2bd   1/1     Running   0          18h
