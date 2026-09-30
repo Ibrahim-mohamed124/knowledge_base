@@ -2,7 +2,7 @@
 title: VLANs Guide
 description: 
 published: true
-date: 2026-09-30T07:20:31.499Z
+date: 2026-09-30T07:40:59.778Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-09-10T20:32:13.379Z
@@ -75,7 +75,8 @@ spec:
       "name": "$VLAN_NAME",         # MUST match the "localnet" name from Step 2
       "type": "ovn-k8s-cni-overlay",  # The standard CNI plugin for OVN-Kubernetes
       "netAttachDefName": "$NAMESPACE/$VLAN_NAME",
-      "topology": "localnet",  
+      "topology": "localnet",
+      "physicalNetworkName": "$BRIDGE_MAPPINGS",  
       "vlanID": $VLAN_ID,                 # Tags egress traffic with this VLAN ID
       "ipam": {}     # Empty IPAM means VMs use static IPs or external DHCP
     }'
