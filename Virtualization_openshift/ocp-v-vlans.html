@@ -2,7 +2,7 @@
 title: VLANs Guide
 description: 
 published: true
-date: 2026-09-30T07:40:59.778Z
+date: 2026-10-15T09:07:01.484Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-09-10T20:32:13.379Z
@@ -28,6 +28,7 @@ spec:
     interfaces:
       - name: $BRIDGE_NAME       # The name of the new bridge you are creating
         type: ovs-bridge    # Must be OVS; Linux bridges do not support OVN localnet
+        mtu: "9000"
         state: up
         ipv4:
           enabled: false    # Disabled so the host does not grab an IP
@@ -35,32 +36,21 @@ spec:
           enabled: false
         bridge:
           # CRITICAL: Allows OVN-Kubernetes to dynamically create internal patch ports
-          allow-extra-patch-ports: true 
+          allow-extra-patch-ports: true
+          options:
+            stp: 
+              enabled: false
+          ipv4:
+             enabled: false 
           port:
-            - name: $BOND_NAME # The physical bond interface attached to the bridge</code></pre>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<h2>2. Map the OVN Network to the Bridge (NodeNetworkConfigurationPolicy)</h2>
-<p>Once the OVS bridge exists, you must create a mapping that links a logical OVN network name (<code>localnet</code>) to the physical OVS bridge you just created.</p>
-<p>&nbsp;</p>
-<pre><code class="language-plaintext">apiVersion: nmstate.io/v1
-kind: NodeNetworkConfigurationPolicy
-metadata:
-  name: ovs-bridge-mapping-$VLAN_ID
-spec:
-  nodeSelector: {}
-  desiredState:
+            - name: $BOND_NAME # The physical bond interface attached to the bridge
     ovn:
       bridge-mappings:
-        # The logical name for your external network (referenced later in the NAD)
-        - localnet: $VLAN_NAME  
-          # Must exactly match the OVS bridge name created in Step 1
-          bridge: $BRIDGE_NAME     
-          state: present
-</code></pre>
-<h2>3. Define the Network Attachment (NetworkAttachmentDefinition)</h2>
+      - localnet: $MAPPING_NAME
+        bridge:  $BRIDGE_NAME
+        state: present</code></pre>
+<p>&nbsp;</p>
+<h2>2. Define the Network Attachment (NetworkAttachmentDefinition)</h2>
 <p>The NetworkAttachmentDefinition (NAD) makes the mapped network available to virtual machines in a specific namespace.</p>
 <p>&nbsp;</p>
 <pre><code class="language-plaintext">apiVersion: k8s.cni.cncf.io/v1
