@@ -2,7 +2,7 @@
 title: VLANs Guide
 description: 
 published: true
-date: 2026-10-15T09:11:22.316Z
+date: 2026-10-15T09:12:44.595Z
 tags: 
 editor: ckeditor
 dateCreated: 2026-09-10T20:32:13.379Z
@@ -61,10 +61,11 @@ metadata:
   namespace: default
 spec:
   config: '{
-      "cniVersion": "0.4.0",
+      "cniVersion": "0.3.1",
       "name": "$VLAN_NAME",         # MUST match the "localnet" name from Step 2
       "type": "ovn-k8s-cni-overlay",  # The standard CNI plugin for OVN-Kubernetes
       "netAttachDefName": "$NAMESPACE/$VLAN_NAME",
+      "role": "secondary",
       "topology": "localnet",
       "physicalNetworkName": "$BRIDGE_MAPPINGS",  
       "vlanID": $VLAN_ID,                 # Tags egress traffic with this VLAN ID
